@@ -262,24 +262,44 @@ skeleton="../templates/db_output_bulk.skeleton"
 	} // end bug0014422
 	
     if(incomingConnName != null && columnList != null){
+    	int schemaOptNum = 100;
+		String schemaOptNumStr=ElementParameterParser.getValue(node, "__SCHEMA_OPT_NUM__");
+		if(schemaOptNumStr!=null && !"".equals(schemaOptNumStr) && !"\"\"".equals(schemaOptNumStr)){
+			schemaOptNum = Integer.parseInt(schemaOptNumStr);
+		}
+		
+    	boolean optimize65535 = columnList.size() > schemaOptNum;//optimize for 65535 method size issue in java
         %>
         whetherReject_<%=cid%> = false;
         <%	
         if(("INSERT").equals(dataAction)) {
             int counter = 1;
             for(Column column : colStruct) {
-                if(column.isInsertable()) {
-                    String typeToGenerate = JavaTypesManager.getTypeToGenerate(column.getColumn().getTalendType(), column.getColumn().isNullable());
+                if(!column.isInsertable()) {
+                    continue;
+                }
+                
+                if(optimize65535) {
+                	if((counter-1)%schemaOptNum==0){
+%>
+					setPrepareStatementUtil_<%=cid%>.setInsert_<%=(counter-1)/schemaOptNum%>(<%=incomingConnName%>,pstmt_<%=cid%>
+						<%if(isEnableDebug) {%>,query_<%=cid%>,insertSQLSplits_<%=cid%><%}%>
+					);
+<%
+                	}
+                } else {
+					String typeToGenerate = JavaTypesManager.getTypeToGenerate(column.getColumn().getTalendType(), column.getColumn().isNullable());
                     %>
                     <%=getManager(dbmsId, cid).generateSetStmt(typeToGenerate, column, counter, incomingConnName, cid, NORMAL_TYPE)%>
                     <%
                     if(isEnableDebug) {
                         %>
-                        query_<%=cid%> = <%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counter, "insertSQLSplits_")%>;
+                        <%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counter, "insertSQLSplits_")%>;
                         <%
-                    }                    
-                    counter++;                        
+                    }
                 }
+                
+                counter++;
             }
 			if(isDynamic) {
 				Column dynamicColumn = getColumn(getDynamicColumn());
@@ -333,11 +353,21 @@ skeleton="../templates/db_output_bulk.skeleton"
                 %>
                         <%=rejectConnName %> = new <%=rejectConnName %>Struct();
                         <%
+                        int index = 0;
                         for(IMetadataColumn column : columnList) {
-                        %>
-                            <%=rejectConnName%>.<%=column.getLabel()%> = <%=incomingConnName%>.<%=column.getLabel()%>;
-                        <%
-                        }
+                    		if(optimize65535) {
+                    			if(index%schemaOptNum==0) {
+                        		%>
+                        		dataPropagateUtil_<%=cid%>.assign_<%=rejectConnName%>_<%=index/schemaOptNum%>(<%=incomingConnName%>,<%=rejectConnName%>);
+                        		<%
+                        		}
+                        		index++;
+                        	} else {
+								%>
+                        		<%=rejectConnName%>.<%=column.getLabel()%> = <%=incomingConnName%>.<%=column.getLabel()%>;
+								<%
+                        	}
+                    	}
                         %>
                         rejectedCount_<%=cid%> = rejectedCount_<%=cid%> + 1;
                         <%=rejectConnName%>.errorCode = ((java.sql.SQLException)e).getSQLState();
@@ -359,18 +389,31 @@ skeleton="../templates/db_output_bulk.skeleton"
     	} else if(("UPDATE").equals(dataAction)) {
     	    int counterCol = 1;
             for(Column column : colStruct) {
-                if(column.isUpdatable()) {
-                    String typeToGenerate = JavaTypesManager.getTypeToGenerate(column.getColumn().getTalendType(), column.getColumn().isNullable());
-                    %>
-                    <%=getManager(dbmsId, cid).generateSetStmt(typeToGenerate, column, counterCol, incomingConnName, cid, NORMAL_TYPE)%>
-                    <%
-                    if(isEnableDebug) {
-                        %>
-                        query_<%=cid%> = <%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_")%>;
-                        <%
-                    }                    
-                    counterCol++;                   
+                if(!column.isUpdatable()) {
+                	continue;
                 }
+                
+                if(optimize65535) {
+        			if((counterCol-1)%schemaOptNum==0){
+%>
+					setPrepareStatementUtil_<%=cid%>.setUpdate_<%=(counterCol-1)/schemaOptNum%>(<%=incomingConnName%>,pstmt_<%=cid%>
+						<%if(isEnableDebug) {%>,query_<%=cid%>,updateSQLSplits_<%=cid%><%}%>
+					);
+<%
+            		}
+            	} else {
+	                String typeToGenerate = JavaTypesManager.getTypeToGenerate(column.getColumn().getTalendType(), column.getColumn().isNullable());
+    	            %>
+        	        <%=getManager(dbmsId, cid).generateSetStmt(typeToGenerate, column, counterCol, incomingConnName, cid, NORMAL_TYPE)%>
+            	    <%
+                	if(isEnableDebug) {
+                    	%>
+                    	<%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_")%>;
+                    	<%
+                	}
+                }
+                
+                counterCol++;
             }
 			if(isDynamic) {
 			Column dynamicColumn = getColumn(talendDynCol);
@@ -404,11 +447,11 @@ skeleton="../templates/db_output_bulk.skeleton"
 					if(isEnableDebug) {
 						if(isDynamic){
 						%>
-							query_<%=cid%> = <%=getManager(dbmsId, cid, node).retrieveSQL(talendDynCol.getLabel(),typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_", "(("+incomingConnName+"."+column.getName()+"==null)?1:0)")%>;
+							<%=getManager(dbmsId, cid, node).retrieveSQL(talendDynCol.getLabel(),typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_", "(("+incomingConnName+"."+column.getName()+"==null)?1:0)")%>;
 						<%
 						}else{
 						%>
-							query_<%=cid%> = <%=getManager(dbmsId, cid, node).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_", "(("+incomingConnName+"."+column.getName()+"==null)?1:0)")%>;
+							<%=getManager(dbmsId, cid, node).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_", "(("+incomingConnName+"."+column.getName()+"==null)?1:0)")%>;
 						<%
 						}
 					}
@@ -422,11 +465,11 @@ skeleton="../templates/db_output_bulk.skeleton"
 			
                         if(isDynamic){
 			    %>
-				   query_<%=cid%> = <%=getManager(dbmsId, cid, node).retrieveSQL(talendDynCol.getLabel(),typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_")%>;
+				   <%=getManager(dbmsId, cid, node).retrieveSQL(talendDynCol.getLabel(),typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_")%>;
 			    <%
 			    }else{
 			    %>
-				   query_<%=cid%> = <%=getManager(dbmsId, cid, node).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_")%>;
+				   <%=getManager(dbmsId, cid, node).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_")%>;
 			    <%
 			    }
                     }                    
@@ -471,11 +514,21 @@ skeleton="../templates/db_output_bulk.skeleton"
                         %>
                         <%=rejectConnName %> = new <%=rejectConnName %>Struct();
                         <%
+                        int index = 0;
                         for(IMetadataColumn column : columnList) {
-                            %>
-                            <%=rejectConnName%>.<%=column.getLabel()%> = <%=incomingConnName%>.<%=column.getLabel()%>;
-                            <%
-                        }
+                			if(optimize65535) {
+                    			if(index%schemaOptNum==0) {
+                        		%>
+                        		dataPropagateUtil_<%=cid%>.assign_<%=rejectConnName%>_<%=index/schemaOptNum%>(<%=incomingConnName%>,<%=rejectConnName%>);
+                        		<%
+                        		}
+                        		index++;
+                        	} else {
+								%>
+                        		<%=rejectConnName%>.<%=column.getLabel()%> = <%=incomingConnName%>.<%=column.getLabel()%>;
+								<%
+                        	}
+                    	}
                         %>
                         rejectedCount_<%=cid%> = rejectedCount_<%=cid%> + 1;
                         <%=rejectConnName%>.errorCode = ((java.sql.SQLException)e).getSQLState();
@@ -526,18 +579,31 @@ skeleton="../templates/db_output_bulk.skeleton"
     			<%
     			int counterCol = 1;
                 for(Column column : colStruct) {
-                    if(column.isUpdatable()) {
-                        String typeToGenerate = JavaTypesManager.getTypeToGenerate(column.getColumn().getTalendType(), column.getColumn().isNullable());
+                    if(!column.isUpdatable()) {
+                    	continue;
+                    }
+                    
+                    if(optimize65535) {
+                		if((counterCol-1)%schemaOptNum==0){
+%>
+						setPrepareStatementUtil_<%=cid%>.setUpdate_<%=(counterCol-1)/schemaOptNum%>(<%=incomingConnName%>,pstmtUpdate_<%=cid%>
+							<%if(isEnableDebug) {%>,query_<%=cid%>,updateSQLSplits_<%=cid%><%}%>
+						);
+<%
+                		}
+                	} else {
+                		String typeToGenerate = JavaTypesManager.getTypeToGenerate(column.getColumn().getTalendType(), column.getColumn().isNullable());
                         %>
                         <%=getManager(dbmsId, cid).generateSetStmt(typeToGenerate, column, counterCol, incomingConnName, cid, UPDATE_TYPE)%>
                         <%
                         if(isEnableDebug) {
                             %>
-                            query_<%=cid%> = <%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_")%>;
+                            <%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_")%>;
                             <%
-                        }                        
-                        counterCol++;
-                    }
+                        }
+                	}
+                    
+                    counterCol++;
                 }
 				if(isDynamic) {
 					Column dynamicColumn = getColumn(getDynamicColumn());
@@ -571,11 +637,11 @@ skeleton="../templates/db_output_bulk.skeleton"
 		                     if(isEnableDebug) {
 					if(isDynamic){
 							%>
-								query_<%=cid%> = <%=getManager(dbmsId, cid, node).retrieveSQL(talendDynCol.getLabel(),typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_", "(("+incomingConnName+"."+column.getName()+"==null)?1:0)")%>;
+								<%=getManager(dbmsId, cid, node).retrieveSQL(talendDynCol.getLabel(),typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_", "(("+incomingConnName+"."+column.getName()+"==null)?1:0)")%>;
 							<%
 							}else{
 							%>
-								query_<%=cid%> = <%=getManager(dbmsId, cid, node).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_", "(("+incomingConnName+"."+column.getName()+"==null)?1:0)")%>;
+								<%=getManager(dbmsId, cid, node).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_", "(("+incomingConnName+"."+column.getName()+"==null)?1:0)")%>;
 							<%
 							}
 
@@ -589,11 +655,11 @@ skeleton="../templates/db_output_bulk.skeleton"
                         if(isEnableDebug) {
                            if(isDynamic){
 				   		%>
-							query_<%=cid%> = <%=getManager(dbmsId, cid, node).retrieveSQL(talendDynCol.getLabel(),typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_")%>;
+							<%=getManager(dbmsId, cid, node).retrieveSQL(talendDynCol.getLabel(),typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_")%>;
 				    	<%
 				    	}else{
 				    	%>
-							query_<%=cid%> = <%=getManager(dbmsId, cid, node).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_")%>;
+							<%=getManager(dbmsId, cid, node).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counterCol, "updateSQLSplits_")%>;
 				    	<%
 				    	}
                         }                        
@@ -625,11 +691,21 @@ skeleton="../templates/db_output_bulk.skeleton"
                             %>
                             <%=rejectConnName %> = new <%=rejectConnName %>Struct();
                             <%
+                            int index = 0;
                             for(IMetadataColumn column : columnList) {
-                                %>
-                                <%=rejectConnName%>.<%=column.getLabel()%> = <%=incomingConnName%>.<%=column.getLabel()%>;
-                                <%
-                            }
+                    			if(optimize65535) {
+                        			if(index%schemaOptNum==0) {
+                            		%>
+                            		dataPropagateUtil_<%=cid%>.assign_<%=rejectConnName%>_<%=index/schemaOptNum%>(<%=incomingConnName%>,<%=rejectConnName%>);
+                            		<%
+                            		}
+                            		index++;
+                            	} else {
+									%>
+                            		<%=rejectConnName%>.<%=column.getLabel()%> = <%=incomingConnName%>.<%=column.getLabel()%>;
+									<%
+                            	}
+                        	}
                             %>
                             rejectedCount_<%=cid%> = rejectedCount_<%=cid%> + 1;
                             <%=rejectConnName%>.errorCode = ((java.sql.SQLException)e).getSQLState();
@@ -648,19 +724,32 @@ skeleton="../templates/db_output_bulk.skeleton"
     			<%
     			int counterInsert = 1;
                 for(Column columnInsert : colStruct) {
-                    if(columnInsert.isInsertable()) {
-                        String typeToGenerate = JavaTypesManager.getTypeToGenerate(columnInsert.getColumn().getTalendType(), columnInsert.getColumn().isNullable());
+                	if(!columnInsert.isInsertable()) {
+           	 			continue;
+           	 		}
+           	 		
+           	 		if(optimize65535) {
+                		if((counterInsert-1)%schemaOptNum==0){
+%>
+						setPrepareStatementUtil_<%=cid%>.setInsert_<%=(counterInsert-1)/schemaOptNum%>(<%=incomingConnName%>,pstmtInsert_<%=cid%>
+							<%if(isEnableDebug) {%>,query_<%=cid%>,insertSQLSplits_<%=cid%><%}%>
+						);
+<%
+                		}
+                	} else {
+                		String typeToGenerate = JavaTypesManager.getTypeToGenerate(columnInsert.getColumn().getTalendType(), columnInsert.getColumn().isNullable());
                         %>
                         <%=getManager(dbmsId, cid).generateSetStmt(typeToGenerate, columnInsert, counterInsert, incomingConnName, cid, INSERT_TYPE)%>
                         <%
                         if(isEnableDebug) {
                             %>
-                            query_<%=cid%> = <%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, columnInsert, incomingConnName, cid, "query_" ,  counterInsert, "insertSQLSplits_")%>;
+                            <%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, columnInsert, incomingConnName, cid, "query_" ,  counterInsert, "insertSQLSplits_")%>;
                             <%
-                        }                        
-                        counterInsert++;
-                    }
-                }
+                        }
+                	}
+                	
+           	 		counterInsert++;
+            	}
 				if(isDynamic) {
 					Column dynamicColumn = getColumn(getDynamicColumn());
 					String typeToGenerate = JavaTypesManager.getTypeToGenerate(dynamicColumn.getColumn().getTalendType(), dynamicColumn.getColumn().isNullable());
@@ -700,11 +789,21 @@ skeleton="../templates/db_output_bulk.skeleton"
                             %>
                             <%=rejectConnName %> = new <%=rejectConnName %>Struct();
                             <%
+                            int index = 0;
                             for(IMetadataColumn column : columnList) {
-                                %>
-                                <%=rejectConnName%>.<%=column.getLabel()%> = <%=incomingConnName%>.<%=column.getLabel()%>;
-                                <%
-                            }
+                        		if(optimize65535) {
+                        			if(index%schemaOptNum==0) {
+                            		%>
+                            		dataPropagateUtil_<%=cid%>.assign_<%=rejectConnName%>_<%=index/schemaOptNum%>(<%=incomingConnName%>,<%=rejectConnName%>);
+                            		<%
+                            		}
+                            		index++;
+                            	} else {
+									%>
+                            		<%=rejectConnName%>.<%=column.getLabel()%> = <%=incomingConnName%>.<%=column.getLabel()%>;
+									<%
+                            	}
+                        	}
                             %>
                             rejectedCount_<%=cid%> = rejectedCount_<%=cid%> + 1;
                             <%=rejectConnName%>.errorCode = ((java.sql.SQLException)e).getSQLState();
@@ -727,18 +826,31 @@ skeleton="../templates/db_output_bulk.skeleton"
     	    <%
     		int counterColUpdate = 1;
             for(Column columnUpdate : colStruct) {
-                if(columnUpdate.isUpdatable()) {
+                if(!columnUpdate.isUpdatable()) {
+                	continue;
+                }
+                
+                if(optimize65535) {
+            		if((counterColUpdate-1)%schemaOptNum==0){
+%>
+					setPrepareStatementUtil_<%=cid%>.setUpdate_<%=(counterColUpdate-1)/schemaOptNum%>(<%=incomingConnName%>,pstmtUpdate_<%=cid%>
+						<%if(isEnableDebug) {%>,query_<%=cid%>,updateSQLSplits_<%=cid%><%}%>
+					);
+<%
+            		}
+            	} else {
                     String typeToGenerate = JavaTypesManager.getTypeToGenerate(columnUpdate.getColumn().getTalendType(), columnUpdate.getColumn().isNullable());
                     %>
                     <%=getManager(dbmsId, cid).generateSetStmt(typeToGenerate, columnUpdate, counterColUpdate, incomingConnName, cid, UPDATE_TYPE)%>
                     <%
                     if(isEnableDebug) {
                         %>
-                        query_<%=cid%> = <%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, columnUpdate, incomingConnName, cid, "query_" , counterColUpdate, "updateSQLSplits_")%>;
+                        <%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, columnUpdate, incomingConnName, cid, "query_" , counterColUpdate, "updateSQLSplits_")%>;
                         <%
-                    }                    
-                    counterColUpdate++;
+                    }
                 }
+                
+                counterColUpdate++;
             }
 			if(isDynamic) {
 				Column dynamicColumn = getColumn(getDynamicColumn());
@@ -773,11 +885,11 @@ skeleton="../templates/db_output_bulk.skeleton"
 					if(isEnableDebug) {
 						if(isDynamic){
 						%>
-						query_<%=cid%> = <%=getManager(dbmsId, cid, node).retrieveSQL(talendDynCol.getLabel(),typeToGenerate, columnUpdate, incomingConnName, cid, "query_" , counterColUpdate, "updateSQLSplits_", "(("+incomingConnName+"."+columnUpdate.getName()+"==null)?1:0)")%>;
+						<%=getManager(dbmsId, cid, node).retrieveSQL(talendDynCol.getLabel(),typeToGenerate, columnUpdate, incomingConnName, cid, "query_" , counterColUpdate, "updateSQLSplits_", "(("+incomingConnName+"."+columnUpdate.getName()+"==null)?1:0)")%>;
 						<%
 						}else{
 						%>
-						query_<%=cid%> = <%=getManager(dbmsId, cid, node).retrieveSQL(typeToGenerate, columnUpdate, incomingConnName, cid, "query_" , counterColUpdate, "updateSQLSplits_", "(("+incomingConnName+"."+columnUpdate.getName()+"==null)?1:0)")%>;
+						<%=getManager(dbmsId, cid, node).retrieveSQL(typeToGenerate, columnUpdate, incomingConnName, cid, "query_" , counterColUpdate, "updateSQLSplits_", "(("+incomingConnName+"."+columnUpdate.getName()+"==null)?1:0)")%>;
 						<%
 						}
 					}
@@ -791,11 +903,11 @@ skeleton="../templates/db_output_bulk.skeleton"
                     if(isEnableDebug) {
 					if(isDynamic){
 					%>
-						query_<%=cid%> = <%=getManager(dbmsId, cid, node).retrieveSQL(talendDynCol.getLabel(),typeToGenerate, columnUpdate, incomingConnName, cid, "query_" , counterColUpdate, "updateSQLSplits_")%>;
+						<%=getManager(dbmsId, cid, node).retrieveSQL(talendDynCol.getLabel(),typeToGenerate, columnUpdate, incomingConnName, cid, "query_" , counterColUpdate, "updateSQLSplits_")%>;
 					<%
 					}else{
 					%>
-						query_<%=cid%> = <%=getManager(dbmsId, cid, node).retrieveSQL(typeToGenerate, columnUpdate, incomingConnName, cid, "query_" , counterColUpdate, "updateSQLSplits_")%>;
+						<%=getManager(dbmsId, cid, node).retrieveSQL(typeToGenerate, columnUpdate, incomingConnName, cid, "query_" , counterColUpdate, "updateSQLSplits_")%>;
 					<%
 					}
                     }                    
@@ -821,18 +933,30 @@ skeleton="../templates/db_output_bulk.skeleton"
         		}
         		int counter = 1;
                 for(Column column : colStruct) {
-                    if(column.isInsertable()) {
+                    if(!column.isInsertable()) {
+                    	continue;
+                    }
+                    
+                    if(optimize65535) {
+                		if((counter-1)%schemaOptNum==0){
+%>
+						setPrepareStatementUtil_<%=cid%>.setInsert_<%=(counter-1)/schemaOptNum%>(<%=incomingConnName%>,pstmtInsert_<%=cid%>
+							<%if(isEnableDebug) {%>,query_<%=cid%>,insertSQLSplits_<%=cid%><%}%>
+						);
+<%
+                		}
+                    } else {
                         String typeToGenerate = JavaTypesManager.getTypeToGenerate(column.getColumn().getTalendType(), column.getColumn().isNullable());
                         %>
                         <%=getManager(dbmsId, cid).generateSetStmt(typeToGenerate, column, counter, incomingConnName, cid, INSERT_TYPE)%>
                         <%
                         if(isEnableDebug) {
                             %>
-                            query_<%=cid%> = <%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counter, "insertSQLSplits_")%>;
+                            <%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , counter, "insertSQLSplits_")%>;
                             <%
-                        }                        
-                        counter++;
-                    }
+                        }
+                     }
+                    counter++;
                 }
 				if(isDynamic) {
 					Column dynamicColumn = getColumn(talendDynCol);
@@ -876,11 +1000,21 @@ skeleton="../templates/db_output_bulk.skeleton"
                             %>
                             <%=rejectConnName %> = new <%=rejectConnName %>Struct();
                             <%
+                            int index = 0;
                             for(IMetadataColumn column : columnList) {
-                                %>
-                                <%=rejectConnName%>.<%=column.getLabel()%> = <%=incomingConnName%>.<%=column.getLabel()%>;
-                                <%
-                            }
+                        		if(optimize65535) {
+                        			if(index%schemaOptNum==0) {
+                            		%>
+                            		dataPropagateUtil_<%=cid%>.assign_<%=rejectConnName%>_<%=index/schemaOptNum%>(<%=incomingConnName%>,<%=rejectConnName%>);
+                            		<%
+                            		}
+                            		index++;
+                            	} else {
+									%>
+                            		<%=rejectConnName%>.<%=column.getLabel()%> = <%=incomingConnName%>.<%=column.getLabel()%>;
+									<%
+                            	}
+                        	}
                             %>
                             rejectedCount_<%=cid%> = rejectedCount_<%=cid%> + 1;
                             <%=rejectConnName%>.errorCode = ((java.sql.SQLException)e).getSQLState();
@@ -912,7 +1046,7 @@ skeleton="../templates/db_output_bulk.skeleton"
                     <%  
 	                    if(isEnableDebug) {
 	                        %>
-	                        query_<%=cid%> = <%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , keyCounter, "deleteSQLSplits_", "(("+incomingConnName+"."+column.getName()+"==null)?1:0)")%>;
+	                        <%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , keyCounter, "deleteSQLSplits_", "(("+incomingConnName+"."+column.getName()+"==null)?1:0)")%>;
 	                        <%
 	                    	}
                     	 keyCounter++;
@@ -924,7 +1058,7 @@ skeleton="../templates/db_output_bulk.skeleton"
                     <%
                     if(isEnableDebug) {
                         %>
-                        query_<%=cid%> = <%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , keyCounter, "deleteSQLSplits_")%>;
+                        <%=getManager(dbmsId, cid).retrieveSQL(typeToGenerate, column, incomingConnName, cid, "query_" , keyCounter, "deleteSQLSplits_")%>;
                         <%
                     }                    
                     keyCounter++;
@@ -970,10 +1104,20 @@ skeleton="../templates/db_output_bulk.skeleton"
                         %>
                         <%=rejectConnName %> = new <%=rejectConnName %>Struct();
                         <%
+                        int index = 0;
                         for(IMetadataColumn column : columnList) {
-                            %>
-                            <%=rejectConnName%>.<%=column.getLabel()%> = <%=incomingConnName%>.<%=column.getLabel()%>;
-                            <%
+                        	if(optimize65535) {
+                        		if(index%schemaOptNum==0) {
+                            	%>
+                            	dataPropagateUtil_<%=cid%>.assign_<%=rejectConnName%>_<%=index/schemaOptNum%>(<%=incomingConnName%>,<%=rejectConnName%>);
+                            	<%
+                            	}
+                            	index++;
+                            } else {
+								%>
+                            	<%=rejectConnName%>.<%=column.getLabel()%> = <%=incomingConnName%>.<%=column.getLabel()%>;
+								<%
+                            }
                         }
                         %>
                         rejectedCount_<%=cid%> = rejectedCount_<%=cid%> + 1;
@@ -1006,10 +1150,20 @@ skeleton="../templates/db_output_bulk.skeleton"
                             %>
                             <%=outgoingConn.getName()%> = new <%=outgoingConn.getName()%>Struct();
                             <%
+                            int index = 0;
                             for(IMetadataColumn column : columnList) {
-                                %>
-                                <%=outgoingConn.getName()%>.<%=column.getLabel()%> = <%=incomingConnName%>.<%=column.getLabel()%>;
-                                <%                  
+                            	if(optimize65535) {
+                            		if(index%schemaOptNum==0) {
+                                	%>
+                                	dataPropagateUtil_<%=cid%>.assign_<%=outgoingConn.getName()%>_<%=index/schemaOptNum%>(<%=incomingConnName%>,<%=outgoingConn.getName()%>);
+                                	<%
+                                	}
+                                	index++;
+                                } else {
+%>
+									<%=outgoingConn.getName()%>.<%=column.getLabel()%> = <%=incomingConnName%>.<%=column.getLabel()%>;
+<%
+                                }
                             }
                         }
                     }

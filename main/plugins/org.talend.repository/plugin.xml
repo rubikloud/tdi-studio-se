@@ -2339,6 +2339,14 @@
         	name="ChangeDefaultValue4tMarketoOutput"
         	version="5.6.2">
   		</projecttask>
+        <projecttask
+              beforeLogon="false"
+              breaks="3.1.2"
+              class="org.talend.repository.model.migration.CorrectBatchModeForDBComponents"
+              id="org.talend.repository.model.migration.CorrectBatchModeForDBComponents"
+              name="CorrectBatchModeForDBComponents"
+              version="5.6.2">
+        </projecttask>
    </extension>
 
    <extension

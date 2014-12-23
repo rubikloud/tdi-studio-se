@@ -331,7 +331,7 @@ if ((metadatas != null) && (metadatas.size() > 0)) {
 							org.talend.salesforce.TopRecord topRecord_<%=cid%> = allTopRecords_<%=cid%>.get(i_<%=cid%>);
 
 							nb_line_<%=cid%>++;
-							Object value_<%=cid%> = null;
+							Object valueObj_<%=cid%> = null;
 				<%
 				}else{
 				%>
@@ -342,7 +342,7 @@ if ((metadatas != null) && (metadatas.size() > 0)) {
 						for(java.util.Map<String,String> resultMessage_<%=cid%> : resultListMessage_<%=cid%>){
 							
 							nb_line_<%=cid%>++;		
-							Object value_<%=cid%> = null;		
+							String value_<%=cid%> = null;		
 				<%
 				}
 							for( int i = 0; i < columnList.size(); i++) {
@@ -357,34 +357,35 @@ if ((metadatas != null) && (metadatas.size() > 0)) {
 								
 								if("soap".equals(api)){%>							
 									//get the real value according the columnName
-									value_<%=cid%> = topRecord_<%=cid%>.getValue("<%=columnList.get(i).getLabel()%>");
+									valueObj_<%=cid%> = topRecord_<%=cid%>.getValue("<%=columnList.get(i).getLabel()%>");
+    								if(valueObj_<%=cid%> != null){
+    								 	String value_<%=cid%> = (String) valueObj_<%=cid%>;
 								<%}else{%>
 									value_<%=cid%> = resultMessage_<%=cid%>.get("<%=columnList.get(i).getLabel()%>");
+									if(value_<%=cid%> != null && !"".equals(value_<%=cid%>)){
 								<%}%>
-								if (value_<%=cid%> != null){
-								 	String valueStr_<%=cid%> = (String) value_<%=cid%>;
-									<%
-									if (javaType == JavaTypesManager.STRING || javaType == JavaTypesManager.OBJECT) { // String or Object
-									%>
-										<%=outgoingConn.getName()%>.<%=columnList.get(i).getLabel()%> = valueStr_<%=cid%>;
-									<%
-									} else if(javaType == JavaTypesManager.DATE) { // Date
-									%>
-										<%=outgoingConn.getName()%>.<%=columnList.get(i).getLabel()%> = ParserUtils.parseTo_Date(valueStr_<%=cid%>, <%= patternValue %>);
-									<%
-									} else if(javaType == JavaTypesManager.BYTE_ARRAY) { // byte[]
-									%>
-										<%=outgoingConn.getName()%>.<%=columnList.get(i).getLabel()%> = valueStr_<%=cid%>.getBytes();
-									<%
-									} else  { // other
-									%>						
-										<%=outgoingConn.getName()%>.<%=columnList.get(i).getLabel()%> = ParserUtils.parseTo_<%= typeToGenerate %>(valueStr_<%=cid%>);
-									<%
-									}
-									%>			
-								} else {
-									<%=outgoingConn.getName()%>.<%=columnList.get(i).getLabel()%> = <%=JavaTypesManager.getDefaultValueFromJavaType(typeToGenerate)%>;
-								}
+    									<%
+    									if (javaType == JavaTypesManager.STRING || javaType == JavaTypesManager.OBJECT) { // String or Object
+    									%>
+    										<%=outgoingConn.getName()%>.<%=columnList.get(i).getLabel()%> = value_<%=cid%>;
+    									<%
+    									} else if(javaType == JavaTypesManager.DATE) { // Date
+    									%>
+    										<%=outgoingConn.getName()%>.<%=columnList.get(i).getLabel()%> = ParserUtils.parseTo_Date(value_<%=cid%>, <%= patternValue %>);
+    									<%
+    									} else if(javaType == JavaTypesManager.BYTE_ARRAY) { // byte[]
+    									%>
+    										<%=outgoingConn.getName()%>.<%=columnList.get(i).getLabel()%> = value_<%=cid%>.getBytes();
+    									<%
+    									} else  { // other
+    									%>						
+    										<%=outgoingConn.getName()%>.<%=columnList.get(i).getLabel()%> = ParserUtils.parseTo_<%= typeToGenerate %>(value_<%=cid%>);
+    									<%
+    									}
+    									%>			
+    								} else {
+    									<%=outgoingConn.getName()%>.<%=columnList.get(i).getLabel()%> = <%=JavaTypesManager.getDefaultValueFromJavaType(typeToGenerate)%>;
+    								}
 							<%
 							}
 							log.debug(log.str("Retrieving the record "), log.var("nb_line"), log.str("."));

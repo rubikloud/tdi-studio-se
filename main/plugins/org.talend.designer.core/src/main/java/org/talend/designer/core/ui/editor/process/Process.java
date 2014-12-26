@@ -238,9 +238,9 @@ public class Process extends Element implements IProcess2, IGEFProcess, ILastVer
 
     protected IUpdateManager updateManager;
 
-    protected byte[] screenshot = null;
+    protected Map<String, byte[]> screenshots = null;
 
-    protected EMap<?, ?> screenshots = null;
+    protected Map<Object, Object> additionalProperties = null;
 
     private List<byte[]> externalInnerContents = new ArrayList<byte[]>();
 
@@ -254,6 +254,7 @@ public class Process extends Element implements IProcess2, IGEFProcess, ILastVer
 
     public Process(Property property) {
         this.property = property;
+        screenshots = new HashMap<String, byte[]>();
         contextManager = new JobContextManager();
         updateManager = new ProcessUpdateManager(this);
         createProcessParameters();
@@ -1315,6 +1316,7 @@ public class Process extends Element implements IProcess2, IGEFProcess, ILastVer
 
         saveProcessElementParameters(processType);
         saveRoutinesDependencies(processType);
+        saveAdditionalProperties();
 
         EList nList = processType.getNode();
         EList cList = processType.getConnection();
@@ -1369,8 +1371,10 @@ public class Process extends Element implements IProcess2, IGEFProcess, ILastVer
          * Save the contexts informations
          */
         processType.setDefaultContext(contextManager.getDefaultContext().getName());
-        if (getScreenshot() != null) {
-            processType.getScreenshots().put(PROCESS_SCREENSHOT_KEY, getScreenshot());
+        if (!getScreenshots().isEmpty()) {
+            for (String key : getScreenshots().keySet()) {
+                processType.getScreenshots().put(key, getScreenshots().get(key));
+            }
             // fix a bug (TUP-2278) of synch between inner process item and newly created process item during save, this
             // is very dirty but inherent to the current archi.
             // copy all the screenshot items appart from the "process" one that is already handled here.
@@ -1387,7 +1391,8 @@ public class Process extends Element implements IProcess2, IGEFProcess, ILastVer
                 }// else no process available so ignor
             }// else not a type we can handle so ignor
         }
-        setScreenshot(null); // once be saved, set the screenshot to null to free memory
+        // getScreenshots().clear(); // once be saved, set the screenshot to null to free memory
+        // getScreenshots().remove(PROCESS_SCREENSHOT_KEY);
         contextManager.saveToEmf(processType.getContext());
         // fixe for TDI-24876
         EmfHelper.removeProxy(processType);
@@ -1665,6 +1670,24 @@ public class Process extends Element implements IProcess2, IGEFProcess, ILastVer
                 .getElementParameter(), processType);
     }
 
+    protected void saveAdditionalProperties() {
+        Map<Object, Object> additionalMap = getAdditionalProperties();
+        for (Object key : additionalMap.keySet()) {
+            this.getProperty().getAdditionalProperties().put(key, additionalMap.get(key));
+        }
+
+        // remove
+        Map<Object, Object> removedAddition = new HashMap<Object, Object>();
+        for (Object key : this.property.getAdditionalProperties().keySet()) {
+            if (!additionalMap.containsKey(key)) {
+                removedAddition.put(key, this.property.getAdditionalProperties().get(key));
+            }
+        }
+        for (Object key : removedAddition.keySet()) {
+            this.getProperty().getAdditionalProperties().remove(key);
+        }
+    }
+
     private void saveRoutinesDependencies(ProcessType process) {
         /* if process is joblet,parameters will be null,so that create a new parametertype for joblet */
         if (process.getParameters() == null) {
@@ -1759,6 +1782,7 @@ public class Process extends Element implements IProcess2, IGEFProcess, ILastVer
         }
 
         loadProjectParameters(processType);
+        loadAdditionalProperties();
 
         try {
             loadNodes(processType, nodesHashtable);
@@ -3753,21 +3777,8 @@ public class Process extends Element implements IProcess2, IGEFProcess, ILastVer
     }
 
     @Override
-    public byte[] getScreenshot() {
-        return this.screenshot;
-    }
-
-    public EMap getScreenshots() {
+    public Map<String, byte[]> getScreenshots() {
         return this.screenshots;
-    }
-
-    @Override
-    public void setScreenshot(byte[] imagedata) {
-        this.screenshot = imagedata;
-    }
-
-    public void setScreenshots(EMap screenshots) {
-        this.screenshots = screenshots;
     }
 
     /*
@@ -3921,6 +3932,15 @@ public class Process extends Element implements IProcess2, IGEFProcess, ILastVer
         }
     }
 
+    private void loadAdditionalProperties() {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<Object, Object>();
+            for (Object key : this.property.getAdditionalProperties().keySet()) {
+                additionalProperties.put(key, this.property.getAdditionalProperties().get(key));
+            }
+        }
+    }
+
     private void loadRoutinesParameters(ProcessType processType) {
         ParametersType parameters = processType.getParameters();
         if (parameters == null || parameters.getRoutinesParameter() == null) {
@@ -3976,6 +3996,7 @@ public class Process extends Element implements IProcess2, IGEFProcess, ILastVer
 
         // added for projectSetting
         loadProjectParameters(processType);
+        loadAdditionalProperties();
 
         // ((ProcessItem) property.getItem()).setProcess(processType);
 
@@ -4211,6 +4232,19 @@ public class Process extends Element implements IProcess2, IGEFProcess, ILastVer
      */
     public void setComponentsType(String componentsType) {
         this.componentsType = componentsType;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.core.model.process.IProcess2#getAdditionalProperties()
+     */
+    @Override
+    public Map<Object, Object> getAdditionalProperties() {
+        if (this.additionalProperties == null) {
+            this.additionalProperties = new HashMap<Object, Object>();
+        }
+        return this.additionalProperties;
     }
 
 }

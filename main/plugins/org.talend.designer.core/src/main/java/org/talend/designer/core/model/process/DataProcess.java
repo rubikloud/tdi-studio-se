@@ -1809,7 +1809,7 @@ public class DataProcess implements IGeneratingProcess {
             IConnection connection = node.getIncomingConnections().get(0);
             if (connection.getLineStyle().equals(EConnectionType.ON_COMPONENT_OK)
                     || connection.getLineStyle().equals(EConnectionType.ON_COMPONENT_ERROR)
-                    || connection.getLineStyle().equals(EConnectionType.ON_SUBJOB_ERROR)
+                    || connection.getLineStyle().equals(EConnectionType.ON_SUBJOB_OK)
                     || connection.getLineStyle().equals(EConnectionType.ON_SUBJOB_ERROR)
                     || connection.getLineStyle().equals(EConnectionType.RUN_IF)) {// add if you think it should be count
                                                                                   // for parallel Iterator

@@ -481,11 +481,15 @@ public class NodesPasteCommand extends Command {
                                     Map<String, Object> newMap = new HashMap<String, Object>();
                                     newMap.putAll(map);
                                     // rename schemas
-                                    if (EParameterName.SCHEMAS.name().equals(param.getName()) && !oldMetaToNewMeta.isEmpty()) {
-                                        String newSchemaName = oldMetaToNewMeta.get(pastedNode.getUniqueName() + ":"
-                                                + map.get(EParameterName.SCHEMA.getName()));
-                                        if (newSchemaName != null) {
-                                            newMap.put(EParameterName.SCHEMA.getName(), newSchemaName);
+                                    if (!oldMetaToNewMeta.isEmpty()) {
+                                        boolean isSAPBapiInputSchema = "MAPPING_INPUT".equals(param.getName()) //$NON-NLS-1$
+                                                && "tSAPBapi".equals(copiedNode.getComponent().getName()); //$NON-NLS-1$
+                                        if (EParameterName.SCHEMAS.name().equals(param.getName()) || isSAPBapiInputSchema) {
+                                            String newSchemaName = oldMetaToNewMeta.get(pastedNode.getUniqueName() + ":"
+                                                    + map.get(EParameterName.SCHEMA.getName()));
+                                            if (newSchemaName != null) {
+                                                newMap.put(EParameterName.SCHEMA.getName(), newSchemaName);
+                                            }
                                         }
                                     }
 

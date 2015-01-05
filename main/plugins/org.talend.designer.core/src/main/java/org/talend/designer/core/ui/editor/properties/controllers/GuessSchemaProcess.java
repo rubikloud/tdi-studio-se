@@ -211,7 +211,7 @@ public class GuessSchemaProcess {
         memoSQL = memoSQL.replace("\r", " ");// ISO-8859-15
 
         // fix for TDI-26285
-        String createStatament = "conn.createStatement(java.sql.ResultSet.TYPE_SCROLL_SENSITIVE,java.sql.ResultSet.CONCUR_UPDATABLE)";//$NON-NLS-1$ 
+        String createStatament = "conn.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE,java.sql.ResultSet.CONCUR_READ_ONLY)";//$NON-NLS-1$
         String systemProperty = "";//$NON-NLS-1$ 
         if (info.isHive()) {
             createStatament = "conn.createStatement()";//$NON-NLS-1$ 
@@ -230,7 +230,7 @@ public class GuessSchemaProcess {
             IElementParameter dbPathElement = node.getElementParameter("DBPATH");
             if (dbPathElement != null) {
                 String derbyPath = dbPathElement.getValue().toString().replace("\"", "").trim();
-                systemProperty = systemProperty + "System.setProperty(\"derby.system.home\",\"" + derbyPath + "\");\r\n";//$NON-NLS-3$
+                systemProperty = systemProperty + "System.setProperty(\"derby.system.home\",\"" + derbyPath + "\");\r\n";
             }
         }
         // the Sqlite

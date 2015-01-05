@@ -30,8 +30,10 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.talend.core.PluginChecker;
+import org.talend.core.model.components.ComponentCategory;
 import org.talend.core.model.process.Element;
 import org.talend.core.model.process.IConnection;
+import org.talend.core.model.process.IProcess;
 import org.talend.designer.core.model.components.EParameterName;
 import org.talend.designer.core.ui.editor.cmd.ConnectionDeleteCommand;
 import org.talend.designer.core.ui.editor.nodes.Node;
@@ -251,13 +253,31 @@ public class ConnectionPart extends AbstractConnectionEditPart implements Proper
             elements.add(((Connection) getModel()).getResuming());
         }
 
-        if (((Connection) getModel()).getConnectionTrace() != null) {
-            elements.add(((Connection) getModel()).getConnectionTrace());
+        boolean monitorSupport = true;
+        if (getParent() != null && getRoot() != null) {
+            EditPart contents = getRoot().getContents();
+            if (contents.getModel() instanceof IProcess) {
+                IProcess currentProcess = (IProcess) contents.getModel();
+                if (ComponentCategory.CATEGORY_4_MAPREDUCE.getName().endsWith(currentProcess.getComponentsType())) {
+                    monitorSupport = false;
+                }
+            }
+        } else {
+            IProcess currentProcess = ((Connection) getModel()).getSource().getProcess();
+            if (ComponentCategory.CATEGORY_4_MAPREDUCE.getName().endsWith(currentProcess.getComponentsType())) {
+                monitorSupport = false;
+            }
         }
 
-        // Add monitor label
-        if (((Connection) getModel()).isMonitorConnection()) {
-            elements.add(((Connection) getModel()).getMonitorLabel());
+        if (monitorSupport) {
+            if (((Connection) getModel()).getConnectionTrace() != null) {
+                elements.add(((Connection) getModel()).getConnectionTrace());
+            }
+
+            // Add monitor label
+            if (((Connection) getModel()).isMonitorConnection()) {
+                elements.add(((Connection) getModel()).getMonitorLabel());
+            }
         }
 
         return elements;

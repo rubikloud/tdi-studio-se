@@ -41,6 +41,7 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -122,7 +123,7 @@ public class ImportDemoProjectItemsPage extends WizardFileSystemResourceExportPa
         gd.widthHint = 300;
         sashForm.setLayoutData(gd);
 
-        wizardSelectionViewer = CheckboxTableViewer.newCheckList(sashForm, SWT.CHECK);
+        wizardSelectionViewer = CheckboxTableViewer.newCheckList(sashForm, SWT.CHECK | SWT.SINGLE);
         wizardSelectionViewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
 
         wizardSelectionViewer.addCheckStateListener(this);
@@ -429,15 +430,18 @@ public class ImportDemoProjectItemsPage extends WizardFileSystemResourceExportPa
 
     @Override
     public void checkStateChanged(CheckStateChangedEvent event) {
-        if (event.getElement() instanceof DemoProjectBean) {
-            DemoProjectBean proNode = (DemoProjectBean) event.getElement();
-            showDescriptionIn(proNode);
+        if (event.getChecked()) {
+            wizardSelectionViewer.setSelection(new StructuredSelection(event.getElement()));
+            setPageComplete(true);
+        } else {
+            // descriptionBrowser.setText("");
             if (getCheckedElements().size() == 0) {
                 setPageComplete(false);
             } else {
                 setPageComplete(true);
             }
         }
+
     }
 
     private String populateExistItemRecords(final List<ResourcesManager> manager) {

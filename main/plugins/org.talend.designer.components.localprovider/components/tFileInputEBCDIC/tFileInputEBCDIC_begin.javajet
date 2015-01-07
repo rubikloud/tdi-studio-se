@@ -1,8 +1,8 @@
-<%@ jet 
+<%@ jet
 	imports="
         java.util.List
         java.util.Map
-        
+
         org.talend.core.model.metadata.IMetadataColumn
         org.talend.core.model.metadata.IMetadataTable
         org.talend.core.model.metadata.types.JavaType
@@ -12,15 +12,15 @@
         org.talend.core.model.process.IConnectionCategory
         org.talend.core.model.process.INode
         org.talend.designer.codegen.config.CodeGeneratorArgument
-	" 
+	"
 %>
 <%@ include file="../templates/Log4j/Log4jFileUtil.javajet"%>
-<% 
+<%
     CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
 	INode node = (INode)codeGenArgument.getArgument();
 	boolean isLog4jEnabled = ("true").equals(ElementParameterParser.getValue(node.getProcess(), "__LOG4J_ACTIVATE__"));
     String cid = node.getUniqueName();
-    
+
 	String filename = ElementParameterParser.getValue(node,"__FILENAME__");
 	String copybook = ElementParameterParser.getValue(node,"__COPYBOOK__");
 	String encoding = ElementParameterParser.getValue(node,"__ENCODING__");
@@ -47,7 +47,7 @@ if(!customSetOriginalLength){//------11111
 	net.sf.cobol2j.FileFormat fF_<%=cid %> = (net.sf.cobol2j.FileFormat) o_<%=cid %>;
 	net.sf.cobol2j.RecordSet rset_<%=cid %> = new net.sf.cobol2j.RecordSet(new java.io.FileInputStream(<%= filename %>), fF_<%=cid %>);
 	java.util.Map recdefs_<%=cid %> = new net.sf.cobol2j.RecordsMap(fF_<%=cid %>);
-	
+
 	// read every record, for each record split into column definition
 	List inrecord_<%=cid %>;
 <%
@@ -77,7 +77,7 @@ if(!customSetOriginalLength){//------11111
 %>
 	class EBCDICUtil_<%=cid%>{
 <%
-	
+
 	for(Map<String, String> schemaMap : schemas) {//------AAA0
 		String schemaName = schemaMap.get("SCHEMA");
 		IConnection justConn = null; //------->get the right output connection--->to get the columns info
@@ -142,9 +142,9 @@ if(!customSetOriginalLength){//------11111
 		<%if(isLog4jEnabled){%>
 			log.debug("<%=cid%> - Retrieving the record " + nb_line_<%= cid %> + ".");
 		<%}%>
-		
+
 		{
-			
+
 <%
 
     		if (conns!=null && conns.size()>0) {
@@ -152,16 +152,16 @@ if(!customSetOriginalLength){//------11111
 					IConnection connTemp = conns.get(i);
 					if (connTemp.getLineStyle().hasConnectionCategory(IConnectionCategory.MAIN)) {
 %>
-					<%=connTemp.getName() %> = null;			
+					<%=connTemp.getName() %> = null;
 <%
 					}
 				}
     		}
-    		
+
 	for(Map<String, String> schemaMap : schemas) {//------AAA0
 		String schemaName = schemaMap.get("SCHEMA");
 		String code = schemaMap.get("CODE");
-	
+
 		IConnection justConn = null; //------->get the right output connection--->to get the columns info
 		if(conns != null && conns.size() > 0){
 			for(IConnection conn : conns){
@@ -179,7 +179,7 @@ if(!customSetOriginalLength){//------11111
 		List<IMetadataColumn> justColumnList = justMetadata.getListColumns();
 %>
 			if(inrecord_<%=cid %>.get(0).equals("<%=code %>") || recdefs_<%=cid %>.size() == 1 ){
-	
+
 				<%=justConn.getName() %> = new <%=justConn.getName() %>Struct();
 <%
 				int sizeListColumns = justColumnList.size();
@@ -188,7 +188,7 @@ if(!customSetOriginalLength){//------11111
 					JavaType javaType = JavaTypesManager.getJavaTypeFromId(column.getTalendType());
 					if(!isOptimizeCode){
 						if(javaType == JavaTypesManager.STRING){
-%>				
+%>
 						<%=justConn.getName() %>.<%=column.getLabel()%> = (String)inrecord_<%=cid %>.get(<%=valueN%>);
 <%
 						}else {
@@ -204,8 +204,8 @@ if(!customSetOriginalLength){//------11111
 						}
 					}
 				}
-%>	
-			}	
+%>
+			}
 <%
 		}//------BBB0
 	}//------AAA0
@@ -255,6 +255,7 @@ the original size in the column:<%=column.getLabel()%> should be bigger than 0
 							Integer orgainLength = column.getOriginalLength();
 							String orgainType = column.getType();
 							Integer precision = column.getPrecision();
+							String defaultStrValue = column.getDefault();
 							if(valueN%schemaOptNum==0){
 %>
 							public void getValue_<%=valueN/schemaOptNum%>(final <%=conn.getName()%>Struct <%=conn.getName() %>,java.nio.ByteBuffer bbRecord_<%=cid %>) throws java.lang.Exception{
@@ -274,7 +275,7 @@ the original size in the column:<%=column.getLabel()%> in the schema should be b
 							bbRecord_<%=cid %>.get(bb_<%=column.getLabel()%>_<%=cid%>);
 <%
 							if(orgainType.equals("X")){
-%>				
+%>
 								<%=conn.getName() %>.<%=column.getLabel()%> = new String(bb_<%=column.getLabel()%>_<%=cid%>,<%=encoding%>)<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(valueN).get("TRIM"))))?".trim()":"" %>;
 <%
 							}else if(orgainType.equals("1")) {
@@ -290,7 +291,13 @@ the original size in the column:<%=column.getLabel()%> in the schema should be b
 								boolean isImpliedDecimal = (isImpliedDecimalStr!=null&&!("").equals(isImpliedDecimalStr))?("true").equals(isImpliedDecimalStr):true;
 								if(orgainType.equals("3")){
 %>
-									<%=conn.getName() %>.<%=column.getLabel()%> = cobolConversion.EBCDICType3.readType3Value(bb_<%=column.getLabel()%>_<%=cid%>,<%=precision %>,<%=isImpliedDecimal %>);
+									<%=conn.getName() %>.<%=column.getLabel()%> = cobolConversion.EBCDICType3.readType3(bb_<%=column.getLabel()%>_<%=cid%>,<%=precision %>,<%=isImpliedDecimal %>
+									,<% if(defaultStrValue == null || "".equals(defaultStrValue)){%>
+									    null
+									<%}else{%>
+									    ""+<%= defaultStrValue %>
+									<%} %>
+									);
 <%
 								}else{
 %>
@@ -346,6 +353,7 @@ DB Type of the column:<%=column.getLabel()%> should be X, 1, 2, 3, 9, B, T
 						Integer orgainLength = column.getOriginalLength();
 						String orgainType = column.getType();
 						Integer precision = column.getPrecision();
+						String defaultStrValue = column.getDefault();
 						if(!isOptimizeCode){
 							if(precision==null) precision = 0;
 							if(orgainLength==null || orgainLength.intValue()==0 || orgainType==null || "".endsWith(orgainType.trim())) {
@@ -361,7 +369,7 @@ the original size in the column:<%=column.getLabel()%> in the schema should be b
 							bbRecord_<%=cid %>.get(bb_<%=column.getLabel()%>_<%=cid%>);
 <%
 							if(orgainType.equals("X")){
-%>				
+%>
 								<%=conn.getName() %>.<%=column.getLabel()%> = new String(bb_<%=column.getLabel()%>_<%=cid%>,<%=encoding%>)<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(valueN).get("TRIM"))))?".trim()":"" %>;
 <%
 							}else if(orgainType.equals("1")) {
@@ -377,7 +385,13 @@ the original size in the column:<%=column.getLabel()%> in the schema should be b
 								boolean isImpliedDecimal = (isImpliedDecimalStr!=null&&!("").equals(isImpliedDecimalStr))?("true").equals(isImpliedDecimalStr):true;
 								if(orgainType.equals("3")){
 %>
-									<%=conn.getName() %>.<%=column.getLabel()%> = cobolConversion.EBCDICType3.readType3Value(bb_<%=column.getLabel()%>_<%=cid%>,<%=precision %>,<%=isImpliedDecimal %>);
+									<%=conn.getName() %>.<%=column.getLabel()%> = cobolConversion.EBCDICType3.readType3(bb_<%=column.getLabel()%>_<%=cid%>,<%=precision %>,<%=isImpliedDecimal %>
+									,<% if(defaultStrValue == null || "".equals(defaultStrValue)){%>
+									    null
+									<%}else{%>
+									    ""+<%= defaultStrValue %>
+									<%} %>
+									);
 <%
 								}else{
 %>

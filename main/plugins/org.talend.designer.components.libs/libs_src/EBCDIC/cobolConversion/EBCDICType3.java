@@ -4,9 +4,34 @@ import java.math.BigDecimal;
 import org.apache.commons.lang.mutable.MutableInt;
 
 public class EBCDICType3 {
-
 	public static BigDecimal readType3Value(byte[] byteValue, int decimal,
-			boolean isImpliedDecimal) throws Exception {
+			boolean isImpliedDecimal){
+		BigDecimal retVal = new BigDecimal(convertByteArr2Hex(byteValue,decimal,isImpliedDecimal));
+		int lgth = byteValue.length;
+		int tmp = byteValue[lgth-1] & 0x0F;
+
+		if ((tmp == 0x0F) || (tmp == 0x0C)) {
+			return retVal;
+		} else if (tmp == 0x0D) {
+			return retVal.negate();
+		} else {
+			return null;
+		}
+	}
+
+	public static boolean isValidPackedDecimal(byte[] byteArr){
+		boolean isValid = false;
+		int lgth = byteArr.length;
+		if(lgth > 0){
+			int tmp = byteArr[lgth-1] & 0x0F;
+			if(tmp == 0x0F || tmp == 0x0C || tmp == 0x0D){
+				isValid = true;
+			}
+		}
+		return isValid;
+	}
+
+	public static String convertByteArr2Hex(byte[] byteValue, int decimal, boolean isImpliedDecimal){
 		int len = byteValue.length;
 		StringBuffer strbuf = new StringBuffer();
 		int tmp;
@@ -29,24 +54,27 @@ public class EBCDICType3 {
 			strbuf.insert(strbuf.length() - decimal, '.');
 		}
 
-		BigDecimal retVal;
+		return strbuf.toString();
+	}
 
-		try {
-			retVal = new BigDecimal(strbuf.toString());
-		} catch (NumberFormatException ex) {
-			throw new Exception();
-		}
-
-		tmp = byteValue[len - 1];
-		tmp1 = tmp & 0x0F;
-
-		if ((tmp1 == 0x0F) || (tmp1 == 0x0C)) {
-			return retVal;
-		} else if (tmp1 == 0x0D) {
-			return retVal.negate();
-		} else {
-			return retVal;
-		}
+	public static BigDecimal readType3(byte[] byteValue, int decimal,
+			boolean isImpliedDecimal,String defaultStrValue){
+			if(defaultStrValue == null || "".equals(defaultStrValue)){
+				return readType3Value(byteValue,decimal,isImpliedDecimal);
+			}else{
+				boolean isValid = isValidPackedDecimal(byteValue);
+				BigDecimal convertedBigDecimal = new BigDecimal(convertByteArr2Hex(byteValue,decimal,isImpliedDecimal));// implicit else part
+				if(isValid){
+					int lgth = byteValue.length;
+					int tmp = byteValue[lgth-1] & 0x0F;
+					if(tmp == 0x0D){// implicit else part for 0x0F or 0x0C
+						convertedBigDecimal = convertedBigDecimal.negate();
+					}
+				}else{
+					convertedBigDecimal = new BigDecimal(defaultStrValue);
+				}
+			   return convertedBigDecimal;
+			}
 	}
 
 	public static byte[] writeType3Value(int length, int decimal,

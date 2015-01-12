@@ -20,6 +20,9 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.components.IComponent;
@@ -38,6 +41,7 @@ import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.model.utils.IComponentName;
 import org.talend.core.repository.RepositoryComponentSetting;
 import org.talend.core.utils.TalendQuoteUtils;
+import org.talend.repository.json.i18n.Messages;
 import org.talend.repository.json.node.JSONRepositoryNodeType;
 import org.talend.repository.json.util.ConvertJSONString;
 import org.talend.repository.json.util.EJSONRepositoryToComponent;
@@ -373,5 +377,24 @@ public class JSONDragAndDropHandler extends AbstractDragAndDropServiceHandler {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean isValidForDataViewer(Connection connection, IMetadataTable metadataTable) {
+        if (!canHandle(connection)) {
+            return false;
+        }
+        boolean isValid = false;
+
+        JSONFileConnection jsonFileConnection = (JSONFileConnection) connection;
+        if (jsonFileConnection.isInputModel()) {
+            isValid = true;
+        } else {
+            Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+            MessageDialog.openWarning(shell, Messages.JSONDragAndDropHandler_dataViewer_warning_title,
+                    Messages.JSONDragAndDropHandler_dataViewer_warning_message);
+        }
+
+        return isValid;
     }
 }

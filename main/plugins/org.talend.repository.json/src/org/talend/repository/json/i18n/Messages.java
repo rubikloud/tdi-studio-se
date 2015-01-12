@@ -32,6 +32,10 @@ public class Messages extends NLS {
     public static String CreateJSONSchemaAction_RETRIEVE_SCHEMA;
 
     public static String EditJSONPropertiesAction_EDIT_PROPERTIES;
+
+    public static String JSONDragAndDropHandler_dataViewer_warning_title;
+
+    public static String JSONDragAndDropHandler_dataViewer_warning_message;
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

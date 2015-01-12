@@ -1,6 +1,6 @@
-<%@ jet 
+<%@ jet
 imports="
-    org.talend.core.model.process.INode 
+    org.talend.core.model.process.INode
     org.talend.core.model.process.IConnection
     org.talend.core.model.process.ElementParameterParser
     org.talend.core.model.process.IConnectionCategory
@@ -113,7 +113,7 @@ try{
 			continue;
 		}
 		boolean isOirginalColumn = false;
-		for(IMetadataColumn inputCol : inputMetadataTable.getListColumns()){	
+		for(IMetadataColumn inputCol : inputMetadataTable.getListColumns()){
 			JavaType stringType =  JavaTypesManager.getJavaTypeFromId(inputCol.getTalendType());
 			if( outputCol.getLabel().equals( inputCol.getLabel()) ){
 			isOirginalColumn = true;
@@ -135,7 +135,7 @@ try{
 %>
 					<%=outConn.getName()%>.<%=outputCol.getLabel()%> = <%=inConn.getName()%>.<%=inputCol.getLabel()%>;
 <%
-				}	
+				}
 				}else{
 					if(oirginalColumnsSize%schemaOptNum==0){
 						isOirginalColumn = true;
@@ -148,7 +148,7 @@ try{
 				break;
 			}
 		}
-	
+
 		if(!isOirginalColumn){
 			if(!("").equals(rejectConnName)&&rejectConnName.equals(firstConnName)
 				&& (outputCol.getLabel().equals("errorMessage") || outputCol.getLabel().equals("errorCode"))){
@@ -165,6 +165,7 @@ try{
 			Integer orgainLength = column.getOriginalLength();
 			String orgainType = column.getType();
 			Integer precision = column.getPrecision();
+			String defaultStrValue = column.getDefault();
 			if(precision==null) precision = 0;
 			if(outputMetadataTable.getListColumns().size() <= schemaOptNum){
 				if(orgainLength==null || orgainLength.intValue()==0 || orgainType==null || "".endsWith(orgainType.trim())) {
@@ -189,7 +190,7 @@ try{
 								}
 							}
 						}
-%>				
+%>
 					<%=outConn.getName() %>.<%=column.getLabel()%> = new String(bb_<%=outConn.getName() %>_<%=column.getLabel()%>,<%=encoding%>)<%=(isTrimAll || (!trimSelects.isEmpty() && (trimStr)))?".trim()":"" %>;
 <%
 				}else if(orgainType.equals("1")) {
@@ -205,7 +206,13 @@ try{
 					boolean isImpliedDecimal = (isImpliedDecimalStr!=null&&!("").equals(isImpliedDecimalStr))?("true").equals(isImpliedDecimalStr):true;
 					if(orgainType.equals("3")){
 %>
-						<%=outConn.getName() %>.<%=column.getLabel()%> = cobolConversion.EBCDICType3.readType3Value(bb_<%=outConn.getName() %>_<%=column.getLabel()%>,<%=precision %>,<%=isImpliedDecimal %>);
+						<%=outConn.getName() %>.<%=column.getLabel()%> = cobolConversion.EBCDICType3.readType3(bb_<%=outConn.getName() %>_<%=column.getLabel()%>,<%=precision %>,<%=isImpliedDecimal %>
+						,<% if(defaultStrValue == null || "".equals(defaultStrValue)){%>
+						    null
+						<%}else{%>
+						    ""+<%= defaultStrValue %>
+						<%} %>
+						);
 <%
 					}else {
 %>
@@ -276,7 +283,7 @@ try{
 					}
 				}
 			}
-%>    
+%>
 		    <%=rejectConnName%>.errorMessage = ex_<%=cid %>.getMessage() + " - Line: " + tos_count_<%=node.getUniqueName() %>;
 		    <%=firstConnName %> = null;
 <%

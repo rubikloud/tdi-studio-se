@@ -1,4 +1,4 @@
-<%@ jet 
+<%@ jet
 imports="
 
 	org.talend.core.model.metadata.IMetadataColumn
@@ -8,10 +8,10 @@ imports="
 	org.talend.core.model.process.ElementParameterParser
 	org.talend.core.model.process.IConnection
 	org.talend.core.model.process.IConnectionCategory
-    org.talend.core.model.process.INode 
+    org.talend.core.model.process.INode
     org.talend.designer.codegen.config.CodeGeneratorArgument
     org.talend.core.model.utils.NodeUtil
-	
+
 	java.util.ArrayList
 	java.util.List
 	java.util.Map
@@ -74,7 +74,7 @@ if(outConns!=null){
 %>
 	int nb_line_<%=cid%>=0;
 	java.nio.ByteBuffer bbRecord_<%=cid %> = null;
-	
+
 <%
 //set original columns
 List<IMetadataColumn> newColumnList = new ArrayList<IMetadataColumn>();
@@ -91,7 +91,7 @@ if(outConn!=null && inConn!=null){
 				continue;
 			}
 			boolean isOirginalColumn = false;
-			for(IMetadataColumn inputCol : inputMetadataTable.getListColumns()){	
+			for(IMetadataColumn inputCol : inputMetadataTable.getListColumns()){
 				JavaType stringType =  JavaTypesManager.getJavaTypeFromId(inputCol.getTalendType());
 				if( outputCol.getLabel().equals( inputCol.getLabel()) ){
 					if(oirginalColumnsSize%schemaOptNum==0){
@@ -145,6 +145,7 @@ if(outConn!=null && inConn!=null){
 				Integer orgainLength = column.getOriginalLength();
 				String orgainType = column.getType();
 				Integer precision = column.getPrecision();
+				String defaultStrValue = column.getDefault();
 				if(precision==null) precision = 0;
 				if(valueN%schemaOptNum==0){
 %>
@@ -173,7 +174,7 @@ the original size in the column:<%=column.getLabel()%> in the schema should be b
 								}
 							}
 						}
-%>				
+%>
 				<%=outConn.getName() %>.<%=column.getLabel()%> = new String(bb_<%=outConn.getName() %>_<%=column.getLabel()%>,<%=encoding%>)<%=(isTrimAll || (!trimSelects.isEmpty() && (trimStr)))?".trim()":"" %>;
 <%
 				}else if(orgainType.equals("1")) {
@@ -189,7 +190,13 @@ the original size in the column:<%=column.getLabel()%> in the schema should be b
 					boolean isImpliedDecimal = (isImpliedDecimalStr!=null&&!("").equals(isImpliedDecimalStr))?("true").equals(isImpliedDecimalStr):true;
 					if(orgainType.equals("3")){
 %>
-					<%=outConn.getName() %>.<%=column.getLabel()%> = cobolConversion.EBCDICType3.readType3Value(bb_<%=outConn.getName() %>_<%=column.getLabel()%>,<%=precision %>,<%=isImpliedDecimal %>);
+					<%=outConn.getName() %>.<%=column.getLabel()%> = cobolConversion.EBCDICType3.readType3(bb_<%=outConn.getName() %>_<%=column.getLabel()%>,<%=precision %>,<%=isImpliedDecimal %>
+					,<% if(defaultStrValue == null || "".equals(defaultStrValue)){%>
+					    null
+					<%}else{%>
+					    ""+<%= defaultStrValue %>
+					<%} %>
+					);
 <%
 					}else {
 %>

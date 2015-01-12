@@ -18,7 +18,6 @@ import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -93,7 +92,7 @@ public final class EMFRepositoryNodeManager {
      * @param label search query label
      * @return
      */
-    @SuppressWarnings("unchecked")//$NON-NLS-1$
+    @SuppressWarnings("unchecked")
     public Query getQueryByLabel(RepositoryNode node, String label) {
         root = null;
         if (node.getObjectType().equals(ERepositoryObjectType.METADATA_CON_QUERY)) {
@@ -106,7 +105,7 @@ public final class EMFRepositoryNodeManager {
         }
         DatabaseConnectionItem item = SQLBuilderRepositoryNodeManager.getItem(root);
         DatabaseConnection connection = (DatabaseConnection) item.getConnection();
-        QueriesConnection queriesConnection = (QueriesConnection) connection.getQueries();
+        QueriesConnection queriesConnection = connection.getQueries();
         if (queriesConnection != null) {
             List<Query> queries = queriesConnection.getQuery();
             for (Query query : queries) {
@@ -120,7 +119,7 @@ public final class EMFRepositoryNodeManager {
 
     private RepositoryNode root;
 
-    @SuppressWarnings("unchecked")//$NON-NLS-1$
+    @SuppressWarnings("unchecked")
     public List<MetadataTable> getTables(List<IRepositoryNode> nodes, List<MetadataColumn> selectedColumns) {
         List<MetadataTable> tables = new ArrayList<MetadataTable>();
         for (IRepositoryNode node : nodes) {
@@ -129,7 +128,7 @@ public final class EMFRepositoryNodeManager {
                 root = (RepositoryNode) node;
                 DatabaseConnection connection = (DatabaseConnection) SQLBuilderRepositoryNodeManager.getItem(
                         (RepositoryNode) node).getConnection();
-                for (MetadataTable table : (Set<MetadataTable>) ConnectionHelper.getTables(connection)) {
+                for (MetadataTable table : ConnectionHelper.getTables(connection)) {
                     if (!tables.contains(table)) {
                         tables.add(table);
                         selectedColumns.addAll(table.getColumns());
@@ -193,6 +192,7 @@ public final class EMFRepositoryNodeManager {
                      * 
                      * @see java.lang.Runnable#run()
                      */
+                    @Override
                     public void run() {
                         new ErrorDialogWidthDetailArea(new Shell(), SqlBuilderPlugin.PLUGIN_ID, mainMsg, e.getMessage());
                     }
@@ -207,46 +207,47 @@ public final class EMFRepositoryNodeManager {
                     if (dbMetaData.supportsSchemasInDataManipulation() && !"".equals(iMetadataConnection.getSchema())) { //$NON-NLS-1$
                         // bug 0006949 added
                         if (dbMetaData.getCatalogs() != null) {
-                            resultSet = dbMetaData.getExportedKeys(null, iMetadataConnection.getSchema(), table.getSourceName()); //$NON-NLS-1$
+                            resultSet = dbMetaData.getExportedKeys(null, iMetadataConnection.getSchema(), table.getSourceName());
                         } else {
                             resultSet = dbMetaData.getExportedKeys("", iMetadataConnection.getSchema(), table.getSourceName()); //$NON-NLS-1$
                         }
                     } else {
                         if (dbMetaData.getCatalogs() != null) {
-                            resultSet = dbMetaData.getExportedKeys(null, iMetadataConnection.getSchema(), table.getSourceName()); //$NON-NLS-1$
+                            resultSet = dbMetaData.getExportedKeys(null, iMetadataConnection.getSchema(), table.getSourceName());
                         } else {
                             resultSet = dbMetaData.getExportedKeys("", iMetadataConnection.getSchema(), table.getSourceName()); //$NON-NLS-1$
                         }
                     }
-                    ResultSetMetaData metadata = resultSet.getMetaData();
-                    int[] relevantIndeces = new int[metadata.getColumnCount()];
-                    for (int i = 1; i <= metadata.getColumnCount(); i++) {
-                        relevantIndeces[i - 1] = i;
-                    }
+                    if (resultSet != null) {
+                        ResultSetMetaData metadata = resultSet.getMetaData();
+                        int[] relevantIndeces = new int[metadata.getColumnCount()];
+                        for (int i = 1; i <= metadata.getColumnCount(); i++) {
+                            relevantIndeces[i - 1] = i;
+                        }
 
-                    while (resultSet.next()) {
-                        for (int i = 0; i < relevantIndeces.length; i++) {
-                            String key = metadata.getColumnName(relevantIndeces[i]);
-                            if (key.toUpperCase().equals("FKCOLUMN_NAME")) { //$NON-NLS-1$
-                                fk += resultSet.getString(relevantIndeces[i]);
-                            } else if (key.toUpperCase().equals("FKTABLE_NAME")) { //$NON-NLS-1$
-                                fk = resultSet.getString(relevantIndeces[i]) + "."; //$NON-NLS-1$
-                            } else if (key.toUpperCase().equals("PKCOLUMN_NAME")) { //$NON-NLS-1$
-                                pk = table.getSourceName() + "." + resultSet.getString(relevantIndeces[i]); //$NON-NLS-1$
+                        while (resultSet.next()) {
+                            for (int relevantIndece : relevantIndeces) {
+                                String key = metadata.getColumnName(relevantIndece);
+                                if (key.toUpperCase().equals("FKCOLUMN_NAME")) { //$NON-NLS-1$
+                                    fk += resultSet.getString(relevantIndece);
+                                } else if (key.toUpperCase().equals("FKTABLE_NAME")) { //$NON-NLS-1$
+                                    fk = resultSet.getString(relevantIndece) + "."; //$NON-NLS-1$
+                                } else if (key.toUpperCase().equals("PKCOLUMN_NAME")) { //$NON-NLS-1$
+                                    pk = table.getSourceName() + "." + resultSet.getString(relevantIndece); //$NON-NLS-1$
+                                }
+                            }
+                            if (!"".equals(fk) && !"".equals(pk)) { //$NON-NLS-1$ //$NON-NLS-2$
+                                String[] strs = new String[2];
+                                strs[0] = pk;
+                                strs[1] = fk;
+                                fks.add(strs);
+                                fk = ""; //$NON-NLS-1$
+                                pk = ""; //$NON-NLS-1$
                             }
                         }
-                        if (!"".equals(fk) && !"".equals(pk)) { //$NON-NLS-1$ //$NON-NLS-2$
-                            String[] strs = new String[2];
-                            strs[0] = pk;
-                            strs[1] = fk;
-                            fks.add(strs);
-                            fk = ""; //$NON-NLS-1$
-                            pk = ""; //$NON-NLS-1$
-                        }
+                        resultSet.close();
                     }
-                    resultSet.close();
                 }
-
             } catch (Exception e) {
                 SqlBuilderPlugin.log(Messages.getString("EMFRepositoryNodeManager.logMessage"), e); //$NON-NLS-1$
             }
@@ -496,8 +497,8 @@ public final class EMFRepositoryNodeManager {
                     tableNames.add(tableName);
                 }
             }
-            for (int i = 0; i < rel.length; i++) {
-                String[] strs = rel[i].split("="); //$NON-NLS-1$
+            for (String element : rel) {
+                String[] strs = element.split("="); //$NON-NLS-1$
                 if (strs.length == 2) {
                     strs[0] = strs[0].trim();
                     strs[1] = strs[1].trim();
@@ -562,8 +563,8 @@ public final class EMFRepositoryNodeManager {
             List<String> tableContainAlias = new ArrayList<String>();
             String aliasName = ""; //$NON-NLS-1$
             String realName = ""; //$NON-NLS-1$
-            for (int j = 0; j < aliasNames.length; j++) {
-                String string = aliasNames[j];
+            for (String aliasName2 : aliasNames) {
+                String string = aliasName2;
                 if (!string.equals("")) { //$NON-NLS-1$
                     tableContainAlias.add(string);
                 }

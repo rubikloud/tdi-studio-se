@@ -1776,6 +1776,9 @@ public abstract class AbstractElementPropertySectionController implements Proper
         String hiveModel = getValueFromRepositoryName(elem, "CONNECTION_MODE");
         connParameters.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_MODE, hiveModel);
 
+        String hiveServerVersion = getValueFromRepositoryName(elem, "HIVE_SERVER");
+        connParameters.getParameters().put(ConnParameterKeys.HIVE_SERVER_VERSION, hiveServerVersion);
+
         String nameNodeURI = getValueFromRepositoryName(element, EParameterNameForComponent.PARA_NAME_FS_DEFAULT_NAME.getName());
         connParameters.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_NAME_NODE_URL, nameNodeURI);
 

@@ -50,6 +50,7 @@ import org.talend.commons.ui.swt.dialogs.ErrorDialogWithDetailAreaAndContinueBut
 import org.talend.commons.utils.data.list.UniqueStringGenerator;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ITDQRuleService;
+import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.language.ECodeLanguage;
@@ -67,6 +68,7 @@ import org.talend.core.model.metadata.builder.database.ExtractMetaDataFromDataBa
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataUtils;
 import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.core.model.metadata.connection.hive.HiveConnVersionInfo;
+import org.talend.core.model.metadata.connection.hive.HiveServerVersionInfo;
 import org.talend.core.model.metadata.types.JavaDataTypeHelper;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.metadata.types.PerlDataTypeHelper;
@@ -762,6 +764,15 @@ public class GuessSchemaController extends AbstractElementPropertySectionControl
                     info = new DbInfo(iMetadataConnection.getDbType(), iMetadataConnection.getUsername(),
                             iMetadataConnection.getPassword(), iMetadataConnection.getDbVersionString(),
                             iMetadataConnection.getUrl(), jobTracker, nameNode, thrifturi, iMetadataConnection.getDriverJarPath());
+                    String hiveServerVersion = String.valueOf(iMetadataConnection
+                            .getParameter(ConnParameterKeys.HIVE_SERVER_VERSION));
+                    String driverClass = ""; //$NON-NLS-1$
+                    if (HiveServerVersionInfo.HIVE_SERVER_2.getKey().equals(hiveServerVersion)) {
+                        driverClass = EDatabase4DriverClassName.HIVE2.getDriverClass();
+                    } else {
+                        driverClass = EDatabase4DriverClassName.HIVE.getDriverClass();
+                    }
+                    info.setDriverClassName(driverClass);
                 } else {
                     info = new DbInfo(iMetadataConnection.getDbType(), iMetadataConnection.getUsername(),
                             iMetadataConnection.getPassword(), iMetadataConnection.getDbVersionString(),

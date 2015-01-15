@@ -1923,7 +1923,15 @@ public abstract class AbstractElementPropertySectionController implements Proper
 
     protected boolean isConnectionExist() {
         setAllConnectionParameters(null, elem);
-        ISQLBuilderService service = (ISQLBuilderService) GlobalServiceRegister.getDefault().getService(ISQLBuilderService.class);
+
+        ISQLBuilderService service = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ISQLBuilderService.class)) {
+            service = (ISQLBuilderService) GlobalServiceRegister.getDefault().getService(ISQLBuilderService.class);
+        }
+        if (service == null) {
+            return false;
+        }
+
         if (contextManager != null && contextManager.getDefaultContext().getContextParameterList().size() != 0) {
             initConnectionParametersWithContext(elem, contextManager.getDefaultContext());
         }

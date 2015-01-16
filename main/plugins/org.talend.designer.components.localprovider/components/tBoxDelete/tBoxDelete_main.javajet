@@ -33,7 +33,6 @@ imports="
 		boolean dieOnError = "true".equals(ElementParameterParser.getValue(node, "__DIE_ON_ERROR__"));
 		
 		final boolean isLog4jEnabled = ("true").equals(ElementParameterParser.getValue(node.getProcess(), "__LOG4J_ACTIVATE__"));
-				log4jFileUtil.componentStartInfo(node);
 		String dataInputConnection = null;
         
         List< ? extends IConnection> inputConnections = node.getIncomingConnections();

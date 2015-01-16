@@ -39,7 +39,6 @@ imports="
 		boolean removeSource = "true".equals(ElementParameterParser.getValue(node, "__REMOVE_SOURCE_FILE__"));
 		
 		final boolean isLog4jEnabled = ("true").equals(ElementParameterParser.getValue(node.getProcess(), "__LOG4J_ACTIVATE__"));
-				log4jFileUtil.componentStartInfo(node);
 				
 		List< ? extends IConnection> outputConnections = node.getOutgoingSortedConnections();
 		

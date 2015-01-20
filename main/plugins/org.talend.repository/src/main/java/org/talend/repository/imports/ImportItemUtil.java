@@ -416,7 +416,16 @@ public class ImportItemUtil {
                     return 0;
                 } else if (!(o1.getProperty().getItem() instanceof RoutineItem)
                         && !(o2.getProperty().getItem() instanceof RoutineItem)) {
-                    return 0;
+                    // TUP-2548 sort items by label
+                    String label = o1.getLabel();
+                    if (label == null) {
+                        return -1;
+                    }
+                    final String label2 = o2.getLabel();
+                    if (label2 == null) {
+                        return 1;
+                    }
+                    return label.compareTo(label2);
                 } else if (o1.getProperty().getItem() instanceof RoutineItem) {
                     return -1;
                 } else {

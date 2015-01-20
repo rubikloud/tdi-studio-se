@@ -53,7 +53,28 @@ imports="
 		String <%=cid%>_remoteFilePath = normalizePath(<%=cid%>_filePath);
 		String <%=cid%>_remoteFileName = getFolderFromPath(<%=cid%>_remoteFilePath);
 		com.box.boxjavalibv2.dao.BoxItem <%=cid%>_boxItem = null;
-		<%=cid%>_boxItem = searchItem(<%=cid%>_client, <%=cid%>_remoteFileName);
+		com.box.boxjavalibv2.dao.BoxFolder <%=cid%>_boxFolder = null;
+		
+		String parentPath = normalizePath(<%=cid%>_remoteFilePath.replace(<%=cid%>_remoteFileName, ""));
+                
+        <%=cid%>_boxFolder = <%=cid%>_client.getFoldersManager().getFolder("0", null);
+    
+        List<String> <%=cid%>_paths = new java.util.ArrayList<String>(java.util.Arrays.asList(parentPath.split("/")));
+
+        <%=cid%>_boxFolder = getBoxFolderRecursively(<%=cid%>_paths, <%=cid%>_boxFolder, <%=cid%>_client);
+    
+        com.box.boxjavalibv2.dao.BoxCollection <%=cid%>_searchResults = <%=cid%>_boxFolder.getItemCollection();
+        for (com.box.boxjavalibv2.dao.BoxTypedObject <%=cid%>_entry : <%=cid%>_searchResults.getEntries())
+        {
+            if(<%=cid%>_entry.getValue("name").equals(<%=cid%>_remoteFileName)){
+               if("folder".equals(<%=cid%>_entry.getType())){
+                   <%=cid%>_boxItem = (com.box.boxjavalibv2.dao.BoxItem)<%=cid%>_client.getFoldersManager().getFolder(<%=cid%>_entry.getId(),null);  
+               }else{
+                   <%=cid%>_boxItem = (com.box.boxjavalibv2.dao.BoxItem)<%=cid%>_client.getFilesManager().getFile(<%=cid%>_entry.getId(),null);
+               }   
+            }
+        }
+		
 		if (<%=cid%>_boxItem == null)
 		{
 			throw new Exception("Nothing found under path " + <%=cid%>_filePath);
@@ -67,6 +88,6 @@ imports="
 			com.box.boxjavalibv2.requests.requestobjects.BoxFolderDeleteRequestObject <%=cid%>_delObject = com.box.boxjavalibv2.requests.requestobjects.BoxFolderDeleteRequestObject.deleteFolderRequestObject(true);
 	       	<%=cid%>_client.getFoldersManager().deleteFolder(<%=cid%>_boxItem.getId(), <%=cid%>_delObject);
 		}
-		globalMap.put("<%=cid %>_REMOVED_PATH", getBoxItemPath(<%=cid%>_boxItem));
+		globalMap.put("<%=cid %>_REMOVED_PATH",getBoxItemPath(<%=cid%>_boxItem));
 
 			

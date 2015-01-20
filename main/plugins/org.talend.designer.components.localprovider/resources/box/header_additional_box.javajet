@@ -141,6 +141,24 @@ if(hasBox){
 		return null;
 	}
 	
+    private static com.box.boxjavalibv2.dao.BoxFolder getBoxFolderRecursively(List<String> paths,
+            com.box.boxjavalibv2.dao.BoxFolder folder, com.box.boxjavalibv2.BoxClient client) throws Exception {
+
+        if (paths.size() > 1) {
+            paths.remove(0);
+        } else {
+            return folder;
+        }
+
+        for (com.box.boxjavalibv2.dao.BoxTypedObject obj : folder.getItemCollection().getEntries()) {
+            if (obj.getValue("name").equals(paths.get(0))) {
+                return getBoxFolderRecursively(paths, client.getFoldersManager().getFolder(obj.getId(), null), client);
+            }
+        }
+
+        return folder;
+    }
+	
 	private java.util.List<com.box.boxjavalibv2.dao.BoxItem> getChildrenRecursively(com.box.boxjavalibv2.BoxClient client, com.box.boxjavalibv2.dao.BoxFolder folder,
 					 java.util.List<com.box.boxjavalibv2.dao.BoxItem> list, boolean withFolders, boolean withFiles) throws Exception
 	{

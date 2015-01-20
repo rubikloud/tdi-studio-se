@@ -129,43 +129,28 @@ if(!"true".equals(useExistingConn)){
 			}
 			else
 			{
-				com.box.boxjavalibv2.dao.BoxCollection <%=cid%>_searchResults = <%=cid%>_client.getSearchManager().search(<%=cid%>_name, <%=cid%>_requestObject);
-				for (com.box.boxjavalibv2.dao.BoxTypedObject <%=cid%>_entry : <%=cid%>_searchResults.getEntries())
-				{
-					if (<%=cid%>_entry instanceof com.box.boxjavalibv2.dao.BoxFile && ((com.box.boxjavalibv2.dao.BoxFile) <%=cid%>_entry).getName().equals(<%=cid%>_name))
-					{
-						if (<%=cid%>_path == null || <%=cid%>_path.isEmpty())
-						{
-							<%=cid%>_boxFile = ((com.box.boxjavalibv2.dao.BoxFile) <%=cid%>_entry);
-							break;
-						}
-						java.lang.StringBuilder <%=cid%>_sBuilder = new java.lang.StringBuilder();
-						for (com.box.boxjavalibv2.dao.BoxTypedObject <%=cid%>_obj : ((com.box.boxjavalibv2.dao.BoxFile) <%=cid%>_entry).getPathCollection().getEntries())
-						{
-							<%=cid%>_sBuilder.append(<%=cid%>_obj.getValue("name") + "/");
-						}
-						<%=cid%>_sBuilder.append(((com.box.boxjavalibv2.dao.BoxFile) <%=cid%>_entry).getName());
-						if (<%=cid%>_sBuilder.toString().equals(<%=cid%>_path))
-						{
-							<%=cid%>_boxFile = (com.box.boxjavalibv2.dao.BoxFile) <%=cid%>_entry;
-							break;
-						}
-					}
-					else if (<%=cid%>_entry instanceof com.box.boxjavalibv2.dao.BoxFolder && ((com.box.boxjavalibv2.dao.BoxFolder) <%=cid%>_entry).getName().equals(<%=cid%>_name))
-					{
-						java.lang.StringBuilder <%=cid%>_sBuilder = new java.lang.StringBuilder();
-						for (com.box.boxjavalibv2.dao.BoxTypedObject <%=cid%>_obj : ((com.box.boxjavalibv2.dao.BoxFolder) <%=cid%>_entry).getPathCollection().getEntries())
-						{
-							<%=cid%>_sBuilder.append(<%=cid%>_obj.getValue("name") + "/");
-						}
-						<%=cid%>_sBuilder.append(((com.box.boxjavalibv2.dao.BoxFolder) <%=cid%>_entry).getName());
-						if (<%=cid%>_sBuilder.toString().equals(<%=cid%>_path))
-						{
-							<%=cid%>_boxFolder = (com.box.boxjavalibv2.dao.BoxFolder) <%=cid%>_entry;
-							<%=cid%>_boxFolder = <%=cid%>_client.getFoldersManager().getFolder(<%=cid%>_boxFolder.getId(), null);
-						}
-					}
-				}
+                String parentPath = normalizePath(<%=cid%>_path.replace(<%=cid%>_name, ""));
+                
+                <%=cid%>_boxFolder = <%=cid%>_client.getFoldersManager().getFolder("0", <%=cid%>_requestObject);
+                
+                if ("All Files".equals(parentPath)) {
+                    
+                    for (com.box.boxjavalibv2.dao.BoxTypedObject <%=cid%>_boxTypedObject : <%=cid%>_boxFolder.getItemCollection().getEntries()) {
+                        if (<%=cid%>_boxTypedObject.getValue("name").equals(<%=cid%>_name)) {
+                            if ("folder".equals(<%=cid%>_boxTypedObject.getType())) {
+                                <%=cid%>_boxFolder = <%=cid%>_client.getFoldersManager().getFolder(<%=cid%>_boxTypedObject.getId(), <%=cid%>_requestObject);
+                            } else {
+                                <%=cid%>_boxFile = <%=cid%>_client.getFilesManager().getFile(<%=cid%>_boxTypedObject.getId(),<%=cid%>_requestObject);
+                            }
+                        }
+                    }
+
+                } else {
+
+                    List<String> <%=cid%>_paths = new java.util.ArrayList<String>(java.util.Arrays.asList(parentPath.split("/")));
+
+                    <%=cid%>_boxFolder = getBoxFolderRecursively(<%=cid%>_paths, <%=cid%>_boxFolder, <%=cid%>_client);
+                }
 			}
 	}
 

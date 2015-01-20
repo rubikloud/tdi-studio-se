@@ -107,41 +107,41 @@ com.google.api.client.http.HttpTransport httpTransport = new com.google.api.clie
 
 		com.google.api.services.drive.Drive.Files.List <%=cid%>_listRequest =  <%=cid%>_client.files().list();
         String destFolderName_<%=cid %> = <%=dest_folderName%>;
-		<%
-        if (isFile) {
-        %>
+<%
+   if (isFile) {
+%>
         String fileName_<%=cid %> = <%=fileName%>;
         if(fileName_<%=cid %> == null || "".equals(fileName_<%=cid %>.trim()) || destFolderName_<%=cid %> == null || "".equals(destFolderName_<%=cid %>.trim()) )
 		{
 			throw new Exception("File/folder name can not be null");
 		}
 		<%=cid%>_listRequest.setQ("title = '" + <%=fileName%> + "' and mimeType != 'application/vnd.google-apps.folder'");
-		<%} else {%>
+<%} else {%>
 		String sourceFolder_<%=cid %> = <%=folderName%>; 
 		if(sourceFolder_<%=cid %> == null || "".equals(sourceFolder_<%=cid %>.trim()) || destFolderName_<%=cid %> == null || "".equals(destFolderName_<%=cid %>.trim()) )
 		{
 			throw new Exception("File/folder name can not be null");
 		}
 		<%=cid%>_listRequest.setQ("title = '" + sourceFolder_<%=cid %> + "' and mimeType = 'application/vnd.google-apps.folder'");
-		<%}%>
+<%}%>
 		com.google.api.services.drive.model.FileList <%=cid%>_files = <%=cid%>_listRequest.execute();
 		if (<%=cid%>_files.getItems().size() > 1)
 		{
-		<%if (isFile) {
-        %>
+<%if (isFile) {
+%>
 			throw new Exception("More then one file found with name \"" + <%=fileName%> + "\" ");
-		<%} else {%>
+<%} else {%>
 			throw new Exception("More then one folder found with name \"" + <%=folderName%> + "\" ");
-		<%}%>
+<%}%>
 		}
 		else if (<%=cid%>_files.getItems().isEmpty())
 		{
-		<%if (isFile) {
-        %>
+<%if (isFile) {
+%>
 			throw new Exception("No file found with name \"" + <%=fileName%> + "\" ");
-		<%} else {%>
+<%} else {%>
 			throw new Exception("No folder found with name \"" + <%=folderName%> + "\" ");
-		<%}%>
+<%}%>
 		}
 		else
 		{
@@ -151,8 +151,11 @@ com.google.api.client.http.HttpTransport httpTransport = new com.google.api.clie
 			com.google.api.services.drive.model.File resultFile = new com.google.api.services.drive.model.File();
 
 			<%=cid%>_listRequest =  <%=cid%>_client.files().list();
+			com.google.api.services.drive.model.FileList <%=cid%>_destFolders = null;
+			String <%=cid%>_destFolderId = "root";
+		<% if(!dest_folderName.equals("\"root\"")) { %>
 			<%=cid%>_listRequest.setQ("title = '" + <%=dest_folderName%> + "' and mimeType = 'application/vnd.google-apps.folder'");
-			com.google.api.services.drive.model.FileList <%=cid%>_destFolders = <%=cid%>_listRequest.execute();
+			<%=cid%>_destFolders = <%=cid%>_listRequest.execute();
 			if (<%=cid%>_destFolders.getItems().size() > 1)
 			{
 				throw new Exception("More then one folder found with name \"" + <%=dest_folderName%> + "\" ");
@@ -163,7 +166,8 @@ com.google.api.client.http.HttpTransport httpTransport = new com.google.api.clie
 			}
 			else
 			{
-			String <%=cid%>_destFolderId = <%=cid%>_destFolders.getItems().get(0).getId();
+			<%=cid%>_destFolderId = <%=cid%>_destFolders.getItems().get(0).getId();
+		<% } %>
         <%
         if (isFile) {
         %> 
@@ -211,6 +215,8 @@ com.google.api.client.http.HttpTransport httpTransport = new com.google.api.clie
         <%}%>
 		globalMap.put("<%=cid%>_SOURCE_FILEID", <%=cid%>_fileId);
 		globalMap.put("<%=cid%>_DESTINATION_FILEID", resultFile.getId());
+	<% if(!dest_folderName.equals("\"root\"")) { %>
 		}
+	<% } %>
 	}
 			

@@ -332,13 +332,8 @@ public class RepositoryReviewDialog extends Dialog {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-     */
-    @Override
-    protected Control createDialogArea(Composite parent) {
+    protected Control createDialogArea(Composite parent, String specifiedPId) {
+
         Composite container = (Composite) super.createDialogArea(parent);
         TimeMeasure.step(RepositoryReviewDialog.class.getSimpleName(), "before createDialogArea..."); //$NON-NLS-1$
         GridData data = (GridData) container.getLayoutData();
@@ -354,7 +349,7 @@ public class RepositoryReviewDialog extends Dialog {
         viewContainer.setLayout(new GridLayout());
         viewContainer.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-        repositoryTreeViewer = RepoCommonViewerProvider.NORMAL.createViewer(viewContainer);
+        repositoryTreeViewer = RepoCommonViewerProvider.NORMAL.createViewer(viewContainer, specifiedPId);
 
         TimeMeasure.step(RepositoryReviewDialog.class.getSimpleName(), "finshed createViewer"); //$NON-NLS-1$
 
@@ -418,6 +413,16 @@ public class RepositoryReviewDialog extends Dialog {
         TimeMeasure.measureActive = false;
 
         return container;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
+    @Override
+    protected Control createDialogArea(Composite parent) {
+        return createDialogArea(parent, null);
     }
 
     public void addFilter(ViewerFilter filter) {

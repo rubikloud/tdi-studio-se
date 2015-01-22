@@ -33,7 +33,25 @@ imports="
 				<%
 				}
 				%>
-				com.amazonaws.services.s3.model.ObjectListing objects_<%=cid%> = conn_<%=cid%>.listObjects(currentBucketName_<%=cid%>,<%=objects_prefix!=null && objects_prefix.trim().length()>0 ?objects_prefix:null%>);
+				com.amazonaws.services.s3.model.ObjectListing objects_<%=cid%> = null;
+				try{
+					objects_<%=cid%> = conn_<%=cid%>.listObjects(currentBucketName_<%=cid%>,<%=objects_prefix!=null && objects_prefix.trim().length()>0 ?objects_prefix:null%>);
+				}catch(com.amazonaws.AmazonClientException e_<%=cid%>){
+					<%
+			    	if(isLog4jEnabled){
+					%>
+						log.warn("<%=cid%> - Failed to list objects from bucket "+currentBucketName_<%=cid%>);
+						log.warn("<%=cid%> - "+e_<%=cid%>.getMessage());
+					<%
+					}else{
+			    	%>
+						System.err.println("WARNING: [<%=cid%>] failed to list objects from bucket "+currentBucketName_<%=cid%>);
+						System.err.println("WARNING: [<%=cid%>] "+e_<%=cid%>.getMessage());
+					<%
+					}
+					%>
+					continue;
+				}
 		<%
 		} else if(buckets.size()>0){
 		%>
@@ -64,6 +82,7 @@ imports="
 					currentBucketName_<%=cid%> = entry_<%=cid%>.getKey();
 					currentPrefix_<%=cid%> = entry_<%=cid%>.getValue();
 				}
+				com.amazonaws.services.s3.model.ObjectListing objects_<%=cid%> = null;
 				try{
 					<%
 					if(isLog4jEnabled){
@@ -72,7 +91,23 @@ imports="
 					<%
 					}
 					%>
-					com.amazonaws.services.s3.model.ObjectListing objects_<%=cid%> = conn_<%=cid%>.listObjects(currentBucketName_<%=cid%>,currentPrefix_<%=cid%>);
+					objects_<%=cid%> = conn_<%=cid%>.listObjects(currentBucketName_<%=cid%>,currentPrefix_<%=cid%>);
+				}catch(com.amazonaws.AmazonClientException e_<%=cid%>){
+					<%
+			    	if(isLog4jEnabled){
+					%>
+						log.warn("<%=cid%> - Failed to list objects from bucket "+currentBucketName_<%=cid%>);
+						log.warn("<%=cid%> - "+e_<%=cid%>.getMessage());
+					<%
+					}else{
+			    	%>
+						System.err.println("WARNING: [<%=cid%>] failed to list objects from bucket "+currentBucketName_<%=cid%>);
+						System.err.println("WARNING: [<%=cid%>] "+e_<%=cid%>.getMessage());
+					<%
+					}
+					%>
+					continue;
+				}
 			<%
 			}
 			if(listAll || buckets.size()>0){

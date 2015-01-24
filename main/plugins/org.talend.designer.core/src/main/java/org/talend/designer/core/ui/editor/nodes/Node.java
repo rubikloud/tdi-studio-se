@@ -109,7 +109,6 @@ import org.talend.designer.core.ui.editor.nodecontainer.NodeContainer;
 import org.talend.designer.core.ui.editor.process.Process;
 import org.talend.designer.core.ui.editor.properties.NodeQueryCheckUtil;
 import org.talend.designer.core.ui.editor.properties.controllers.ColumnListController;
-import org.talend.designer.core.ui.editor.properties.controllers.ComponentListController;
 import org.talend.designer.core.ui.editor.properties.controllers.SynchronizeSchemaHelper;
 import org.talend.designer.core.ui.editor.subjobcontainer.SubjobContainer;
 import org.talend.designer.core.ui.preferences.TalendDesignerPrefConstants;
@@ -2715,19 +2714,6 @@ public class Node extends Element implements IGraphicalNode {
                                 String errorMessage = Messages.getString("Node.parameterNotExist", param.getDisplayName(), value); //$NON-NLS-1$
                                 Problems.add(ProblemStatus.ERROR, this, errorMessage);
                             }
-                        }
-                    }
-                    break;
-                case COMPONENT_LIST:
-                    if (param != null) {
-                        ComponentListController.updateComponentList(this, param);
-                        String[] curComponentNameList = param.getListItemsDisplayName();
-                        String[] curComponentValueList = (String[]) param.getListItemsValue();
-                        Object paramValue = param.getValue();
-                        if (curComponentNameList != null && curComponentNameList.length == 0 && curComponentValueList != null
-                                && curComponentValueList.length == 0 && paramValue != null && !paramValue.equals("")) {//$NON-NLS-1$
-                            String errorMessage = Messages.getString("Node.parameterEmpty", param.getDisplayName()); //$NON-NLS-1$
-                            Problems.add(ProblemStatus.ERROR, this, errorMessage);
                         }
                     }
                     break;

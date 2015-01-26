@@ -275,15 +275,18 @@ public class DownloadComponenentsAction extends Action implements IIntroAction {
                         ExchangeUtils.TYPEEXTENSION, ExchangeUtils.getUserName(), ExchangeUtils.getPasswordHash());
                 if (webserviceStatus.isResult()) {
                     String downloadUrl = webserviceStatus.getValue();
-                    if (downloadUrl != null && !downloadUrl.equals("")) {
+                    if (downloadUrl != null && !downloadUrl.equals("")) { //$NON-NLS-1$
                         monitor.setTaskName(ExchangeConstants.getDownloadTaskNameLable() + downloadUrl);
-                        File componentFolder = ExchangeUtils.getComponentFolder("downloaded");
+                        File componentFolder = ExchangeUtils.getComponentFolder("downloaded"); //$NON-NLS-1$
                         if (!componentFolder.exists()) {
                             componentFolder.mkdirs();
                         }
                         String targetFolder = componentFolder.getAbsolutePath();
                         try {
-                            String fileName = extension.getLabel() + ".zip";
+                            String fileName = extension.getLabel() + ".zip"; //$NON-NLS-1$
+                            // if file name has special char ,replace it.
+                            String regex = "[^a-zA-Z&&[^0-9]&&[^\\_]]"; //$NON-NLS-1$
+                            fileName = fileName.replaceAll(regex, "_"); //$NON-NLS-1$
                             File localZipFile = new File(targetFolder, fileName);
 
                             monitor.done();

@@ -66,6 +66,7 @@ import org.talend.core.model.process.Element;
 import org.talend.core.model.process.ElementParameterParser;
 import org.talend.core.model.process.IConnection;
 import org.talend.core.model.process.IConnectionCategory;
+import org.talend.core.model.process.IElement;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.IExternalData;
 import org.talend.core.model.process.IExternalNode;
@@ -2717,6 +2718,15 @@ public class Node extends Element implements IGraphicalNode {
                         }
                     }
                     break;
+                case COMPONENT_LIST:
+                    if (param != null) {
+                        String errorMessage = Messages.getString("Node.parameterEmpty", param.getDisplayName()); //$NON-NLS-1$
+                        INode useNode = getUseExistedConnetion(this);
+                        if (useNode != null && !useNode.isActivate()) {
+                            Problems.add(ProblemStatus.ERROR, this, errorMessage);
+                        }
+                    }
+                    break;
                 default:
                     if (param.getValue() != null && !(param.getValue() instanceof String)) {
                         break;
@@ -4812,5 +4822,35 @@ public class Node extends Element implements IGraphicalNode {
             }
         }
 
+    }
+
+    public INode getUseExistedConnetion(IElement currentElem) {
+        IElementParameter param = currentElem.getElementParameter("USE_EXISTING_CONNECTION"); //$NON-NLS-1$
+        if (param != null) {
+            Object value = param.getValue();
+            boolean used = false;
+            if (value instanceof Boolean) {
+                used = (Boolean) value;
+            } else if (value instanceof String) {
+                used = Boolean.parseBoolean((String) value);
+            }
+            if (used) {
+                IElementParameter elementParameter = currentElem.getElementParameterFromField(EParameterFieldType.COMPONENT_LIST);
+                if (elementParameter != null && elementParameter.getName().equals("CONNECTION")) { //$NON-NLS-1$
+                    String connNodeName = (String) elementParameter.getValue();
+                    if (connNodeName != null && currentElem instanceof INode) {
+                        IProcess process = ((INode) currentElem).getProcess();
+                        if (process != null) {
+                            for (INode node : process.getGraphicalNodes()) {
+                                if (connNodeName.equals(node.getUniqueName())) {
+                                    return node;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

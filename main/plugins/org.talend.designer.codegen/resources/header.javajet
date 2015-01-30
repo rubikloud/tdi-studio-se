@@ -369,21 +369,21 @@ public String getExceptionStackTrace() {
 	return null;
 }
 
-private java.lang.Exception exception = null;
+private Exception exception;
 
-public java.lang.Exception getException() {
+public Exception getException() {
 	if ("failure".equals(this.getStatus())) {
 		return this.exception;
 	}
 	return null;
 }
 
-private class TalendException extends java.lang.Exception {
+private class TalendException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
 	private java.util.Map<String, Object> globalMap = null;
-	private java.lang.Exception e = null;
+	private Exception e = null;
 	private String currentComponent = null;
 	private String virtualComponentName = null;
 	
@@ -391,13 +391,13 @@ private class TalendException extends java.lang.Exception {
 		this.virtualComponentName = virtualComponentName;
 	}
 
-	private TalendException(java.lang.Exception e, String errorComponent, final java.util.Map<String, Object> globalMap) {
+	private TalendException(Exception e, String errorComponent, final java.util.Map<String, Object> globalMap) {
 		this.currentComponent= errorComponent;
 		this.globalMap = globalMap;
 		this.e = e;
 	}
 
-	public java.lang.Exception getException() {
+	public Exception getException() {
 		return this.e;
 	}
 
@@ -406,7 +406,7 @@ private class TalendException extends java.lang.Exception {
 	}
 
 	<%//For TDI-27789%>
-    public String getExceptionCauseMessage(java.lang.Exception e){
+    public String getExceptionCauseMessage(Exception e){
         Throwable cause = e;
         String message = null;
         int i = 10;
@@ -508,13 +508,7 @@ private class TalendException extends java.lang.Exception {
 		}
 %>
 			}
-		} catch (java.lang.SecurityException e) {
-			this.e.printStackTrace();
-		} catch (java.lang.IllegalArgumentException e) {
-			this.e.printStackTrace();
-		} catch (java.lang.IllegalAccessException e) {
-			this.e.printStackTrace();
-		} catch (java.lang.reflect.InvocationTargetException e) {
+		} catch (Exception e) {
 			this.e.printStackTrace();
 		}
 <%
@@ -555,7 +549,7 @@ private class TalendException extends java.lang.Exception {
 	for (INode node : processNodes) {
 		if (node.isActivate()) {
 			%>
-			public void <%=node.getUniqueName() %>_error(java.lang.Exception exception, String errorComponent, final java.util.Map<String, Object> globalMap) throws TalendException {
+			public void <%=node.getUniqueName() %>_error(Exception exception, String errorComponent, final java.util.Map<String, Object> globalMap) throws TalendException {
 				<%
 				//If node is virtual component input part,invoke virtual component output part when virtual link is ROWS_END,FLOW,COMPONENT_OK,ITERATE(virtual link could not be ON_SUBJOB_OK)
 				if(node.isVirtualGenerateNode() && node.getVirtualLinkTo()!=null){
@@ -653,7 +647,7 @@ private class TalendException extends java.lang.Exception {
 							}
 							%>
 
-						} catch (java.lang.Exception e) {
+						} catch (Exception e) {
 							e.printStackTrace();
 						}
 						<%
@@ -716,7 +710,7 @@ private class TalendException extends java.lang.Exception {
 	for (INode node : processNodes) {
 		if (node.isDesignSubjobStartNode()) {
 %>
-			public void <%=node.getUniqueName() %>_onSubJobError(java.lang.Exception exception, String errorComponent, final java.util.Map<String, Object> globalMap) throws TalendException {
+			public void <%=node.getUniqueName() %>_onSubJobError(Exception exception, String errorComponent, final java.util.Map<String, Object> globalMap) throws TalendException {
 <%
 			List< ? extends IConnection> conns = node.getOutgoingConnections();
 			int count = 0;
@@ -766,7 +760,7 @@ resumeUtil.addLog("SYSTEM_LOG", "NODE:"+ errorComponent, "", Thread.currentThrea
 <%
 					}
 %>
-				} catch (java.lang.Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 <%

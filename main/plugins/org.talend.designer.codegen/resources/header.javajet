@@ -508,9 +508,6 @@ private class TalendException extends Exception {
 		}
 %>
 			}
-		} catch (Exception e) {
-			this.e.printStackTrace();
-		}
 <%
 		boolean needCatchTalendException = false;
 		if (process.getNodesOfType("tLogCatcher").size() > 0) {
@@ -533,13 +530,15 @@ private class TalendException extends Exception {
 		if(needCatchTalendException) {
 			if (process.getNodesOfType("tLogCatcher").size() > 0) {
 				%>
-				catch (TalendException e) {
+				} catch (TalendException e) {
 					// do nothing
-				}
 				<%
 			}
 		}
-		%>
+%>
+		} catch (Exception e) {
+			this.e.printStackTrace();
+		}
 		}
 	}
 }

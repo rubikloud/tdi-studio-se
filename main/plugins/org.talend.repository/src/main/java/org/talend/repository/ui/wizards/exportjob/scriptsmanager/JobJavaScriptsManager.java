@@ -34,6 +34,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.collections.map.MultiKeyMap;
+import org.apache.commons.lang.ArrayUtils;
 import org.dom4j.Comment;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -721,9 +722,12 @@ public class JobJavaScriptsManager extends JobScriptsManager {
                 childrenList = posExportResource(process, exportChoice, contextName, launcher, statisticPort, tracePort, i,
                         jobProcess, processItem, selectedJobVersion, resources, codeOptions);
             } else {
+                String log4jOption = getLog4jLevel() != null ? LOG4J_LEVEL_ARG + getLog4jLevel().toLowerCase() : null;
+                if (!ArrayUtils.contains(codeOptions, log4jOption)) {
+                    codeOptions = (String[]) ArrayUtils.add(codeOptions, log4jOption);
+                }
                 childrenList = posExportResource(process, exportChoice, contextName, launcher, statisticPort, tracePort, i,
-                        jobProcess, processItem, selectedJobVersion, resources,
-                        new String[] { getLog4jLevel() != null ? LOG4J_LEVEL_ARG + getLog4jLevel().toLowerCase() : null });
+                        jobProcess, processItem, selectedJobVersion, resources, codeOptions);
             }
             resources.addAll(childrenList);
             process[i].addResources(resources);

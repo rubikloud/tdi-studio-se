@@ -112,7 +112,7 @@ public class RepositoryValueUtils {
             List<String> queryStoreNameList = new ArrayList<String>();
             List<String> queryStoreValuesList = new ArrayList<String>();
             for (ConnectionItem connectionItem : metadataConnectionsItem) {
-                Connection connection = (Connection) connectionItem.getConnection();
+                Connection connection = connectionItem.getConnection();
                 if (!connection.isReadOnly()) {
                     repositoryConnectionItemMap.put(connectionItem.getProperty().getId() + "", connectionItem); //$NON-NLS-1$
                     repositoryDBIdAndNameMap.put(connectionItem.getProperty().getId(), getRepositoryAliasName(connectionItem)
@@ -175,10 +175,12 @@ public class RepositoryValueUtils {
     public String getRepositoryAliasName(ConnectionItem connectionItem) {
         ERepositoryObjectType repositoryObjectType = ERepositoryObjectType.getItemType(connectionItem);
         String aliasName = repositoryObjectType.getAlias();
-        Connection connection = (Connection) connectionItem.getConnection();
+        Connection connection = connectionItem.getConnection();
         if (connection instanceof DatabaseConnection) {
-            String currentDbType = (String) RepositoryToComponentProperty.getValue(connection, "TYPE", null); //$NON-NLS-1$
-            aliasName += " (" + currentDbType + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+            if (((DatabaseConnection) connection).getDatabaseType() != null) {
+                String currentDbType = (String) RepositoryToComponentProperty.getValue(connection, "TYPE", null); //$NON-NLS-1$
+                aliasName += " (" + currentDbType + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+            }
         }
         return aliasName;
     }

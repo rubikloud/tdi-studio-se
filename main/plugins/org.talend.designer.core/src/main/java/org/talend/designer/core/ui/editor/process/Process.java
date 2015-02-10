@@ -3256,6 +3256,14 @@ public class Process extends Element implements IProcess2, IGEFProcess, ILastVer
     private void getMatchingNodes(String componentName, List<INode> matchingNodes, List<INode> generatingNodes) {
         for (INode node : generatingNodes) {
             if (node.isActivate()) {
+                // joblet
+                if (PluginChecker.isJobLetPluginLoaded()) {
+                    IJobletProviderService jobletService = (IJobletProviderService) GlobalServiceRegister.getDefault()
+                            .getService(IJobletProviderService.class);
+                    if (jobletService.isJobletComponent(node)) {
+                        getMatchingNodes(componentName, matchingNodes, (List<INode>) jobletService.getGraphNodesForJoblet(node));
+                    }
+                }
                 if (componentName == null) { // means all nodes will be
                     // returned
                     addNodeIfNotInTheList(matchingNodes, node);

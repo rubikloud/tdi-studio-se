@@ -35,7 +35,8 @@ import org.talend.designer.dbmap.model.tableentry.TableEntryLocation;
  */
 public class DataMapExpressionParser {
 
-    // private String expression;
+    private final static String EXPRESSION_PATTERN = "(\\[)\\s*(\\w+)\\s*\\.(\\w+\\s*:\\s*(/.+?)+(/@.+?)*)\\s*(\\])|((?!\\[)\\s*\\w+)\\s*\\.\\s*(\\w+(?!\\]))";//$NON-NLS-1$
+
     private Perl5Matcher matcher = new Perl5Matcher();
 
     private Perl5Compiler compiler = new Perl5Compiler();
@@ -69,42 +70,26 @@ public class DataMapExpressionParser {
         resultList.clear();
         if (expression != null) {
             matcher.setMultiline(true);
-
-            String[] expressSplit = expression.split("  ");//$NON-NLS-N$
-            for (int i = 0; i < expressSplit.length; i++) {
-                String str = expressSplit[i];
-                String[] split = str.split("\\.");//$NON-NLS-N$
-                int length = split.length;
-
-                if (patternMatcherInput == null) {
-                    patternMatcherInput = new PatternMatcherInput(str);
-                } else {
-                    patternMatcherInput.setInput(str);
-                }
-
-                if (length == 2) {
-                    // for table name without schema
-                    pattern = recompilePatternIfNecessary(locationPattern);
-
-                    while (matcher.contains(patternMatcherInput, pattern)) {
-                        MatchResult matchResult = matcher.getMatch();
-                        resultList.add(new TableEntryLocation(matchResult.group(1), matchResult.group(2)));
-                    }
-                } else {
-                    // for table name with schema
-                    String patternStr = "\\s*(\\w+)\\s*";//$NON-NLS-N$
-                    pattern = recompilePatternIfNecessary(patternStr + "." + patternStr + "." + patternStr);//$NON-NLS-N$ //$NON-NLS-N$
-                    while (matcher.contains(patternMatcherInput, pattern)) {
-                        MatchResult matchResult = matcher.getMatch();
-                        resultList.add(new TableEntryLocation(matchResult.group(1) + "." + matchResult.group(2), matchResult //$NON-NLS-N$
-                                .group(3)));
-                    }
-                }
-
+            if (patternMatcherInput == null) {
+                patternMatcherInput = new PatternMatcherInput(expression);
+            } else {
+                patternMatcherInput.setInput(expression);
             }
-
+            recompilePatternIfNecessary(EXPRESSION_PATTERN);
+            while (matcher.contains(patternMatcherInput, pattern)) {
+                MatchResult matchResult = matcher.getMatch();
+                if (matchResult.group(1) != null) {
+                    TableEntryLocation location = new TableEntryLocation(matchResult.group(1), matchResult.group(2),
+                            matchResult.group(3), matchResult.group(6));
+                    resultList.add(location);
+                } else if (matchResult.group(matchResult.groups() - 1) != null) {
+                    TableEntryLocation location = new TableEntryLocation(matchResult.group(matchResult.groups() - 2),
+                            matchResult.group(matchResult.groups() - 1));
+                    resultList.add(location);
+                }
+            }
         }
-        return resultList.toArray(new TableEntryLocation[0]);
+        return resultList.toArray(new TableEntryLocation[resultList.size()]);
     }
 
     private Pattern recompilePatternIfNecessary(String regexpPattern) {

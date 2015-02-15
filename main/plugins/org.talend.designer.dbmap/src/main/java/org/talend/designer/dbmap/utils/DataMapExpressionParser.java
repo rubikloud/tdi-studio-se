@@ -35,7 +35,7 @@ import org.talend.designer.dbmap.model.tableentry.TableEntryLocation;
  */
 public class DataMapExpressionParser {
 
-    private final static String EXPRESSION_PATTERN = "(\\[)\\s*(\\w+)\\s*\\.(\\w+\\s*:\\s*(/.+?)+(/@.+?)*)\\s*(\\])|((?!\\[)\\s*\\w+)\\s*\\.\\s*(\\w+(?!\\]))";//$NON-NLS-1$
+    private final static String EXPRESSION_PATTERN = "\\s*(\\w+)\\s*\\.(\\w+)\\s*";//$NON-NLS-1$
 
     private Perl5Matcher matcher = new Perl5Matcher();
 
@@ -79,8 +79,7 @@ public class DataMapExpressionParser {
             while (matcher.contains(patternMatcherInput, pattern)) {
                 MatchResult matchResult = matcher.getMatch();
                 if (matchResult.group(1) != null) {
-                    TableEntryLocation location = new TableEntryLocation(matchResult.group(1), matchResult.group(2),
-                            matchResult.group(3), matchResult.group(6));
+                    TableEntryLocation location = new TableEntryLocation(matchResult.group(1), matchResult.group(2));
                     resultList.add(location);
                 } else if (matchResult.group(matchResult.groups() - 1) != null) {
                     TableEntryLocation location = new TableEntryLocation(matchResult.group(matchResult.groups() - 2),

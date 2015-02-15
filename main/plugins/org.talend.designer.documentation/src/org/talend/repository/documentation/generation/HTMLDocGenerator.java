@@ -93,6 +93,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.utils.ParameterValueUtil;
 import org.talend.core.prefs.ITalendCorePrefConstants;
+import org.talend.core.service.IMRProcessService;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.images.CoreImageProvider;
 import org.talend.designer.codegen.ITalendSynchronizer;
@@ -148,6 +149,10 @@ public class HTMLDocGenerator implements IDocumentationGenerator {
     private static String userDocImageOldPath = ""; //$NON-NLS-1$
 
     private Project project;
+
+    private boolean generateExtraSetting = true;
+
+    private boolean generateStatsLogsSetting = true;
 
     public HTMLDocGenerator(Project project, ERepositoryObjectType repositoryObjectType) {
         this.project = project;
@@ -635,6 +640,19 @@ public class HTMLDocGenerator implements IDocumentationGenerator {
      */
     private void handleXMLFile(ExportFileResource resource, String tempFolderPath, String... version) throws Exception {
         Item item = resource.getItem();
+        // Check if generate Job Extra / Stats&Logs Setting Info
+        if (item instanceof ProcessItem) {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IMRProcessService.class)) {
+                IMRProcessService mrProcessService = (IMRProcessService) GlobalServiceRegister.getDefault().getService(
+                        IMRProcessService.class);
+                generateExtraSetting = !mrProcessService.isMapReduceItem(item);
+                generateStatsLogsSetting = generateExtraSetting;
+            } else if (isRouteProcess(item)) {
+                generateStatsLogsSetting = generateExtraSetting = !isRouteProcess(item);
+            }
+        } else if (item instanceof JobletProcessItem) {
+            generateStatsLogsSetting = false;
+        }
         targetConnectionMap = new HashMap<String, List>();
         sourceConnectionMap = new HashMap<String, List>();
         getSourceAndTargetConnection(item);
@@ -862,7 +880,6 @@ public class HTMLDocGenerator implements IDocumentationGenerator {
 
             // diable warnings
             createSingleJobParameter(extraElement, nameValueMap, IJobSettingConstants.DISABLE_WARNINGS);
-
         }
 
         // Stats & logs setting
@@ -918,7 +935,6 @@ public class HTMLDocGenerator implements IDocumentationGenerator {
         createSingleJobParameter(statsAndLotsElement, nameValueMap, IJobSettingConstants.CATCH_USER_WARNING);
 
         // verson setting see job info
-
         element.add(jobSettingInfoElement);
     }
 
@@ -1205,10 +1221,16 @@ public class HTMLDocGenerator implements IDocumentationGenerator {
             jobVersion = version[0];
         }
         if (isRouteProcess(item)) {
-            jobElement.addAttribute("type", "route");
+            jobElement.addAttribute("type", "route");//$NON-NLS-1$//$NON-NLS-2$
             ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault().getService(
                     ICamelDesignerCoreService.class);
             camelService.appendRouteInfo2Doc(item, jobElement);
+        }
+        if (generateExtraSetting) {
+            jobElement.addAttribute("i18n.job.extract.settings.type", "i18n.job.extract.settings");//$NON-NLS-1$//$NON-NLS-2$
+        }
+        if (generateStatsLogsSetting) {
+            jobElement.addAttribute("i18n.job.stats.logs.type", "i18n.job.stats.logs");//$NON-NLS-1$//$NON-NLS-2$
         }
         jobElement.addAttribute("version", HTMLDocUtils.checkString(jobVersion)); //$NON-NLS-1$
         jobElement.addAttribute("purpose", HTMLDocUtils.checkString(property.getPurpose())); //$NON-NLS-1$
@@ -1330,7 +1352,9 @@ public class HTMLDocGenerator implements IDocumentationGenerator {
         element.addAttribute("i18n.job.project.description", Messages.HTMLDocGenerator_Project_Description); //$NON-NLS-1$
         element.addAttribute("i18n.job.job.description", Messages.HTMLDocGenerator_Description); //$NON-NLS-1$
         element.addAttribute("i18n.job.job.preview.picture", Messages.HTMLDocGenerator_Preview_Picture); //$NON-NLS-1$
-        element.addAttribute("i18n.job.job.setting", Messages.HTMLDocGenerator_Settings); //$NON-NLS-1$
+        if (generateExtraSetting || generateStatsLogsSetting) {
+            element.addAttribute("i18n.job.job.setting", Messages.HTMLDocGenerator_Settings); //$NON-NLS-1$
+        }
         element.addAttribute("i18n.job.context.list", Messages.HTMLDocGenerator_Context_List); //$NON-NLS-1$
         element.addAttribute("i18n.job.component.list", Messages.HTMLDocGenerator_Component_List); //$NON-NLS-1$
         element.addAttribute("i18n.job.components.description", Messages.HTMLDocGenerator_Components_Description); //$NON-NLS-1$

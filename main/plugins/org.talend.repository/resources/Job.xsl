@@ -344,6 +344,7 @@
 				<h2 class="FONTSTYLE">
 					<a name="#Job settings"><xsl:value-of select="/project/@i18n.job.job.setting" /></a>
 				</h2>
+				<xsl:if test="$job/@i18n.job.extract.settings.type = 'i18n.job.extract.settings' ">
 				<table border="0" width="90%" class="FONTSTYLE"
 					cellpadding="0" cellspacing="0" style="border-collapse: collapse"
 					bordercolor="#111111" summary="">
@@ -384,6 +385,8 @@
 				</table>
 				<br />
 				<br />
+				</xsl:if>
+				<xsl:if test="$job/@i18n.job.stats.logs.type = 'i18n.job.stats.logs' ">
 				<table border="0" width="90%" class="FONTSTYLE"
 					cellpadding="0" cellspacing="0" style="border-collapse: collapse"
 					bordercolor="#111111" summary="">
@@ -424,6 +427,7 @@
 				</table>
 				<br />
 				<br />
+				</xsl:if>
 				<!-- Context List-->
 				<!--HR-->
 				<h2 class="FONTSTYLE">

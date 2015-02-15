@@ -482,8 +482,9 @@ public class JobSettingsView extends ViewPart implements IJobSettingsView, ISele
                 }
             }
 
+            boolean isOfflineMode = CorePlugin.getDefault().getProxyRepositoryFactory().getRepositoryContext().isOffline();
             // if svn remote connection, added by nma
-            if (service != null && service.isProjectInSvnMode()) {
+            if (service != null && service.isProjectInSvnMode() && !isOfflineMode) {
                 category.add(EComponentCategory.SVNHISTORY);
             }
 

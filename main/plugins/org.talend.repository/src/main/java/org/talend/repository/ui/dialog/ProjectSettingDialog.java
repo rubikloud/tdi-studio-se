@@ -31,11 +31,13 @@ import org.eclipse.ui.PlatformUI;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
+import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.i18n.Messages;
 import org.talend.repository.model.ProjectSettingNode;
 import org.talend.repository.preference.CustomComponentSettingPage;
+import org.talend.repository.ui.views.IRepositoryView;
 
 /**
  * DOC aimingchen class global comment. Detailled comment
@@ -60,21 +62,26 @@ public class ProjectSettingDialog {
         IExtensionRegistry registry = Platform.getExtensionRegistry();
         IConfigurationElement[] configurationElements = registry
                 .getConfigurationElementsFor("org.talend.repository.projectsetting_page"); //$NON-NLS-1$
-        for (int i = 0; i < configurationElements.length; i++) {
-            IConfigurationElement element = configurationElements[i];
+        for (IConfigurationElement element : configurationElements) {
             ProjectSettingNode node = new ProjectSettingNode(element);
             try {
                 IPreferencePage page = (IPreferencePage) element.createExecutableExtension("class"); //$NON-NLS-1$
                 node.setPage(page);
-                String id = element.getAttribute("id");
-                if (id.equals("org.talend.repository.preference.VersionManagementPage")) {
+                String id = element.getAttribute("id");//$NON-NLS-1$
+                if (id.equals("org.talend.repository.preference.VersionManagementPage")) {//$NON-NLS-1$
                     IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault().getService(
                             IBrandingService.class);
                     boolean allowVerchange = brandingService.getBrandingConfiguration().isAllowChengeVersion();
                     if (!allowVerchange) {
                         continue;
                     }
+                } else if (id.equals("jobsettings.treeview")) {//$NON-NLS-1$
+                    IRepositoryView repositoryView = RepositoryManager.getRepositoryView();
+                    if (repositoryView == null) {
+                        continue;
+                    }
                 }
+
                 page.setDescription(element.getAttribute("description")); //$NON-NLS-1$
                 page.setTitle(element.getAttribute("title")); //$NON-NLS-1$
             } catch (CoreException e) {
@@ -103,6 +110,7 @@ public class ProjectSettingDialog {
         // sort the rootSubNodes
         Arrays.sort(rootSubNodes, new Comparator() {
 
+            @Override
             public int compare(Object o1, Object o2) {
                 if (o1 instanceof ProjectSettingNode && o2 instanceof ProjectSettingNode) {
                     ProjectSettingNode node1 = (ProjectSettingNode) o1;
@@ -116,8 +124,8 @@ public class ProjectSettingDialog {
         });
         manager.removeAll();
         // add the sorted list to manager
-        for (int i = 0; i < rootSubNodes.length; i++) {
-            manager.addToRoot(rootSubNodes[i]);
+        for (IPreferenceNode rootSubNode : rootSubNodes) {
+            manager.addToRoot(rootSubNode);
         }
         return manager;
     }
@@ -128,6 +136,7 @@ public class ProjectSettingDialog {
         final PreferenceDialog dialog = new ProjectSettingsPreferenceDialog(shell, manager);
         BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
 
+            @Override
             public void run() {
                 dialog.create();
                 dialog.getShell().setText(TITLE);

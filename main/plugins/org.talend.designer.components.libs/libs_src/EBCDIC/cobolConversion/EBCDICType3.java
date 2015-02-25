@@ -6,7 +6,7 @@ import org.apache.commons.lang.mutable.MutableInt;
 public class EBCDICType3 {
 	public static BigDecimal readType3Value(byte[] byteValue, int decimal,
 			boolean isImpliedDecimal){
-		BigDecimal retVal = new BigDecimal(convertByteArr2Hex(byteValue,decimal,isImpliedDecimal));
+		BigDecimal retVal = new BigDecimal(unpackDecimal(byteValue,decimal,isImpliedDecimal));
 		int lgth = byteValue.length;
 		int tmp = byteValue[lgth-1] & 0x0F;
 
@@ -26,12 +26,29 @@ public class EBCDICType3 {
 			int tmp = byteArr[lgth-1] & 0x0F;
 			if(tmp == 0x0F || tmp == 0x0C || tmp == 0x0D){
 				isValid = true;
+			}else{
+				return false;
+			}
+
+			int temp;
+			for (int i = 0; i < lgth; i++) {
+				temp = byteArr[i] & 0xF0 >> 4;//compute the higher nibble
+				isValid = isValid && (temp < 10);
+
+				if (i < (lgth - 1)) {
+					temp = byteArr[i] & 0x0F;//compute the lower nibble
+					isValid = isValid && (temp < 10);
+				}
+
+				if(!isValid){
+					return false;
+				}
 			}
 		}
 		return isValid;
 	}
 
-	public static String convertByteArr2Hex(byte[] byteValue, int decimal, boolean isImpliedDecimal){
+	public static String unpackDecimal(byte[] byteValue, int decimal, boolean isImpliedDecimal){
 		int len = byteValue.length;
 		StringBuffer strbuf = new StringBuffer();
 		int tmp;
@@ -63,11 +80,12 @@ public class EBCDICType3 {
 				return readType3Value(byteValue,decimal,isImpliedDecimal);
 			}else{
 				boolean isValid = isValidPackedDecimal(byteValue);
-				BigDecimal convertedBigDecimal = new BigDecimal(convertByteArr2Hex(byteValue,decimal,isImpliedDecimal));// implicit else part
+				BigDecimal convertedBigDecimal = null;
 				if(isValid){
 					int lgth = byteValue.length;
 					int tmp = byteValue[lgth-1] & 0x0F;
-					if(tmp == 0x0D){// implicit else part for 0x0F or 0x0C
+					convertedBigDecimal = new BigDecimal(unpackDecimal(byteValue,decimal,isImpliedDecimal));// implicit else part for 0x0F or 0x0C
+					if(tmp == 0x0D){
 						convertedBigDecimal = convertedBigDecimal.negate();
 					}
 				}else{

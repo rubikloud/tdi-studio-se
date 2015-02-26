@@ -574,6 +574,7 @@ public class DebugProcessTosComposite extends TraceDebugProcessComposite {
 
     public void pause(int id) {
         boolean isPause = id == ProcessView.PAUSE_ID;
+        processContext.setTracPause(isPause);
         setExecBtn(isPause);
         if (isPause) {
             itemDropDown.setText(Messages.getString("ProcessComposite.textContent")); //$NON-NLS-1$
@@ -584,7 +585,6 @@ public class DebugProcessTosComposite extends TraceDebugProcessComposite {
         } else {
             itemDropDown.setData(ProcessView.PAUSE_ID);
         }
-        processContext.setTracPause(isPause);
     }
 
     protected void addInHistoryRunningList() {
@@ -651,8 +651,20 @@ public class DebugProcessTosComposite extends TraceDebugProcessComposite {
 
         }
         if (processContext != null) {
-            processContext.setMonitorTrace(true);
-            addTrace(ProcessView.TRACEDEBUG_ID);
+            // Fix problem: when running Java Debug, switching different jobs or tabs will have display problem
+            boolean isJavaDebuging = false;
+            org.eclipse.debug.core.model.IProcess debugProcess = processContext.getDebugProcess();
+            if (debugProcess != null) {
+                try {
+                    debugProcess.getExitValue();
+                } catch (DebugException e) {
+                    isJavaDebuging = true;
+                }
+            }
+            if (isJavaDebuging == false) {
+                processContext.setMonitorTrace(true);
+                addTrace(ProcessView.TRACEDEBUG_ID);
+            }
         }
 
         setRunnable(processContext != null && !processContext.isRunning() && !disableAll);
@@ -944,10 +956,19 @@ public class DebugProcessTosComposite extends TraceDebugProcessComposite {
                 if (processContext.isMonitorTrace()) {
                     boolean b = processContext != null;
                     if (!runnable && b) {
-                        itemDropDown.setText(" " + Messages.getString("ProcessComposite.pause"));
-                        itemDropDown.setToolTipText(Messages.getString("ProcessComposite.pauseJob"));
-                        itemDropDown.setImage(ImageProvider.getImage(ERunprocessImages.PAUSE_PROCESS_ACTION));
-                        itemDropDown.setData(ProcessView.PAUSE_ID);
+                        boolean isJobRunning = processContext.isRunning();
+                        boolean isTracePause = processContext.isTracPause();
+                        if (isJobRunning && isTracePause == false) {
+                            itemDropDown.setText(" " + Messages.getString("ProcessComposite.pause")); //$NON-NLS-1$//$NON-NLS-2$
+                            itemDropDown.setToolTipText(Messages.getString("ProcessComposite.pauseJob")); //$NON-NLS-1$
+                            itemDropDown.setImage(ImageProvider.getImage(ERunprocessImages.PAUSE_PROCESS_ACTION));
+                            itemDropDown.setData(ProcessView.PAUSE_ID);
+                        } else if (isJobRunning && isTracePause) {
+                            itemDropDown.setText(" " + Messages.getString("ProcessComposite.textContent")); //$NON-NLS-1$//$NON-NLS-2$
+                            itemDropDown.setToolTipText(Messages.getString("ProcessComposite.tipTextContent")); //$NON-NLS-1$
+                            itemDropDown.setImage(ImageProvider.getImage(ERunprocessImages.RUN_PROCESS_ACTION));
+                            itemDropDown.setData(ProcessView.RESUME_ID);
+                        }
                     } else {
                         itemDropDown.setText(" " + Messages.getString("ProcessComposite.traceDebug"));
                         itemDropDown.setData(ProcessView.TRACEDEBUG_ID);

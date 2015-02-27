@@ -459,6 +459,7 @@ public class JobSettingsView extends ViewPart implements IJobSettingsView, ISele
         if (PluginChecker.isSVNProviderPluginLoaded()) {
             service = (ISVNProviderService) GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
         }
+        boolean isOfflineMode = CorePlugin.getDefault().getProxyRepositoryFactory().getRepositoryContext().isOffline();
 
         if (obj instanceof Process) {
             Process process = (Process) obj;
@@ -482,7 +483,6 @@ public class JobSettingsView extends ViewPart implements IJobSettingsView, ISele
                 }
             }
 
-            boolean isOfflineMode = CorePlugin.getDefault().getProxyRepositoryFactory().getRepositoryContext().isOffline();
             // if svn remote connection, added by nma
             if (service != null && service.isProjectInSvnMode() && !isOfflineMode) {
                 category.add(EComponentCategory.SVNHISTORY);
@@ -496,6 +496,7 @@ public class JobSettingsView extends ViewPart implements IJobSettingsView, ISele
 
             if (service != null
                     && service.isProjectInSvnMode()
+                    && !isOfflineMode
                     && (((IRepositoryViewObject) obj).getRepositoryObjectType() == ERepositoryObjectType.PROCESS || ((IRepositoryViewObject) obj)
                             .getRepositoryObjectType() == ERepositoryObjectType.JOBLET)
                     || ((IRepositoryViewObject) obj).getRepositoryObjectType() == ERepositoryObjectType.PROCESS_MR

@@ -163,16 +163,16 @@ public class SqlMemoController extends AbstractElementPropertySectionController 
 
             // pass the value to Initializing the contextmode button
             connParameters.setIfContextButtonCheckedFromBuiltIn(true);
-            String contextSql = openSQLBuilder(repositoryType, propertyName, query);
-            if (contextSql != null) {
-                queryText.setText(contextSql);
-                return new PropertyChangeCommand(elem, propertyName, contextSql);
-            }
-            return null;
+            // String contextSql = openSQLBuilder(repositoryType, propertyName, query);
+            // if (contextSql != null) {
+            // queryText.setText(contextSql);
+            // return new PropertyChangeCommand(elem, propertyName, contextSql);
+            // }
             // return null;
+        } else {
+            // if the input query isn't contextmode or it's a standard query in perl
+            query = this.removeStrInQuery(query);
         }
-        // if the input query isn't contextmode or it's a standard query in perl
-        query = this.removeStrInQuery(query);
         initConnectionParametersWithContext(elem, part == null ? new EmptyContextManager().getDefaultContext() : part
                 .getProcess().getContextManager().getDefaultContext());
         String sql = openSQLBuilder(repositoryType, propertyName, query);

@@ -32,7 +32,7 @@ public class EBCDICType3 {
 
 			int temp;
 			for (int i = 0; i < lgth; i++) {
-				temp = byteArr[i] & 0xF0 >> 4;//compute the higher nibble
+				temp = (byteArr[i] & 0xF0) >> 4;//compute the higher nibble
 				isValid = isValid && (temp < 10);
 
 				if (i < (lgth - 1)) {

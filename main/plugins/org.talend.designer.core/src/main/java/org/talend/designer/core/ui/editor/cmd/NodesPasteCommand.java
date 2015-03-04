@@ -437,33 +437,34 @@ public class NodesPasteCommand extends Command {
                     copyOfMetadataList.add(newTable);
                 }
                 pastedNode.setMetadataList(copyOfMetadataList);
-                IExternalNode externalNode = pastedNode.getExternalNode();
-                if (externalNode != null) {
-                    if (copiedNode.getExternalData() != null) {
-                        try {
-                            externalNode.setExternalData(copiedNode.getExternalData().clone());
-                        } catch (CloneNotSupportedException e) {
-                            ExceptionHandler.process(e);
-                        }
-                        ((Node) pastedNode).setExternalData(externalNode.getExternalData());
+            }
+            // TDQ-10039,Extract externalNode from above "else" to here.make copy tMatcheGroup works.
+            IExternalNode externalNode = pastedNode.getExternalNode();
+            if (externalNode != null) {
+                if (copiedNode.getExternalData() != null) {
+                    try {
+                        externalNode.setExternalData(copiedNode.getExternalData().clone());
+                    } catch (CloneNotSupportedException e) {
+                        ExceptionHandler.process(e);
                     }
-                    if (copiedNode.getExternalNode().getExternalEmfData() != null) {
-                        externalNode.setExternalEmfData(EcoreUtil.copy(copiedNode.getExternalNode().getExternalEmfData()));
-                    }
+                    ((Node) pastedNode).setExternalData(externalNode.getExternalData());
+                }
+                if (copiedNode.getExternalNode().getExternalEmfData() != null) {
+                    externalNode.setExternalEmfData(EcoreUtil.copy(copiedNode.getExternalNode().getExternalEmfData()));
+                }
 
-                    for (IMetadataTable metaTable : copiedNode.getMetadataList()) {
-                        String oldName = metaTable.getTableName();
-                        String newName = oldMetaToNewMeta.get(pastedNode.getUniqueName() + ":" + metaTable.getTableName()); //$NON-NLS-1$
-                        externalNode.renameOutputConnection(oldName, newName);
-                        CorePlugin.getDefault().getMapperService()
-                                .renameJoinTable(process, externalNode.getExternalData(), createdNames);
-                    }
-                    // when copy a external node, should also copy screeshot
-                    if (copiedNode.getExternalNode() != null) {
-                        ImageDescriptor screenshot = copiedNode.getExternalNode().getScreenshot();
-                        if (screenshot != null) {
-                            externalNode.setScreenshot(screenshot);
-                        }
+                for (IMetadataTable metaTable : copiedNode.getMetadataList()) {
+                    String oldName = metaTable.getTableName();
+                    String newName = oldMetaToNewMeta.get(pastedNode.getUniqueName() + ":" + metaTable.getTableName()); //$NON-NLS-1$
+                    externalNode.renameOutputConnection(oldName, newName);
+                    CorePlugin.getDefault().getMapperService()
+                            .renameJoinTable(process, externalNode.getExternalData(), createdNames);
+                }
+                // when copy a external node, should also copy screeshot
+                if (copiedNode.getExternalNode() != null) {
+                    ImageDescriptor screenshot = copiedNode.getExternalNode().getScreenshot();
+                    if (screenshot != null) {
+                        externalNode.setScreenshot(screenshot);
                     }
                 }
             }

@@ -28,7 +28,10 @@
 		return "";
 	}
 	
-	String encoding = "\"UTF8\"";
+	String encoding = ElementParameterParser.getValue(node, "__ENCODING__");
+	if(encoding!=null) {
+		encoding = encoding.replace("UTF16LE","UTF-16LE").replace("UTF16BE","UTF-16BE");
+	}
 	
 	List< ? extends IConnection> conns = node.getIncomingConnections();
 	if(conns==null || conns.isEmpty()){

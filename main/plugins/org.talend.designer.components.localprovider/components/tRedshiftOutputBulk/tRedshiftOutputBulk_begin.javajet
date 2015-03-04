@@ -29,7 +29,10 @@ imports="
 	
 	String textEnclosure = ElementParameterParser.getValue(node, "__TEXT_ENCLOSURE__");
 	
-	String encoding = "\"UTF8\"";
+	String encoding = ElementParameterParser.getValue(node, "__ENCODING__");
+	if(encoding!=null) {
+		encoding = encoding.replace("UTF16LE","UTF-16LE").replace("UTF16BE","UTF-16BE");
+	}
 	
 	boolean isAppend = "true".equals(ElementParameterParser.getValue(node,"__APPEND__"));
 	

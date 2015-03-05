@@ -12,8 +12,11 @@
 // ============================================================================
 package org.talend.designer.codegen.model;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -78,6 +81,8 @@ public class CodeGeneratorInternalTemplatesFactory {
             installationFolder = new File(FileLocator.toFileURL(url).getPath());
 
             final FileFilter sourceFolderFilter = new FileFilter() {
+
+                @Override
                 public boolean accept(File pathname) {
                     return false;
                 }
@@ -107,16 +112,22 @@ public class CodeGeneratorInternalTemplatesFactory {
             // Add all additional headers
             file = new File(FileLocator.toFileURL(url).getPath());
             for (File f : file.listFiles(new FileFilter() {
+
+                @Override
                 public boolean accept(File pathname) {
-                    if (pathname.getName().contains(EInternalTemplate.HEADER_ADDITIONAL.toString()))
-                        if (pathname.getName().contains(language.getExtension() + TemplateUtil.TEMPLATE_EXT))
+                    if (pathname.getName().contains(EInternalTemplate.HEADER_ADDITIONAL.toString())) {
+                        if (pathname.getName().contains(language.getExtension() + TemplateUtil.TEMPLATE_EXT)) {
                             return true;
+                        }
+                    }
                     return false;
                 }
             })) {
                 if (f.exists()) {
-                    TemplateUtil template = new TemplateUtil(f.getName().substring(0,f.getName().lastIndexOf(".")),"0.0.1");
-                    if (!templates.contains(template)) templates.add(template);
+                    TemplateUtil template = new TemplateUtil(f.getName().substring(0, f.getName().lastIndexOf(".")), "0.0.1");
+                    if (!templates.contains(template)) {
+                        templates.add(template);
+                    }
                 }
             }
         } catch (IOException e) {
@@ -126,12 +137,66 @@ public class CodeGeneratorInternalTemplatesFactory {
     }
 
     private void copyAdditionalJetFileFromProviderExtension() {
+        // clean all copied files
+        cleanAllCopiedAdditionalJets();
+
         CustomizeJetFilesProviderManager componentsProviderManager = CustomizeJetFilesProviderManager.getInstance();
         for (AbstractJetFileProvider componentsProvider : componentsProviderManager.getProviders()) {
             try {
                 componentsProvider.overwriteStubAdditionalFile();
             } catch (IOException e) {
                 ExceptionHandler.process(e);
+            }
+        }
+    }
+
+    private void cleanAllCopiedAdditionalJets() {
+        BufferedReader br = null;
+        try {
+            URL url = FileLocator.find(Platform.getBundle(CodeGeneratorActivator.PLUGIN_ID), new Path("resources"), null); //$NON-NLS-1$
+            File systemResFolder = new File(FileLocator.toFileURL(url).getPath());
+
+            final List<String> originalList = new ArrayList<String>();
+            File originalListFile = new File(systemResFolder, "original.list"); //$NON-NLS-1$
+            if (!originalListFile.exists()) {
+                return;
+            }
+            br = new BufferedReader(new FileReader(originalListFile));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.startsWith("#")) { // comment //$NON-NLS-1$
+                    continue;
+                }
+                originalList.add(line);
+            }
+
+            //
+            File[] copiedFiles = systemResFolder.listFiles(new FilenameFilter() {
+
+                @Override
+                public boolean accept(File dir, String name) {
+                    if (originalList.contains(name)) {
+                        return false; // ignore original files.
+                    }
+                    return true;
+                }
+            });
+
+            if (copiedFiles != null) {
+                for (File f : copiedFiles) {
+                    f.delete();
+                }
+            }
+        } catch (IOException e) {
+            //
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    //
+                }
             }
         }
     }

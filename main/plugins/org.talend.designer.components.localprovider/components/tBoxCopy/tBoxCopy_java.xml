@@ -153,11 +153,11 @@
                <IMPORT NAME="apache-commons-logging"
                     MODULE="commons-logging-1.1.1.jar"
                     UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-logging-1.1.1.jar"
-               		REQUIRED_IF="USE_EXISTING_CONNECTION == 'false'" />
+               		REQUIRED_IF="USE_EXISTING_CONNECTION == 'false'" BundleID="" />
                <IMPORT NAME="apache-commons-lang"
                     MODULE="commons-lang-2.6.jar"
                     UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang-2.6.jar"
-               		REQUIRED_IF="USE_EXISTING_CONNECTION == 'false'" />
+               		REQUIRED_IF="USE_EXISTING_CONNECTION == 'false'" BundleID="" />
                <IMPORT NAME="apache-commons-io"
                     MODULE="commons-io-2.4.jar"
                     UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-io-2.4.jar"

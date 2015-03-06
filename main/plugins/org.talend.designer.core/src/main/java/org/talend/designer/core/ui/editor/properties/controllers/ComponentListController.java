@@ -259,16 +259,11 @@ public class ComponentListController extends AbstractElementPropertySectionContr
                 }
             }
             List<INode> jobletnodeList = new ArrayList<INode>(nodeList);
-            if (PluginChecker.isJobLetPluginLoaded()) {
-                IJobletProviderService jobletProviderService = (IJobletProviderService) GlobalServiceRegister.getDefault()
-                        .getService(IJobletProviderService.class);
-                INode jobletNode = ((Node) elem).getJobletNode();
-                if (jobletNode != null && jobletProviderService.isJobletComponent(jobletNode)) {
-                    List<INode> jobletNodes = (List<INode>) jobletProviderService.getGraphNodesForJoblet(jobletNode);
-                    for (INode node : jobletnodeList) {
-                        if (!jobletNodes.contains(node)) {
-                            nodeList.remove(node);
-                        }
+            if (((Node) elem).getJobletNode() != null) {
+                String jobletUniName = ((Node) elem).getJobletNode().getUniqueName();
+                for (INode node : jobletnodeList) {
+                    if (!node.getUniqueName().startsWith(jobletUniName)) {
+                        nodeList.remove(node);
                     }
                 }
             }

@@ -172,7 +172,7 @@ if ((metadatas != null) && (metadatas.size() > 0)) { //1
 			com.marketo.www.mktows.LeadSelector selector_<%=cid%> = new com.marketo.www.mktows.<%=leadSelector%>();
 			<%
 			if("LeadKeySelector".equals(leadSelector)){
-				batchSize = "100";
+				batchSize = ElementParameterParser.getValue(node, "__MAX_RETURN__");
 				%>
 				for(String[] valuesArray_<%=cid%>:leadKeyValues_<%=cid %>){
 					selector_<%=cid%> = org.talend.marketo.SelectorUtil.getLeadKeySelector("<%=leadKeyType%>",valuesArray_<%=cid%>);

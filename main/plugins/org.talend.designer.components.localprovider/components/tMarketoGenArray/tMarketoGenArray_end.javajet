@@ -14,6 +14,11 @@
 	INode node = (INode)codeGenArgument.getArgument();
 	String cid = node.getUniqueName().replace("_Out","");
 	
+	String segmentSizeStr = ElementParameterParser.getValue(node, "__LEADERKEYS_SEGMENT_SIZE__");
+	int segmentSize = -1;
+	if(segmentSizeStr!=null && !"".equals(segmentSizeStr) && !"\"\"".equals(segmentSizeStr)){
+		segmentSize = Integer.parseInt(segmentSizeStr);
+	}
 	String rowName= "";
 	if ((node.getIncomingConnections()!=null)&&(node.getIncomingConnections().size()>0)) {
 		rowName = node.getIncomingConnections().get(0).getName();
@@ -26,16 +31,26 @@
 		if (metadata!=null) {
 			%>
 			if(tmpBatch_<%=cid %>.size() > 0){
-				int arrayCount_<%=cid%>=0;
-				while(true){
-					if(tmpBatch_<%=cid %>.size() >= 50*(arrayCount_<%=cid%>+1)){
-						leadKeyValues_<%=cid %>.add(tmpBatch_<%=cid %>.subList(50*arrayCount_<%=cid%>,50*(arrayCount_<%=cid%>+1)).toArray(new String[50]));
-						arrayCount_<%=cid%>++;
-					}else{
-						leadKeyValues_<%=cid %>.add(tmpBatch_<%=cid %>.subList(50*arrayCount_<%=cid%>,tmpBatch_<%=cid %>.size()).toArray(new String[tmpBatch_<%=cid %>.size()-50*arrayCount_<%=cid%>]));
-						break;
+				<%
+				if(segmentSize > 0){
+				%>
+					int arrayCount_<%=cid%>=0;
+					while(true){
+						if(tmpBatch_<%=cid %>.size() > <%=segmentSize%>*(arrayCount_<%=cid%>+1)){
+							leadKeyValues_<%=cid %>.add(tmpBatch_<%=cid %>.subList(<%=segmentSize%>*arrayCount_<%=cid%>,<%=segmentSize%>*(arrayCount_<%=cid%>+1)).toArray(new String[<%=segmentSize%>]));
+							arrayCount_<%=cid%>++;
+						}else{
+							leadKeyValues_<%=cid %>.add(tmpBatch_<%=cid %>.subList(<%=segmentSize%>*arrayCount_<%=cid%>,tmpBatch_<%=cid %>.size()).toArray(new String[tmpBatch_<%=cid %>.size()-<%=segmentSize%>*arrayCount_<%=cid%>]));
+							break;
+						}
 					}
+				<%
+				}else{
+				%>
+					leadKeyValues_<%=cid %>.add(tmpBatch_<%=cid %>.toArray(new String[tmpBatch_<%=cid %>.size()]));
+				<%
 				}
+				%>
 				tmpBatch_<%=cid %>.clear();
 			}
 			<%

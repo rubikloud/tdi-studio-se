@@ -2315,15 +2315,6 @@
         <projecttask
               beforeLogon="false"
               breaks="5.6.1"
-              class="org.talend.repository.model.migration.ChangeMappingParameter4Redshift"
-              id="org.talend.repository.model.migration.ChangeMappingParameter4Redshift"
-              name="ChangeMappingParameter4Redshift"
-              description="change the mapping db id for redshift components"
-              version="5.6.2">
-        </projecttask>
-        <projecttask
-              beforeLogon="false"
-              breaks="5.6.1"
               class="org.talend.repository.model.migration.ChangeParameter4tSAPIDocOutput"
               id="org.talend.repository.model.migration.ChangeParameter4tSAPIDocOutput"
               name="ChangeParameter4tSAPIDocOutput"

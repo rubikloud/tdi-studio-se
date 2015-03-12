@@ -211,6 +211,7 @@
       NAME="MAPPING"
       FIELD="MAPPING_TYPE"
       NUM_ROW="10"
+      READONLY="true"
       SHOW="false"
     >
       <DEFAULT>redshift_id</DEFAULT>

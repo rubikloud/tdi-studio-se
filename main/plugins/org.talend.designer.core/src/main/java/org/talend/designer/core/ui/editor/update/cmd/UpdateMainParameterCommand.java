@@ -13,10 +13,8 @@
 package org.talend.designer.core.ui.editor.update.cmd;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.gef.commands.Command;
 import org.talend.core.model.metadata.builder.connection.HeaderFooterConnection;
@@ -268,16 +266,16 @@ public class UpdateMainParameterCommand extends Command {
 
     private void setDBVersionForMysql(IElementParameter dbVersionParam, String dbType) {
         if ("MYSQL".equals(dbType)) {
-            String[] drivers = StatsAndLogsConstants.MYSQL_VERSION_DRIVER;
-            // if driver is not set , set to the default
+            String[] versions = StatsAndLogsConstants.MYSQL_VERSION_CODE;
+            // if version is not set , set to the default
             boolean found = false;
-            for (String driver : drivers) {
-                if (driver.equals(dbVersionParam.getValue())) {
+            for (String version : versions) {
+                if (version.equals(dbVersionParam.getValue())) {
                     found = true;
                 }
             }
             if (!found) {
-                dbVersionParam.setValue(drivers[0]);
+                dbVersionParam.setValue(versions[0]);
             }
         }
     }

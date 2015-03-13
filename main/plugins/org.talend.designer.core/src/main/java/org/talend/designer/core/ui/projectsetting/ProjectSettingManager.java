@@ -47,6 +47,7 @@ import org.talend.designer.core.model.components.EmfComponent;
 import org.talend.designer.core.model.process.jobsettings.JobSettingsConstants;
 import org.talend.designer.core.model.process.jobsettings.JobSettingsConstants.ContextLoadInfo;
 import org.talend.designer.core.model.process.statsandlogs.StatsAndLogsManager;
+import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ParametersType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.designer.core.ui.AbstractMultiPageTalendEditor;
@@ -56,6 +57,7 @@ import org.talend.designer.core.ui.views.jobsettings.ExtraComposite;
 import org.talend.designer.core.ui.views.jobsettings.ImplicitContextLoadHelper;
 import org.talend.designer.core.ui.views.statsandlogs.StatsAndLogsComposite;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.UpdateRepositoryUtils;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
@@ -123,7 +125,7 @@ public class ProjectSettingManager extends Utils {
         Element elem = (Element) pro.getInitialContextLoad();
         if (elem == null) {
             elem = new ImplicitContextLoadElement();
-            ProjectSettingManager.createImplicitContextLoadParameters((ImplicitContextLoadElement) elem);
+            ProjectSettingManager.createImplicitContextLoadParameters(elem);
             pro.setInitialContextLoad(elem);
         }
         return elem;
@@ -151,7 +153,7 @@ public class ProjectSettingManager extends Utils {
         Element elem = (Element) pro.getStatsAndLog();
         if (elem == null) {
             elem = new StatsAndLogsElement();
-            StatsAndLogsHelper.createStatsAndLogsParameters((StatsAndLogsElement) elem);
+            StatsAndLogsHelper.createStatsAndLogsParameters(elem);
             pro.setStatsAndLog(elem);
         }
         return elem;
@@ -176,12 +178,23 @@ public class ProjectSettingManager extends Utils {
     public static void reloadStatsAndLogFromProjectSettings(Element process, Project pro, StatsAndLogsComposite statsComposite) {
         createStatsAndLogsElement(pro);
         ParametersType stats = pro.getEmfProject().getStatAndLogsSettings().getParameters();
-        // load the project settings to process
-        ElementParameter2ParameterType.loadElementParameters(process, stats, EParameterName.PROPERTY_TYPE.getName() + ":" //$NON-NLS-N$
-                + EParameterName.PROPERTY_TYPE.getName());
-        // change repository item
-        // TODO
-        // StatsAndLogsHelper.changeRepositoryConnection(process, statsComposite);
+        ElementParameterType eleType = ElementParameter2ParameterType.findElementParameterType(stats,
+                EParameterName.PROPERTY_TYPE.getName() + ":" + EParameterName.REPOSITORY_PROPERTY_TYPE.getName());
+        if (eleType != null) {
+            String value = eleType.getValue();
+            IRepositoryViewObject lastVersion = UpdateRepositoryUtils.getRepositoryObjectById(value);
+            if (lastVersion != null && lastVersion.getProperty() != null) {
+                Item item = lastVersion.getProperty().getItem();
+                if (item != null) {
+                    // load the project settings to process
+                    ElementParameter2ParameterType.loadElementParameters(process, stats, EParameterName.PROPERTY_TYPE.getName()
+                            + ":" + EParameterName.PROPERTY_TYPE.getName());
+                    // change repository item
+                    // TODO
+                    // StatsAndLogsHelper.changeRepositoryConnection(process, statsComposite);
+                }
+            }
+        }
     }
 
     public static void reloadStatsAndLogFromProjectSettings(ParametersType processType, Project pro) {
@@ -263,8 +276,9 @@ public class ProjectSettingManager extends Utils {
      * @param pItem
      */
     public static void defaultUseProjectSetting(org.talend.designer.core.ui.editor.process.Process process) {
-        if (process == null)
+        if (process == null) {
             return;
+        }
         ImplicitContextSettings implicit = ProjectManager.getInstance().getCurrentProject().getEmfProject()
                 .getImplicitContextSettings();
         Boolean bImplicit = false;
@@ -463,7 +477,7 @@ public class ProjectSettingManager extends Utils {
         param.setListItemsValue(new String[] {});
         param.setValue(preferenceStore.getString(getPreferenceName(EParameterName.REPOSITORY_PROPERTY_TYPE)// +
                 // CONNECTION_ITEM_LABEL
-                )); //$NON-NLS-1$
+                ));
         param.setCategory(EComponentCategory.EXTRA);
         param.setFieldType(EParameterFieldType.TECHNICAL);
         param.setShow(false);
@@ -514,7 +528,7 @@ public class ProjectSettingManager extends Utils {
         // host
         param = new ElementParameter(elem);
         param.setName(JobSettingsConstants.getExtraParameterName(EParameterName.HOST.getName()));
-        param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.HOST)))); //$NON-NLS-1$
+        param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.HOST))));
         param.setDisplayName(EParameterName.HOST.getDisplayName());
         param.setFieldType(EParameterFieldType.TEXT);
         param.setCategory(EComponentCategory.EXTRA);
@@ -529,7 +543,7 @@ public class ProjectSettingManager extends Utils {
         // port
         param = new ElementParameter(elem);
         param.setName(JobSettingsConstants.getExtraParameterName(EParameterName.PORT.getName()));
-        param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.PORT)))); //$NON-NLS-1$
+        param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.PORT))));
         param.setDisplayName(EParameterName.PORT.getDisplayName());
         param.setFieldType(EParameterFieldType.TEXT);
         param.setCategory(EComponentCategory.EXTRA);
@@ -544,7 +558,7 @@ public class ProjectSettingManager extends Utils {
         // dbName
         param = new ElementParameter(elem);
         param.setName(JobSettingsConstants.getExtraParameterName(EParameterName.DBNAME.getName()));
-        param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.DBNAME)))); //$NON-NLS-1$
+        param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.DBNAME))));
         param.setDisplayName(EParameterName.DBNAME.getDisplayName());
         param.setFieldType(EParameterFieldType.TEXT);
         param.setCategory(EComponentCategory.EXTRA);
@@ -575,7 +589,7 @@ public class ProjectSettingManager extends Utils {
             // additional parameters
             param = new ElementParameter(elem);
             param.setName(JobSettingsConstants.getExtraParameterName(EParameterName.PROPERTIES.getName()));
-            param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.PROPERTIES)))); //$NON-NLS-1$
+            param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.PROPERTIES))));
             param.setDisplayName(EParameterName.PROPERTIES.getDisplayName());
             param.setFieldType(EParameterFieldType.TEXT);
             param.setCategory(EComponentCategory.EXTRA);
@@ -592,7 +606,7 @@ public class ProjectSettingManager extends Utils {
         // schema
         param = new ElementParameter(elem);
         param.setName(JobSettingsConstants.getExtraParameterName(EParameterName.SCHEMA_DB.getName()));
-        param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.SCHEMA_DB)))); //$NON-NLS-1$
+        param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.SCHEMA_DB))));
         param.setDisplayName(EParameterName.SCHEMA_DB.getDisplayName());
         param.setFieldType(EParameterFieldType.TEXT);
         param.setCategory(EComponentCategory.EXTRA);
@@ -608,7 +622,7 @@ public class ProjectSettingManager extends Utils {
         // username
         param = new ElementParameter(elem);
         param.setName(JobSettingsConstants.getExtraParameterName(EParameterName.USER.getName()));
-        param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.USER)))); //$NON-NLS-1$
+        param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.USER))));
         param.setDisplayName(EParameterName.USER.getDisplayName());
         param.setFieldType(EParameterFieldType.TEXT);
         param.setCategory(EComponentCategory.EXTRA);
@@ -623,7 +637,7 @@ public class ProjectSettingManager extends Utils {
         // password
         param = new ElementParameter(elem);
         param.setName(JobSettingsConstants.getExtraParameterName(EParameterName.PASS.getName()));
-        param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.PASS)))); //$NON-NLS-1$
+        param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.PASS))));
         param.setDisplayName(EParameterName.PASS.getDisplayName());
         param.setFieldType(EParameterFieldType.PASSWORD);
         param.setCategory(EComponentCategory.EXTRA);
@@ -651,7 +665,7 @@ public class ProjectSettingManager extends Utils {
         // table
         param = new ElementParameter(elem);
         param.setName(JobSettingsConstants.getExtraParameterName(EParameterName.DBTABLE.getName()));
-        param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.DBTABLE)))); //$NON-NLS-1$
+        param.setValue(addQuotes(preferenceStore.getString(getPreferenceName(EParameterName.DBTABLE))));
         param.setDisplayName(EParameterName.DBTABLE.getDisplayName());
         param.setFieldType(EParameterFieldType.DBTABLE);
         param.setCategory(EComponentCategory.EXTRA);

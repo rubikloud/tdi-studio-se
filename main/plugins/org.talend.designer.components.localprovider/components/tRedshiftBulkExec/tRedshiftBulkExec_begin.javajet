@@ -179,7 +179,17 @@ skeleton="../templates/db_output_bulk.skeleton"
 	<%}%>
 	command_<%=cid%>.append("s3://").append(<%=bucket%>).append("/").append(<%=key%>)
 	.append("' ")
-	.append("credentials 'aws_access_key_id=").append(<%=access_key%>).append(";aws_secret_access_key=").append(decryptedPwd_<%=cid%>).append("' ")
+	.append("credentials 'aws_access_key_id=").append(<%=access_key%>).append(";aws_secret_access_key=").append(decryptedPwd_<%=cid%>)
+<%
+	boolean encrypt = "true".equals(ElementParameterParser.getValue(node, "__ENCRYPT__"));
+	if(encrypt) {
+		String encryptedKey = ElementParameterParser.getValue(node,"__ENCRYPTED_KEY__");
+%>
+		.append(";master_symmetric_key=").append(<%=encryptedKey%>)
+<%
+	}
+%>
+	.append("' ")
 <%
 	if("DELIMITED_OR_CSV".equals(importType)) {
 %>
@@ -221,7 +231,7 @@ skeleton="../templates/db_output_bulk.skeleton"
 %>
 			.append("<%=parameterKey%> '").append(<%=value%>).append("' ")
 <%
-			} else if("ESCAPE,EXPLICIT_IDS,IGNOREBLANKLINES,TRIMBLANKS,EMPTYASNULL,BLANKSASNULL,SSH,ENCRYPTED,REMOVEQUOTES,ACCEPTANYDATE,TRUNCATECOLUMNS,FILLRECORD,NOLOAD,ROUNDEC".contains(parameterKey)) {
+			} else if("ESCAPE,EXPLICIT_IDS,IGNOREBLANKLINES,TRIMBLANKS,EMPTYASNULL,BLANKSASNULL,SSH,REMOVEQUOTES,ACCEPTANYDATE,TRUNCATECOLUMNS,FILLRECORD,NOLOAD,ROUNDEC".contains(parameterKey)) {
 				if("true".equals(value)) {
 %>
 				.append("<%=parameterKey%> ")
@@ -258,6 +268,12 @@ skeleton="../templates/db_output_bulk.skeleton"
 				}
 			}
  		}
+	}
+	
+	if(encrypt) {
+%>
+		.append("ENCRYPTED ")
+<%
 	}
 	
 	boolean compressed = "true".equals(ElementParameterParser.getValue(node, "__COMPRESS__"));

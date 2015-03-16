@@ -69,18 +69,23 @@ imports="
 	
 	boolean	log4jEnabled = ("true").equals(ElementParameterParser.getValue(node.getProcess(), "__LOG4J_ACTIVATE__"));
 	String fieldSeparator = ElementParameterParser.getValue(node,"__FIELDSEPARATOR__");
+	String exportType = ElementParameterParser.getValue(node, "__EXPORT_TYPE__");
 %>
 	StringBuilder command_<%=cid%> = new StringBuilder();
-	char fieldSeparator_<%=cid %> = 
 <%
-	if(fieldSeparator.trim().isEmpty()) {
+	if("DELIMITED_OR_CSV".equals(exportType)) {
 %>
-	',';
+		char fieldSeparator_<%=cid %> = 
 <%
-	} else {
+		if(fieldSeparator.trim().isEmpty()) {
 %>
-	String.valueOf(<%=fieldSeparator.trim()%>).charAt(0);
+		',';
 <%
+		} else {
+%>
+		String.valueOf(<%=fieldSeparator.trim()%>).charAt(0);
+<%
+		}
 	}
 %>
 	command_<%=cid%>.append("UNLOAD ('").append(<%=dbquery%>).append("') TO ");
@@ -96,16 +101,40 @@ imports="
 	final String decryptedPwd_<%=cid%> = <%= ElementParameterParser.getValue(node, passwordFieldKey)%>; 
 	<%}%>
 	command_<%=cid%>.append("'s3://").append(<%=bucket%>).append("/").append(<%=keyPrefix%>).append("' ")
-	.append("credentials 'aws_access_key_id=").append(<%=access_key%>).append(";aws_secret_access_key=").append(decryptedPwd_<%=cid%>).append("' ");
+	.append("credentials 'aws_access_key_id=").append(<%=access_key%>).append(";aws_secret_access_key=").append(decryptedPwd_<%=cid%>)
 <%
-	if("DOUBLE_QUOTE".equals(ElementParameterParser.getValue(node, "__TEXT_ENCLOSURE__"))) {
+	boolean encrypt = "true".equals(ElementParameterParser.getValue(node, "__ENCRYPT__"));
+	if(encrypt) {
+		String encryptedKey = ElementParameterParser.getValue(node,"__ENCRYPTED_KEY__");
 %>
-	command_<%=cid%>.append("ADDQUOTES ");
+		.append(";master_symmetric_key=").append(<%=encryptedKey%>)
 <%
 	}
 %>
-	command_<%=cid%>.append("DELIMITER '").append(fieldSeparator_<%=cid%>).append("' ")
+	.append("' ")
 <%
+	if(encrypt) {
+%>
+		.append("ENCRYPTED ")
+<%
+	}
+	
+	if("DELIMITED_OR_CSV".equals(exportType)) {
+		if("DOUBLE_QUOTE".equals(ElementParameterParser.getValue(node, "__TEXT_ENCLOSURE__"))) {
+%>
+		.append("ADDQUOTES ")
+<%
+		}
+%>
+		.append("DELIMITER '").append(fieldSeparator_<%=cid%>).append("' ")
+<%
+	} else if("FIXEDWIDTH".equals(exportType)) {
+		String mapping = ElementParameterParser.getValue(node, "__FIXEDWIDTH_MAPPING__");
+%>
+		.append("FIXEDWIDTH '").append(<%=mapping%>).append("' ")
+<%
+	}
+	
 	boolean compressed = "true".equals(ElementParameterParser.getValue(node, "__COMPRESS__"));
 	if(compressed) {
 		String compression = ElementParameterParser.getValue(node, "__COMPRESSION__");

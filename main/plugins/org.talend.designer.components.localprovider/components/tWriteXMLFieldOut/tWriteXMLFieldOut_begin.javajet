@@ -40,7 +40,7 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 
 		if(conns!=null && conns.size()>0){
     		IConnection conn = conns.get(0);
-    		String inputRowName = conn.getName();
+    		String inputRowName = NodeUtil.getRealConnectionTypeBased(conn).getName();
     		if(conn.getLineStyle().hasConnectionCategory(IConnectionCategory.DATA)){ 
     			String removeHeader = ElementParameterParser.getValue(node, "__REMOVE_HEADER__"); // add for feature7788
         		String encoding = ElementParameterParser.getValue(node, "__ENCODING__");

@@ -32,6 +32,7 @@
     String myLimit = ElementParameterParser.getValue(node, "__LIMIT__");
     String row_separator = ElementParameterParser.getValue(node, "__ROWSEPARATOR__");
     String regex = ElementParameterParser.getValue(node, "__REGEX__");
+    boolean ignoreUnmatchedError = ("true").equals(ElementParameterParser.getValue(node, "__IGNORE_ERROR_MESSAGE__"));
 	String dieOnErrorStr = ElementParameterParser.getValue(node, "__DIE_ON_ERROR__");
 	boolean dieOnError = (dieOnErrorStr!=null&&!("").equals(dieOnErrorStr))?("true").equals(dieOnErrorStr):false;  
 	
@@ -226,10 +227,18 @@
             if(isMatch<%=cid %>){
             	throw(e);
             }else{
-    		<%if(isLog4jEnabled){%>
-				log.error("<%=cid%> - " +e.getMessage());
-			<%}%>
-				System.err.println(e.getMessage());
+	    		<%
+	    		if(isLog4jEnabled){
+	    		%>
+					log.error("<%=cid%> - " +e.getMessage());
+				<%
+				}
+				if(!ignoreUnmatchedError){
+				%>
+					System.err.println(e.getMessage());
+				<%
+				}
+				%>
           		continue;
             }
             <%
@@ -254,8 +263,18 @@
         		log.error("<%=cid%> - " +e.getMessage());
 	        	<%
 	        	}
+	        	if(ignoreUnmatchedError){
                 %>
-                System.err.println(e.getMessage());
+                	if(isMatch<%=cid %>){
+                		System.err.println(e.getMessage());
+                	}
+                <%
+                }else{
+                %>
+                	System.err.println(e.getMessage());
+                <%
+                }
+                %>
                 <%=firstConnName %> = null;
                 <%
             } else if(rejectConnName.equals(firstConnName)){%>

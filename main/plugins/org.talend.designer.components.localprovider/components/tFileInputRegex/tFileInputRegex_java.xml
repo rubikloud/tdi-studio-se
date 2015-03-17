@@ -109,10 +109,19 @@
     </PARAMETER>
 
     <PARAMETER
-      NAME="REMOVE_EMPTY_ROW"
+      NAME="IGNORE_ERROR_MESSAGE"
       FIELD="CHECK"
       REQUIRED="true"
       NUM_ROW="55"
+    >
+      <DEFAULT>false</DEFAULT>
+    </PARAMETER>
+    
+    <PARAMETER
+      NAME="REMOVE_EMPTY_ROW"
+      FIELD="CHECK"
+      REQUIRED="true"
+      NUM_ROW="60"
       REPOSITORY_VALUE="REMOVE_EMPTY_ROW"
     >
       <DEFAULT>true</DEFAULT>
@@ -121,7 +130,7 @@
     <PARAMETER
       NAME="DIE_ON_ERROR"
       FIELD="CHECK"
-      NUM_ROW="55"
+      NUM_ROW="60"
     >
       <DEFAULT>false</DEFAULT>
     </PARAMETER>
@@ -130,7 +139,7 @@
       NAME="SCHEMA"
       FIELD="SCHEMA_TYPE"
       REQUIRED="true"
-      NUM_ROW="60"
+      NUM_ROW="65"
     >
       <DEFAULT/>
     </PARAMETER>
@@ -139,7 +148,7 @@
       NAME="SCHEMA_REJECT"
       FIELD="SCHEMA_TYPE"
       REQUIRED="true"
-      NUM_ROW="60"
+      NUM_ROW="65"
       CONTEXT="REJECT"
       SHOW="true">
       <TABLE READONLY="true">

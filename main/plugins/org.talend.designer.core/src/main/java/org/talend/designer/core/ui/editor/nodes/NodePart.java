@@ -476,6 +476,9 @@ public class NodePart extends AbstractGraphicalEditPart implements PropertyChang
         if (!DesignerPlugin.getDefault().getPreferenceStore().getBoolean(TalendDesignerPrefConstants.EDITOR_LINESTYLE)) {
             return new ChopboxAnchor(getFigure());
         }
+        if (!(request instanceof CreateConnectionRequest)) {
+            return new ChopboxAnchor(getFigure());
+        }
         CreateConnectionRequest connReq = (CreateConnectionRequest) request;
         Node source = (Node) ((NodePart) connReq.getSourceEditPart()).getModel();
         // Node target = (Node) ((NodePart) connReq.getTargetEditPart()).getModel();
@@ -495,6 +498,9 @@ public class NodePart extends AbstractGraphicalEditPart implements PropertyChang
     @Override
     public ConnectionAnchor getTargetConnectionAnchor(final Request request) {
         if (!DesignerPlugin.getDefault().getPreferenceStore().getBoolean(TalendDesignerPrefConstants.EDITOR_LINESTYLE)) {
+            return new ChopboxAnchor(getFigure());
+        }
+        if (!(request instanceof CreateConnectionRequest)) {
             return new ChopboxAnchor(getFigure());
         }
         CreateConnectionRequest connReq = (CreateConnectionRequest) request;

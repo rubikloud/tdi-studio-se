@@ -2348,6 +2348,15 @@
               description="change parameter for tsapidocoutput"
               version="5.6.2">
         </projecttask>
+        <projecttask
+              beforeLogon="false"
+              breaks="5.6.1"
+              class="org.talend.repository.model.migration.AddSchemaDefaultValue4tFileInputDelimited"
+              description="Add  default value for schema   primitive type for tFileInputDelimited"
+              id="org.talend.repository.model.migration.AddSchemaDefaultValue4tFileInputDelimited"
+              name="AddSchemaDefaultValue4tFileInputDelimited"
+              version="6.0.0">
+        </projecttask>
    </extension>
 
    <extension

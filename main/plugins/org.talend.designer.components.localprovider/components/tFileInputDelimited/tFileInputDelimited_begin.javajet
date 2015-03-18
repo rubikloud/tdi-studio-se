@@ -286,7 +286,8 @@
 						} else {						
 							<%
 							String defaultValue = JavaTypesManager.getDefaultValueFromJavaType(typeToGenerate, column.getDefault());
-							if(defaultValue == null) {
+							boolean isJavaPrimitiveType = JavaTypesManager.isJavaPrimitiveType(javaType,column.isNullable());
+							if((isJavaPrimitiveType && (column.getDefault()==null || column.getDefault().length() == 0)) || defaultValue == null) {
 							%>
 								throw new RuntimeException("Value is empty for column : '<%= column.getLabel() %>' in '<%=targetConnName %>' connection, value is invalid or this column should be nullable or have a default value.");
 							<%
@@ -796,9 +797,22 @@
 									<%
 									}
 									
-							if(!"id_Dynamic".equals(column.getTalendType())) {%>				
+							if(!"id_Dynamic".equals(column.getTalendType())) {
+								String defaultValue = JavaTypesManager.getDefaultValueFromJavaType(typeToGenerate, column.getDefault());
+								boolean isJavaPrimitiveType = JavaTypesManager.isJavaPrimitiveType(javaType,column.isNullable());
+								%>				
 								}else{
-									<%=targetConnName %>.<%=column.getLabel() %> = <%=JavaTypesManager.getDefaultValueFromJavaType(typeToGenerate, column.getDefault())%>;
+									<%
+									if((isJavaPrimitiveType && (column.getDefault()==null || column.getDefault().length() == 0))) {
+									%>
+										throw new RuntimeException("Value is empty for column : '<%= column.getLabel() %>' in '<%=targetConnName %>' connection, value is invalid or this column should be nullable or have a default value.");
+									<%
+									} else {
+									%>
+										<%=targetConnName %>.<%=column.getLabel() %> = <%=defaultValue %>;
+									<%
+									}
+									%>
 								}
 							<%}
 							

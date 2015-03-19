@@ -14,6 +14,7 @@ package org.talend.designer.core.ui.editor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -29,6 +30,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Priority;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.CreationToolEntry;
 import org.eclipse.gef.palette.PaletteContainer;
@@ -39,8 +46,17 @@ import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.tools.CreationTool;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
 import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.help.internal.base.BaseHelpSystem;
+import org.eclipse.help.internal.search.ISearchHitCollector;
+import org.eclipse.help.internal.search.ISearchQuery;
+import org.eclipse.help.internal.search.QueryTooComplexException;
+import org.eclipse.help.internal.search.SearchHit;
+import org.eclipse.help.internal.search.SearchQuery;
+import org.eclipse.help.internal.search.federated.FederatedSearchJob;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.widgets.Display;
+import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.core.model.components.ComponentCategory;
@@ -100,24 +116,9 @@ public final class TalendEditorPaletteFactory {
 
     private static PaletteGroup paGroup = new PaletteGroup(""); //$NON-NLS-1$
 
-    /** Create the "Shapes" drawer. */
-    private static void createComponentsDrawer(final IComponentsFactory compFac, boolean needHiddenComponent, int a) {
-        // clearGroup();
-        PaletteDrawer componentsDrawer;
-        String name, longName;
-        String family;
-        String oraFamily;
-        List<CreationToolEntry> nodeList = new LinkedList<CreationToolEntry>();
-        List<String> families = new ArrayList<String>();
-        HashMap<String, String> familyMap = new HashMap<String, String>();
-        CombinedTemplateCreationEntry component;
-        Hashtable<String, PaletteDrawer> ht = new Hashtable<String, PaletteDrawer>();
-        List<String> favoriteComponentNames = null;
-        if (a == 0) {
-            componentsDrawer = new PaletteDrawer(Messages.getString("TalendEditorPaletteFactory.Default")); //$NON-NLS-1$
-            favoriteComponentNames = getFavoritesList();
-        }
-        List<IComponent> componentList = new LinkedList<IComponent>(compFac.getComponents());
+    protected static void createComponentsDrawer(final IComponentsFactory compFac, final boolean needHiddenComponent, final int a) {
+        List<IComponent> componentList = null;
+        componentList = getRelatedComponents(compFac);
 
         String paletteType = ComponentCategory.CATEGORY_4_DI.getName();
         // Added by Marvin Wang on Jan. 10, 2012
@@ -135,6 +136,36 @@ public final class TalendEditorPaletteFactory {
             }
 
         });
+
+        final List<IComponent> finalComponentList = componentList;
+        final String finalPaletteType = paletteType;
+        Display.getDefault().syncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                createComponentsDrawer(finalComponentList, needHiddenComponent, a, finalPaletteType);
+            }
+        });
+    }
+
+    /** Create the "Shapes" drawer. */
+    private static void createComponentsDrawer(final List<IComponent> componentList, final boolean needHiddenComponent,
+            final int a, final String paletteType) {
+        // clearGroup();
+        PaletteDrawer componentsDrawer;
+        String name, longName;
+        String family;
+        String oraFamily;
+        List<CreationToolEntry> nodeList = new LinkedList<CreationToolEntry>();
+        List<String> families = new ArrayList<String>();
+        HashMap<String, String> familyMap = new HashMap<String, String>();
+        CombinedTemplateCreationEntry component;
+        Hashtable<String, PaletteDrawer> ht = new Hashtable<String, PaletteDrawer>();
+        List<String> favoriteComponentNames = null;
+        if (a == 0) {
+            componentsDrawer = new PaletteDrawer(Messages.getString("TalendEditorPaletteFactory.Default")); //$NON-NLS-1$
+            favoriteComponentNames = getFavoritesList();
+        }
 
         Set<String> displayedFamilies = ComponentsSettingsHelper.getDisplayedFamilies(paletteType);
 
@@ -249,15 +280,6 @@ public final class TalendEditorPaletteFactory {
                 noteAeeded = true;
             }
 
-            if (filter != null) {
-
-                String regex = getFilterRegex();
-                if (!xmlComponent.getName().toLowerCase().matches(regex)
-                        && !xmlComponent.getLongName().toLowerCase().matches(regex)) {
-                    continue;
-                }
-            }
-
             if (xmlComponent.isLoaded()) {
                 name = xmlComponent.getName();
                 longName = xmlComponent.getLongName();
@@ -347,6 +369,86 @@ public final class TalendEditorPaletteFactory {
         }
     }
 
+    protected static List<IComponent> getRelatedComponents(final IComponentsFactory compFac) {
+        Set<IComponent> componentSet = null;
+
+        Map<String, Map<String, Set<IComponent>>> componentNameMap = compFac.getComponentNameMap();
+
+        if (TalendEditorPaletteFactory.filter != null && 0 < TalendEditorPaletteFactory.filter.trim().length()
+                && componentNameMap != null) {
+            Map<String, Set<IComponent>> map = componentNameMap.get(TalendEditorPaletteFactory.filter.trim().toLowerCase());
+            if (map != null) {
+                Collection<Set<IComponent>> componentSets = map.values();
+                Iterator<Set<IComponent>> componentSetIter = componentSets.iterator();
+                while (componentSetIter.hasNext()) {
+                    componentSet = new HashSet<IComponent>(componentSetIter.next());
+                }
+            }
+        }
+        if (componentSet == null && TalendEditorPaletteFactory.filter != null
+                && 0 < TalendEditorPaletteFactory.filter.trim().length() && componentNameMap != null) {
+            componentSet = new HashSet<IComponent>();
+            addComponentsByNameFilter(compFac, componentSet);
+            boolean shouldSearchFromHelpAPI = true;
+            // shouldSearchFromHelpAPI = componentSet.isEmpty();
+
+            if (shouldSearchFromHelpAPI) {
+                Set<String> componentNames = getRelatedComponentNamesFromHelp(TalendEditorPaletteFactory.filter.trim());
+                if (componentNames != null && 0 < componentNames.size()) {
+                    Iterator<String> nameIter = componentNames.iterator();
+                    while (nameIter.hasNext()) {
+                        String componentName = nameIter.next();
+                        Map<String, Set<IComponent>> map = componentNameMap.get(componentName.toLowerCase());
+                        if (map == null) {
+                            continue;
+                        }
+                        Set<IComponent> findedComponents = map.get(componentName);
+                        if (findedComponents != null && !findedComponents.isEmpty()) {
+                            componentSet.addAll(findedComponents);
+                        }
+                    }
+                }
+            }
+            if (componentSet.isEmpty()) {
+                componentSet = null;
+            }
+        }
+
+        if (componentSet == null && StringUtils.isEmpty(TalendEditorPaletteFactory.filter)) {
+            componentSet = compFac.getComponents();
+        }
+
+        List<IComponent> relatedComponents = null;
+        if (componentSet == null) {
+            relatedComponents = new LinkedList<IComponent>();
+        } else {
+            relatedComponents = new LinkedList<IComponent>(componentSet);
+        }
+
+        return relatedComponents;
+    }
+
+    protected static void addComponentsByNameFilter(final IComponentsFactory compFac, Set<IComponent> componentSet) {
+        if (compFac == null || componentSet == null) {
+            return;
+        }
+
+        if (filter != null && !filter.trim().isEmpty()) {
+            Set<IComponent> components = compFac.getComponents();
+            Iterator<IComponent> iter = components.iterator();
+            String regex = getFilterRegex();
+            while (iter.hasNext()) {
+                IComponent xmlComponent = iter.next();
+                if (!xmlComponent.getName().toLowerCase().matches(regex)
+                        && !xmlComponent.getLongName().toLowerCase().matches(regex)) {
+                    continue;
+                } else {
+                    componentSet.add(xmlComponent);
+                }
+            }
+        }
+    }
+
     public static final int RECENTLY_USED_LIMIT_SIZE = 12;
 
     /**
@@ -430,10 +532,40 @@ public final class TalendEditorPaletteFactory {
         return newEntry;
     }
 
-    /** Create the "Shapes" drawer. */
-    private static void createComponentsDrawer(final IComponentsFactory compFac, boolean needHiddenComponent, boolean isFavorite,
-            int a) {
+    protected static void createComponentsDrawer(final IComponentsFactory compFac, final boolean needHiddenComponent,
+            final boolean isFavorite, final int a) {
+        List<IComponent> componentList = null;
+        componentList = getRelatedComponents(compFac);
 
+        // Added by Marvin Wang on Jan. 10, 2012
+        if (compFac.getComponentsHandler() != null) {
+            componentList = compFac.getComponentsHandler().filterComponents(componentList);
+            componentList = compFac.getComponentsHandler().sortComponents(componentList);
+        }
+
+        Collections.sort(componentList, new Comparator<IComponent>() {
+
+            @Override
+            public int compare(IComponent component1, IComponent component2) {
+                return component1.getName().toLowerCase().compareTo(component2.getName().toLowerCase());
+            }
+
+        });
+
+        final List<IComponent> finalComponentList = componentList;
+
+        Display.getDefault().syncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                createComponentsDrawer(finalComponentList, needHiddenComponent, isFavorite, a);
+            }
+        });
+    }
+
+    /** Create the "Shapes" drawer. */
+    private static void createComponentsDrawer(List<IComponent> componentList, boolean needHiddenComponent, boolean isFavorite,
+            int a) {
         clearGroup();
         List<CreationToolEntry> nodeList = new LinkedList<CreationToolEntry>();
         // } else if (a == 0) {
@@ -450,25 +582,9 @@ public final class TalendEditorPaletteFactory {
         paletteState = isFavorite;
         List<String> favoriteComponentNames = null;
         if (a == 0) {
-            componentsDrawer = new PaletteDrawer(Messages.getString("TalendEditorPaletteFactory.Default")); //$NON-NLS-1$
+            //            componentsDrawer = new PaletteDrawer(Messages.getString("TalendEditorPaletteFactory.Default")); //$NON-NLS-1$
             favoriteComponentNames = getFavoritesList();
         }
-        List<IComponent> componentList = new LinkedList<IComponent>(compFac.getComponents());
-
-        // Added by Marvin Wang on Jan. 10, 2012
-        if (compFac.getComponentsHandler() != null) {
-            componentList = compFac.getComponentsHandler().filterComponents(componentList);
-            componentList = compFac.getComponentsHandler().sortComponents(componentList);
-        }
-
-        Collections.sort(componentList, new Comparator<IComponent>() {
-
-            @Override
-            public int compare(IComponent component1, IComponent component2) {
-                return component1.getName().toLowerCase().compareTo(component2.getName().toLowerCase());
-            }
-
-        });
 
         Iterator<IComponent> componentIter = componentList.iterator();
         while (componentIter.hasNext()) {
@@ -584,18 +700,6 @@ public final class TalendEditorPaletteFactory {
                 }
                 String regex = getFilterRegex();
                 needAddNote = "Note".toLowerCase().matches(regex); //$NON-NLS-1$
-            }
-
-            if (filter != null) {
-                Pattern pattern = Pattern.compile("^[A-Za-z0-9]+$");//$NON-NLS-1$
-                Matcher matcher = pattern.matcher(filter);
-                if (matcher.matches()) {
-                    String regex = getFilterRegex();
-                    if (!xmlComponent.getName().toLowerCase().matches(regex)
-                            && !xmlComponent.getLongName().toLowerCase().matches(regex)) {
-                        continue;
-                    }
-                }
             }
 
             family = xmlComponent.getTranslatedFamilyName();
@@ -847,7 +951,14 @@ public final class TalendEditorPaletteFactory {
      */
     private static String getFilterRegex() {
         String regex = "\\b.*" + filter.replaceAll("\\*", ".*") + ".*\\b"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        regex = regex.replaceAll(" ", ".*"); //$NON-NLS-1$ //$NON-NLS-2$
         regex = regex.replaceAll("\\?", ".?"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        try {
+            Pattern.compile(regex);
+        } catch (Throwable e) {
+            regex = filter;
+        }
         return regex;
     }
 
@@ -867,10 +978,17 @@ public final class TalendEditorPaletteFactory {
         } else {
             family = familyToCreate;
         }
-        PaletteDrawer paletteDrawer = new TalendPaletteDrawer(family);
+        final PaletteDrawer paletteDrawer = new TalendPaletteDrawer(family);
         paletteDrawer.setInitialState(loadFamilyState(familyToCreate));
         if (parentPaletteDrawer == null) {
-            palette.add(paletteDrawer);
+            Display.getDefault().syncExec(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    palette.add(paletteDrawer);
+                }
+            });
         } else {
             parentPaletteDrawer.add(paletteDrawer);
         }
@@ -1047,6 +1165,72 @@ public final class TalendEditorPaletteFactory {
      */
     public static void setFilter(String filter) {
         TalendEditorPaletteFactory.filter = filter.toLowerCase();
+    }
+
+    static Job searchInHelpJob = null;
+
+    protected static Set<String> getRelatedComponentNamesFromHelp(final String filter) {
+        // This method will cost lots of time to complete when it is called the first time
+        final List<SearchHit> querySearchResult = new ArrayList<SearchHit>();
+        if (searchInHelpJob != null && searchInHelpJob.getState() != Job.NONE) {
+            searchInHelpJob.cancel();
+        }
+        searchInHelpJob = new Job("Searching from Help for Palette Filter") {
+
+            @SuppressWarnings("restriction")
+            @Override
+            protected IStatus run(IProgressMonitor monitor) {
+                try {
+                    ISearchQuery searchQuery = new SearchQuery(filter, false, new ArrayList<String>(), Platform.getNL());
+                    BaseHelpSystem.getLocalSearchManager().search(searchQuery, new ISearchHitCollector() {
+
+                        @Override
+                        public void addQTCException(QueryTooComplexException exception) throws QueryTooComplexException {
+                            // nothing need to do
+                        }
+
+                        @Override
+                        public void addHits(List<SearchHit> hits, String wordsSearched) {
+                            querySearchResult.addAll(hits);
+                        }
+                    }, monitor);
+                } catch (Throwable e) {
+                    CommonExceptionHandler.process(e, Priority.WARN);
+                }
+                return Status.OK_STATUS;
+            }
+
+            @Override
+            public boolean belongsTo(Object family) {
+                return family.equals(FederatedSearchJob.FAMILY);
+            }
+        };
+        try {
+            searchInHelpJob.setUser(false);
+            searchInHelpJob.setPriority(Job.INTERACTIVE);
+            searchInHelpJob.schedule();
+            searchInHelpJob.join();
+        } catch (InterruptedException e) {
+            CommonExceptionHandler.process(e, Priority.WARN);
+        }
+
+        Set<String> componentNames = new HashSet<String>();
+        int i = 0;
+        Iterator<SearchHit> iter = querySearchResult.iterator();
+        while (iter.hasNext()) {
+            SearchHit result = iter.next();
+            String label = result.getLabel();
+            if (label == null || label.trim().length() == 0) {
+                continue;
+            }
+            i++;
+            if (10 < i) {
+                break;
+            }
+            componentNames.add(label);
+        }
+
+        return componentNames;
     }
 
     public static void clearGroup() {

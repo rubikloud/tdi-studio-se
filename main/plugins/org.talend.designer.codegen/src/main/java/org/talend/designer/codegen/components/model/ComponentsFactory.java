@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -128,6 +129,8 @@ public class ComponentsFactory implements IComponentsFactory {
 
     private static boolean cleanDone = false;
 
+    protected static Map<String, Map<String, Set<IComponent>>> componentNameMap;
+
     public ComponentsFactory() {
     }
 
@@ -178,6 +181,9 @@ public class ComponentsFactory implements IComponentsFactory {
 
         ComponentManager.saveResource(); // will save only if needed.
 
+        // init component name map, used to pick specified component immediately
+        initComponentNameMap();
+
         // TimeMeasure.step("initComponents", "createCache");
         log.debug(componentList.size() + " components loaded in " + (System.currentTimeMillis() - startTime) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -185,6 +191,45 @@ public class ComponentsFactory implements IComponentsFactory {
         // TimeMeasure.display = false;
         // TimeMeasure.displaySteps = false;
         // TimeMeasure.measureActive = false;
+    }
+
+    protected void initComponentNameMap() {
+        if (componentList == null) {
+            return;
+        }
+        /**
+         * component names example: <br>
+         * 1. xmlMapComponent <br>
+         * 2. xmlmapComponent <br>
+         * 3. xmlmapcomponent <br>
+         * 4. xmlMapComponent (for DI) <br>
+         * 5. xmlMapComponent (for BD) <br>
+         */
+        componentNameMap = new HashMap<String, Map<String, Set<IComponent>>>();
+        Iterator<IComponent> componentIter = componentList.iterator();
+        while (componentIter.hasNext()) {
+            IComponent component = componentIter.next();
+            String componentName = component.getName();
+            if (StringUtils.isEmpty(componentName)) {
+                continue;
+            }
+            String componentNameLowerCase = componentName.toLowerCase();
+            Map<String, Set<IComponent>> map = componentNameMap.get(componentNameLowerCase);
+            if (map == null) {
+                map = new HashMap<String, Set<IComponent>>();
+                Set<IComponent> componentSet = new HashSet<IComponent>();
+                componentSet.add(component);
+                map.put(componentName, componentSet);
+                componentNameMap.put(componentNameLowerCase, map);
+            } else {
+                Set<IComponent> componentSet = map.get(componentName);
+                if (componentSet == null) {
+                    componentSet = new HashSet<IComponent>();
+                    map.put(componentName, componentSet);
+                }
+                componentSet.add(component);
+            }
+        }
     }
 
     /**
@@ -745,6 +790,14 @@ public class ComponentsFactory implements IComponentsFactory {
             init(false);
         }
         return componentList;
+    }
+
+    @Override
+    public synchronized Map<String, Map<String, Set<IComponent>>> getComponentNameMap() {
+        if (componentNameMap == null) {
+            init(false);
+        }
+        return componentNameMap;
     }
 
     @Override

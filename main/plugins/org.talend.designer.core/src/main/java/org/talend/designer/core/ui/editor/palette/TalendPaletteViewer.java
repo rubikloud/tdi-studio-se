@@ -52,7 +52,7 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
-import org.talend.commons.utils.threading.ExecutionLimiter;
+import org.talend.commons.utils.threading.ExecutionLimiterImproved;
 import org.talend.core.model.components.EComponentType;
 import org.talend.core.model.components.IComponent;
 import org.talend.core.ui.component.ComponentPaletteUtilities;
@@ -77,7 +77,10 @@ public class TalendPaletteViewer extends PaletteViewer {
 
     private static String currentFilterText;
 
-    private ThreadPoolExecutor executor;
+    protected static ThreadPoolExecutor executor;
+    static {
+        executor = new ThreadPoolExecutor(1, 2, 0, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+    }
 
     protected TalendDrawerEditPart favoritesEditPart;
 
@@ -87,25 +90,33 @@ public class TalendPaletteViewer extends PaletteViewer {
 
     protected TalendPaletteCSSStyleSetting cssStyleSetting;
 
-    private final ExecutionLimiter expandLimiter = new ExecutionLimiter(500, true) {
+    private final ExecutionLimiterImproved expandLimiter = new ExecutionLimiterImproved(500, false) {
 
         @Override
         public void execute(final boolean isFinalExecution, Object data) {
             final Text text = (Text) data;
-            text.getDisplay().asyncExec(new Runnable() {
+            // text.getDisplay().asyncExec(new Runnable() {
+            //
+            // @Override
+            // public void run() {
+            ExpandPaletteRunnable runnable = (ExpandPaletteRunnable) executor.getQueue().poll();
+            if (runnable != null) {
+                runnable.stopExpand();
+            }
+            filterPalette(text);
+            final StringBuffer strBuffer = new StringBuffer();
+            Display.getDefault().syncExec(new Runnable() {
 
                 @Override
                 public void run() {
-                    ExpandPaletteRunnable runnable = (ExpandPaletteRunnable) executor.getQueue().poll();
-                    if (runnable != null) {
-                        runnable.stopExpand();
-                    }
-                    filterPalette(text);
-                    if (!text.getText().equals("")) { //$NON-NLS-1$
-                        executor.execute(new ExpandPaletteRunnable());
-                    }
+                    strBuffer.append(text.getText());
                 }
             });
+            if (!strBuffer.toString().equals("")) { //$NON-NLS-1$
+                executor.execute(new ExpandPaletteRunnable());
+            }
+            // }
+            // });
         }
     };
 
@@ -115,7 +126,6 @@ public class TalendPaletteViewer extends PaletteViewer {
         this.cssStyleSetting = cssStyleSetting;
         paletteEditPartFactory = new TalendPaletteEditPartFactory(cssStyleSetting);
         setEditPartFactory(paletteEditPartFactory);
-        executor = new ThreadPoolExecutor(10, 20, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
         this.enableVerticalScrollbar(true);
         setupPreferences();
     }
@@ -343,7 +353,7 @@ public class TalendPaletteViewer extends PaletteViewer {
                     List children = ComponentPaletteUtilities.getPaletteRoot().getChildren();
                     int counter = 0;
                     for (Object obj : children) {
-                        if (stop || counter > 3) {
+                        if (stop || counter > 5) {
                             return;
                         }
                         if (obj instanceof PaletteDrawer) {
@@ -376,12 +386,28 @@ public class TalendPaletteViewer extends PaletteViewer {
         return null;
     }
 
-    private void filterPalette(Text text) {
-        if (setTextOnly == text) {
-            return;
+    private void filterPalette(final Text text) {
+        final List<Text> disposed = new ArrayList<Text>();
+        Display.getDefault().syncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                prepareFilterPalette(text, disposed);
+            }
+        });
+        if (!currentFilterText.equals(SEARCH_COMPONENT)) {
+            ComponentPaletteUtilities.filterPalette(currentFilterText.trim());
         }
 
-        List<Text> disposed = new ArrayList<Text>();
+        filters.removeAll(disposed);
+    }
+
+    protected boolean prepareFilterPalette(Text text, List<Text> disposed) {
+        boolean canExecute = true;
+        if (setTextOnly == text) {
+            return false;
+        }
+
         for (Text otherText : filters) {
 
             if (text == otherText) {
@@ -398,11 +424,7 @@ public class TalendPaletteViewer extends PaletteViewer {
         }
 
         currentFilterText = text.getText();
-        if (!currentFilterText.equals(SEARCH_COMPONENT)) {
-            ComponentPaletteUtilities.filterPalette(currentFilterText.trim());
-        }
-
-        filters.removeAll(disposed);
+        return canExecute;
     }
 
     // expose getLightweightSystem to public

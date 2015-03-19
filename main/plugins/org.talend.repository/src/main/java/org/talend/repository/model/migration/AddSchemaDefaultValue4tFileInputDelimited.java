@@ -64,7 +64,7 @@ public class AddSchemaDefaultValue4tFileInputDelimited extends
 												ColumnType column = ((ColumnType) outColumn);
 												JavaType javaType = JavaTypesManager.getJavaTypeFromId(column.getType());
 												boolean isJavaPrimitiveType = JavaTypesManager.isJavaPrimitiveType(javaType,column.isNullable());
-												if(isJavaPrimitiveType && column.getDefaultValue()==null){
+												if(isJavaPrimitiveType && (column.getDefaultValue()==null || column.getDefaultValue().isEmpty())){
 													String defaultValue = JavaTypesManager.getDefaultValueFromJavaType(javaType.getPrimitiveClass().getSimpleName(), null);
 													if(defaultValue != null){
 														column.setDefaultValue(defaultValue);

@@ -18,12 +18,12 @@
 <%
 CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
 INode node = (INode)codeGenArgument.getArgument();
-String cid = node.getUniqueName();
+final String cid = node.getUniqueName();
 List<IMetadataTable> metadatas = node.getMetadataList();
 if ((metadatas!=null)&&(metadatas.size()>0)) {
 	IMetadataTable metadata = metadatas.get(0);
 	if (metadata!=null) {
-		boolean version07 = ("true").equals(ElementParameterParser.getValue(node,"__VERSION_2007__"));
+		final boolean version07 = ("true").equals(ElementParameterParser.getValue(node,"__VERSION_2007__"));
 
 		String fileName = ElementParameterParser.getValue(node,"__FILENAME__");
 
@@ -53,10 +53,94 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 		boolean isTrimAll = (isTrimAllStr!=null&&!("").equals(isTrimAllStr))?("true").equals(isTrimAllStr):true;
 
 		String mode = ElementParameterParser.getValue(node,"__GENERATION_MODE__");
-		boolean eventMode = "EVENT_MODE".equals(mode);
+		final boolean eventMode = "EVENT_MODE".equals(mode);
 
 		boolean isLog4jEnabled = ("true").equals(ElementParameterParser.getValue(node.getProcess(), "__LOG4J_ACTIVATE__"));
-
+		
+		int dynamic_index = -1;
+		boolean hasDynamic = false;
+		List<IMetadataColumn> columnList = metadata.getListColumns();
+		for(int i=0; columnList!=null && i< columnList.size(); i++) {
+	        if(columnList.get(i).getTalendType().equals("id_Dynamic")){
+	            dynamic_index = i+1;
+	            hasDynamic = true;
+	            break;
+	        }
+		}
+		
+		class GenerateCodeUtil{
+			public void generateCode(int dynamic_index,int colLen,boolean hasDynamic){
+				if(hasDynamic){
+				%>
+					if(isFirstCheckDyn_<%=cid %>){// for the header line
+						<%
+						if(!version07){
+						%>
+							int colsLen_<%=cid %> = row_<%= cid %>.length;
+						<%
+						}else if(!eventMode){
+						%>
+		    				int colsLen_<%=cid %> =  row_<%= cid %>.getLastCellNum()-start_column_<%= cid %>;
+		    			<%
+		    			}else{
+		    			%>
+		    				int colsLen_<%=cid %> = row_<%= cid %>.size();
+		    			<%
+		    			}
+		    			%>
+		    			for (int i = <%=dynamic_index-1%>; i < colsLen_<%=cid %>-<%=colLen-dynamic_index%>; i++) {
+					    	routines.system.DynamicMetadata dynamicMetadata_<%=cid%> = new routines.system.DynamicMetadata();
+							<%
+							if(!version07){
+							%>
+								String content_<%=cid%> = row_<%= cid %>[i].getContents();
+							<%
+							}else if(!eventMode){
+							%>
+			    				String content_<%=cid%> = row_<%= cid %>.getCell(i).getStringCellValue();
+			    			<%
+			    			}else{
+			    			%>
+			    				String content_<%=cid%> = row_<%= cid %>.get(i);
+			    			<%
+			    			}
+			    			%>
+					    	dynamicMetadata_<%=cid%>.setName(content_<%=cid%>.replaceAll("[ .-]+", "_"));
+					    	dynamicMetadata_<%=cid%>.setDbName(dynamicMetadata_<%=cid%>.getName());
+					    	dynamicMetadata_<%=cid%>.setType("id_String");
+					    	dynamicMetadata_<%=cid%>.setDbType("VARCHAR");
+					    	dynamicMetadata_<%=cid%>.setLength(100);
+					    	dynamicMetadata_<%=cid%>.setPrecision(0);
+					    	dynamicMetadata_<%=cid%>.setNullable(true);
+					    	dynamicMetadata_<%=cid%>.setKey(false);
+					    	dynamicMetadata_<%=cid%>.setSourceType(routines.system.DynamicMetadata.sourceTypes.demilitedFile);
+					    	dynamicMetadata_<%=cid%>.setColumnPosition(i);
+					    	dynamic_<%=cid%>.metadatas.add(dynamicMetadata_<%=cid%>);
+					    }
+		    			isFirstCheckDyn_<%=cid %> = false;
+		    			
+		    			continue;
+					}
+					int dynamic_column_count_<%=cid%>=1;
+					int tempRowLength_<%=cid%> = <%=colLen%>+dynamic_<%=cid %>.getColumnCount()-1;
+				<%
+				}else{
+				%>
+					int tempRowLength_<%=cid%> = <%=colLen%>;
+				<%
+				}
+				%>
+				int columnIndex_<%=cid%> = 0;
+			<%
+			}
+		}
+		GenerateCodeUtil generateCodeUtil = new GenerateCodeUtil();
+		if(hasDynamic){
+			%>
+			boolean isFirstCheckDyn_<%=cid %> = true;
+			routines.system.Dynamic dynamic_<%=cid %> = new routines.system.Dynamic();
+		<%
+		}
 		/* -------------------------- */
 		if(!version07){//version judgement
 			boolean bReadRealValue = ("true").equals(ElementParameterParser.getValue(node, "__READ_REAL_VALUE__"));
@@ -279,11 +363,14 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 				List<IMetadataColumn> listColumns = metadata.getListColumns();
 				int size = listColumns.size();
 				if (conn.getLineStyle().hasConnectionCategory(IConnectionCategory.DATA)) {
+				 	generateCodeUtil.generateCode(dynamic_index,size,hasDynamic);
+					%>
 //
 //end%>
-			String[] temp_row_<%= cid %> = new String[<%=listColumns.size()%>];
+			
+			String[] temp_row_<%= cid %> = new String[tempRowLength_<%=cid%>];
 			int actual_end_column_<%= cid %> = end_column_<%= cid %> >	row_<%= cid %>.length ? row_<%= cid %>.length : end_column_<%= cid %>;
-			for(int i=0;i<<%=size%>;i++){
+			for(int i=0;i<tempRowLength_<%=cid%>;i++){
 
 				if(i + start_column_<%= cid %> < actual_end_column_<%= cid %>){
 
@@ -326,10 +413,19 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 						String typeToGenerate = JavaTypesManager.getTypeToGenerate(column.getTalendType(), column.isNullable());
 						JavaType javaType = JavaTypesManager.getJavaTypeFromId(column.getTalendType());
 						String patternValue = column.getPattern() == null || column.getPattern().trim().length() == 0 ? null : column.getPattern();
+						if(metadata.isDynamicSchema()){
+						%>
+							columnIndex_<%=cid%> = <%=i-1%>+dynamic_column_count_<%=cid%>;
+						<%
+						}else{
+						%>
+							columnIndex_<%=cid%> = <%=i%>;
+						<%
+						}
 //
 //end%>
-			if(temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>.length() > 0) {
-				curColNum_<%=cid %>=<%=i%> + start_column_<%= cid %> + 1;
+			if(temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>.length() > 0) {
+				curColNum_<%=cid %>=columnIndex_<%=cid%> + start_column_<%= cid %> + 1;
 				curColName_<%=cid %> = "<%=column.getLabel() %>";
 <%
 //start
@@ -338,7 +434,7 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 						if(javaType == JavaTypesManager.STRING || javaType == JavaTypesManager.OBJECT) {
 //
 //end%>
-			<%=firstConnName %>.<%=column.getLabel() %> = temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>;
+			<%=firstConnName %>.<%=column.getLabel() %> = temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>;
 <%
 //start
 			} else if(javaType == JavaTypesManager.DATE) {
@@ -346,7 +442,7 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 //end%>
 			if(<%= i%><actual_end_column_<%= cid %>){
 				try{
-					java.util.Date dateGMT_<%=cid %> = ((jxl.DateCell)row_<%= cid %>[<%=i%> + start_column_<%= cid %>]).getDate();
+					java.util.Date dateGMT_<%=cid %> = ((jxl.DateCell)row_<%= cid %>[columnIndex_<%=cid%> + start_column_<%= cid %>]).getDate();
 					<%=firstConnName %>.<%=column.getLabel() %> = new java.util.Date(dateGMT_<%=cid %>.getTime() - java.util.TimeZone.getDefault().getOffset(dateGMT_<%=cid %>.getTime()));
 				}catch(java.lang.Exception e){
 					<% // for bug TDI-19404 %>
@@ -357,16 +453,32 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 //start
 			}else if(advancedSeparator && JavaTypesManager.isNumberType(javaType)) {
 %>
-		<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(ParserUtils.parseTo_Number(temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>, <%= thousandsSeparator %>, <%= decimalSeparator %>));
+		<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(ParserUtils.parseTo_Number(temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>, <%= thousandsSeparator %>, <%= decimalSeparator %>));
 <%
 					} else if(javaType == JavaTypesManager.BYTE_ARRAY) {
 	%>
-			<%=firstConnName %>.<%=column.getLabel() %> = temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>.getBytes(<%=encoding %>);
+			<%=firstConnName %>.<%=column.getLabel() %> = temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>.getBytes(<%=encoding %>);
 	<%
+			}else if(column.getTalendType().equals("id_Dynamic")){
+				dynamic_index = i;
+			%>
+				dynamic_<%=cid %>.clearColumnValues();
+				int fieldCount = row_<%= cid %>.length;
+				dynamic_column_count_<%=cid%> = dynamic_<%=cid %>.getColumnCount();
+				for (int i = 0; i < dynamic_column_count_<%=cid%> ; i++) {
+					if ((<%=dynamic_index%>+i) < fieldCount){
+						dynamic_<%=cid %>.addColumnValue(temp_row_<%= cid %>[<%=dynamic_index%>+i]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>);
+					}
+					else{
+						dynamic_<%=cid %>.addColumnValue("");
+					}
+				}
+				<%=firstConnName %>.<%=column.getLabel() %> =dynamic_<%=cid %>;
+			<%
 			} else {
 //
 //end%>
-			<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>);
+			<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>);
 <%
 //start
 //
@@ -662,8 +774,9 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 				List<IMetadataColumn> listColumns = metadata.getListColumns();
 				int size = listColumns.size();
 				if (conn.getLineStyle().hasConnectionCategory(IConnectionCategory.DATA)) {//5
-%>
-			String[] temp_row_<%= cid %> = new String[<%=listColumns.size()%>];
+					generateCodeUtil.generateCode(dynamic_index,size,hasDynamic);
+					%>
+			String[] temp_row_<%= cid %> = new String[tempRowLength_<%=cid%>];
 <%
 			if(converDatetoString){
 %>
@@ -697,7 +810,7 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 				actual_end_column_<%= cid %> = end_column_<%= cid %> >	excel_end_column_<%=cid%> ? excel_end_column_<%=cid%> : end_column_<%= cid %>;
 			}
 			org.apache.poi.ss.formula.eval.NumberEval ne_<%=cid%> = null;
-			for(int i=0;i<<%=size%>;i++){
+			for(int i=0;i<tempRowLength_<%=cid%>;i++){
 				if(i + start_column_<%= cid %> < actual_end_column_<%= cid %>){
 					org.apache.poi.ss.usermodel.Cell cell_<%=cid%> = row_<%= cid %>.getCell(i + start_column_<%= cid %>);
 					if(cell_<%=cid%>!=null){
@@ -786,25 +899,34 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 						String typeToGenerate = JavaTypesManager.getTypeToGenerate(column.getTalendType(), column.isNullable());
 						JavaType javaType = JavaTypesManager.getJavaTypeFromId(column.getTalendType());
 						String patternValue = column.getPattern() == null || column.getPattern().trim().length() == 0 ? null : column.getPattern();
+						if(metadata.isDynamicSchema()){
+						%>
+							columnIndex_<%=cid%> = <%=i-1%>+dynamic_column_count_<%=cid%>;
+						<%
+						}else{
+						%>
+							columnIndex_<%=cid%> = <%=i%>;
+						<%
+						}
 %>
-			if(temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>.length() > 0) {
-				curColNum_<%=cid %>=<%=i%> + start_column_<%= cid %> + 1;
+			if(temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>.length() > 0) {
+				curColNum_<%=cid %>=columnIndex_<%=cid%> + start_column_<%= cid %> + 1;
 				curColName_<%=cid %> = "<%=column.getLabel() %>";
 
 <%
 						if (javaType == JavaTypesManager.STRING || javaType == JavaTypesManager.OBJECT) {
 %>
-				<%=firstConnName %>.<%=column.getLabel() %> = temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>;
+				<%=firstConnName %>.<%=column.getLabel() %> = temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>;
 <%
 						} else if(javaType == JavaTypesManager.DATE) {
 %>
 				if(<%= i%><actual_end_column_<%= cid %>){
 					try{
-						if(row_<%= cid %>.getCell(<%=i%>+ start_column_<%= cid %>).getCellType() == org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC && org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(row_<%= cid %>.getCell(<%=i%>+ start_column_<%= cid %>))){
-							<%=firstConnName %>.<%=column.getLabel() %> = row_<%= cid %>.getCell(<%=i%>+ start_column_<%= cid %>).getDateCellValue();
+						if(row_<%= cid %>.getCell(columnIndex_<%=cid%>+ start_column_<%= cid %>).getCellType() == org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC && org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(row_<%= cid %>.getCell(columnIndex_<%=cid%>+ start_column_<%= cid %>))){
+							<%=firstConnName %>.<%=column.getLabel() %> = row_<%= cid %>.getCell(columnIndex_<%=cid%>+ start_column_<%= cid %>).getDateCellValue();
 						}
 						else{
-                            java.util.Date tempDate_<%=cid%> = ParserUtils.parseTo_Date(temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>, <%= patternValue %>);
+                            java.util.Date tempDate_<%=cid%> = ParserUtils.parseTo_Date(temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>, <%= patternValue %>);
                             if(tempDate_<%=cid%>.after((new SimpleDateFormat("yyyy/MM/dd hh:mm:ss.SSS")).parse("9999/12/31 23:59:59.999"))||tempDate_<%=cid%>.before((new SimpleDateFormat("yyyy/MM/dd")).parse("1900/01/01"))){
                                 throw new RuntimeException("The cell format is not Date in ( Row. "+(nb_line_<%= cid %>+1)+ " and ColumnNum. " + curColNum_<%=cid %> + " )");
                             }else{
@@ -821,20 +943,36 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 						}else if(JavaTypesManager.isNumberType(javaType)) {
 							if(advancedSeparator) {
 %>
-				<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(ParserUtils.parseTo_Number(temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>, <%= thousandsSeparator %>, <%= decimalSeparator %>));
+				<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(ParserUtils.parseTo_Number(temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>, <%= thousandsSeparator %>, <%= decimalSeparator %>));
 <%
 							} else {
 %>
-				<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(ParserUtils.parseTo_Number(temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>, null, '.'==decimalChar_<%=cid %> ? null : decimalChar_<%=cid %>));
+				<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(ParserUtils.parseTo_Number(temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>, null, '.'==decimalChar_<%=cid %> ? null : decimalChar_<%=cid %>));
 <%
 							}
 						} else if(javaType == JavaTypesManager.BYTE_ARRAY) {
 %>
-				<%=firstConnName %>.<%=column.getLabel() %> = temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>.getBytes(<%=encoding %>);
+				<%=firstConnName %>.<%=column.getLabel() %> = temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>.getBytes(<%=encoding %>);
 <%
+						}else if(column.getTalendType().equals("id_Dynamic")){
+							dynamic_index = i;
+							%>
+							dynamic_<%=cid %>.clearColumnValues();
+							int fieldCount = row_<%= cid %>.getLastCellNum()-row_<%= cid %>.getFirstCellNum();
+							dynamic_column_count_<%=cid%> = dynamic_<%=cid %>.getColumnCount();
+							for (int i = 0; i < dynamic_column_count_<%=cid%> ; i++) {
+								if ((<%=dynamic_index%>+i) < fieldCount){
+									dynamic_<%=cid %>.addColumnValue(temp_row_<%= cid %>[<%=dynamic_index%>+i]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>);
+								}
+								else{
+									dynamic_<%=cid %>.addColumnValue("");
+								}
+							}
+							<%=firstConnName %>.<%=column.getLabel() %> =dynamic_<%=cid %>;
+						<%
 						} else {
 %>
-				<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>);
+				<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>);
 <%
 						}
 %>
@@ -965,7 +1103,23 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 		int start_column_<%= cid %> = <%if(("").equals(firstColumn.trim())){%>0<%}else{%><%=firstColumn%>-1<%}%>;
 		int end_column_<%= cid %> = <%if(("").equals(lastColumn.trim())){%>-1<%}else{%><%=lastColumn%>-1<%}%>;
 		if(start_column_<%= cid %> >=0) {//follow start column
-			end_column_<%= cid %> = start_column_<%= cid %> + <%=metadata.getListColumns().size()%> - 1;
+			<%
+			if(hasDynamic){
+				if(("").equals(lastColumn.trim())){
+				%>
+					end_column_<%= cid %> = 16384;
+				<%
+				}else{
+				%>
+					end_column_<%= cid %> = <%=lastColumn%>-1;
+				<%
+				}
+			}else{
+			%>
+				end_column_<%= cid %> = start_column_<%= cid %> + <%=metadata.getListColumns().size()%> - 1;
+			<%
+			}
+			%>
 		} else if(end_column_<%= cid %> >= 0) {//follow end column
 			start_column_<%= cid %> = end_column_<%= cid %> - <%=metadata.getListColumns().size()%> + 1;
 		}
@@ -973,6 +1127,7 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 		if(end_column_<%= cid %><0 || start_column_<%= cid %><0) {
 			throw new RuntimeException("Error start column and end column.");
 		}
+		int actual_end_column_<%= cid %> = end_column_<%= cid %> ;
 
 		int header_<%=cid%> = <%if(("").equals(header.trim())){%>0<%}else{%><%=header%><%}%>;
 		int limit_<%=cid%> = <%if(("").equals(limit.trim())){%>-1<%}else{%><%=limit%><%}%>;
@@ -1040,11 +1195,20 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
     				List<IMetadataColumn> listColumns = metadata.getListColumns();
     				int size = listColumns.size();
     				if (conn.getLineStyle().hasConnectionCategory(IConnectionCategory.DATA)) {//TD256
-%>
-		String[] temp_row_<%= cid %> = new String[<%=listColumns.size()%>];
-		for(int i_<%=cid%>=0;i_<%=cid%> < <%=size%>;i_<%=cid%>++){
+						generateCodeUtil.generateCode(dynamic_index,size,hasDynamic);
+						%>
+					
+		String[] temp_row_<%= cid %> = new String[tempRowLength_<%=cid%>];
+		<%
+		if(hasDynamic && ("").equals(lastColumn.trim())){
+		%>
+			actual_end_column_<%= cid %> = end_column_<%= cid %>+dynamic_<%=cid %>.getColumnCount()-1;
+		<%
+		}
+		%>
+		for(int i_<%=cid%>=0;i_<%=cid%> < tempRowLength_<%=cid%>;i_<%=cid%>++){
 			int current_<%=cid%> = i_<%=cid%> + start_column_<%= cid %>;
-			if(current_<%=cid%> <= end_column_<%= cid %>){
+			if(current_<%=cid%> <= actual_end_column_<%= cid %>){
 				if(current_<%=cid%> < row_<%=cid%>.size()){
 					String column_<%=cid%> = row_<%=cid%>.get(current_<%=cid%>);
 					if(column_<%=cid%>!=null) {
@@ -1072,20 +1236,29 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 						String typeToGenerate = JavaTypesManager.getTypeToGenerate(column.getTalendType(), column.isNullable());
 						JavaType javaType = JavaTypesManager.getJavaTypeFromId(column.getTalendType());
 						String patternValue = column.getPattern() == null || column.getPattern().trim().length() == 0 ? null : column.getPattern();
+						if(metadata.isDynamicSchema()){
+						%>
+							columnIndex_<%=cid%> = <%=i-1%>+dynamic_column_count_<%=cid%>;
+						<%
+						}else{
+						%>
+							columnIndex_<%=cid%> = <%=i%>;
+						<%
+						}
 %>
-			if(temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>.length() > 0) {
-				curColNum_<%=cid %>=<%=i%> + start_column_<%= cid %> + 1;
+			if(temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>.length() > 0) {
+				curColNum_<%=cid %>=columnIndex_<%=cid%> + start_column_<%= cid %> + 1;
 				curColName_<%=cid %> = "<%=column.getLabel() %>";
 
 <%
 						if (javaType == JavaTypesManager.STRING || javaType == JavaTypesManager.OBJECT) {
 %>
-				<%=firstConnName %>.<%=column.getLabel() %> = temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>;
+				<%=firstConnName %>.<%=column.getLabel() %> = temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>;
 <%
 						} else if(javaType == JavaTypesManager.DATE) {
 %>
 				try{
-					<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_Date(temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>, <%= patternValue %>);
+					<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_Date(temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>, <%= patternValue %>);
 				}catch(java.lang.Exception e){
 					<% // for bug TDI-19404 %>
 					throw new RuntimeException("The cell format is not Date in ( Row. "+(nb_line_<%= cid %>+1)+ " and ColumnNum. " + curColNum_<%=cid %> + " )");
@@ -1095,20 +1268,36 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 						}else if(JavaTypesManager.isNumberType(javaType)) {
 							if(advancedSeparator) {
 %>
-				<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(ParserUtils.parseTo_Number(temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>, <%= thousandsSeparator %>, <%= decimalSeparator %>));
+				<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(ParserUtils.parseTo_Number(temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>, <%= thousandsSeparator %>, <%= decimalSeparator %>));
 <%
 							} else {
 %>
-				<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(ParserUtils.parseTo_Number(temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>, null, '.'==decimalChar_<%=cid %> ? null : decimalChar_<%=cid %>));
+				<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(ParserUtils.parseTo_Number(temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>, null, '.'==decimalChar_<%=cid %> ? null : decimalChar_<%=cid %>));
 <%
 							}
 						} else if(javaType == JavaTypesManager.BYTE_ARRAY) {
 %>
-				<%=firstConnName %>.<%=column.getLabel() %> = temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>.getBytes(<%=encoding %>);
+				<%=firstConnName %>.<%=column.getLabel() %> = temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>.getBytes(<%=encoding %>);
 <%
+						}else if(column.getTalendType().equals("id_Dynamic")){
+							dynamic_index = i;
+			%>
+							dynamic_<%=cid %>.clearColumnValues();
+							int fieldCount = row_<%= cid %>.size();
+							dynamic_column_count_<%=cid%> = dynamic_<%=cid %>.getColumnCount();
+							for (int i = 0; i < dynamic_column_count_<%=cid%> ; i++) {
+								if ((<%=dynamic_index%>+i) < fieldCount){
+									dynamic_<%=cid %>.addColumnValue(temp_row_<%= cid %>[<%=dynamic_index%>+i]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>);
+								}
+								else{
+									dynamic_<%=cid %>.addColumnValue("");
+								}
+							}
+							<%=firstConnName %>.<%=column.getLabel() %> =dynamic_<%=cid %>;
+						<%
 						} else {
 %>
-				<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(temp_row_<%=cid %>[<%=i%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>);
+				<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(temp_row_<%=cid %>[columnIndex_<%=cid%>]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>);
 <%
 						}
 %>

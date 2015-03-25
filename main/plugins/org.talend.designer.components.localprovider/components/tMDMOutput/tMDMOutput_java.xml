@@ -157,7 +157,7 @@
 			<DEFAULT>false</DEFAULT>
 		</PARAMETER>
 
-		<PARAMETER NAME="SOURCE" FIELD="TEXT" NUM_ROW="60" REQUIRED="true"  SHOW_IF="(CONTAINER_TYPE=='MASTER') and (WITHREPORT=='true') and (USE_PARTIAL_UPDATE=='false')">
+		<PARAMETER NAME="SOURCE" FIELD="TEXT" NUM_ROW="60" REQUIRED="true"  SHOW_IF="(CONTAINER_TYPE=='MASTER') and (WITHREPORT=='true')">
 			<DEFAULT>"TOS"</DEFAULT>
 		</PARAMETER>
 
@@ -378,7 +378,7 @@
 
 		</TEMPLATES>
 		<IMPORTS>
-			<IMPORT NAME="MDM-Webservice" MODULE="mdm_webservice.jar" UrlPath="platform:/plugin/org.talend.libraries.mdm/lib/mdm_webservice.jar" REQUIRED_IF="IS_VIRTUAL_COMPONENT == 'false'" />
+			<IMPORT NAME="MDM-Webservice562" MODULE="mdm_webservice562.jar" UrlPath="platform:/plugin/org.talend.libraries.mdm/lib/mdm_webservice562.jar" REQUIRED_IF="IS_VIRTUAL_COMPONENT == 'false'" />
 			<IMPORT NAME="SOAP-axis" MODULE="axis.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.axis2/lib/axis.jar" REQUIRED_IF="IS_VIRTUAL_COMPONENT == 'false'" />
 			<IMPORT NAME="log4j-1.2.15.jar" MODULE="log4j-1.2.15.jar" UrlPath="platform:/base/plugins/org.apache.log4j_1.2.15.v201012070815.jar" BundleID="" REQUIRED_IF="IS_VIRTUAL_COMPONENT == 'false'" />
 			<IMPORT NAME="SOAP-jaxrpc" MODULE="jaxrpc.jar" UrlPath="platform:/plugin/org.talend.libraries.jax/lib/jaxrpc.jar" BundleID="" REQUIRED_IF="IS_VIRTUAL_COMPONENT == 'false'" />

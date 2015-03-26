@@ -165,6 +165,14 @@ for(Object row_<%=cid%> : resultset_<%=cid%>) {
 %>
 						<%=firstConnName%>.<%=column.getLabel() %> = ParserUtils.parseTo_Date(value_<%=cid%>.toString(), <%=pattern%>);
 <%
+        			} else if(advancedSeparator && JavaTypesManager.isNumberType(javaType)) {
+%>
+						<%=firstConnName %>.<%=column.getLabel() %> = ParserUtils.parseTo_<%= typeToGenerate %>(ParserUtils.parseTo_Number(value_<%=cid%>.toString(), <%= thousandsSeparator %>, <%= decimalSeparator %>));
+<%
+        			} else if(javaType == JavaTypesManager.BYTE_ARRAY) {
+%>
+						<%=firstConnName %>.<%=column.getLabel() %> = value_<%=cid%>.toString().getBytes(<%=encoding %>);
+<%
         			} else {
 %>
 						<%=firstConnName%>.<%=column.getLabel() %> = ParserUtils.parseTo_<%=typeToGenerate %>(value_<%=cid%>.toString());

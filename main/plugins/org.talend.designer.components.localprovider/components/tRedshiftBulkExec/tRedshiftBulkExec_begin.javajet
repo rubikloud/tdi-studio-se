@@ -232,11 +232,9 @@ skeleton="../templates/db_output_bulk.skeleton"
 			.append("<%=parameterKey%> '").append(<%=value%>).append("' ")
 <%
 			} else if("ESCAPE,EXPLICIT_IDS,IGNOREBLANKLINES,TRIMBLANKS,EMPTYASNULL,BLANKSASNULL,SSH,REMOVEQUOTES,ACCEPTANYDATE,TRUNCATECOLUMNS,FILLRECORD,NOLOAD,ROUNDEC".contains(parameterKey)) {
-				if("true".equals(value)) {
 %>
-				.append("<%=parameterKey%> ")
+			.append("<%=parameterKey%> ")
 <%
-				}
 			} else if("IGNOREHEADER,COMPROWS".contains(parameterKey)) {
 %>
 			.append("<%=parameterKey%> ").append(<%=value%>).append(" ")
@@ -247,7 +245,7 @@ skeleton="../templates/db_output_bulk.skeleton"
 			.append("MAXERROR ").append(<%=value%>).append(" ")
 <%
 			} else if("ACCEPTINVCHARS".equals(parameterKey)) {
-				if("true".equals(value)) {
+				if(value == null || "".equals(value.trim()) || "\"\"".equals(value.trim())) {
 %>
 				.append("ACCEPTINVCHARS ")
 <%

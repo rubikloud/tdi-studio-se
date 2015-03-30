@@ -133,6 +133,13 @@ if (metadatas != null && metadatas.size()>0) {
 
     try {
 		<%if(usePartialUpdate){ // partial%>
+			<%
+			if(isStaging){
+				dataCluster = dataCluster.substring(1, dataCluster.length() - 1);
+				dataCluster += "#STAGING";
+				dataCluster = "\"" + dataCluster + "\"";
+			}
+			%>
 			org.talend.mdm.webservice.WSPartialPutItem wsPartialPutItem_<%=cid%> = new org.talend.mdm.webservice.WSPartialPutItem(input_<%=cid %>,<%=dataCluster %>,<%=pivot%>,<%=dataModule %>,<%=key.equals("")?null:key%>,<%=position.equals("")?null:position%>,<%=overwrite%>,<%= true==isStaging?false:withReport%>, <%=sourceName %>);
 			wspk_<%=cid %> = xtentisWS_<%=cid %>.partialPutItem(wsPartialPutItem_<%=cid%>);
 			

@@ -49,6 +49,13 @@
 	      NUM_ROW="5"
 	    >
 	    </PARAMETER>
+	    
+	    <PARAMETER NAME="SERVERVERSION" FIELD="CLOSED_LIST" NUM_ROW="9" REQUIRED="true">
+            <ITEMS DEFAULT="SERVER_6_0">
+                <ITEM NAME="SERVER_6_0" VALUE="s60" />
+                <ITEM NAME="SERVER_5_6" VALUE="s56" />
+            </ITEMS>
+        </PARAMETER>
 
 		<PARAMETER
 	      NAME="USE_EXISTING_CONNECTION"
@@ -67,7 +74,7 @@
 
 		<PARAMETER NAME="MDMURL" FIELD="TEXT" NUM_ROW="20"
 			REQUIRED="true" SHOW_IF="USE_EXISTING_CONNECTION == 'false'">
-			<DEFAULT>"http://localhost:8180/talend/TalendPort"</DEFAULT>
+			<DEFAULT>"http://localhost:8080/talendmdm/services/soap"</DEFAULT>
 		</PARAMETER>
 
 		<PARAMETER NAME="USERNAME" FIELD="TEXT" REQUIRED="true"
@@ -180,7 +187,8 @@
 
   <CODEGENERATION>
     <IMPORTS>
-      <IMPORT NAME="MDM-Webservice" MODULE="mdm_webservice.jar" UrlPath="platform:/plugin/org.talend.libraries.mdm/lib/mdm_webservice.jar" REQUIRED="true" />
+      <IMPORT NAME="MDM-WEBSERVICE-TOMCAT" MODULE="mdm_webservice_tomcat.jar" UrlPath="platform:/plugin/org.talend.libraries.mdm/lib/mdm_webservice_tomcat.jar" REQUIRED_IF="((SERVERVERSION == 's60') and (USE_EXISTING_CONNECTION == 'false'))" />
+      <IMPORT NAME="MDM-Webservice" MODULE="mdm_webservice.jar" UrlPath="platform:/plugin/org.talend.libraries.mdm/lib/mdm_webservice.jar" REQUIRED_IF="((SERVERVERSION == 's56') and (USE_EXISTING_CONNECTION == 'false'))" />
       <IMPORT NAME="SOAP-axis" MODULE="axis.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.axis2/lib/axis.jar" REQUIRED="true" />
       <IMPORT NAME="SOAP-jaxrpc" MODULE="jaxrpc.jar" UrlPath="platform:/plugin/org.talend.libraries.jax/lib/jaxrpc.jar" BundleID="" REQUIRED="true" />
       <IMPORT NAME="SOAP-jaxrpc-api" MODULE="jaxrpc-api.jar" UrlPath="platform:/plugin/org.talend.libraries.jax/lib/jaxrpc-api.jar" REQUIRED="true" />

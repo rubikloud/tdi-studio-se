@@ -13,11 +13,29 @@ imports="
     String cid = node.getUniqueName();
 
     String connection = ElementParameterParser.getValue(node,"__CONNECTION__");
-
-    String conn = "xtentisWS_" + connection;
+    
+    String version = "";
+    
+    for (INode pNode : node.getProcess().getNodesOfType("tMDMConnection")) {
+		
+		if (pNode.getUniqueName().equals(connection)) {
+			version = ElementParameterParser.getValue(pNode,"__SERVERVERSION__");
+		}	
+	}
 %>
+
+<%if("s60".equals(version)) {%>
+	<%String conn = "TMDMService_" + connection;%>
+	org.talend.mdm.webservice.TMDMService_PortType tmdmWS_<%=cid %> = (org.talend.mdm.webservice.TMDMService_PortType)globalMap.get("<%=conn%>");
+	if(tmdmWS_<%=cid %> != null)
+	{
+		tmdmWS_<%=cid %>.logout(new org.talend.mdm.webservice.WSLogout());
+	}
+<%} else {%>
+	<%String conn = "xtentisWS_" + connection;%>
 	org.talend.mdm.webservice.XtentisPort_PortType xtentisWS_<%=cid %> = (org.talend.mdm.webservice.XtentisPort_PortType)globalMap.get("<%=conn%>");
 	if(xtentisWS_<%=cid %> != null)
 	{
 		xtentisWS_<%=cid %>.logout(new org.talend.mdm.webservice.WSLogout());
 	}
+<%}%>

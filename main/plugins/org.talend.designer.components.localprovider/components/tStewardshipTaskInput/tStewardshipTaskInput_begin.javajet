@@ -46,6 +46,8 @@ if ((metadatas != null) && (metadatas.size() > 0)) {
 			boolean targetRecordOnly = ("true").equals(ElementParameterParser.getValue(node,"__TARGET_RECORD_ONLY__"));
 			final boolean isLog4jEnabled = ("true").equals(ElementParameterParser.getValue(node.getProcess(), "__LOG4J_ACTIVATE__"));
 			
+			String version = ElementParameterParser.getValue(node, "__SERVERVERSION__");
+			
 			IConnection outgoingConn = outgoingConns.get(0);
 			if(outgoingConn.getLineStyle().hasConnectionCategory(IConnectionCategory.DATA)) {
 %>
@@ -62,7 +64,12 @@ if ((metadatas != null) && (metadatas.size() > 0)) {
                     	return new java.net.PasswordAuthentication(<%=username%>, decryptedPassword_<%=cid%>.toCharArray());
                 }});
 				
-				java.net.URL wsdlUrl_<%=cid%> = new java.net.URL("http://"+<%=host%>+":"+<%=port%>+"/org.talend.datastewardship/services/TDSCWS?wsdl");
+				<%if("s60".equals(version)) {%>
+					java.net.URL wsdlUrl_<%=cid%> = new java.net.URL("http://"+<%=host%>+":"+<%=port%>+"/talendmdm/services/TDSCWS?wsdl");
+				<%} else {%>
+					java.net.URL wsdlUrl_<%=cid%> = new java.net.URL("http://"+<%=host%>+":"+<%=port%>+"/org.talend.datastewardship/services/TDSCWS?wsdl");
+				<%}%>
+				
 				<%
 				if(isLog4jEnabled){
 				%>	

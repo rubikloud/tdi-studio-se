@@ -27,11 +27,19 @@
   	<PARAMETER NAME="SCHEMA" FIELD="SCHEMA_TYPE" SHOW="true" REQUIRED="true" NUM_ROW="1">
 		<DEFAULT />
 	</PARAMETER>
-	<PARAMETER NAME="HOST" FIELD="TEXT" NUM_ROW="2">
+	
+	<PARAMETER NAME="SERVERVERSION" FIELD="CLOSED_LIST" NUM_ROW="2" REQUIRED="true">
+        <ITEMS DEFAULT="SERVER_6_0">
+            <ITEM NAME="SERVER_6_0" VALUE="s60" />
+            <ITEM NAME="SERVER_5_6" VALUE="s56" />
+        </ITEMS>
+    </PARAMETER>
+    
+	<PARAMETER NAME="HOST" FIELD="TEXT" NUM_ROW="3">
     	<DEFAULT>"localhost"</DEFAULT>
     </PARAMETER>
-    <PARAMETER NAME="PORT" FIELD="TEXT" NUM_ROW="2">
-    	<DEFAULT>8180</DEFAULT>
+    <PARAMETER NAME="PORT" FIELD="TEXT" NUM_ROW="3">
+    	<DEFAULT>8080</DEFAULT>
     </PARAMETER>
     <PARAMETER NAME="USERNAME" FIELD="TEXT" NUM_ROW="5">
     	<DEFAULT>"username"</DEFAULT>
@@ -94,6 +102,7 @@
 		<IMPORT NAME="talend-stewardship-client" MODULE="org.talend.taskloadclient.jar" REQUIRED="true" />
 		<IMPORT NAME="dom4j" MODULE="dom4j-1.6.1.jar" UrlPath="platform:/plugin/org.talend.libraries.dom4j-jaxen/lib/dom4j-1.6.1.jar" REQUIRED="true" />
 		<IMPORT NAME="talend-shipTask" MODULE="commons-lang-2.6.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang-2.6.jar" REQUIRED="true" />
+		<IMPORT NAME="commons-codec-1.4" MODULE="commons-codec-1.4.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-codec-1.4.jar" REQUIRED="true" />
   	</IMPORTS>
   </CODEGENERATION>
   <RETURNS>

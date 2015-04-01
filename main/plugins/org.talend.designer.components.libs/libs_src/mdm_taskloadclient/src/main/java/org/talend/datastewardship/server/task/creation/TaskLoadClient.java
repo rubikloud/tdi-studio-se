@@ -17,6 +17,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -89,11 +90,23 @@ public class TaskLoadClient {
 			urlc.setRequestMethod("POST");
 			urlc.setConnectTimeout(50000);// set timeout
 			urlc.setReadTimeout(50000);
+
+			StringBuilder localStringBuilder = new StringBuilder();
+			localStringBuilder.append(this.username).append(':').append(this.password);
+			String str;
+			try {
+			  byte[] arrayOfByte1 = localStringBuilder.toString().getBytes("UTF-8");
+			  byte[] arrayOfByte2 = Base64.encodeBase64(arrayOfByte1);
+			  str = new String(arrayOfByte2, "UTF-8");
+			}
+			catch (UnsupportedEncodingException localUnsupportedEncodingException) {
+			  str = null;
+			}
+			localStringBuilder.setLength(0);
+			localStringBuilder.append("Basic ").append(str);			
 			
-			String userpass = username + ":" + password;
-			String basicAuth = "Basic " + new String(new Base64().encode(userpass.getBytes()));
-			urlc.setRequestProperty ("Authorization", basicAuth);
-			
+			urlc.setRequestProperty ("Authorization", localStringBuilder.toString());
+
 			urlc.connect();
 
 			inputTasks = URLEncoder.encode(inputTasks, "UTF-8");

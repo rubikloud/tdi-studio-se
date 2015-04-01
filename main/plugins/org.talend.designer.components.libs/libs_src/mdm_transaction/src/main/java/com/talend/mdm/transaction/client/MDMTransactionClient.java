@@ -37,7 +37,7 @@ public class MDMTransactionClient {
 		return result;
 	}
 	
-	public static String getMDMTransactionURL(String url) {
+	public static String getMDMTransactionURL(String url, boolean isNewServer) {
 		if(url == null || "".equals(url)) {
 			return "";
 		}
@@ -55,20 +55,24 @@ public class MDMTransactionClient {
 		}
 		
 		String result = url.substring(0, i);
-		result += "/datamanager/services/transactions";
+		if(isNewServer){
+			result += "/talendmdm/services/rest/transactions";
+		} else {
+			result += "/datamanager/services/transactions";
+		}
 		
 		return result;
 	}
 
 	public static void main(String[] args) throws IOException {
-		MDMTransaction mt = MDMTransactionClient.newTransaction("http://localhost:8080/datamanager/services/transactions", "administrator", "administrator");
+		MDMTransaction mt = MDMTransactionClient.newTransaction("http://192.168.32.63:8080/datamanager/services/transactions", "administrator", "administrator");
 		mt.commit();
 		
-		MDMTransaction mt1 = MDMTransactionClient.newTransaction("http://localhost:8080/datamanager/services/transactions", "administrator", "administrator");
+		MDMTransaction mt1 = MDMTransactionClient.newTransaction("http://192.168.32.63:8080/talendmdm/services/rest/transactions", "administrator", "administrator");
 		mt1.rollback();
 		
 		String url = "http://localhost:8080/talend/TalendPort";
-		String mdmurl = MDMTransactionClient.getMDMTransactionURL(url);
+		String mdmurl = MDMTransactionClient.getMDMTransactionURL(url, true);
 		System.out.println(mdmurl);
 	}
 	

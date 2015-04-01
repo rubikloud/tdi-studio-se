@@ -12,71 +12,32 @@ imports="
 		" 
 %>
 <%
-	CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
-	INode node = (INode)codeGenArgument.getArgument();
-	String cid = node.getUniqueName();
+CodeGeneratorArgument codeGenArgument_outer = (CodeGeneratorArgument) argument;
+INode node_outer = (INode)codeGenArgument_outer.getArgument();
+String version = "";
+    
+boolean useExistingConn_outer = ("true").equals(ElementParameterParser.getValue(node_outer,"__USE_EXISTING_CONNECTION__"));
 
-	String spName = ElementParameterParser.getValue(node, "__SPNAME__");
+if (useExistingConn_outer) {
+	for (INode pNode : node_outer.getProcess().getNodesOfType("tMDMConnection")) {
+	    
+		String connectionComponentName = ElementParameterParser.getValue(node_outer,"__CONNECTION__");
+		
+		if (pNode.getUniqueName().equals(connectionComponentName)) {
+			version = ElementParameterParser.getValue(pNode,"__SERVERVERSION__");
+		}	
+	}
+} else {
+    version = ElementParameterParser.getValue(node_outer, "__SERVERVERSION__");
+}
+
+if("s60".equals(version)) {
+%>
+
+	<%@include file="tMDMSP_main_60.javajet"%>
 	
-	List<Map<String, String>> spArgs = (List<Map<String,String>>)ElementParameterParser.getObjectValue(node, "__SP_ARGS__");
+<%} else {%>
 
-	List<? extends IConnection> inConnections = node.getIncomingConnections();
-	IConnection inConnection = null;
-	IMetadataTable metadata = null;
-	if (inConnections != null) {
-		for (int i = 0; i < inConnections.size(); i++) {
-			IConnection connection = inConnections.get(i);
-			if (connection.getLineStyle().hasConnectionCategory(IConnectionCategory.DATA)) {
-				inConnection = connection;
-				metadata=connection.getMetadataTable();
-				break;
-			}
-		}
-	}
-
-	List<? extends IConnection> outgoingConns = node.getOutgoingSortedConnections();
-	if(inConnection!=null){
-		if(spArgs.size()>0){
-%>
-			wsExeProc_<%=cid %>.setParameters(new String[]{
-<%
-		}
-		for(int i=0;i<spArgs.size();i++){
-			Map<String, String> map = spArgs.get(i);
-			String clmName = map.get("COLUMN");
-			for(IMetadataColumn column:metadata.getListColumns()){
-				if(column.getLabel().equals(clmName)){
-%>
-					<%=i==0?"":","%><%=inConnection.getName()%>.<%=column.getLabel() %>
-<%
-    				}
-    			}
-    		}
-    		if(spArgs.size()>0){
-%>
-			});
-<%
-		}
-	}
-	// if output columns are defined
-	if (outgoingConns != null && outgoingConns.size() > 0){
-		IConnection outgoingConn = outgoingConns.get(0);
-		String outputCol = null;
-		if(outgoingConn.getLineStyle().hasConnectionCategory(IConnectionCategory.DATA)) { // start 1
-%>
-			for(String xmlField_<%=cid %> : xtentisWS_<%=cid %>.executeStoredProcedure(wsExeProc_<%=cid %>)){
-				<%=outgoingConn.getName()%>.xmlField = xmlField_<%=cid %>;
-<%
-		} else {
-%>
-			xtentisWS_<%=cid %>.executeStoredProcedure(wsExeProc_<%=cid %>);
-<%
-		}
-	} else {
-%>
-		xtentisWS_<%=cid %>.executeStoredProcedure(wsExeProc_<%=cid %>);
-<%
-	}
-%>
-          
-            
+	<%@include file="tMDMSP_main_56.javajet"%>
+	
+<%}%>

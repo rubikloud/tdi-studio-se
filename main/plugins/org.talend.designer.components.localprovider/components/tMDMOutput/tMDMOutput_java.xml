@@ -104,10 +104,18 @@
 	      SHOW_IF="USE_EXISTING_CONNECTION == 'true'"
 	      GROUP="CONNECTION_GRP"
 	    />
+	    
+	    <PARAMETER NAME="SERVERVERSION" FIELD="CLOSED_LIST" NUM_ROW="18" REQUIRED="true" SHOW_IF="USE_EXISTING_CONNECTION == 'false'" GROUP="CONNECTION_GRP">
+            <ITEMS DEFAULT="SERVER_6_0">
+                <ITEM NAME="SERVER_6_0" VALUE="s60" />
+                <ITEM NAME="SERVER_5_6" VALUE="s56" />
+            </ITEMS>
+        </PARAMETER>
 
 		<PARAMETER NAME="MDMURL" FIELD="TEXT" NUM_ROW="20"
 			REQUIRED="true" REPOSITORY_VALUE="MDMURL" SHOW_IF="USE_EXISTING_CONNECTION == 'false'" GROUP="CONNECTION_GRP">
-			<DEFAULT>"http://localhost:8180/talend/TalendPort"</DEFAULT>
+			<DEFAULT IF="(SERVERVERSION == 's60')">"http://localhost:8080/talendmdm/services/soap"</DEFAULT>
+            <DEFAULT IF="(SERVERVERSION == 's56')">"http://localhost:8180/talend/TalendPort"</DEFAULT>
 		</PARAMETER>
 
 		<PARAMETER NAME="USERNAME" FIELD="TEXT" REQUIRED="true"
@@ -121,7 +129,7 @@
 		</PARAMETER>
 
 		<PARAMETER NAME="UNIVERSE" FIELD="TEXT"
-			NUM_ROW="30" REPOSITORY_VALUE="UNIVERSE" SHOW_IF="USE_EXISTING_CONNECTION == 'false'" GROUP="CONNECTION_GRP">
+			NUM_ROW="30" REPOSITORY_VALUE="UNIVERSE" SHOW_IF="(USE_EXISTING_CONNECTION == 'false') and (SERVERVERSION == 's56')" GROUP="CONNECTION_GRP">
 			<DEFAULT></DEFAULT>
 		</PARAMETER>
 
@@ -157,11 +165,11 @@
 			<DEFAULT>false</DEFAULT>
 		</PARAMETER>
 
-		<PARAMETER NAME="SOURCE" FIELD="TEXT" NUM_ROW="60" REQUIRED="true"  SHOW_IF="(CONTAINER_TYPE=='MASTER') and (WITHREPORT=='true')">
+		<PARAMETER NAME="SOURCE" FIELD="TEXT" NUM_ROW="60" REQUIRED="true"  SHOW_IF="((CONTAINER_TYPE=='MASTER') and (WITHREPORT=='true')) or (USE_PARTIAL_UPDATE=='true')">
 			<DEFAULT>"TOS"</DEFAULT>
 		</PARAMETER>
 
-		<PARAMETER NAME="ISINVOKE" FIELD="CHECK" REQUIRED="true" SHOW_IF="(CONTAINER_TYPE=='MASTER') and (WITHREPORT=='true') and (USE_PARTIAL_UPDATE=='false')"
+		<PARAMETER NAME="ISINVOKE" FIELD="CHECK" REQUIRED="true" SHOW_IF="(CONTAINER_TYPE=='MASTER') and (WITHREPORT=='true')"
 				 NUM_ROW="60">
 			<DEFAULT>false</DEFAULT>
 		</PARAMETER>
@@ -323,6 +331,7 @@
 			<TEMPLATE_PARAM SOURCE="self.XMLFIELD" TARGET="In.XMLFIELD"/>
 			<TEMPLATE_PARAM SOURCE="self.USE_EXISTING_CONNECTION" TARGET="In.USE_EXISTING_CONNECTION" />
 			<TEMPLATE_PARAM SOURCE="self.CONNECTION" TARGET="In.CONNECTION" />
+			<TEMPLATE_PARAM SOURCE="self.SERVERVERSION" TARGET="In.SERVERVERSION" />
 			<TEMPLATE_PARAM SOURCE="self.MDMURL" TARGET="In.MDMURL"/>
 			<TEMPLATE_PARAM SOURCE="self.USERNAME" TARGET="In.USERNAME"/>
 			<TEMPLATE_PARAM SOURCE="self.PASSWORD" TARGET="In.PASSWORD"/>
@@ -378,8 +387,9 @@
 
 		</TEMPLATES>
 		<IMPORTS>
-			<IMPORT NAME="MDM-Webservice" MODULE="mdm_webservice.jar" UrlPath="platform:/plugin/org.talend.libraries.mdm/lib/mdm_webservice.jar" REQUIRED_IF="IS_VIRTUAL_COMPONENT == 'false'" />
-			<IMPORT NAME="SOAP-axis" MODULE="axis.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.axis2/lib/axis.jar" REQUIRED_IF="IS_VIRTUAL_COMPONENT == 'false'" />
+			<IMPORT NAME="MDM-WEBSERVICE-TOMCAT" MODULE="mdm_webservice_tomcat.jar" UrlPath="platform:/plugin/org.talend.libraries.mdm/lib/mdm_webservice_tomcat.jar" REQUIRED_IF="((SERVERVERSION == 's60') and (USE_EXISTING_CONNECTION == 'false'))" />
+            <IMPORT NAME="MDM-Webservice" MODULE="mdm_webservice.jar" UrlPath="platform:/plugin/org.talend.libraries.mdm/lib/mdm_webservice.jar" REQUIRED_IF="((SERVERVERSION == 's56') and (USE_EXISTING_CONNECTION == 'false'))" />
+            <IMPORT NAME="SOAP-axis" MODULE="axis.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.axis2/lib/axis.jar" REQUIRED_IF="IS_VIRTUAL_COMPONENT == 'false'" />
 			<IMPORT NAME="log4j-1.2.15.jar" MODULE="log4j-1.2.15.jar" UrlPath="platform:/base/plugins/org.apache.log4j_1.2.15.v201012070815.jar" BundleID="" REQUIRED_IF="IS_VIRTUAL_COMPONENT == 'false'" />
 			<IMPORT NAME="SOAP-jaxrpc" MODULE="jaxrpc.jar" UrlPath="platform:/plugin/org.talend.libraries.jax/lib/jaxrpc.jar" BundleID="" REQUIRED_IF="IS_VIRTUAL_COMPONENT == 'false'" />
 			<IMPORT NAME="SOAP-jaxrpc-api" MODULE="jaxrpc-api.jar" UrlPath="platform:/plugin/org.talend.libraries.jax/lib/jaxrpc-api.jar" REQUIRED_IF="IS_VIRTUAL_COMPONENT == 'false'" />

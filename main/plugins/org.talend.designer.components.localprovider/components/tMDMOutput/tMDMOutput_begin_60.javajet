@@ -1,0 +1,103 @@
+<%@ jet 
+imports="
+    	org.talend.core.model.process.INode 
+    	org.talend.core.model.process.ElementParameterParser
+    	org.talend.designer.codegen.config.CodeGeneratorArgument
+		"
+%>
+<%
+	CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
+	INode node = (INode)codeGenArgument.getArgument();
+	String cid = node.getUniqueName();
+	String destination = ElementParameterParser.getValue(node, "__DESTINATION__");
+	if(destination!=null && !"".equals(destination)){
+		cid = destination;
+	}
+
+	boolean useExistingConn = ("true").equals(ElementParameterParser.getValue(node,"__USE_EXISTING_CONNECTION__"));
+	String connection = ElementParameterParser.getValue(node,"__CONNECTION__");
+	String conn = "TMDMService_" + connection;
+	String mdmUrl = ElementParameterParser.getValue(node, "__MDMURL__");
+	String username = ElementParameterParser.getValue(node, "__USERNAME__");
+
+	String universe = ElementParameterParser.getValue(node, "__UNIVERSE__");
+	String dataModule = ElementParameterParser.getValue(node, "__DATAMODEL__");
+	String dataCluster = ElementParameterParser.getValue(node, "__DATACLUSTER__");
+	boolean isStaging = "STAGING".equalsIgnoreCase(ElementParameterParser.getValue(node, "__CONTAINER_TYPE__"));
+	
+	boolean withReport = ("true").equals(ElementParameterParser.getValue(node,"__WITHREPORT__"));
+	boolean isMassInsert =("true").equals(ElementParameterParser.getValue(node,"__EXTENDINSERT__"));
+	
+	boolean addTaskID = ("true").equals(ElementParameterParser.getValue(node,"__ADD_TASKID__"));
+	boolean usePartialUpdate = ("true").equals(ElementParameterParser.getValue(node,"__USE_PARTIAL_UPDATE__"));
+	
+%>       
+int nb_line_<%=cid %> = 0;
+int nb_line_rejected_<%=cid%> = 0;
+<%if(!usePartialUpdate){%>
+	<%if(addTaskID){%>
+		class Util_<%=cid%>{
+			public org.talend.mdm.webservice.WSUpdateMetadataItem makeUpdateMeteItm(String taskID,org.talend.mdm.webservice.WSItemPK wspk){
+				org.talend.mdm.webservice.WSUpdateMetadataItem wsUpdateMetadataItem = new org.talend.mdm.webservice.WSUpdateMetadataItem();
+		        wsUpdateMetadataItem.setTaskId(taskID);
+		        wsUpdateMetadataItem.setWsItemPK(wspk);
+		        return wsUpdateMetadataItem;
+			}
+			public org.talend.mdm.webservice.WSUpdateMetadataItem[] makeUpdateMeteItms(java.util.List<String> taskIDs,org.talend.mdm.webservice.WSItemPK[] wspks){
+				java.util.List<org.talend.mdm.webservice.WSUpdateMetadataItem> wsUpdateMetadataItems = new java.util.ArrayList<org.talend.mdm.webservice.WSUpdateMetadataItem>();
+				int i = 0;
+		        for(org.talend.mdm.webservice.WSItemPK wspk : wspks){
+		        	wsUpdateMetadataItems.add(makeUpdateMeteItm(taskIDs.get(i),wspk));
+		        	i++;
+		        }
+		        return wsUpdateMetadataItems.toArray(new org.talend.mdm.webservice.WSUpdateMetadataItem[wsUpdateMetadataItems.size()]);
+			}
+		}
+		Util_<%=cid%> util_<%=cid%> = new Util_<%=cid%>();
+	<%}%>
+	<%if(isMassInsert){
+		if(!isStaging && withReport){%>
+			java.util.List <org.talend.mdm.webservice.WSPutItemWithReport> miList_<%=cid %> = new java.util.ArrayList<org.talend.mdm.webservice.WSPutItemWithReport>();
+	<%	}else{%>
+			java.util.List <org.talend.mdm.webservice.WSPutItem> miList_<%=cid %> = new java.util.ArrayList<org.talend.mdm.webservice.WSPutItem>();
+	<%
+		}
+		if(addTaskID){
+	%>
+			java.util.List<String> taskIDs_<%=cid%> = new java.util.ArrayList<String>();
+	<%	
+		}
+	}
+}%>
+
+<%if(!useExistingConn){%>
+	org.talend.mdm.webservice.TMDMService_ServiceLocator tmdmService_<%=cid %> = new org.talend.mdm.webservice.TMDMService_ServiceLocator();
+	tmdmService_<%=cid %>.setTMDMPortEndpointAddress(<%=mdmUrl %>);
+	org.talend.mdm.webservice.TMDMService_PortType tmdmWS_<%=cid %> = tmdmService_<%=cid %>.getTMDMPort();    
+	org.talend.mdm.webservice.TMDMServiceSoapBindingStub stub_<%=cid %> = (org.talend.mdm.webservice.TMDMServiceSoapBindingStub)tmdmWS_<%=cid %>;
+	
+	// Authentification
+	<%if(universe==null || ("").equals(universe.trim()) || ("\"\"").equals(universe.trim())){%>
+	stub_<%=cid %>.setUsername(<%=username %>);
+	<%}else{%>
+	stub_<%=cid %>.setUsername(<%=universe%> + "/" + <%=username %>);
+	<%}%>
+	
+    <%
+    String passwordFieldName = "__PASSWORD__";
+    %>
+    
+    <%@ include file="@{org.talend.designer.components.localprovider}/components/templates/password.javajet"%>
+
+	stub_<%=cid %>.setPassword(decryptedPassword_<%=cid%>);
+<%}else{%>
+	org.talend.mdm.webservice.TMDMService_PortType tmdmWS_<%=cid %> = (org.talend.mdm.webservice.TMDMService_PortType)globalMap.get("<%=conn%>");
+<%}%>
+
+org.talend.mdm.webservice.WSDataClusterPK dataCluster_<%=cid %> = new org.talend.mdm.webservice.WSDataClusterPK(<%=dataCluster %> + "<%=isStaging?"#STAGING":""%>");
+org.talend.mdm.webservice.WSDataModelPK dataModel_<%=cid %> = new org.talend.mdm.webservice.WSDataModelPK(<%=dataModule %>);
+
+String input_<%=cid %>;
+
+org.talend.mdm.webservice.WSItemPK[] wspks_<%=cid %>;
+org.talend.mdm.webservice.WSItemPK wspk_<%=cid %>;

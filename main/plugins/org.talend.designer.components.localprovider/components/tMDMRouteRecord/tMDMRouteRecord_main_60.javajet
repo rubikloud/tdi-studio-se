@@ -1,0 +1,68 @@
+<%@ jet 
+imports="
+    	org.talend.core.model.process.INode 
+    	org.talend.core.model.process.ElementParameterParser
+    	org.talend.designer.codegen.config.CodeGeneratorArgument
+        java.util.List
+        java.util.Map
+		"
+%>
+<%
+	CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
+	INode node = (INode)codeGenArgument.getArgument();
+	String cid = node.getUniqueName();
+	
+	boolean useExistingConn = ("true").equals(ElementParameterParser.getValue(node,"__USE_EXISTING_CONNECTION__"));
+	String connection = ElementParameterParser.getValue(node,"__CONNECTION__");
+	String conn = "TMDMService_" + connection;
+	String mdmUrl = ElementParameterParser.getValue(node, "__MDMURL__");
+	String username = ElementParameterParser.getValue(node, "__USERNAME__");
+
+	String entity = ElementParameterParser.getValue(node, "__ENTITY__");
+	String keyField = ElementParameterParser.getValue(node, "__KEYFIELD__");
+	
+	String dataCluster = ElementParameterParser.getValue(node, "__DATACLUSTER__");
+	boolean isStaging = "STAGING".equalsIgnoreCase(ElementParameterParser.getValue(node, "__CONTAINER_TYPE__"));
+	
+	List<Map<String, String>> ids = (List<Map<String,String>>)ElementParameterParser.getObjectValue(node, "__IDS__");
+%>       
+int nb_line_<%=cid %> = 0;
+<%if(!useExistingConn){%>
+	org.talend.mdm.webservice.TMDMService_ServiceLocator tmdmService_<%=cid %> = new org.talend.mdm.webservice.TMDMService_ServiceLocator();
+	tmdmService_<%=cid %>.setTMDMPortEndpointAddress(<%=mdmUrl %>);
+	org.talend.mdm.webservice.TMDMService_PortType tmdmWS_<%=cid %> = tmdmService_<%=cid %>.getTMDMPort();    
+	org.talend.mdm.webservice.TMDMServiceSoapBindingStub stub_<%=cid %> = (org.talend.mdm.webservice.TMDMServiceSoapBindingStub)tmdmWS_<%=cid %>;
+	
+	// Authentification
+	stub_<%=cid %>.setUsername(<%=username %>);
+	
+    <%
+    String passwordFieldName = "__PASSWORD__";
+    %>
+    
+    <%@ include file="@{org.talend.designer.components.localprovider}/components/templates/password.javajet"%>
+	
+	stub_<%=cid %>.setPassword(decryptedPassword_<%=cid%>);
+<%}else{%>
+	org.talend.mdm.webservice.TMDMService_PortType tmdmWS_<%=cid %> = (org.talend.mdm.webservice.TMDMService_PortType)globalMap.get("<%=conn%>");
+<%}%>
+
+org.talend.mdm.webservice.WSDataClusterPK dataCluster_<%=cid %> = new org.talend.mdm.webservice.WSDataClusterPK(<%=dataCluster %> + "<%=isStaging?"#STAGING":""%>");
+
+org.talend.mdm.webservice.WSRouteItemV2 wsRouteItem_<%=cid %> = new org.talend.mdm.webservice.WSRouteItemV2();
+org.talend.mdm.webservice.WSItemPK wsItemPK_<%=cid %> = new org.talend.mdm.webservice.WSItemPK();
+wsItemPK_<%=cid %>.setConceptName(<%=entity %>);
+wsItemPK_<%=cid %>.setWsDataClusterPK(dataCluster_<%=cid %>);
+wsItemPK_<%=cid %>.setIds(new String[]{
+<%
+boolean isfirst = true;
+for(Map<String, String> map:ids){
+%>
+<%=isfirst?"":","%><%=map.get("ID")%>
+<%
+	isfirst =false;
+}
+%>
+});
+wsRouteItem_<%=cid %>.setWsItemPK(wsItemPK_<%=cid %>);
+org.talend.mdm.webservice.WSRoutingRulePK[] wsRoutingRulePKArray_<%=cid %> = tmdmWS_<%=cid %>.routeItemV2(wsRouteItem_<%=cid %>);

@@ -30,6 +30,14 @@
 	   >
 	      <DEFAULT>false</DEFAULT>
 	   </PARAMETER>
+	   
+	   <PARAMETER NAME="SERVERVERSION" FIELD="CLOSED_LIST" NUM_ROW="9" REQUIRED="true">
+            <ITEMS DEFAULT="SERVER_6_0">
+                <ITEM NAME="SERVER_6_0" VALUE="s60" />
+                <ITEM NAME="SERVER_5_6" VALUE="s56" />
+            </ITEMS>
+        </PARAMETER>
+	   
 	   <PARAMETER
 	      NAME="CONNECTION"
 	      FIELD="COMPONENT_LIST"
@@ -40,7 +48,8 @@
 
 		<PARAMETER NAME="MDMURL" FIELD="TEXT" NUM_ROW="20"
 			REQUIRED="true" SHOW_IF="USE_EXISTING_CONNECTION == 'false'">
-			<DEFAULT>"http://localhost:8180/talend/TalendPort"</DEFAULT>
+			<DEFAULT IF="(SERVERVERSION == 's60')">"http://localhost:8080/talendmdm/services/soap"</DEFAULT>
+            <DEFAULT IF="(SERVERVERSION == 's56')">"http://localhost:8180/talend/TalendPort"</DEFAULT>
 		</PARAMETER>
 
 		<PARAMETER NAME="USERNAME" FIELD="TEXT" REQUIRED="true"
@@ -54,7 +63,7 @@
 		</PARAMETER>
 
 		<PARAMETER NAME="UNIVERSE" FIELD="TEXT"
-			NUM_ROW="30" SHOW_IF="USE_EXISTING_CONNECTION == 'false'">
+			NUM_ROW="30" SHOW_IF="(USE_EXISTING_CONNECTION == 'false') and (SERVERVERSION == 's56')">
 			<DEFAULT></DEFAULT>
 		</PARAMETER>
 
@@ -88,7 +97,8 @@
 
   <CODEGENERATION>
     <IMPORTS>
-      <IMPORT NAME="MDM-Webservice" MODULE="mdm_webservice.jar" UrlPath="platform:/plugin/org.talend.libraries.mdm/lib/mdm_webservice.jar" REQUIRED="true" />
+      <IMPORT NAME="MDM-WEBSERVICE-TOMCAT" MODULE="mdm_webservice_tomcat.jar" UrlPath="platform:/plugin/org.talend.libraries.mdm/lib/mdm_webservice_tomcat.jar" REQUIRED_IF="((SERVERVERSION == 's60') and (USE_EXISTING_CONNECTION == 'false'))" />
+      <IMPORT NAME="MDM-Webservice" MODULE="mdm_webservice.jar" UrlPath="platform:/plugin/org.talend.libraries.mdm/lib/mdm_webservice.jar" REQUIRED_IF="((SERVERVERSION == 's56') and (USE_EXISTING_CONNECTION == 'false'))" />
       <IMPORT NAME="SOAP-axis" MODULE="axis.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.axis2/lib/axis.jar" REQUIRED="true" />
       <IMPORT NAME="SOAP-jaxrpc" MODULE="jaxrpc.jar" UrlPath="platform:/plugin/org.talend.libraries.jax/lib/jaxrpc.jar" BundleID="" REQUIRED="true" />
       <IMPORT NAME="SOAP-jaxrpc-api" MODULE="jaxrpc-api.jar" UrlPath="platform:/plugin/org.talend.libraries.jax/lib/jaxrpc-api.jar" REQUIRED="true" />

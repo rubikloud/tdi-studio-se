@@ -12,7 +12,6 @@ imports="
 	
 	boolean useExistingConn = ("true").equals(ElementParameterParser.getValue(node,"__USE_EXISTING_CONNECTION__"));
 	String connection = ElementParameterParser.getValue(node,"__CONNECTION__");
-	String conn = "xtentisWS_" + connection;
 	String mdmUrl = ElementParameterParser.getValue(node, "__MDMURL__");
 	String username = ElementParameterParser.getValue(node, "__USERNAME__");
 
@@ -20,30 +19,69 @@ imports="
 	String dataModule = ElementParameterParser.getValue(node, "__CONCEPT__");
 	String dataCluster = ElementParameterParser.getValue(node, "__DATACLUSTER__");
 	boolean isStaging = "STAGING".equalsIgnoreCase(ElementParameterParser.getValue(node, "__CONTAINER_TYPE__"));
+	String version = "";
 	
+	if (useExistingConn) {
+    	for (INode pNode : node.getProcess().getNodesOfType("tMDMConnection")) {
+    	    
+    		String connectionComponentName = ElementParameterParser.getValue(node,"__CONNECTION__");
+    		
+    		if (pNode.getUniqueName().equals(connectionComponentName)) {
+    			version = ElementParameterParser.getValue(pNode,"__SERVERVERSION__");
+    		}	
+    	}
+    } else {
+        version = ElementParameterParser.getValue(node, "__SERVERVERSION__");
+    }
 %>       
-int nb_line_<%=cid %> = 0;
-<%if(!useExistingConn){%>
-	org.talend.mdm.webservice.XtentisServiceLocator xtentisService_<%=cid %> = new org.talend.mdm.webservice.XtentisServiceLocator();
-	xtentisService_<%=cid %>.setXtentisPortEndpointAddress(<%=mdmUrl %>);
-	org.talend.mdm.webservice.XtentisPort_PortType xtentisWS_<%=cid %> = xtentisService_<%=cid %>.getXtentisPort();    
-	org.talend.mdm.webservice.XtentisBindingStub stub_<%=cid %> = (org.talend.mdm.webservice.XtentisBindingStub)xtentisWS_<%=cid %>;
-	
-	// Authentification
-	<%if(universe==null || ("").equals(universe.trim())){%>
-	stub_<%=cid %>.setUsername(<%=username %>);
-	<%}else{%>
-	stub_<%=cid %>.setUsername(<%=universe%> + "/" + <%=username %>);
-	<%}%>
-	
-    <%
-    String passwordFieldName = "__PASSWORD__";
-    %>
-    
-    <%@ include file="@{org.talend.designer.components.localprovider}/components/templates/password.javajet"%>
-    
-	stub_<%=cid %>.setPassword(decryptedPassword_<%=cid%>);
-<%}else{%>
-	org.talend.mdm.webservice.XtentisPort_PortType xtentisWS_<%=cid %> = (org.talend.mdm.webservice.XtentisPort_PortType)globalMap.get("<%=conn%>");
+<%if("s60".equals(version)){%>
+	<%String conn = "TMDMService_" + connection;%>
+    int nb_line_<%=cid %> = 0;
+    <%if(!useExistingConn){%>
+    	org.talend.mdm.webservice.TMDMService_ServiceLocator tmdmService_<%=cid %> = new org.talend.mdm.webservice.TMDMService_ServiceLocator();
+    	tmdmService_<%=cid %>.setTMDMPortEndpointAddress(<%=mdmUrl %>);
+    	org.talend.mdm.webservice.TMDMService_PortType tmdmWS_<%=cid %> = tmdmService_<%=cid %>.getTMDMPort();    
+    	org.talend.mdm.webservice.TMDMServiceSoapBindingStub stub_<%=cid %> = (org.talend.mdm.webservice.TMDMServiceSoapBindingStub)tmdmWS_<%=cid %>;
+    	
+    	// Authentification
+    	stub_<%=cid %>.setUsername(<%=username %>);
+    	
+        <%
+        String passwordFieldName = "__PASSWORD__";
+        %>
+        
+        <%@ include file="@{org.talend.designer.components.localprovider}/components/templates/password.javajet"%>
+        
+    	stub_<%=cid %>.setPassword(decryptedPassword_<%=cid%>);
+    <%}else{%>
+    	org.talend.mdm.webservice.TMDMService_PortType tmdmWS_<%=cid %> = (org.talend.mdm.webservice.TMDMService_PortType)globalMap.get("<%=conn%>");
+    <%}%>
+    org.talend.mdm.webservice.WSDataClusterPK dataCluster_<%=cid %> = new org.talend.mdm.webservice.WSDataClusterPK(<%=dataCluster %> + "<%=isStaging?"#STAGING":""%>");
+<%} else {%>
+	<%String conn = "xtentisWS_" + connection;%>
+    int nb_line_<%=cid %> = 0;
+    <%if(!useExistingConn){%>
+    	org.talend.mdm.webservice.XtentisServiceLocator xtentisService_<%=cid %> = new org.talend.mdm.webservice.XtentisServiceLocator();
+    	xtentisService_<%=cid %>.setXtentisPortEndpointAddress(<%=mdmUrl %>);
+    	org.talend.mdm.webservice.XtentisPort_PortType xtentisWS_<%=cid %> = xtentisService_<%=cid %>.getXtentisPort();    
+    	org.talend.mdm.webservice.XtentisBindingStub stub_<%=cid %> = (org.talend.mdm.webservice.XtentisBindingStub)xtentisWS_<%=cid %>;
+    	
+    	// Authentification
+    	<%if(universe==null || ("").equals(universe.trim())){%>
+    	stub_<%=cid %>.setUsername(<%=username %>);
+    	<%}else{%>
+    	stub_<%=cid %>.setUsername(<%=universe%> + "/" + <%=username %>);
+    	<%}%>
+    	
+        <%
+        String passwordFieldName = "__PASSWORD__";
+        %>
+        
+        <%@ include file="@{org.talend.designer.components.localprovider}/components/templates/password.javajet"%>
+        
+    	stub_<%=cid %>.setPassword(decryptedPassword_<%=cid%>);
+    <%}else{%>
+    	org.talend.mdm.webservice.XtentisPort_PortType xtentisWS_<%=cid %> = (org.talend.mdm.webservice.XtentisPort_PortType)globalMap.get("<%=conn%>");
+    <%}%>
+    org.talend.mdm.webservice.WSDataClusterPK dataCluster_<%=cid %> = new org.talend.mdm.webservice.WSDataClusterPK(<%=dataCluster %> + "<%=isStaging?"#STAGING":""%>");
 <%}%>
-org.talend.mdm.webservice.WSDataClusterPK dataCluster_<%=cid %> = new org.talend.mdm.webservice.WSDataClusterPK(<%=dataCluster %> + "<%=isStaging?"#STAGING":""%>");

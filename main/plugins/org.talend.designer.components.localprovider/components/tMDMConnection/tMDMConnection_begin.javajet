@@ -13,22 +13,38 @@ String cid = node.getUniqueName();
 
 String mdmUrl = ElementParameterParser.getValue(node, "__MDMURL__");
 String username = ElementParameterParser.getValue(node, "__USERNAME__");
+String version = ElementParameterParser.getValue(node, "__SERVERVERSION__");
 
 String universe = ElementParameterParser.getValue(node, "__UNIVERSE__");
 boolean useTransaction = "false".equals(ElementParameterParser.getValue(node, "__AUTO_COMMIT__"));
 boolean useClientTranId = "true".equals(ElementParameterParser.getValue(node, "__GEN_TRANSACTION_ID__"));
 %>
 
-org.talend.mdm.webservice.XtentisServiceLocator xtentisService_<%=cid %> = new org.talend.mdm.webservice.XtentisServiceLocator();
-xtentisService_<%=cid %>.setXtentisPortEndpointAddress(<%=mdmUrl %>);
-org.talend.mdm.webservice.XtentisPort_PortType xtentisWS_<%=cid %> = xtentisService_<%=cid %>.getXtentisPort();    
-org.talend.mdm.webservice.XtentisBindingStub stub_<%=cid %> = (org.talend.mdm.webservice.XtentisBindingStub)xtentisWS_<%=cid %>;
+<%
+if("s60".equals(version)) {
+%>
+    org.talend.mdm.webservice.TMDMService_ServiceLocator tmdmService_<%=cid %> = new org.talend.mdm.webservice.TMDMService_ServiceLocator();
+    tmdmService_<%=cid %>.setTMDMPortEndpointAddress(<%=mdmUrl %>);
+    org.talend.mdm.webservice.TMDMService_PortType tmdmWS_<%=cid %> = tmdmService_<%=cid %>.getTMDMPort();    
+    org.talend.mdm.webservice.TMDMServiceSoapBindingStub stub_<%=cid %> = (org.talend.mdm.webservice.TMDMServiceSoapBindingStub)tmdmWS_<%=cid %>;
+    
+    // Authentification
+    stub_<%=cid %>.setUsername(<%=username %>);
 
-// Authentification
-<%if(universe==null || ("").equals(universe.trim())){%>
-stub_<%=cid %>.setUsername(<%=username %>);
-<%}else{%>
-stub_<%=cid %>.setUsername(<%=universe%> + "/" + <%=username %>);
+<%} else {%>
+
+    org.talend.mdm.webservice.XtentisServiceLocator xtentisService_<%=cid %> = new org.talend.mdm.webservice.XtentisServiceLocator();
+    xtentisService_<%=cid %>.setXtentisPortEndpointAddress(<%=mdmUrl %>);
+    org.talend.mdm.webservice.XtentisPort_PortType xtentisWS_<%=cid %> = xtentisService_<%=cid %>.getXtentisPort();    
+    org.talend.mdm.webservice.XtentisBindingStub stub_<%=cid %> = (org.talend.mdm.webservice.XtentisBindingStub)xtentisWS_<%=cid %>;
+    
+    // Authentification
+    <%if(universe==null || ("").equals(universe.trim())){%>
+    	stub_<%=cid %>.setUsername(<%=username %>);
+    <%}else{%>
+    	stub_<%=cid %>.setUsername(<%=universe%> + "/" + <%=username %>);
+    <%}%>
+
 <%}%>
 
 <%
@@ -40,7 +56,11 @@ String passwordFieldName = "__PASSWORD__";
 stub_<%=cid %>.setPassword(decryptedPassword_<%=cid%>);
 
 <%if(useTransaction) {%>
-String turl_<%=cid%> = com.talend.mdm.transaction.client.MDMTransactionClient.getMDMTransactionURL(<%=mdmUrl %>);
+	<%if("s60".equals(version)) {%>
+		String turl_<%=cid%> = com.talend.mdm.transaction.client.MDMTransactionClient.getMDMTransactionURL(<%=mdmUrl %>, true);
+	<%} else {%>
+		String turl_<%=cid%> = com.talend.mdm.transaction.client.MDMTransactionClient.getMDMTransactionURL(<%=mdmUrl %>, false);
+	<%}%>
 com.talend.mdm.transaction.client.MDMTransaction mdmTransaction_<%=cid%> = null;
 <%
 if(useClientTranId){
@@ -62,6 +82,12 @@ stub_<%=cid %>.setHeader(new org.apache.axis.message.SOAPHeaderElement("http://w
 globalMap.put("mdmTransaction_<%=cid %>", mdmTransaction_<%=cid%>);
 <%}%>
 
-stub_<%=cid %>.ping(new org.talend.mdm.webservice.WSPing());<%//For TDI-26109%>
-
-globalMap.put("xtentisWS_<%=cid %>", xtentisWS_<%=cid %>);
+    stub_<%=cid %>.ping(new org.talend.mdm.webservice.WSPing());<%//For TDI-26109%>
+    
+<%
+if("s60".equals(version)) {
+%>
+    globalMap.put("TMDMService_<%=cid %>", tmdmWS_<%=cid %>);
+<%} else {%>
+    globalMap.put("xtentisWS_<%=cid %>", xtentisWS_<%=cid %>);
+<%}%>

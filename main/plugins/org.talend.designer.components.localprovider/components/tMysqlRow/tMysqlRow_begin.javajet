@@ -16,20 +16,29 @@ imports="
 	    }
 	    
 		public void setURL(INode node) {
-			
+			String dbVersion = ElementParameterParser.getValue(node, "__DB_VERSION__");
+			String jdbcURL = "jdbc:mysql";
+			if("MARIADB".equals(dbVersion)){
+				jdbcURL = "jdbc:mariadb";
+			}
 			if(dbproperties == null || ("\"\"").equals(dbproperties) || ("").equals(dbproperties)) {
 %>
-				String url_<%=cid%> = "jdbc:mysql://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%>;
+				String url_<%=cid%> = "<%=jdbcURL%>://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%>;
 <%
 	        } else {
 %>
-				String url_<%=cid%> = "jdbc:mysql://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + <%=dbproperties%>;
+				String url_<%=cid%> = "<%=jdbcURL%>://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + <%=dbproperties%>;
 <%
 	        }		
 		}
 		
 		public String getDirverClassName(INode node){
-			return "org.gjt.mm.mysql.Driver";
+			String dbVersion = ElementParameterParser.getValue(node, "__DB_VERSION__");
+			if("MARIADB".equals(dbVersion)){
+				return "org.mariadb.jdbc.Driver";
+			}else{
+				return "org.gjt.mm.mysql.Driver";
+			}
 		}
 	}
 	dbRowBeginUtil = new DBRowBeginUtil();

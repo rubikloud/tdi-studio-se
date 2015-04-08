@@ -219,20 +219,26 @@ if(useExistingConnection) {
 <%
 	}
 	dbVersion = ElementParameterParser.getValue(node, "__DB_VERSION__");
+	String drverClass = "org.gjt.mm.mysql.Driver";
+	String jdbcURL = "jdbc:mysql";
+	if("MARIADB".equals(dbVersion)){
+		drverClass = "org.mariadb.jdbc.Driver";
+		jdbcURL = "jdbc:mariadb";
+	}
 %>
 		String dbProperties_<%=cid%> = <%=dbproperties%>;
 		String url_<%=cid%> = null;
 		if(dbProperties_<%=cid%> == null || dbProperties_<%=cid%>.trim().length() == 0) {
-			url_<%=cid%> = "jdbc:mysql://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + "rewriteBatchedStatements=true";
+			url_<%=cid%> = "<%=jdbcURL%>://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + "rewriteBatchedStatements=true";
 		} else {
 			String properties_<%=cid%> = <%=dbproperties%>;
 			if (!properties_<%=cid%>.contains("rewriteBatchedStatements")) {
 				properties_<%=cid%> += "&rewriteBatchedStatements=true";
 			}
 
-			url_<%=cid%> = "jdbc:mysql://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + properties_<%=cid%>;
+			url_<%=cid%> = "<%=jdbcURL%>://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + properties_<%=cid%>;
 		}
-		String driverClass_<%=cid%> = "org.gjt.mm.mysql.Driver";
+		String driverClass_<%=cid%> = "<%=drverClass%>";
 		<%dbLog.conn().logJDBCDriver(dbLog.var("driverClass"));%>
 		String dbUser_<%=cid %> = <%=dbuser%>;
 		<%
@@ -268,7 +274,7 @@ if(!useExistingConnection) {
 dbLog.commit().logAutoCommit("conn_"+cid+".getAutoCommit()");
 %>
 <%
-if (useBatchSize && "MYSQL_5".equals(dbVersion) && (("UPDATE").equals(dataAction)||("DELETE").equals(dataAction))) {
+if (useBatchSize && ("MYSQL_5".equals(dbVersion) || "MARIADB".equals(dbVersion)) && (("UPDATE").equals(dataAction)||("DELETE").equals(dataAction))) {
     if(!("").equals(batchSize)&&!("0").equals(batchSize)) {
 %>
    int batchSize_<%=cid%> = <%=batchSize%>;
@@ -463,7 +469,7 @@ if(columnList != null && columnList.size() > 0) {
 	            String insertColValue<%=cid%> =  "<%=insertValueStmt.toString()%>";
 	            int rowCount<%=cid%> = 0;
 <%
-			} else if ("MYSQL_5".equals(dbVersion)) {
+			} else if ("MYSQL_5".equals(dbVersion) || "MARIADB".equals(dbVersion)) {
 %>
 				String insert_<%=cid%> = "INSERT INTO `" + <%=table%> + "` (<%=insertColName.toString()%>) VALUES (<%=insertValueStmt.toString()%>)";
 <%
@@ -619,7 +625,7 @@ if(isDynamic) {
 		    String insertColName<%=cid%>="";
 		    int counter<%=cid%>=1;
 <%
-	}else if ("MYSQL_5".equals(dbVersion) && extendedInsert){
+	}else if (("MYSQL_5".equals(dbVersion) || "MARIADB".equals(dbVersion)) && extendedInsert){
 %>
 	int batchSizeCounter_<%=cid%>=0;
 	int batchSize_<%=cid%>=0;

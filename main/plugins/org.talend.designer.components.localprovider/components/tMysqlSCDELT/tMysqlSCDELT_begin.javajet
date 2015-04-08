@@ -49,14 +49,21 @@ if(columnList != null && columnList.size() > 0) {
         String dbuser= ElementParameterParser.getValue(node, "__USER__");   
 
         String dbproperties = ElementParameterParser.getValue(node, "__PROPERTIES__");
+        String dbVersion = ElementParameterParser.getValue(node, "__DB_VERSION__");
+		String drverClass= "org.gjt.mm.mysql.Driver";
+		String jdbcURL = "jdbc:mysql";
+		if("MARIADB".equals(dbVersion)){
+			drverClass = "org.mariadb.jdbc.Driver";
+			jdbcURL = "jdbc:mariadb";
+		}
         %>
-        java.lang.Class.forName("org.gjt.mm.mysql.Driver");
+        java.lang.Class.forName("<%=drverClass%>");
         String dbProperties_<%=cid%> = <%if(dbproperties == null || dbproperties.trim().length() == 0) {%>null<%} else {%><%=dbproperties%><%}%>;
         String url_<%=cid%> = null;
         if(dbProperties_<%=cid%> == null || dbProperties_<%=cid%>.trim().length() == 0) {
-            url_<%=cid%> = "jdbc:mysql://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%>;
+            url_<%=cid%> = "<%=jdbcURL%>://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%>;
         } else {
-            url_<%=cid%> = "jdbc:mysql://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + dbProperties_<%=cid%>;
+            url_<%=cid%> = "<%=jdbcURL%>://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + dbProperties_<%=cid%>;
         }
         String dbUser_<%=cid %> = <%=dbuser%>;
 

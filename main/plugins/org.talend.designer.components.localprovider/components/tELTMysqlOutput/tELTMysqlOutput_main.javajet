@@ -48,6 +48,7 @@ imports="
     String dbport = null;
     String dbname = null;
     String dbuser = null;
+    String dbVersion = "";
     boolean useExistingConn = false;
     if(previousNode != null) {
         dbhost = ElementParameterParser.getValue(previousNode, "__HOST__");
@@ -55,6 +56,7 @@ imports="
         dbname = ElementParameterParser.getValue(previousNode, "__DBNAME__");
         dbuser = ElementParameterParser.getValue(previousNode, "__USER__");
         useExistingConn = ("true").equals(ElementParameterParser.getValue(previousNode, "__USE_EXISTING_CONNECTION__"));
+        dbVersion = ElementParameterParser.getValue(previousNode, "__DB_VERSION__");
     }
 
 	String differenttable = ElementParameterParser.getValue(node, "__DIFFERENT_TABLE_NAME__");
@@ -72,10 +74,16 @@ imports="
 <%
 	log4jCodeGenerateUtil.useExistConnection(node);
 	} else {
+		String drverClass= "org.gjt.mm.mysql.Driver";
+		String jdbcURL = "jdbc:mysql";
+		if("MARIADB".equals(dbVersion)){
+			drverClass = "org.mariadb.jdbc.Driver";
+			jdbcURL = "jdbc:mariadb";
+		}
 %>
-    String driverClass_<%=cid%> = "org.gjt.mm.mysql.Driver";
+    String driverClass_<%=cid%> = "<%=drverClass%>";
     java.lang.Class.forName(driverClass_<%=cid%>);
-    String url_<%=cid %> = "jdbc:mysql://"+<%=dbhost%>+":"+<%=dbport%>+"/"+<%=dbname%>;
+    String url_<%=cid %> = "<%=jdbcURL%>://"+<%=dbhost%>+":"+<%=dbport%>+"/"+<%=dbname%>;
     String dbUser_<%=cid%> = <%=dbuser%>;
 
     <%

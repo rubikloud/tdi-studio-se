@@ -66,17 +66,24 @@ java.sql.Connection conn_<%=cid%> = null;
 	<%
 		log4jCodeGenerateUtil.useExistConnection(node);
 	} else {
-	%>
-		String driverClass_<%=cid%> = "com.mysql.jdbc.Driver";
+		String dbVersion = ElementParameterParser.getValue(node, "__DB_VERSION__");
+		String drverClass= "com.mysql.jdbc.Driver";
+		String jdbcURL = "jdbc:mysql";
+		if("MARIADB".equals(dbVersion)){
+			drverClass = "org.mariadb.jdbc.Driver";
+			jdbcURL = "jdbc:mariadb";
+		}
+		%>
+		String driverClass_<%=cid%> = "<%=drverClass%>";
 		Class.forName(driverClass_<%=cid%>).newInstance();
 		<%
 		if(dbproperties == null || ("\"\"").equals(dbproperties) || ("").equals(dbproperties)) {
 		%>
-			String url_<%=cid%> = "jdbc:mysql://" + <%=host%> + ":" + <%=port%> + "/" + <%=dbName%>;
+			String url_<%=cid%> = "<%=jdbcURL%>://" + <%=host%> + ":" + <%=port%> + "/" + <%=dbName%>;
 		<%
 		} else {
 		%>
-			String url_<%=cid%> = "jdbc:mysql://" + <%=host%> + ":" + <%=port%> + "/" + <%=dbName%> + "?" + <%=dbproperties%>;
+			String url_<%=cid%> = "<%=jdbcURL%>://" + <%=host%> + ":" + <%=port%> + "/" + <%=dbName%> + "?" + <%=dbproperties%>;
 		<%
 		}
 		String passwordFieldName = "__PASS__";

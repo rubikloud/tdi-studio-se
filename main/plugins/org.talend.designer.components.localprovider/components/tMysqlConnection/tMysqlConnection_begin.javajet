@@ -11,11 +11,16 @@ imports="
 	
 		public void createURL(INode node) {
 			super.createURL(node);
+			String dbVersion = ElementParameterParser.getValue(node, "__DB_VERSION__");
+			String jdbcURL = "jdbc:mysql";
+			if("MARIADB".equals(dbVersion)){
+				jdbcURL = "jdbc:mariadb";
+			}
 %>
 <%
 			if(dbproperties == null || ("\"\"").equals(dbproperties) || ("").equals(dbproperties)) {
 %>
-		String url_<%=cid%> = "jdbc:mysql://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + "rewriteBatchedStatements=true";
+		String url_<%=cid%> = "<%=jdbcURL%>://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + "rewriteBatchedStatements=true";
 <%
 			} else {
 %>
@@ -26,7 +31,7 @@ imports="
 			properties_<%=cid%> += "&rewriteBatchedStatements=true";
 		}
 		
-		String url_<%=cid%> = "jdbc:mysql://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + properties_<%=cid%>;
+		String url_<%=cid%> = "<%=jdbcURL%>://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + properties_<%=cid%>;
 <%
 			}
 %>
@@ -34,7 +39,12 @@ imports="
 		}
 		
 		public String getDirverClassName(INode node){
-			return "org.gjt.mm.mysql.Driver";
+			String dbVersion = ElementParameterParser.getValue(node, "__DB_VERSION__");
+			if("MARIADB".equals(dbVersion)){
+				return "org.mariadb.jdbc.Driver";
+			}else{
+				return "org.gjt.mm.mysql.Driver";
+			}
 		}
 	}//end class
 	

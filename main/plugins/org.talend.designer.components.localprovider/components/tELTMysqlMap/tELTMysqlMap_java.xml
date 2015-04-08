@@ -53,6 +53,7 @@
 		<ITEMS DEFAULT="MYSQL_5">
 			<ITEM NAME="MYSQL_5" VALUE="MYSQL_5" />
 			<ITEM NAME="MYSQL_4" VALUE="MYSQL_4" />
+			<ITEM NAME="MARIADB" VALUE="MARIADB" />
 		</ITEMS>
 	</PARAMETER>
 
@@ -185,6 +186,7 @@
      <IMPORTS>
        <IMPORT NAME="MYSQL_5" MODULE="mysql-connector-java-5.1.30-bin.jar" REQUIRED_IF="(DB_VERSION == 'MYSQL_5') AND (USE_EXISTING_CONNECTION == 'false')" />
        <IMPORT NAME="MYSQL_4" MODULE="mysql-connector-java-3.1.14-bin.jar" REQUIRED_IF="(DB_VERSION == 'MYSQL_4') AND (USE_EXISTING_CONNECTION == 'false')" />
+       <IMPORT NAME="MARIADB" MODULE="mariadb-java-client-1.1.7.jar" REQUIRED_IF="(DB_VERSION == 'MARIADB') AND (USE_EXISTING_CONNECTION == 'false')" />
      </IMPORTS>
    </CODEGENERATION>
 

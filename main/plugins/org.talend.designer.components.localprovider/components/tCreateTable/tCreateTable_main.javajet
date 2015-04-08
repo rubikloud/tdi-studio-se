@@ -884,19 +884,29 @@ class MysqlManager extends Manager {
     private String port;
     private boolean useExistingConnection;
     private String connection;        
-    public MysqlManager(String host, String port, String dbName, String tableName, String userName, boolean useExistingConnection, String connection, boolean temporary, String cid) {
+    private String dbVersion;
+    public MysqlManager(String host, String port, String dbName, String tableName, String userName, boolean useExistingConnection, String connection, boolean temporary, String cid, String dbVersion) {
         super(dbName, tableName, userName, cid);
         this.host = host;
         this.port = port;
         this.useExistingConnection = useExistingConnection;
         this.connection = connection;
         this.temporary = temporary;
+        this.dbVersion = dbVersion;
     }
     protected String getDriver() {
-        return "org.gjt.mm.mysql.Driver";
+        if("MARIADB".equals(dbVersion)){
+			return "org.mariadb.jdbc.Driver";
+		}else{
+			return "org.gjt.mm.mysql.Driver";
+		}
     }
     public String getConnectionURL() {
-        return "\"jdbc:mysql://\" + " + host + " + \":\" + " + port + " + \"/\" + " + dbName;
+    	String jdbcURL = "\"jdbc:mysql\"";
+    	if("MARIADB".equals(dbVersion)){
+			jdbcURL = "\"jdbc:mariadb\"";
+		}
+        return jdbcURL+"+\"://\" + " + host + " + \":\" + " + port + " + \"/\" + " + dbName;
     }
     public String getConnection() {
         StringBuilder javaCode = new StringBuilder();
@@ -1839,7 +1849,8 @@ class ManagerFactory {
             boolean useExistingConnection = ("true").equals(ElementParameterParser.getValue(node, "__USE_EXISTING_CONNECTION__"));
             String connection = stringUtil.getString(ElementParameterParser.getValue(node, "__CONNECTION_MYSQL__"));
             boolean temporary = ("true").equals(ElementParameterParser.getValue(node, "__TEMPTABLE__"));
-            manager = new MysqlManager(host, port, dbName, tableName, userName, useExistingConnection, connection, temporary, cid);
+            String dbVersion = ElementParameterParser.getValue(node, "__DB_MYSQL_VERSION__");
+            manager = new MysqlManager(host, port, dbName, tableName, userName, useExistingConnection, connection, temporary, cid, dbVersion);
         } else if(("NETEZZA").equals(dbType)) {
             String host = ElementParameterParser.getValue(node, "__HOST__");
             String port = ElementParameterParser.getValue(node, "__PORT__");

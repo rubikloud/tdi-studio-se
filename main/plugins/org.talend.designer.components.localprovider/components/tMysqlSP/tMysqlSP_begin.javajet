@@ -52,6 +52,13 @@ if(useExistingConn) {
 	}
 } else {
 	boolean specify_alias = "true".equals(ElementParameterParser.getValue(node, "__SPECIFY_DATASOURCE_ALIAS__"));
+	String dbVersion = ElementParameterParser.getValue(node, "__DB_VERSION__");
+	String drverClass= "org.gjt.mm.mysql.Driver";
+	String jdbcURL = "jdbc:mysql";
+	if("MARIADB".equals(dbVersion)){
+		drverClass = "org.mariadb.jdbc.Driver";
+		jdbcURL = "jdbc:mariadb";
+	}
 	if(specify_alias){
 		String alias = ElementParameterParser.getValue(node, "__DATASOURCE_ALIAS__");
 	%>
@@ -65,9 +72,9 @@ if(useExistingConn) {
     String dbProperties_<%=cid%> = <%=dbproperties%>;
     String connectionString_<%=cid%> = null;
     if(dbProperties_<%=cid%> == null || dbProperties_<%=cid%>.trim().length() == 0) {
-        connectionString_<%=cid%> = "jdbc:mysql://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%>;
+        connectionString_<%=cid%> = "<%=jdbcURL%>://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%>;
     } else {
-        connectionString_<%=cid%> = "jdbc:mysql://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + dbProperties_<%=cid%>;
+        connectionString_<%=cid%> = "<%=jdbcURL%>://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + dbProperties_<%=cid%>;
     }
     String dbUser_<%=cid%> = <%=dbuser%>;
 
@@ -79,8 +86,8 @@ if(useExistingConn) {
 
     String dbPwd_<%=cid %> = decryptedPassword_<%=cid%>;
 
-    java.lang.Class.forName("org.gjt.mm.mysql.Driver");
-    <%dbLog.conn().logJDBCDriver(dbLog.str("org.gjt.mm.mysql.Driver"));%>
+    java.lang.Class.forName("<%=drverClass%>");
+    <%dbLog.conn().logJDBCDriver(dbLog.str(drverClass));%>
     <%dbLog.conn().connTry(dbLog.var("connectionString"), dbLog.var("dbUser"));%>
     connection_<%=cid%> = java.sql.DriverManager.getConnection(connectionString_<%=cid%>, dbUser_<%=cid%>, dbPwd_<%=cid%>);
     <%dbLog.conn().connDone(dbLog.var("connectionString"));%>

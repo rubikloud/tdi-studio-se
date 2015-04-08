@@ -71,16 +71,23 @@ if(inputSchema != null && inputSchema.size() > 0 && outputSchema != null && outp
         java.sql.Connection connection_<%=cid%> = (java.sql.Connection) globalMap.get("<%=connectionName%>");
         <%        
     } else {
+    	String dbVersion = ElementParameterParser.getValue(node, "__DB_VERSION__");
+		String drverClass= "org.gjt.mm.mysql.Driver";
+		String jdbcURL = "jdbc:mysql";
+		if("MARIADB".equals(dbVersion)){
+			drverClass = "org.mariadb.jdbc.Driver";
+			jdbcURL = "jdbc:mariadb";
+		}
         %>
-        java.lang.Class.forName("org.gjt.mm.mysql.Driver");
+        java.lang.Class.forName("<%=drverClass%>");
         <%
         if(dbproperties == null || ("\"\"").equals(dbproperties) || ("").equals(dbproperties)) {
             %>
-            String connectionString_<%=cid%> = "jdbc:mysql://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%>;
+            String connectionString_<%=cid%> = "<%=jdbcURL%>://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%>;
             <%
         } else {
             %>
-            String connectionString_<%=cid%> = "jdbc:mysql://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + <%=dbproperties%>;
+            String connectionString_<%=cid%> = "<%=jdbcURL%>://" + <%=dbhost%> + ":" + <%=dbport%> + "/" + <%=dbname%> + "?" + <%=dbproperties%>;
             <%
         }       
         %>

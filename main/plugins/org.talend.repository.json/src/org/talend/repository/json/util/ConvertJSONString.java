@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
 
 import net.sf.json.JSON;
 import net.sf.json.JSONSerializer;
@@ -30,6 +31,10 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.general.Project;
 import org.talend.repository.ProjectManager;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 /**
  * DOC wanghong class global comment. Detailled comment
@@ -104,9 +109,33 @@ public class ConvertJSONString {
 
     public boolean isNeedAddRoot(String originalJsonString) {
         boolean isNeedAddRoot = false;
-        net.sf.json.JSONObject jso = net.sf.json.JSONObject.fromObject(originalJsonString);
-        String jsonKey = "";
+        try {
+            // json-lib-2.4 has a bug on "null" keyword, and this lib has been no newer version for long time, in this
+            // case(and other exception case) will use fasterXML to parse it
+            isNeedAddRoot = isNeedAddRootByJsonLib(originalJsonString);
+        } catch (Throwable t) {
+            try {
+                isNeedAddRoot = isNeedAddRootByFasterXML(originalJsonString);
+            } catch (Throwable t1) {
+                throw new RuntimeException(t1);
+            }
+        }
+        return isNeedAddRoot;
+    }
+
+    /**
+     * judge it using Json lib
+     * 
+     * @param originalJsonString
+     * @return
+     */
+    protected boolean isNeedAddRootByJsonLib(String originalJsonString) {
+        boolean isNeedAddRoot = false;
+
+        String jsonKey = null;
         Object firstObject = null;
+
+        net.sf.json.JSONObject jso = net.sf.json.JSONObject.fromObject(originalJsonString);
         if (jso.names().size() == 1) {
             jsonKey = jso.names().get(0).toString();
             firstObject = jso.get(jsonKey);
@@ -116,6 +145,37 @@ public class ConvertJSONString {
                         .size() > 1)) {
             isNeedAddRoot = true;
         }
+        return isNeedAddRoot;
+    }
+
+    /**
+     * judge it using Faster XML
+     * 
+     * @param originalJsonString
+     * @return
+     * @throws Throwable
+     */
+    protected boolean isNeedAddRootByFasterXML(String originalJsonString) throws Throwable {
+        boolean isNeedAddRoot = false;
+
+        String jsonKey = null;
+        Object firstObject = null;
+
+        ObjectMapper objMapper = new ObjectMapper();
+        JsonNode jsonNode = objMapper.readTree(originalJsonString);
+        Iterator<String> nameIterator = jsonNode.fieldNames();
+        if (nameIterator.hasNext()) {
+            jsonKey = nameIterator.next();
+            if (!nameIterator.hasNext()) {
+                firstObject = jsonNode.get(jsonKey);
+            }
+        }
+
+        if (1 < jsonNode.size()
+                || (firstObject != null && firstObject instanceof ArrayNode && 1 < ((ArrayNode) firstObject).size())) {
+            isNeedAddRoot = true;
+        }
+
         return isNeedAddRoot;
     }
 

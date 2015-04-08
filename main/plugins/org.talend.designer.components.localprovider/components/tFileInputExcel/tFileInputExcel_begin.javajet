@@ -127,7 +127,7 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 					    	dynamicMetadata_<%=cid%>.setPrecision(0);
 					    	dynamicMetadata_<%=cid%>.setNullable(true);
 					    	dynamicMetadata_<%=cid%>.setKey(false);
-					    	dynamicMetadata_<%=cid%>.setSourceType(routines.system.DynamicMetadata.sourceTypes.demilitedFile);
+					    	dynamicMetadata_<%=cid%>.setSourceType(routines.system.DynamicMetadata.sourceTypes.excelFile);
 					    	dynamicMetadata_<%=cid%>.setColumnPosition(i);
 					    	dynamic_<%=cid%>.metadatas.add(dynamicMetadata_<%=cid%>);
 					    }

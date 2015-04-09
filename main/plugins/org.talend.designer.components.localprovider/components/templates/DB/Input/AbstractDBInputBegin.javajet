@@ -157,8 +157,8 @@ imports="
             for (int i = <%=dynamic_index%>; i <= rsmd_<%=cid%>.getColumnCount()-<%=columnList.size()-dynamic_index%>; i++) {
                 if (!(listSchema_<%=cid%>.contains(rsmd_<%=cid%>.getColumnName(i).toUpperCase()) )) {
                 	routines.system.DynamicMetadata dcm_<%=cid%>=new routines.system.DynamicMetadata();
-                	dcm_<%=cid%>.setName(rsmd_<%=cid%>.getColumnName(i));
-                	dcm_<%=cid%>.setDbName(rsmd_<%=cid%>.getColumnName(i));
+                	dcm_<%=cid%>.setName(rsmd_<%=cid%>.getColumnLabel(i));
+                	dcm_<%=cid%>.setDbName(rsmd_<%=cid%>.getColumnLabel(i));
                 	dcm_<%=cid%>.setType(routines.system.Dynamic.getTalendTypeFromDBType("<%=dbms %>", rsmd_<%=cid%>.getColumnTypeName(i).toUpperCase(), rsmd_<%=cid%>.getPrecision(i), rsmd_<%=cid%>.getScale(i)));
                 	dcm_<%=cid%>.setDbType(rsmd_<%=cid%>.getColumnTypeName(i));
                 	dcm_<%=cid%>.setDbTypeId(rsmd_<%=cid%>.getColumnType(i));
@@ -299,9 +299,10 @@ imports="
 %>
                                   <%=firstConnName%>.<%=column.getLabel()%>=dcg_<%=cid%>;
 <% //for bug TDI-20886
+									boolean trim = whetherTrimAllCol || whetherTrimCol;
 									if ("id_MSSQL".equalsIgnoreCase(dbms)) {
 %>
-										List<Object> list_<%=cid %> = new java.util.ArrayList<Object>();
+										List<String> list_<%=cid %> = new java.util.ArrayList<String>();
 					    				for(int i_<%=cid %> = <%=metadata.getListColumns().size()%>; i_<%=cid %>  <= rsmd_<%=cid%>.getColumnCount(); i_<%=cid %> ++){
 						 					if ("NTEXT".equals(rsmd_<%=cid%>.getColumnTypeName(i_<%=cid %> ).toUpperCase())) {
 												net.sourceforge.jtds.jdbc.ClobImpl clob_<%=cid %> = (net.sourceforge.jtds.jdbc.ClobImpl) rs_<%=cid%>.getClob(i_<%=cid %>);
@@ -313,15 +314,15 @@ imports="
 												}
 						   					}
    	 				    				}
-                                 		 routines.system.DynamicUtils.readColumnsFromDatabase_Mssql(<%=firstConnName%>.<%=column.getLabel()%>, rs_<%=cid%>, fixedColumnCount_<%=cid%>,list_<%=cid %>);
+                                 		 routines.system.DynamicUtils.readColumnsFromDatabase_Mssql(<%=firstConnName%>.<%=column.getLabel()%>, rs_<%=cid%>, fixedColumnCount_<%=cid%>,list_<%=cid %>,<%=trim%>);
 <%
 									}else if("access_id".equalsIgnoreCase(dbms)){
 %>
-										routines.system.DynamicUtils.readColumnsFromDatabase_Access(<%=firstConnName%>.<%=column.getLabel()%>, rs_<%=cid%>, fixedColumnCount_<%=cid%>);
+										routines.system.DynamicUtils.readColumnsFromDatabase_Access(<%=firstConnName%>.<%=column.getLabel()%>, rs_<%=cid%>, fixedColumnCount_<%=cid%>,<%=trim%>);
 <%
 									}else{
 %>
-                                		 routines.system.DynamicUtils.readColumnsFromDatabase(<%=firstConnName%>.<%=column.getLabel()%>, rs_<%=cid%>, fixedColumnCount_<%=cid%>);
+                                		 routines.system.DynamicUtils.readColumnsFromDatabase(<%=firstConnName%>.<%=column.getLabel()%>, rs_<%=cid%>, fixedColumnCount_<%=cid%>,<%=trim%>);
 <%
 									}
 								} else if(typeToGenerate.equals("Geometry")) {

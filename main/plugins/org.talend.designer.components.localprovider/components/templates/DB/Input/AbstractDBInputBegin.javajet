@@ -155,7 +155,7 @@ imports="
 			int fixedColumnCount_<%=cid%> = <%=dynamic_index-1%>;
 
             for (int i = <%=dynamic_index%>; i <= rsmd_<%=cid%>.getColumnCount()-<%=columnList.size()-dynamic_index%>; i++) {
-                if (!(listSchema_<%=cid%>.contains(rsmd_<%=cid%>.getColumnName(i).toUpperCase()) )) {
+                if (!(listSchema_<%=cid%>.contains(rsmd_<%=cid%>.getColumnLabel(i).toUpperCase()) )) {
                 	routines.system.DynamicMetadata dcm_<%=cid%>=new routines.system.DynamicMetadata();
                 	dcm_<%=cid%>.setName(rsmd_<%=cid%>.getColumnLabel(i));
                 	dcm_<%=cid%>.setDbName(rsmd_<%=cid%>.getColumnLabel(i));

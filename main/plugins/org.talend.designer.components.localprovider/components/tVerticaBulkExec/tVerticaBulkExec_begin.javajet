@@ -43,6 +43,13 @@ boolean convertToUppercase = false; // not active this function
 boolean useExistingConnection = "true".equalsIgnoreCase(ElementParameterParser.getValue(node,"__USE_EXISTING_CONNECTION__"));
 List<IMetadataColumn> columnList = getColumnList(node);    
 String db_version = ElementParameterParser.getValue(node, "__DB_VERSION__");
+
+String copySchema = " (";
+for(int i = 0; i < columnList.size() - 1; i++){
+	copySchema += columnList.get(i).getOriginalDbColumnName() + ", ";
+}
+copySchema += columnList.get(columnList.size() - 1).getOriginalDbColumnName();
+copySchema += ")";
 %>
 String tableName_<%=cid%> = null;
 String dbschema_<%=cid %> = null;
@@ -150,9 +157,14 @@ if(("UPDATE").equals(dataAction)) {
 if(("INSERT").equals(dataAction) || columnList != null && columnList.size() > 0) {
 		String rejectedDataFile = ElementParameterParser.getValue(node, "__REJECTED_DATA_FILE__");
 		String exceptionFile = ElementParameterParser.getValue(node, "__EXCEPTION_FILE__");
+		boolean useSchema = "true".equals(ElementParameterParser.getValue(node, "__USE_SCHEMA_FOR_COPY__"));
 %>
 		Character OUT_DELIM_<%=cid %> = <%=field_separator%>.charAt(0);
-		String sql_<%=cid %> = "COPY " + tableName_<%=cid%> + " FROM STDIN DELIMITER '" +OUT_DELIM_<%=cid %> + "'" 
+		String sql_<%=cid %> = "COPY " + tableName_<%=cid%> 
+		<%if(useSchema) {%>
+			+ "<%=copySchema %>"
+		<%}%>		
+		+ " FROM STDIN DELIMITER '" +OUT_DELIM_<%=cid %> + "'" 
 	    <%if(hasNullString){
 		%> + " NULL '"  + <%=null_string%> + "'"
 		<%}%>

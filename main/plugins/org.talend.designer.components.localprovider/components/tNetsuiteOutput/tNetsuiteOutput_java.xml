@@ -7444,12 +7444,12 @@
         <IMPORTS>
             <IMPORT NAME="Netsuite_Client" MODULE="Netsuite_Client.jar" UrlPath="platform:/plugin/org.talend.libraries.custom/lib/Netsuite_Client.jar" REQUIRED="true" />
             <IMPORT NAME="NetSuite_Management" MODULE="NetSuite_Management.jar" UrlPath="platform:/plugin/org.talend.libraries.custom/lib/NetSuite_Management.jar" REQUIRED="true" />
-            <IMPORT NAME="CXF" MODULE="cxf-2.7.7.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/cxf-2.7.7.jar" REQUIRED="true" />
-            <IMPORT NAME="NEETHI" MODULE="neethi-3.0.2.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.axis2/lib/neethi-3.0.2.jar" REQUIRED="true" />
+            <IMPORT NAME="CXF" MODULE="cxf-2.7.15-modified.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/cxf-2.7.15-modified.jar" REQUIRED="true" />
+            <IMPORT NAME="NEETHI" MODULE="neethi-3.0.3.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.axis2/lib/neethi-3.0.3.jar" REQUIRED="true" />
             <IMPORT NAME="WSDL4J" MODULE="wsdl4j-1.6.3.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/wsdl4j-1.6.3.jar" REQUIRED="true" />
-            <IMPORT NAME="XMLSCHEMA-CORE" MODULE="xmlschema-core-2.0.3.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/xmlschema-core-2.0.3.jar" REQUIRED="true" />
-            <IMPORT NAME="STAX2-API" MODULE="stax2-api-3.1.1.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/stax2-api-3.1.1.jar" REQUIRED="true" />
-            <IMPORT NAME="WOODSTOX-CORE-ASL" MODULE="woodstox-core-asl-4.2.0.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/woodstox-core-asl-4.2.0.jar" REQUIRED="true" />
+            <IMPORT NAME="XMLSCHEMA-CORE" MODULE="xmlschema-core-2.1.0.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/xmlschema-core-2.1.0.jar" REQUIRED="true" />
+            <IMPORT NAME="STAX2-API" MODULE="stax2-api-3.1.4.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/stax2-api-3.1.4.jar" REQUIRED="true" />
+            <IMPORT NAME="WOODSTOX-CORE-ASL" MODULE="woodstox-core-asl-4.4.1.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/woodstox-core-asl-4.4.1.jar" REQUIRED="true" />
         </IMPORTS>
     </CODEGENERATION>
     

@@ -12,187 +12,89 @@
 		java.util.List
 	" 
 %>
-<% 
+<%
     CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
     INode node = (INode)codeGenArgument.getArgument();
     String cid = node.getUniqueName();	
 %>
-
 <%@ include file="../templates/Log4j/Log4jFileUtil.javajet"%>
-
 <%
-List<IMetadataTable> metadatas = node.getMetadataList();
-if ((metadatas!=null)&&(metadatas.size()>0)) {
-	IMetadataTable metadata = metadatas.get(0);
-	if (metadata!=null) {
-		String filename = ElementParameterParser.getValue(node,"__FILENAME__");
-    	String encoding = ElementParameterParser.getValue(node,"__ENCODING__");
-    	String header = ElementParameterParser.getValue(node, "__HEADER__");
-    	if(("").equals(header)){
-    		header="0";
-    	}
-    	String limit = ElementParameterParser.getValue(node, "__LIMIT__");
-		if(("").equals(limit)){
-			limit = "-1";
-		}
-    	String footer = ElementParameterParser.getValue(node, "__FOOTER__");
-    	if(("").equals(footer)){
-    		footer="0";
-    	}
-    	String random = "-1";
-    	String ran = ElementParameterParser.getValue(node, "__RANDOM__");
-    	if(("true").equals(ran)){
-    		random = ElementParameterParser.getValue(node, "__NB_RANDOM__");
-    		if(("").equals(random)){
-    			random="0";
-    		}
-    	}
-		
-    	
-    	String rowSeparator = ElementParameterParser.getValue(node, "__ROWSEPARATOR__");
-    	String removeEmptyRowFlag =  ElementParameterParser.getValue(node, "__REMOVE_EMPTY_ROW__");
-    	String dieOnErrorStr = ElementParameterParser.getValue(node, "__DIE_ON_ERROR__");
-		boolean dieOnError = (dieOnErrorStr!=null&&!("").equals(dieOnErrorStr))?("true").equals(dieOnErrorStr):false; 
-		
-		final boolean isLog4jEnabled = ("true").equals(ElementParameterParser.getValue(node.getProcess(), "__LOG4J_ACTIVATE__"));
-    	log4jFileUtil.componentStartInfo(node);
-%>
-org.talend.fileprocess.FileInputDelimited fid_<%=cid %> = null;
-
-<%log4jFileUtil.startRetriveDataInfo();%>
-
-try{
-fid_<%=cid %> =new org.talend.fileprocess.FileInputDelimited(<%=filename %>,<%=encoding %>,"",<%=rowSeparator %>,<%=removeEmptyRowFlag %>,<%=header %>,<%=footer %>,<%=limit %>,<%=random %>,false);
-while (fid_<%=cid %>.nextRecord()) {
-<%
-	List< ? extends IConnection> conns = node.getOutgoingSortedConnections();
-
-    String rejectConnName = "";
-    List<? extends IConnection> rejectConns = node.getOutgoingConnections("REJECT");
-    if(rejectConns != null && rejectConns.size() > 0) {
-        IConnection rejectConn = rejectConns.get(0);
-        rejectConnName = rejectConn.getName();
-    }
-    List<IMetadataColumn> rejectColumnList = null;
-    IMetadataTable metadataTable = node.getMetadataFromConnector("REJECT");
-    if(metadataTable != null) {
-        rejectColumnList = metadataTable.getListColumns();
-    }
-
-    	if (conns!=null) {
-    		if (conns.size()>0) {
-    			for (int i=0;i<conns.size();i++) {
-    				IConnection connTemp = conns.get(i);
-    				if (connTemp.getLineStyle().hasConnectionCategory(IConnectionCategory.DATA)) {
-%>
-    		<%=connTemp.getName() %> = null;			
-<%
-    				}
-    			}
-    		}
-    	}
-    	
-	String firstConnName = "";
-	if (conns!=null) {
-		if (conns.size()>0) {
-			IConnection conn = conns.get(0);
-			firstConnName = conn.getName();			
-			if (conn.getLineStyle().hasConnectionCategory(IConnectionCategory.DATA)) {%>			
-			boolean whetherReject_<%=cid %> = false;
-			<%=firstConnName %> = new <%=conn.getName() %>Struct();
-			try {
-			<%	
-				List<IMetadataColumn> listColumns = metadata.getListColumns();
-				int sizeListColumns = listColumns.size();
-				boolean noStringTypeExist = false;
-				for (int valueN=0; valueN<sizeListColumns; valueN++) {
-					IMetadataColumn column = listColumns.get(valueN);
-					JavaType javaType = JavaTypesManager.getJavaTypeFromId(column.getTalendType());
-					if(javaType == JavaTypesManager.STRING || javaType == JavaTypesManager.OBJECT){
-					}else{
-						noStringTypeExist = true;
-						break;
-					}
-				}
-				if(noStringTypeExist){%>String temp_<%=cid %> = "";
-				<%
-				}
-				for (int valueN=0; valueN<sizeListColumns; valueN++) {
-					IMetadataColumn column = listColumns.get(valueN);
-					%>
-					<%=firstConnName %>.<%=column.getLabel()%> = fid_<%=cid %>.get(<%=valueN%>);
-<%				}
-				
-%>			
-
-<%if(rejectConnName.equals(firstConnName)) {%> <%=firstConnName %> = null; <%}%>
-				
-    } catch (java.lang.Exception e) {
-        whetherReject_<%=cid%> = true;
-        <%
-        if (dieOnError) {
-            %>
-            throw(e);
-            <%
-        } else {
-            if(!("").equals(rejectConnName)&&!rejectConnName.equals(firstConnName)&&rejectColumnList != null && rejectColumnList.size() > 0) {
-
-                %>                    
-                    <%=rejectConnName %> = new <%=rejectConnName %>Struct();
-                <%
-                for(IMetadataColumn column : metadata.getListColumns()) {
-                    %>
-                    <%=rejectConnName%>.<%=column.getLabel()%> = <%=firstConnName%>.<%=column.getLabel()%>;
-                    <%
-                }
-                %>
-                <%=rejectConnName%>.errorMessage = e.getMessage() + " - Line: " + tos_count_<%=node.getUniqueName() %>;
-                <%=firstConnName %> = null;
-                <%
-            } else if(("").equals(rejectConnName)){
-	            if(isLog4jEnabled){
-	        	%>
-        		log.error("<%=cid%> - " +e.getMessage());
-	        	<%
-	        	}
-                %>
-                System.err.println(e.getMessage());
-                <%=firstConnName %> = null;
-                <%
-            } else if(rejectConnName.equals(firstConnName)){%>
-            	<%=rejectConnName%>.errorMessage = e.getMessage() + " - Line: " + tos_count_<%=node.getUniqueName() %>;
-            <%}
-        } 
-        %>
-    }
-
-				
-<%
-			}
-		}
-		if (conns.size()>0) {	
-			boolean isFirstEnter = true;
-			for (int i=0;i<conns.size();i++) {
-				IConnection conn = conns.get(i);
-				if ((conn.getName().compareTo(firstConnName)!=0)&&(conn.getName().compareTo(rejectConnName)!=0)&&(conn.getLineStyle().hasConnectionCategory(IConnectionCategory.DATA))) {
-%>
-		<% if(isFirstEnter) {%>if(!whetherReject_<%=cid%>) { <% isFirstEnter = false; } %>      
-             if(<%=conn.getName() %> == null){ 
-            	 <%=conn.getName() %> = new <%=conn.getName() %>Struct();
-             }				
-<%
-			    	 for (IMetadataColumn column: metadata.getListColumns()) {
-%>
-	    	 <%=conn.getName() %>.<%=column.getLabel() %> = <%=firstConnName %>.<%=column.getLabel() %>;    				
-<%
-				 	}
-				}
-			}
-%>
-		<% if(!isFirstEnter) {%> } <% } %>	
-<%
-		}
-	  }
+	List<IMetadataTable> metadatas = node.getMetadataList();
+	if (metadatas==null || metadatas.isEmpty()) {
+		return stringBuffer.toString();
 	}
-}
+
+	IMetadataTable metadata = metadatas.get(0);
+	if (metadata==null) {
+		return stringBuffer.toString();
+	}
+	
+	String filename = ElementParameterParser.getValue(node,"__FILENAME__");
+	String encoding = ElementParameterParser.getValue(node,"__ENCODING__");
+	String header = ElementParameterParser.getValue(node, "__HEADER__");
+	if(("").equals(header)){
+		header="0";
+	}
+	String limit = ElementParameterParser.getValue(node, "__LIMIT__");
+	if(("").equals(limit)){
+		limit = "-1";
+	}
+	String footer = ElementParameterParser.getValue(node, "__FOOTER__");
+	if(("").equals(footer)){
+		footer="0";
+	}
+	String random = "-1";
+	String ran = ElementParameterParser.getValue(node, "__RANDOM__");
+	if(("true").equals(ran)){
+		random = ElementParameterParser.getValue(node, "__NB_RANDOM__");
+		if(("").equals(random)){
+			random="0";
+		}
+	}
+	
+	String rowSeparator = ElementParameterParser.getValue(node, "__ROWSEPARATOR__");
+	String removeEmptyRowFlag =  ElementParameterParser.getValue(node, "__REMOVE_EMPTY_ROW__");
+		
+	final boolean isLog4jEnabled = ("true").equals(ElementParameterParser.getValue(node.getProcess(), "__LOG4J_ACTIVATE__"));
+	log4jFileUtil.componentStartInfo(node);
+%>
+	org.talend.fileprocess.FileInputDelimited fid_<%=cid %> = null;
+
+	<%log4jFileUtil.startRetriveDataInfo();%>
+
+	try{//}
+		fid_<%=cid %> =new org.talend.fileprocess.FileInputDelimited(<%=filename %>,<%=encoding %>,"",<%=rowSeparator %>,<%=removeEmptyRowFlag %>,<%=header %>,<%=footer %>,<%=limit %>,<%=random %>,false);
+		while (fid_<%=cid %>.nextRecord()) {//}
+<%
+	List<? extends IConnection> conns = node.getOutgoingSortedConnections();
+	
+	if (conns==null || conns.isEmpty()) {
+		return stringBuffer.toString();
+	}
+	
+	for (int i=0;i<conns.size();i++) {
+		IConnection connTemp = conns.get(i);
+		if (connTemp.getLineStyle().hasConnectionCategory(IConnectionCategory.DATA)) {
+%>
+			<%=connTemp.getName() %> = null;			
+<%
+		}
+	}
+	
+	IConnection conn = conns.get(0);
+	String firstConnName = conn.getName();
+	if (!conn.getLineStyle().hasConnectionCategory(IConnectionCategory.DATA)) {
+		return stringBuffer.toString();
+	}
+%>			
+	boolean whetherReject_<%=cid %> = false;
+	<%=firstConnName %> = new <%=conn.getName() %>Struct();
+<%
+	List<IMetadataColumn> listColumns = metadata.getListColumns();
+	for (int valueN=0; valueN<listColumns.size(); valueN++) {
+		IMetadataColumn column = listColumns.get(valueN);
+%>
+		<%=firstConnName %>.<%=column.getLabel()%> = fid_<%=cid %>.get(<%=valueN%>);
+<%
+	}
 %>

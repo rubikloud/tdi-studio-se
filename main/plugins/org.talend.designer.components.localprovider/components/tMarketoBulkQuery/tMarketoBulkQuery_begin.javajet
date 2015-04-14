@@ -128,19 +128,15 @@ if ((metadatas != null) && (metadatas.size() > 0)) { //1
 				for(int i_<%=cid%>=0;i_<%=cid%> <= reConnMaxNum_<%=cid%>;i_<%=cid%>++){
             		try{
                 		leads_<%=cid%> = client_<%=cid%>.getLead("<%=leadKeyType%>",<%=leadKeyValue%>);
-                		if(i_<%=cid%> > 0){
-                			System.err.println("Reconnect succesfully!");	
-                		}
                 		break;	
 					}catch(java.lang.Exception ex_<%=cid%>){
-						boolean isNeedReConn_<%=cid%> = true;
 						if(ex_<%=cid%> instanceof org.apache.axis.AxisFault){
 							String faultStr_<%=cid%> = ((org.apache.axis.AxisFault)ex_<%=cid%>).getFaultString();
 							if(faultStr_<%=cid%>!=null && faultStr_<%=cid%>.startsWith("201")){
-								isNeedReConn_<%=cid%> = false;
+								throw ex_<%=cid%>;
 							}
 						}
-						if(isNeedReConn_<%=cid%> && (i_<%=cid%> != reConnMaxNum_<%=cid%>)){
+						if(i_<%=cid%> != reConnMaxNum_<%=cid%>){
 							System.err.println("Connection error:");
 							System.err.println(ex_<%=cid%>.getMessage());
 							System.err.println("Waiting to retry...");
@@ -229,19 +225,15 @@ if ((metadatas != null) && (metadatas.size() > 0)) { //1
 					for(int i_<%=cid%>=0;i_<%=cid%> <= reConnMaxNum_<%=cid%>;i_<%=cid%>++){
 	            		try{
 	                		leads_<%=cid%> = client_<%=cid%>.getMultipleLeads(includeAttributes_<%=cid%>, <%=batchSize%>, streamPosition_<%=cid%>,selector_<%=cid%>);
-	                		if(i_<%=cid%> > 0){
-	                			System.err.println("Reconnect succesfully!");	
-	                		}
 	                		break;	
 						}catch(java.lang.Exception ex_<%=cid%>){
-							boolean isNeedReConn_<%=cid%> = true;
 							if(ex_<%=cid%> instanceof org.apache.axis.AxisFault){
 								String faultStr_<%=cid%> = ((org.apache.axis.AxisFault)ex_<%=cid%>).getFaultString();
 								if(faultStr_<%=cid%>!=null && faultStr_<%=cid%>.startsWith("201")){
-									isNeedReConn_<%=cid%> = false;
+									throw ex_<%=cid%>;
 								}
 							}
-							if(isNeedReConn_<%=cid%> && (i_<%=cid%> != reConnMaxNum_<%=cid%>)){
+							if(i_<%=cid%> != reConnMaxNum_<%=cid%>){
 								System.err.println("Connection error:");
 								System.err.println(ex_<%=cid%>.getMessage());
 								System.err.println("Waiting to retry...");
@@ -287,19 +279,15 @@ if ((metadatas != null) && (metadatas.size() > 0)) { //1
                 	for(int i_<%=cid%>=0;i_<%=cid%> <= reConnMaxNum_<%=cid%>;i_<%=cid%>++){
                 		try{
 	                		activities_<%=cid%> = client_<%=cid%>.getLeadActivity("<%=leadKeyType%>",<%=leadKeyValue%>, <%=batchSize%>, includeTypes_<%=cid%>, excludeTypes_<%=cid%>,streamPosition_<%=cid%>);
-	                		if(i_<%=cid%> > 0){
-	                			System.err.println("Reconnect succesfully!");	
-	                		}
 	                		break;
 						}catch(java.lang.Exception ex_<%=cid%>){
-							boolean isNeedReConn_<%=cid%> = true;
 							if(ex_<%=cid%> instanceof org.apache.axis.AxisFault){
 								String faultStr_<%=cid%> = ((org.apache.axis.AxisFault)ex_<%=cid%>).getFaultString();
 								if(faultStr_<%=cid%>!=null && faultStr_<%=cid%>.startsWith("201")){
-									isNeedReConn_<%=cid%> = false;
+									throw ex_<%=cid%>;
 								}
 							}
-							if(isNeedReConn_<%=cid%> && (i_<%=cid%> != reConnMaxNum_<%=cid%>)){
+							if(i_<%=cid%> != reConnMaxNum_<%=cid%>){
 								System.err.println("Connection error:");
 								System.err.println(ex_<%=cid%>.getMessage());
 								System.err.println("Waiting to retry...");
@@ -401,19 +389,15 @@ if ((metadatas != null) && (metadatas.size() > 0)) { //1
 					for(int i_<%=cid%>=0;i_<%=cid%> <= reConnMaxNum_<%=cid%>;i_<%=cid%>++){
 	            		try{
 	                		changes_<%=cid%> = client_<%=cid%>.getLeadChanges(<%=batchSize%>, includeTypes_<%=cid%>, excludeTypes_<%=cid%>, streamPosition_<%=cid%>, leadSelector_<%=cid%>);
-	                		if(i_<%=cid%> > 0){
-	                			System.err.println("Reconnect succesfully!");	
-	                		}
 	                		break;	
 						}catch(java.lang.Exception ex_<%=cid%>){
-							boolean isNeedReConn_<%=cid%> = true;
 							if(ex_<%=cid%> instanceof org.apache.axis.AxisFault){
 								String faultStr_<%=cid%> = ((org.apache.axis.AxisFault)ex_<%=cid%>).getFaultString();
 								if(faultStr_<%=cid%>!=null && faultStr_<%=cid%>.startsWith("201")){
-									isNeedReConn_<%=cid%> = false;
+									throw ex_<%=cid%>;
 								}
 							}
-							if(isNeedReConn_<%=cid%> && (i_<%=cid%> != reConnMaxNum_<%=cid%>)){
+							if(i_<%=cid%> != reConnMaxNum_<%=cid%>){
 								System.err.println("Connection error:");
 								System.err.println(ex_<%=cid%>.getMessage());
 								System.err.println("Waiting to retry...");

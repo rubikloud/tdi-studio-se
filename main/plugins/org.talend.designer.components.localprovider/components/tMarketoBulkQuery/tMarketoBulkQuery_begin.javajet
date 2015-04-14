@@ -50,6 +50,9 @@ if ((metadatas != null) && (metadatas.size() > 0)) { //1
             
             String batchSize = ElementParameterParser.getValue(node, "__BATCH_SIZE__");
             String timeout = ElementParameterParser.getValue(node, "__TIMEOUT__");
+            String attemptConnTimes = ElementParameterParser.getValue(node, "__MAX_RECONN_ATTEMPS__");
+            String attemptsInterval = ElementParameterParser.getValue(node, "__ATTEMPS_INTERVAL_TIME__");
+            
             boolean setIncludeTypes = ("true").equals(ElementParameterParser.getValue(node,"__SET_INCLUDE_TYPES__"));
             boolean setExcludeTypes = ("true").equals(ElementParameterParser.getValue(node,"__SET_EXCLUDE_TYPES__"));
 			List<Map<String, String>> includeTypesList = (List<Map<String,String>>)ElementParameterParser.getObjectValue(node, "__INCLUDE_TYPES__");
@@ -104,6 +107,8 @@ if ((metadatas != null) && (metadatas.size() > 0)) { //1
 				}
 			}
 %>
+			int reConnMaxNum_<%=cid%>=<%=attemptConnTimes%>;
+			reConnMaxNum_<%=cid%> = reConnMaxNum_<%=cid%> >0 ?reConnMaxNum_<%=cid%>:1;
 
             <%
             String passwordFieldName = "__SECRET_KEY__";
@@ -120,7 +125,32 @@ if ((metadatas != null) && (metadatas.size() > 0)) { //1
 			com.marketo.www.mktows.ResultGetLead leads_<%=cid%> = null;
 			com.marketo.www.mktows.LeadRecord[] records_<%=cid%> = null;
 			try{
-				leads_<%=cid%> = client_<%=cid%>.getLead("<%=leadKeyType%>",<%=leadKeyValue%>);
+				for(int i_<%=cid%>=0;i_<%=cid%> <= reConnMaxNum_<%=cid%>;i_<%=cid%>++){
+            		try{
+                		leads_<%=cid%> = client_<%=cid%>.getLead("<%=leadKeyType%>",<%=leadKeyValue%>);
+                		if(i_<%=cid%> > 0){
+                			System.err.println("Reconnect succesfully!");	
+                		}
+                		break;	
+					}catch(java.lang.Exception ex_<%=cid%>){
+						boolean isNeedReConn_<%=cid%> = true;
+						if(ex_<%=cid%> instanceof org.apache.axis.AxisFault){
+							String faultStr_<%=cid%> = ((org.apache.axis.AxisFault)ex_<%=cid%>).getFaultString();
+							if(faultStr_<%=cid%>!=null && faultStr_<%=cid%>.startsWith("201")){
+								isNeedReConn_<%=cid%> = false;
+							}
+						}
+						if(isNeedReConn_<%=cid%> && (i_<%=cid%> != reConnMaxNum_<%=cid%>)){
+							System.err.println("Connection error:");
+							System.err.println(ex_<%=cid%>.getMessage());
+							System.err.println("Waiting to retry...");
+							Thread.sleep(<%=attemptsInterval%>);
+							System.err.println("Attempting to reconnect...");
+						}else{
+							throw ex_<%=cid%>;
+						}
+					}
+                }
 				
 				globalMap.put("<%=cid %>_NB_CALL",++nb_call_<%=cid%>);  
 				
@@ -196,7 +226,32 @@ if ((metadatas != null) && (metadatas.size() > 0)) { //1
             while(true){
             	com.marketo.www.mktows.ResultGetMultipleLeads leads_<%=cid%> = null;
             	try{ 
-            		leads_<%=cid%> = client_<%=cid%>.getMultipleLeads(includeAttributes_<%=cid%>, <%=batchSize%>, streamPosition_<%=cid%>,selector_<%=cid%>);
+					for(int i_<%=cid%>=0;i_<%=cid%> <= reConnMaxNum_<%=cid%>;i_<%=cid%>++){
+	            		try{
+	                		leads_<%=cid%> = client_<%=cid%>.getMultipleLeads(includeAttributes_<%=cid%>, <%=batchSize%>, streamPosition_<%=cid%>,selector_<%=cid%>);
+	                		if(i_<%=cid%> > 0){
+	                			System.err.println("Reconnect succesfully!");	
+	                		}
+	                		break;	
+						}catch(java.lang.Exception ex_<%=cid%>){
+							boolean isNeedReConn_<%=cid%> = true;
+							if(ex_<%=cid%> instanceof org.apache.axis.AxisFault){
+								String faultStr_<%=cid%> = ((org.apache.axis.AxisFault)ex_<%=cid%>).getFaultString();
+								if(faultStr_<%=cid%>!=null && faultStr_<%=cid%>.startsWith("201")){
+									isNeedReConn_<%=cid%> = false;
+								}
+							}
+							if(isNeedReConn_<%=cid%> && (i_<%=cid%> != reConnMaxNum_<%=cid%>)){
+								System.err.println("Connection error:");
+								System.err.println(ex_<%=cid%>.getMessage());
+								System.err.println("Waiting to retry...");
+								Thread.sleep(<%=attemptsInterval%>);
+								System.err.println("Attempting to reconnect...");
+							}else{
+								throw ex_<%=cid%>;
+							}
+						}
+	                }
             		globalMap.put("<%=cid %>_NB_CALL",++nb_call_<%=cid%>);
             	}catch(java.lang.Exception ex_<%=cid%>){
             		if(ex_<%=cid%> instanceof org.apache.axis.AxisFault){
@@ -229,7 +284,32 @@ if ((metadatas != null) && (metadatas.size() > 0)) { //1
 				com.marketo.www.mktows.LeadActivityList activities_<%=cid%> = null;
 				com.marketo.www.mktows.ActivityRecord[] activityRecords_<%=cid%> = null;
                 try{
-	                activities_<%=cid%> = client_<%=cid%>.getLeadActivity("<%=leadKeyType%>",<%=leadKeyValue%>, <%=batchSize%>, includeTypes_<%=cid%>, excludeTypes_<%=cid%>,streamPosition_<%=cid%>);
+                	for(int i_<%=cid%>=0;i_<%=cid%> <= reConnMaxNum_<%=cid%>;i_<%=cid%>++){
+                		try{
+	                		activities_<%=cid%> = client_<%=cid%>.getLeadActivity("<%=leadKeyType%>",<%=leadKeyValue%>, <%=batchSize%>, includeTypes_<%=cid%>, excludeTypes_<%=cid%>,streamPosition_<%=cid%>);
+	                		if(i_<%=cid%> > 0){
+	                			System.err.println("Reconnect succesfully!");	
+	                		}
+	                		break;
+						}catch(java.lang.Exception ex_<%=cid%>){
+							boolean isNeedReConn_<%=cid%> = true;
+							if(ex_<%=cid%> instanceof org.apache.axis.AxisFault){
+								String faultStr_<%=cid%> = ((org.apache.axis.AxisFault)ex_<%=cid%>).getFaultString();
+								if(faultStr_<%=cid%>!=null && faultStr_<%=cid%>.startsWith("201")){
+									isNeedReConn_<%=cid%> = false;
+								}
+							}
+							if(isNeedReConn_<%=cid%> && (i_<%=cid%> != reConnMaxNum_<%=cid%>)){
+								System.err.println("Connection error:");
+								System.err.println(ex_<%=cid%>.getMessage());
+								System.err.println("Waiting to retry...");
+								Thread.sleep(<%=attemptsInterval%>);
+								System.err.println("Attempting to reconnect...");
+							}else{
+								throw ex_<%=cid%>;
+							}
+						}
+	                }
 	                globalMap.put("<%=cid %>_NB_CALL",++nb_call_<%=cid%>);	
 	                activityRecords_<%=cid%> = activities_<%=cid%>.getActivityRecordList();
 	            }catch(org.apache.axis.AxisFault axisFault_<%=cid%>){
@@ -318,7 +398,32 @@ if ((metadatas != null) && (metadatas.size() > 0)) { //1
             while(true){
                 com.marketo.www.mktows.ResultGetLeadChanges changes_<%=cid%> = null;
                 try{
-                	changes_<%=cid%> = client_<%=cid%>.getLeadChanges(<%=batchSize%>, includeTypes_<%=cid%>, excludeTypes_<%=cid%>, streamPosition_<%=cid%>, leadSelector_<%=cid%>);
+					for(int i_<%=cid%>=0;i_<%=cid%> <= reConnMaxNum_<%=cid%>;i_<%=cid%>++){
+	            		try{
+	                		changes_<%=cid%> = client_<%=cid%>.getLeadChanges(<%=batchSize%>, includeTypes_<%=cid%>, excludeTypes_<%=cid%>, streamPosition_<%=cid%>, leadSelector_<%=cid%>);
+	                		if(i_<%=cid%> > 0){
+	                			System.err.println("Reconnect succesfully!");	
+	                		}
+	                		break;	
+						}catch(java.lang.Exception ex_<%=cid%>){
+							boolean isNeedReConn_<%=cid%> = true;
+							if(ex_<%=cid%> instanceof org.apache.axis.AxisFault){
+								String faultStr_<%=cid%> = ((org.apache.axis.AxisFault)ex_<%=cid%>).getFaultString();
+								if(faultStr_<%=cid%>!=null && faultStr_<%=cid%>.startsWith("201")){
+									isNeedReConn_<%=cid%> = false;
+								}
+							}
+							if(isNeedReConn_<%=cid%> && (i_<%=cid%> != reConnMaxNum_<%=cid%>)){
+								System.err.println("Connection error:");
+								System.err.println(ex_<%=cid%>.getMessage());
+								System.err.println("Waiting to retry...");
+								Thread.sleep(<%=attemptsInterval%>);
+								System.err.println("Attempting to reconnect...");
+							}else{
+								throw ex_<%=cid%>;
+							}
+						}
+	                }
                 	globalMap.put("<%=cid %>_NB_CALL",++nb_call_<%=cid%>);
                 }catch(java.lang.Exception ex_<%=cid%>){
                 	if(ex_<%=cid%> instanceof org.apache.axis.AxisFault){

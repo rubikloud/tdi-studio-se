@@ -165,7 +165,11 @@
             class="org.talend.repository.json.JsonFileService"
             serviceId="IJsonFileService">
       </Service>
-   </extension>
+       <Service
+           class="org.talend.repository.json.util.JSONProviderService"
+           serviceId="IJSONProviderService">
+     </Service>
+   </extension>         
    <extension
          point="org.talend.repository.items.importexport.handler">
       <importItemsProvider

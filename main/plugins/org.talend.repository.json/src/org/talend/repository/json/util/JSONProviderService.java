@@ -17,6 +17,9 @@ import java.util.Map;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.ui.IWorkbench;
 import org.talend.core.model.process.INode;
+import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.ui.IJSONProviderService;
+import org.talend.repository.json.node.JSONRepositoryNodeType;
 import org.talend.repository.model.RepositoryNode;
 
 /**
@@ -57,6 +60,16 @@ public class JSONProviderService implements IJSONProviderService {
     public boolean isRepositorySchemaLine(INode node, Map<String, Object> lineValue) {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.core.ui.IJSONProviderService#getJSONRepositoryType()
+     */
+    @Override
+    public ERepositoryObjectType getJSONRepositoryType() {
+        return JSONRepositoryNodeType.JSON;
     }
 
 }

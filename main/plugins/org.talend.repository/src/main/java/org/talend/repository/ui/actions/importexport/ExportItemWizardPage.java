@@ -619,9 +619,23 @@ public class ExportItemWizardPage extends WizardPage {
 
         this.directoryPathField = new Text(projectGroup, SWT.BORDER);
 
+        String arcFileName = null;
+        if (selection != null && selection.getFirstElement() instanceof RepositoryNode) {
+            RepositoryNode node = (RepositoryNode) selection.getFirstElement();
+            if (node.getObject() == null) {
+                arcFileName = node.getLabel();
+            } else {
+                arcFileName = node.getObject().getLabel();
+            }
+        }
         this.directoryPathField.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
         String exportDirPath = reloadExportPath(DIRECTORY_PATH);
         if (exportDirPath != null) {
+            if (arcFileName != null) {
+                if (!new Path(exportDirPath).lastSegment().equals(arcFileName)) {
+                    exportDirPath = exportDirPath + File.separator + arcFileName;
+                }
+            }
             this.directoryPathField.setText(exportDirPath);
             this.lastPath = exportDirPath;
         }
@@ -641,14 +655,7 @@ public class ExportItemWizardPage extends WizardPage {
 
         archivePathField.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
 
-        if (selection != null && selection.getFirstElement() instanceof RepositoryNode) {
-            RepositoryNode node = (RepositoryNode) selection.getFirstElement();
-            String arcFileName;
-            if (node.getObject() == null) {
-                arcFileName = node.getLabel();
-            } else {
-                arcFileName = node.getObject().getLabel();
-            }
+        if (arcFileName != null) {
             String exportArchivePath = reloadExportPath(ARCHIVE_PATH);
             // when first open the exportItem dialog ,the exportPath maybe empty,need judge
             if (exportArchivePath != null && exportArchivePath.trim().length() > 0) {

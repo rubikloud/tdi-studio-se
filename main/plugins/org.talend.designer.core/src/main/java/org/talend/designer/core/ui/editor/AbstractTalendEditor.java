@@ -1093,8 +1093,16 @@ public abstract class AbstractTalendEditor extends GraphicalEditorWithFlyoutPale
             }
         }
 
+        if (width == 0) {
+            width = 1400;
+        }
+        if (height == 0) {
+            height = 700;
+        }
+
         Image img = new Image(null, width, height);
         GC gc = new GC(img);
+        getEditor().getLightweightSystem().paint(gc);
         Graphics graphics = new SWTGraphics(gc);
         Point point = contentLayer.getBounds().getTopLeft();
         graphics.translate(-point.x, -point.y);

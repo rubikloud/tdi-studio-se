@@ -31,6 +31,7 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.designer.core.i18n.Messages;
+import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryService;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.repository.ui.wizards.PropertiesWizardPage;
@@ -102,6 +103,8 @@ public class NewProcessWizardPage extends PropertiesWizardPage {
                 JavaCore.getOption(JavaCore.COMPILER_SOURCE), JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE)).getSeverity() == IStatus.ERROR
                 || "java".equalsIgnoreCase(nameText.getText())) {//$NON-NLS-1$
             nameStatus = createStatus(IStatus.ERROR, Messages.getString("PropertiesWizardPage.KeywordsError")); //$NON-NLS-1$
+        } else if (nameText.getText().equalsIgnoreCase(ProjectManager.getInstance().getCurrentProject().getLabel())) {
+            nameStatus = createStatus(IStatus.ERROR, Messages.getString("PropertiesWizardPage.SameAsProjectname")); //$NON-NLS-1$
         } else if (super.nameModifiedByUser) {
             if (super.retrieveNameFinished) {
                 if (!isValid(nameText.getText())) {

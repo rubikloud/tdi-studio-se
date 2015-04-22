@@ -722,7 +722,9 @@ public class FTPForm extends AbstractForm {
             conn.setProxyuser(""); //$NON-NLS-1$
         }
         if (!customText.isVisible()) {
-            conn.setCustomEncode(ENCODING);
+            if (conn.getCustomEncode() == null || "".equals(conn.getCustomEncode())) { //$NON-NLS-1$
+                conn.setCustomEncode(ENCODING);
+            }
         }
         if (conn.getCustomEncode() == null || "".equals(conn.getCustomEncode())) { //$NON-NLS-1$
             conn.setCustomEncode(ENCODING);

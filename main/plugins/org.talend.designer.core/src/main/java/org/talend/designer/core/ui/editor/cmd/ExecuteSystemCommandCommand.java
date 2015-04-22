@@ -171,7 +171,7 @@ public class ExecuteSystemCommandCommand extends Command {
             super(parentShell);
             this.commands = commands;
             this.messages = messages;
-            setDefaultImage(ImageProvider.getImage(ECoreImage.PROCESS_ICON));
+            // setDefaultImage(ImageProvider.getImage(ECoreImage.PROCESS_ICON));
             setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
             setBlockOnOpen(true);
         }
@@ -225,7 +225,7 @@ public class ExecuteSystemCommandCommand extends Command {
             super.configureShell(newShell);
             newShell.setMinimumSize(WIDTH, HEIGHT);
             // newShell.setSize(WIDTH, HEIGHT);
-
+            newShell.setImage(ImageProvider.getImage(ECoreImage.PROCESS_ICON));
             newShell.setText(Messages.getString("ExecuteSystemCommandCommand.Title")); //$NON-NLS-1$
 
         }
@@ -302,20 +302,24 @@ public class ExecuteSystemCommandCommand extends Command {
             super();
 
             if (type == null) {
-                ExceptionHandler.process(new IllegalArgumentException(Messages.getString("ExecuteSystemCommandCommand.typeNull"))); //$NON-NLS-1$
+                ExceptionHandler
+                        .process(new IllegalArgumentException(Messages.getString("ExecuteSystemCommandCommand.typeNull"))); //$NON-NLS-1$
             }
             if (content == null) {
-                ExceptionHandler.process(new IllegalArgumentException(Messages.getString("ExecuteSystemCommandCommand.contentNull"))); //$NON-NLS-1$
+                ExceptionHandler.process(new IllegalArgumentException(Messages
+                        .getString("ExecuteSystemCommandCommand.contentNull"))); //$NON-NLS-1$
             }
 
             this.type = type;
             this.content = content;
         }
 
+        @Override
         public String getContent() {
             return this.content;
         }
 
+        @Override
         public IMsgType getType() {
             return this.type;
         }
@@ -329,6 +333,7 @@ public class ExecuteSystemCommandCommand extends Command {
         final int bufferSize = 1024;
         Thread thread = new Thread() {
 
+            @Override
             public void run() {
                 try {
                     BufferedInputStream outStreamProcess = new BufferedInputStream(input);

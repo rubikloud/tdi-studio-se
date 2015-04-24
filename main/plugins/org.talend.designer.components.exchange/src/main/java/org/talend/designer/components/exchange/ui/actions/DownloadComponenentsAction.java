@@ -44,6 +44,7 @@ import org.talend.core.CorePlugin;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.download.DownloadHelper;
 import org.talend.core.download.DownloadListener;
+import org.talend.core.download.IDownloadHelper;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.components.ComponentManager;
@@ -348,7 +349,7 @@ public class DownloadComponenentsAction extends Action implements IIntroAction {
         }
 
         @Override
-        public void downloadProgress(DownloadHelper downloader, int bytesRead) {
+        public void downloadProgress(IDownloadHelper downloader, int bytesRead) {
             if (fMonitor.isCanceled()) {
                 // cancel download
                 downloader.setCancel(true);

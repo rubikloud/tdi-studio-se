@@ -14,12 +14,12 @@ package org.talend.designer.core.ui;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.help.internal.base.BaseHelpSystem;
 import org.eclipse.help.internal.search.LocalSearchManager;
 import org.talend.designer.core.i18n.Messages;
+import org.talend.designer.core.ui.editor.TalendPaletteSearchIndex;
 
 /**
  * DOC cmeng class global comment. Detailled comment
@@ -39,7 +39,12 @@ public class UpdateHelpIndexJob extends Job {
         LocalSearchManager localSearchManager = BaseHelpSystem.getInstance().getLocalSearchManager();
         IStatus status = Status.OK_STATUS;
         try {
-            localSearchManager.ensureIndexUpdated(monitor, localSearchManager.getIndex(Platform.getNL()));
+            TalendPaletteSearchIndex talendPaletteSearchIndex = TalendPaletteSearchIndex.getInstance();
+            if (talendPaletteSearchIndex != null) {
+                localSearchManager.ensureIndexUpdated(monitor, talendPaletteSearchIndex);
+            } else {
+                status = Status.CANCEL_STATUS;
+            }
         } catch (Throwable e) {
             status = Status.CANCEL_STATUS;
         }

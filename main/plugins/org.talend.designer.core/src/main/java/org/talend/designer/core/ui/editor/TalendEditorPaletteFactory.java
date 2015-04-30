@@ -49,6 +49,7 @@ import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.help.internal.base.BaseHelpSystem;
 import org.eclipse.help.internal.search.ISearchHitCollector;
 import org.eclipse.help.internal.search.ISearchQuery;
+import org.eclipse.help.internal.search.LocalSearchManager;
 import org.eclipse.help.internal.search.QueryTooComplexException;
 import org.eclipse.help.internal.search.SearchHit;
 import org.eclipse.help.internal.search.SearchQuery;
@@ -1177,8 +1178,13 @@ public final class TalendEditorPaletteFactory {
             @Override
             protected IStatus run(IProgressMonitor monitor) {
                 try {
+                    TalendPaletteSearchIndex searchIndex = TalendPaletteSearchIndex.getInstance();
+                    LocalSearchManager localSearchManager = BaseHelpSystem.getLocalSearchManager();
+                    // if not work or null, maybe should throw a warn to inform user and help us trace
+                    // if (searchIndex != null && localSearchManager != null) {
+                    localSearchManager.ensureIndexUpdated(monitor, searchIndex);
                     ISearchQuery searchQuery = new SearchQuery(filter, false, new ArrayList<String>(), Platform.getNL());
-                    BaseHelpSystem.getLocalSearchManager().search(searchQuery, new ISearchHitCollector() {
+                    searchIndex.search(searchQuery, new ISearchHitCollector() {
 
                         @Override
                         public void addQTCException(QueryTooComplexException exception) throws QueryTooComplexException {
@@ -1189,7 +1195,8 @@ public final class TalendEditorPaletteFactory {
                         public void addHits(List<SearchHit> hits, String wordsSearched) {
                             querySearchResult.addAll(hits);
                         }
-                    }, monitor);
+                    });
+                    // }
                 } catch (Throwable e) {
                     CommonExceptionHandler.process(e, Priority.WARN);
                 }

@@ -2912,7 +2912,8 @@ public class EmfComponent extends AbstractComponent {
                             if (!moduleNames.contains(moduleNeeded.getModuleName())) {
                                 ModuleNeeded componentImportNeeds = new ModuleNeeded(this.getName(),
                                         moduleNeeded.getModuleName(), moduleNeeded.getInformationMsg(),
-                                        moduleNeeded.isRequired(), moduleNeeded.getInstallURL(), moduleNeeded.getRequiredIf());
+                                        moduleNeeded.isRequired(), moduleNeeded.getInstallURL(), moduleNeeded.getRequiredIf(),
+                                        moduleNeeded.getMavenUrl());
                                 componentImportNeeds.setModuleLocaion(moduleNeeded.getModuleLocaion());
                                 componentImportNeedsList.add(componentImportNeeds);
                             }
@@ -2938,7 +2939,7 @@ public class EmfComponent extends AbstractComponent {
                                         msg = Messages.getString("modules.required"); //$NON-NLS-1$
                                     }
                                     ModuleNeeded componentImportNeeds = new ModuleNeeded(this.getName(), valueIndex, msg, true,
-                                            new ArrayList(), null);
+                                            new ArrayList(), null, null);
                                     componentImportNeeds.setShow(false);
                                     componentImportNeedsList.add(componentImportNeeds);
                                 }
@@ -2963,7 +2964,7 @@ public class EmfComponent extends AbstractComponent {
                         if (!moduleNames.contains(moduleNeeded.getModuleName())) {
                             ModuleNeeded componentImportNeeds = new ModuleNeeded(this.getName(), moduleNeeded.getModuleName(),
                                     moduleNeeded.getInformationMsg(), moduleNeeded.isRequired(), moduleNeeded.getInstallURL(),
-                                    moduleNeeded.getRequiredIf());
+                                    moduleNeeded.getRequiredIf(), moduleNeeded.getMavenUrl());
                             componentImportNeeds.setModuleLocaion(moduleNeeded.getModuleLocaion());
                             componentImportNeedsList.add(componentImportNeeds);
                         }
@@ -2978,54 +2979,54 @@ public class EmfComponent extends AbstractComponent {
         if (ArrayUtils.contains(JavaTypesManager.getJavaTypesLabels(), "Geometry") && "tOracleInput".equals(name)) {
             // <IMPORT NAME="oracle-sdoapi" MODULE="sdoapi.jar" REQUIRED="true" />
             ModuleNeeded componentImportNeeds = new ModuleNeeded("oracle-sdoapi", "sdoapi.jar",
-                    Messages.getString("modules.required"), true, new ArrayList<String>(), null);
+                    Messages.getString("modules.required"), true, new ArrayList<String>(), null, null);
             componentImportNeedsList.add(componentImportNeeds);
 
             // <IMPORT NAME="oracle-sdoutil" MODULE="sdoutil.jar" REQUIRED="true" />
             componentImportNeeds = new ModuleNeeded("oracle-sdoutil", "sdoutil.jar", Messages.getString("modules.required"),
-                    true, new ArrayList<String>(), null);
+                    true, new ArrayList<String>(), null, null);
             componentImportNeedsList.add(componentImportNeeds);
 
             // <IMPORT NAME="jts-1.12" MODULE="jts-1.12.jar" REQUIRED="true" />
             componentImportNeeds = new ModuleNeeded("jts-1.12", "jts-1.12.jar", Messages.getString("modules.required"), true,
-                    new ArrayList<String>(), null);
+                    new ArrayList<String>(), null, null);
             componentImportNeedsList.add(componentImportNeeds);
 
             // <IMPORT NAME="org.talend.sdi" MODULE="org.talend.sdi.jar" REQUIRED="true" />
             componentImportNeeds = new ModuleNeeded("org.talend.sdi", "org.talend.sdi.jar",
-                    Messages.getString("modules.required"), true, new ArrayList<String>(), null);
+                    Messages.getString("modules.required"), true, new ArrayList<String>(), null, null);
             componentImportNeedsList.add(componentImportNeeds);
 
             // <IMPORT NAME="Java-DOM4J" MODULE="dom4j-1.6.1.jar" REQUIRED="true" />
             componentImportNeeds = new ModuleNeeded("Java-DOM4J", "dom4j-1.6.1.jar", Messages.getString("modules.required"),
-                    true, new ArrayList<String>(), null);
+                    true, new ArrayList<String>(), null, null);
             componentImportNeedsList.add(componentImportNeeds);
 
             // <IMPORT NAME="Java-JAXEN" MODULE="jaxen-1.1.1.jar" REQUIRED="true" />
             componentImportNeeds = new ModuleNeeded("Java-JAXEN", "jaxen-1.1.1.jar", Messages.getString("modules.required"),
-                    true, new ArrayList<String>(), null);
+                    true, new ArrayList<String>(), null, null);
             componentImportNeedsList.add(componentImportNeeds);
         }
 
         if (ArrayUtils.contains(JavaTypesManager.getJavaTypesLabels(), "Geometry") && "tOracleOutput".equals(name)) {
             // <IMPORT NAME="oracle-sdoapi" MODULE="sdoapi.jar" REQUIRED="true" />
             ModuleNeeded componentImportNeeds = new ModuleNeeded("oracle-sdoapi", "sdoapi.jar",
-                    Messages.getString("modules.required"), true, new ArrayList<String>(), null);
+                    Messages.getString("modules.required"), true, new ArrayList<String>(), null, null);
             componentImportNeedsList.add(componentImportNeeds);
 
             // <IMPORT NAME="oracle-sdoutil" MODULE="sdoutil.jar" REQUIRED="true" />
             componentImportNeeds = new ModuleNeeded("oracle-sdoutil", "sdoutil.jar", Messages.getString("modules.required"),
-                    true, new ArrayList<String>(), null);
+                    true, new ArrayList<String>(), null, null);
             componentImportNeedsList.add(componentImportNeeds);
 
             // <IMPORT NAME="Java-DOM4J" MODULE="dom4j-1.6.1.jar" REQUIRED="true" />
             componentImportNeeds = new ModuleNeeded("Java-DOM4J", "dom4j-1.6.1.jar", Messages.getString("modules.required"),
-                    true, new ArrayList<String>(), null);
+                    true, new ArrayList<String>(), null, null);
             componentImportNeedsList.add(componentImportNeeds);
 
             // <IMPORT NAME="Java-JAXEN" MODULE="jaxen-1.1.1.jar" REQUIRED="true" />
             componentImportNeeds = new ModuleNeeded("Java-JAXEN", "jaxen-1.1.1.jar", Messages.getString("modules.required"),
-                    true, new ArrayList<String>(), null);
+                    true, new ArrayList<String>(), null, null);
             componentImportNeedsList.add(componentImportNeeds);
         }
 

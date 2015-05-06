@@ -96,6 +96,26 @@ imports="
 	}
 <%} else {%>
 	org.talend.sap.ISAPConnection connection_<%=cid%> = (org.talend.sap.ISAPConnection)globalMap.get("<%=conn%>");
+<%
+	INode connectionNode = null; 
+	for (INode processNode : node.getProcess().getGeneratingNodes()) { 
+		if(connection.equals(processNode.getUniqueName())) { 
+			connectionNode = processNode; 
+			break; 
+		} 
+	} 
+	boolean specify_alias = "true".equals(ElementParameterParser.getValue(connectionNode, "__SPECIFY_DATASOURCE_ALIAS__"));
+	if(specify_alias){
+		String alias = ElementParameterParser.getValue(connectionNode, "__SAP_DATASOURCE_ALIAS__");
+		if(null != alias && !("".equals(alias))){
+%>
+			if(connection_<%=cid%> == null){
+				connection_<%=cid%> = //<%=alias%>;
+			}
+<%
+		}
+	}
+%>
 	if(connection_<%=cid%>!=null && connection_<%=cid%>.isAlive()) {
 		org.talend.sap.ISAPTransaction transaction_<%=cid%> = connection_<%=cid%>.getTransaction();
 		if(transaction_<%=cid%>!=null && transaction_<%=cid%>.isAlive()) {

@@ -101,7 +101,7 @@
 	      FIELD="LABEL"
 	      NUM_ROW="80"
 	      GROUP="DATASOURCE"
-	      SHOW_IF="DB_VERSION=='sapjco3.jar'"
+	      SHOW_IF="(DB_VERSION=='sapjco3.jar') OR (DB_VERSION=='TALENDSAP')"
 	    >
 	        <DEFAULT>This option only applies when deploying and running in the Talend Runtime</DEFAULT>
 	    </PARAMETER>
@@ -111,7 +111,7 @@
 	      NUM_ROW="90"
 	      REQUIRED="true"
 	      GROUP="DATASOURCE"
-          SHOW_IF="DB_VERSION=='sapjco3.jar'"
+          SHOW_IF="(DB_VERSION=='sapjco3.jar') OR (DB_VERSION=='TALENDSAP')"
 	    >
 	    </PARAMETER>
 	    <PARAMETER
@@ -120,7 +120,7 @@
 	      NUM_ROW="100"
 	      REQUIRED="true"
 	      GROUP="DATASOURCE"
-	      SHOW_IF="(SPECIFY_DATASOURCE_ALIAS=='true') AND (DB_VERSION=='sapjco3.jar')"
+	      SHOW_IF="(SPECIFY_DATASOURCE_ALIAS=='true') AND ((DB_VERSION=='sapjco3.jar') OR (DB_VERSION=='TALENDSAP'))"
 	    >
 	    <DEFAULT>""</DEFAULT>
 	    </PARAMETER>

@@ -191,6 +191,22 @@
 	dest_<%=cid%>.ping();
     globalMap.put("conn_<%=cid %>", dest_<%=cid%>);
 <%}else{%>
+	org.talend.sap.ISAPConnection connection_<%=cid%> = null;
+<%
+	boolean specify_alias = "true".equals(ElementParameterParser.getValue(node, "__SPECIFY_DATASOURCE_ALIAS__"));
+	if(specify_alias){
+		String alias = ElementParameterParser.getValue(node, "__SAP_DATASOURCE_ALIAS__");
+		if(null != alias && !("".equals(alias))){
+%>
+			connection_<%=cid%> = ((org.talend.sap.impl.SAPConnectionFactory)(org.talend.sap.impl.SAPConnectionFactory.getInstance())).createConnection(<%=alias%>);
+<%
+		}
+%>
+		if (connection_<%=cid%> == null) {//}
+<%
+	}
+%>
+	
 	java.util.Properties properties_<%=cid%> = new java.util.Properties();
     properties_<%=cid%>.put(org.talend.sap.ISAPConnection.PROP_CLIENT, <%=client%>);
     properties_<%=cid%>.put(org.talend.sap.ISAPConnection.PROP_USER, <%=userid%>);
@@ -235,7 +251,15 @@
     }
 	%>
     
-	org.talend.sap.ISAPConnection connection_<%=cid%> = org.talend.sap.impl.SAPConnectionFactory.getInstance().createConnection(properties_<%=cid%>);
+	connection_<%=cid%> = org.talend.sap.impl.SAPConnectionFactory.getInstance().createConnection(properties_<%=cid%>);
+<%
+	if(specify_alias){
+%>
+		//{
+		}
+<%
+	}
+%>
 	connection_<%=cid%>.beginTransaction();
 	globalMap.put("conn_<%=cid %>", connection_<%=cid%>);
 <%}%>

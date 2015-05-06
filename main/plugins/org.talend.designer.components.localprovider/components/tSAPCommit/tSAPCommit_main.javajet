@@ -111,7 +111,7 @@ imports="
 		if(null != alias && !("".equals(alias))){
 %>
 			if(connection_<%=cid%> == null){
-				connection_<%=cid%> = //<%=alias%>;
+				connection_<%=cid%> = org.talend.sap.impl.SAPConnectionFactory.getInstance().createConnection(<%=alias%>);
 			}
 <%
 		}

@@ -198,7 +198,7 @@
 		String alias = ElementParameterParser.getValue(node, "__SAP_DATASOURCE_ALIAS__");
 		if(null != alias && !("".equals(alias))){
 %>
-			connection_<%=cid%> = //<%=alias%>;
+			connection_<%=cid%> = org.talend.sap.impl.SAPConnectionFactory.getInstance().createConnection(<%=alias%>);
 <%
 		}
 %>

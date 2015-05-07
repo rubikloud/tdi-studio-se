@@ -31,6 +31,18 @@
             id="org.talend.designer.core.ui.editor.StandAloneTalendJavaEditor"
             name="Java Editor">
       </editor> 
+      <editor
+            class="org.talend.designer.core.ui.editor.TalendDefaultJavaEditor"
+            contributorClass="org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditorActionContributor"
+            default="true"
+            icon="icons/java.gif"
+            id="org.talend.designer.core.ui.editor.TalendDefaultJavaEditor"
+            name="Talend Default Java Editor"
+            symbolicFontName="org.eclipse.jdt.ui.editors.textfont">
+         <contentTypeBinding
+               contentTypeId="org.eclipse.jdt.core.javaSource">
+         </contentTypeBinding>
+      </editor> 
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">

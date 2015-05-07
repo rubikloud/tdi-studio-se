@@ -390,14 +390,7 @@ public class ProcessComposite extends ScrolledComposite implements IDynamicPrope
 
             @Override
             public void widgetSelected(SelectionEvent event) {
-
-                // ToolItem item = (ToolItem) event.widget;
-                errorMessMap.clear();
-                // if (item.getData().equals(ProcessView.DEBUG_ID)) {
-                // debug();
-                // } else {
-                execButtonPressed();
-                // }
+                execRun();
             }
         });
 
@@ -670,6 +663,16 @@ public class ProcessComposite extends ScrolledComposite implements IDynamicPrope
         createLineLimitedControl(execContent);
     }
 
+    public void execRun() {
+		// ToolItem item = (ToolItem) event.widget;
+        errorMessMap.clear();
+        // if (item.getData().equals(ProcessView.DEBUG_ID)) {
+        // debug();
+        // } else {
+        execButtonPressed();
+        // }
+	}
+    
     /**
      * DOC bqian Comment method "createLineLimitedControl".
      */

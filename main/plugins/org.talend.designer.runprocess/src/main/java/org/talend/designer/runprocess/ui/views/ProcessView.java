@@ -393,7 +393,11 @@ public class ProcessView extends ViewPart {
     }
 
     public void createDynamicComposite(Composite parent, Element element, EComponentCategory category) {
-        if (moveButton.getText().equals(">>")) { //$NON-NLS-1$
+    	
+        contextComposite.setVisible(true);
+        moveButton.setVisible(true);
+        
+    	if (moveButton.getText().equals(">>")) { //$NON-NLS-1$
             sash.setWeights(new int[] { 18, 5 });
         } else if (moveButton.getText().equals("<<")) { //$NON-NLS-1$
             sash.setWeights(new int[] { 23, 1 });
@@ -416,6 +420,9 @@ public class ProcessView extends ViewPart {
             memoryRunComposite = new MemoryRuntimeComposite(findProcessView(), parent, processContext, SWT.H_SCROLL
                     | SWT.V_SCROLL | SWT.NO_FOCUS);
             dc = memoryRunComposite;
+            contextComposite.setVisible(false);
+            moveButton.setVisible(false);
+            sash.setWeights(new int[]{90,1});
         }
         if (EComponentCategory.MAPREDUCE_JOB_CONFIG_FOR_HADOOP.equals(category)
                 || EComponentCategory.STORM_JOB_CONFIG.equals(category) || EComponentCategory.SPARK_JOB_CONFIG.equals(category)) {
@@ -813,4 +820,9 @@ public class ProcessView extends ViewPart {
     public void setSelection(ISelection sel) {
         getSite().getSelectionProvider().setSelection(sel);
     }
+
+	public ProcessContextComposite getContextComposite() {
+		return contextComposite;
+	}
+    
 }

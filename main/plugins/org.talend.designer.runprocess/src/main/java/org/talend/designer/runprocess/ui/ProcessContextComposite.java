@@ -135,19 +135,26 @@ public class ProcessContextComposite extends Composite {
 
         @Override
         public void selectionChanged(final SelectionChangedEvent event) {
-            Object input = null;
-            if (!event.getSelection().isEmpty()) {
-                IContext selectedContext = (IContext) ((IStructuredSelection) event.getSelection()).getFirstElement();
-                input = selectedContext.getContextParameterList();
-                process.setLastRunContext(selectedContext);
-                rubjobManager.setSelectContext(selectedContext);
-                // see bug 0003924
-                processNeedGenCode(process);
-            }
-            contextTableViewer.setInput(input);
+            runSelectionChange(event);
         }
-
     };
+    
+    /**
+     * zwxue Comment method "runSelectionChange".
+     * for memory run can call this method. 
+     */
+    public void runSelectionChange(final SelectionChangedEvent event) {
+		Object input = null;
+        if (!event.getSelection().isEmpty()) {
+            IContext selectedContext = (IContext) ((IStructuredSelection) event.getSelection()).getFirstElement();
+            input = selectedContext.getContextParameterList();
+            process.setLastRunContext(selectedContext);
+            rubjobManager.setSelectContext(selectedContext);
+            // see bug 0003924
+            processNeedGenCode(process);
+        }
+        contextTableViewer.setInput(input);
+	}
 
     /**
      * bqian Comment method "processNeedGenCode".
@@ -370,6 +377,13 @@ public class ProcessContextComposite extends Composite {
             updateDefaultValueForListTypeParameter(context.getContextParameterList());
         }
         return continueLaunch;
+    }
+    
+    public Object getContextComboInput(){
+    	return contextComboViewer.getInput();
+    }
+    public ComboViewer getContextComboViewer(){
+    	return contextComboViewer;
     }
 
     /**

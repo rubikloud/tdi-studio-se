@@ -41,11 +41,10 @@ public class GarbageAction extends Action {
      * @param section The property section
      */
     public GarbageAction(RuntimeGraphcsComposite composite) {
-        setText(Messages.garbageCollectorLabel);
-        setImageDescriptor(Activator.getImageDescriptor(ISharedImages.TRASH_IMG_PATH));
-        setDisabledImageDescriptor(Activator.getImageDescriptor(ISharedImages.DISABLED_TRASH_IMG_PATH));
+//        setImageDescriptor(Activator.getImageDescriptor(ISharedImages.TRASH_IMG_PATH));
+//        setDisabledImageDescriptor(Activator.getImageDescriptor(ISharedImages.DISABLED_TRASH_IMG_PATH));
         setId(getClass().getName());
-
+        setText(Messages.garbageCollectorLabel);
         this.runtimeComposite = composite;
     }
 

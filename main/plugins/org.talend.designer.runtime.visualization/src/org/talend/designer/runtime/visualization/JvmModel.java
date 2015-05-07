@@ -22,6 +22,7 @@ import org.talend.designer.runtime.visualization.JvmModelEvent.State;
 import org.talend.designer.runtime.visualization.internal.core.ActiveJvm;
 import org.talend.designer.runtime.visualization.internal.core.Host;
 import org.talend.designer.runtime.visualization.internal.core.Util;
+import org.talend.designer.runtime.visualization.views.RuntimeGraphcsComposite;
 
 /**
  * The JVM model that is singleton having hosts and JVMs.
@@ -209,7 +210,7 @@ public class JvmModel {
      * @param listener The JVM model change listener
      */
     public void removeJvmModelChangeListener(IJvmModelChangeListener listener) {
-        listeners.remove(listener);
+		listeners.remove(listener);
     }
 
     /**
@@ -241,6 +242,12 @@ public class JvmModel {
      */
     public void fireJvmModelChangeEvent(JvmModelEvent e) {
         for (IJvmModelChangeListener listener : listeners) {
+//        	System.out.println("from JVM:" + listeners.hashCode());
+        	if(listener instanceof RuntimeGraphcsComposite){
+        		if(((RuntimeGraphcsComposite) listener).isDisposed()){
+        			listeners.remove(listener);
+        		}
+        	}
             listener.jvmModelChanged(e);
         }
     }

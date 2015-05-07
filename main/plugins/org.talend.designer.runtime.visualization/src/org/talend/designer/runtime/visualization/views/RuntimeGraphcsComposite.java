@@ -12,25 +12,39 @@
 // ============================================================================
 package org.talend.designer.runtime.visualization.views;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.collections.buffer.UnboundedFifoBuffer;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
@@ -44,7 +58,10 @@ import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.talend.designer.runtime.visualization.Activator;
 import org.talend.designer.runtime.visualization.IActiveJvm;
 import org.talend.designer.runtime.visualization.JvmCoreException;
+import org.talend.designer.runtime.visualization.JvmModel;
 import org.talend.designer.runtime.visualization.JvmModelEvent;
+import org.talend.designer.runtime.visualization.ReportMessage;
+import org.talend.designer.runtime.visualization.ReportMessageManager;
 import org.talend.designer.runtime.visualization.JvmModelEvent.State;
 import org.talend.designer.runtime.visualization.MBean.IMBeanServer;
 import org.talend.designer.runtime.visualization.MBean.IMBeanServerChangeListener;
@@ -85,7 +102,7 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
     private Composite messagePage;
 
     /** The report text filed. */
-    private Text reportField;
+    private StyledText reportField;
 
     /** The information text filed. */
     private Text infoField;
@@ -98,6 +115,16 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
 
     /** The information composite. */
     private Composite infoComposite;
+    
+    private static volatile RuntimeGraphcsComposite lastInstance;
+    
+    private  ReportMessageManager messageManager;
+    
+    
+    //should be static, there're multi refresh works of multi instances by switch tabs,fix it later
+    private static long lastAddTime = System.currentTimeMillis();
+    
+//    private static RuntimeGraphcsComposite runtimeGraphicComposite;
 
     public RuntimeGraphcsComposite(Composite parent, ISelection selection, int style) {
         super(parent, selection, style);
@@ -105,12 +132,31 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
         loadChartSetAction = new LoadChartAction(this);
         garbageCollectorAction = new GarbageAction(this);
         setInput(selection);
+        this.messageManager = ReportMessageManager.getInstance();
+        synchronized(this){
+        	if(lastInstance != null){
+        		//didn't work. cause the instance's hashcode changed in the CopyOnWriteArrayList,check later.
+//        		System.out.println("from comp:" + lastInstance.hashCode());
+        		JvmModel.getInstance().removeJvmModelChangeListener(lastInstance);
+        	}else{
+        		lastInstance = this;
+        	}
+        }
     }
 
+//    public static RuntimeGraphcsComposite getInstance(Composite parent, ISelection selection, int style){
+//    	if(runtimeGraphicComposite == null || runtimeGraphicComposite.isDisposed()){
+//    		runtimeGraphicComposite = new RuntimeGraphcsComposite(parent, selection, style);
+//    	}
+//    	return runtimeGraphicComposite;
+//    }
+    
     @Override
     protected void refresh() {
         refreshConnectionIndicator();
         refreshReportField();
+//        if(!this.isDisposed()){
+//        }
 
         IActiveJvm jvm = getJvm();
         if (jvm == null || !jvm.isConnected() || isRefreshSuspended() || chartsPage.isDisposed()) {
@@ -123,8 +169,14 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
             }
         }
     }
-
+    
     private void refreshReportField() {
+    	long newAddTime = System.currentTimeMillis();
+//    	System.out.println(this.toString() + "," + (newAddTime-lastAddTime));
+    	if(newAddTime-lastAddTime<10*1000){
+    		return;
+    	}
+    	lastAddTime = newAddTime;
         IActiveJvm jvm = getJvm();
         List<IMonitoredMXBeanGroup> groups = jvm.getMBeanServer().getMonitoredAttributeGroups();
 
@@ -152,7 +204,7 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
                 }
                 if (lastDate != null) {
                     if (isRightPercentage(maxHeapSize, useHeapSize)) {
-                        setNormalReport(lastDate);
+//                    	setNormalReport(lastDate);
                     } else {
                         setWarningReport(lastDate);
                     }
@@ -174,21 +226,45 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
         return isRightMemmory;
     }
 
-    private void setWarningReport(Date lastDate) {
-        if (reportField != null && !reportField.isDisposed()) {
-            StringBuilder finalContent = new StringBuilder();
-            finalContent.append(Messages.memoryWarningMsg);
-            finalContent.append(" "); //$NON-NLS-1$
-            finalContent.append(lastDate.toString());
-            reportField.setText(finalContent.toString());
-            reportField.setForeground(new Color(Display.getDefault(), 255, 0, 0));
+    private synchronized void setWarningReport(Date lastDate) {
+    	if(messageManager!= null){
+    		StringBuilder finalContent = new StringBuilder();
+    		finalContent.append(Messages.memoryWarningMsg);
+    		finalContent.append(" "); //$NON-NLS-1$
+    		finalContent.append(new SimpleDateFormat("hh:mm:ss a MM/dd/yyyy").format(lastDate));
+    		finalContent.append("\r\n");
+    		messageManager.setWarningMessage(finalContent.toString(), getDisplay().getSystemColor(SWT.COLOR_RED), getDisplay().getSystemColor(SWT.COLOR_WHITE));
+    	}
+    	displayReportField();
+    }
+
+	public void displayReportField() {
+		if (reportField != null && !reportField.isDisposed()) {
+			if(messageManager ==null){
+				return;
+			}
+    		UnboundedFifoBuffer messages = messageManager.getMessages();
+    		Iterator iterator = messages.iterator();
+    		StringBuilder content = new StringBuilder();
+    		StyleRange[] styleRanges = new StyleRange[messages.size()];
+    		int i = 0;
+    		while(iterator.hasNext()){
+    			ReportMessage message = (ReportMessage) iterator.next();
+    			content.append(message.getContent());
+    			styleRanges[i++] = message.getType();
+    		}
+    		reportField.setText(content.toString());
+    		reportField.setStyleRanges(styleRanges);
+//            reportField.setForeground(new Color(Display.getDefault(), 255, 0, 0));
             reportField.setTopIndex(Integer.MAX_VALUE);
         }
-    }
+	}
 
     private void setNormalReport(Date lastDate) {
         if (reportField != null && !reportField.isDisposed()) {
             StringBuilder finalContent = new StringBuilder();
+            finalContent.append(reportField.getText());
+            finalContent.append("\r\n");
             finalContent.append(Messages.memoryNormalMsg);
             finalContent.append(" "); //$NON-NLS-1$
             finalContent.append(lastDate.toString());
@@ -293,7 +369,7 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
         }
 
         createReportField(chartComposite);
-        createInfoField(chartComposite);
+//      createInfoField(chartComposite);
         chartsPage.layout();
         chartsPage.setVisible(true);
         refresh();
@@ -341,8 +417,8 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
         if (group.getName().equals(MonitorAttributeName.HEAP_MEMORY)) {
             sectionData.left = new FormAttachment(0, 0);
             sectionData.right = new FormAttachment(65, 0);
-            sectionData.top = new FormAttachment(0, 0);
-            sectionData.bottom = new FormAttachment(50, -5);
+            sectionData.top = new FormAttachment(0, 6);
+            sectionData.bottom = new FormAttachment(53, -5);
         } else if (group.getName().equals(MonitorAttributeName.THREAD_COUNT)) {
             sectionData.left = new FormAttachment(50, 5);
             sectionData.right = new FormAttachment(100, -5);
@@ -351,8 +427,8 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
         } else if (group.getName().equals(MonitorAttributeName.CPU_USE)) {
             sectionData.left = new FormAttachment(0, 0);
             sectionData.right = new FormAttachment(65, 0);
-            sectionData.top = new FormAttachment(50, 0);
-            sectionData.bottom = new FormAttachment(100, 0);
+            sectionData.top = new FormAttachment(53, 0);
+            sectionData.bottom = new FormAttachment(100, -6);
         }
         section.setLayoutData(sectionData);
 
@@ -372,6 +448,13 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
         data.bottom = new FormAttachment(100, 0);
         chart.setLayoutData(data);
         section.setClient(flatFormComposite);
+        
+        
+        ArrayList<Action> list = new ArrayList<Action>();
+        list.add(garbageCollectorAction);
+        if(group.getName().equals(MonitorAttributeName.HEAP_MEMORY)){
+        	addSectionActions(section, list);
+        }
     }
 
     private Composite createFlatFormComposite(Composite section, FormToolkit tookit) {
@@ -395,7 +478,7 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
 
         chartsPage = new Composite(parent, SWT.NULL);
         parent.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
-
+        chartsPage.setBackground(parent.getBackground());
         FormLayout formLayout = new FormLayout();
         formLayout.marginWidth = 0;
         formLayout.marginHeight = 0;
@@ -452,7 +535,7 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
         return messagePage;
     }
 
-    private void createInfoField(Composite parent) {
+  /*  private void createInfoField(Composite parent) {
 
         infoComposite = createFlatFormComposite(parent, new FormToolkit(Display.getDefault()));
         FormLayout reportLayout = new FormLayout();
@@ -490,25 +573,25 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
         data.top = new FormAttachment(0, 0);
         data.bottom = new FormAttachment(100, 0);
         infoField.setLayoutData(data);
-    }
+    }*/
 
     private void createReportField(Composite parent) {
         reportComposite = createFlatFormComposite(parent, new FormToolkit(Display.getDefault()));
         FormLayout reportLayout = new FormLayout();
-        reportLayout.marginWidth = 0;
-        reportLayout.marginHeight = 0;
+//        reportLayout.marginWidth = 0;
+//        reportLayout.marginHeight = 0;
         reportComposite.setLayout(reportLayout);
         FormData reportData = new FormData();
         reportData.left = new FormAttachment(65, 5);
         reportData.right = new FormAttachment(100, -5);
         reportData.top = new FormAttachment(0, 0);
-        reportData.bottom = new FormAttachment(45, -5);
+        reportData.bottom = new FormAttachment(100,-5);
         reportComposite.setLayoutData(reportData);
 
         Group group = new Group(reportComposite, SWT.NULL);
         FormLayout groupLayout = new FormLayout();
-        groupLayout.marginWidth = 0;
-        groupLayout.marginHeight = 0;
+//        groupLayout.marginWidth = 0;
+//        groupLayout.marginHeight = 0;
         group.setLayout(groupLayout);
         FormData groupData = new FormData();
         groupData.left = new FormAttachment(0, 0);
@@ -516,19 +599,72 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
         groupData.top = new FormAttachment(0, 0);
         groupData.bottom = new FormAttachment(100, 0);
         group.setLayoutData(groupData);
-        group.setText("Job Run Logs");
+        group.setText("Run Job Informations");
 
-        reportField = new Text(group, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.READ_ONLY);
-        reportField.setEditable(false);
-        reportField.setBackground(group.getBackground());
+        reportField = new StyledText(group,SWT.WRAP | SWT.V_SCROLL | SWT.READ_ONLY);
+//        reportField.setEditable(false);
+        //may be CoreUIPlugin.setCSSClass can do this globally ,check later
+        reportField.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
         FormData data;
         data = new FormData();
         data.left = new FormAttachment(0, 0);
         data.right = new FormAttachment(100, 0);
         data.top = new FormAttachment(0, 0);
-        data.bottom = new FormAttachment(100, 0);
+        data.bottom = new FormAttachment(93, 0);
         reportField.setLayoutData(data);
+        displayReportField();
+        
+        //export button
+        Button exportButton = new Button(group, SWT.PUSH);
+        exportButton.setText("Export");
+        FormData exportData = new FormData();
+        exportData.left = new FormAttachment(100, -70);
+        exportData.right = new FormAttachment(100, 0);
+        exportData.bottom = new FormAttachment(100,-1);
+        exportButton.setLayoutData(exportData);
+        exportButton.setEnabled(true);
+        exportButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				if(messageManager ==null || messageManager.getMessages().size() <1){
+					MessageDialog.openWarning(getShell(), "Warning", "No log to export.");
+					return;
+				}
+				
+				UnboundedFifoBuffer messages = messageManager.getMessages();
+	    		Iterator iterator = messages.iterator();
+	    		StringBuilder content = new StringBuilder();
+	    		while(iterator.hasNext()){
+	    			ReportMessage message = (ReportMessage) iterator.next();
+	    			content.append(message.getContent());
+	    		}
+	    		String[] msg = content.toString().split("\r\n");
+	    		if(!msg[msg.length-1].startsWith("End time")){
+	    			MessageDialog.openWarning(getShell(), "Warning", "Waiting for job done.");
+	    			return;
+	    		}
+	    		
+	    		FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
+				dialog.setFilterPath(".");
+				String fileName = dialog.open();
+				
+	    		FileWriter writer = null;
+	    		try {
+					writer = new FileWriter(fileName);
+					writer.write(content.toString());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} finally {
+					try {
+						writer.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+	    	}
+		});
     }
 
     private void refreshConnectionIndicator() {
@@ -545,7 +681,9 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
     private static void addSectionActions(ExpandableComposite expandableComposite, List<Action> actions) {
         ToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT);
         ToolBar toolbar = toolBarManager.createControl(expandableComposite);
-
+        Button button = new Button(expandableComposite, SWT.PUSH);
+        button.setText("Trigger GC");
+        button.setVisible(false);
         // set cursor
         final Cursor cursor = new Cursor(Display.getCurrent(), SWT.CURSOR_HAND);
         toolbar.setCursor(cursor);
@@ -561,11 +699,13 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
 
         // add menus
         for (Action action : actions) {
-            toolBarManager.add(action);
+        	if(action instanceof GarbageAction){
+        		toolBarManager.add(action);
+        	}
         }
         toolBarManager.update(true);
 
-        expandableComposite.setTextClient(toolbar);
+        expandableComposite.setTextClient(button);
     }
 
 }

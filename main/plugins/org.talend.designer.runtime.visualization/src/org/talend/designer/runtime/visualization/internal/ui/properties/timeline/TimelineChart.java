@@ -17,12 +17,20 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.MouseTrackAdapter;
+import org.eclipse.swt.events.MouseTrackListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.swtchart.Chart;
 import org.swtchart.ILineSeries;
@@ -223,14 +231,20 @@ public class TimelineChart extends Chart implements IPropertyChangeListener {
         getLegend().setVisible(Activator.getDefault().getPreferenceStore().getBoolean(IConstants.LEGEND_VISIBILITY));
 
         MyMouseListener plotAreaListener = new MyMouseListener(getPlotArea());
-        getPlotArea().addListener(SWT.MouseMove, plotAreaListener);
-        getPlotArea().addListener(SWT.MouseDown, plotAreaListener);
-        getPlotArea().addListener(SWT.MouseUp, plotAreaListener);
+		getPlotArea().addListener(SWT.MouseMove, plotAreaListener);
+//		getPlotArea().addListener(SWT.MouseDown, plotAreaListener);
+//		getPlotArea().addListener(SWT.MouseUp, plotAreaListener);
 
-        MyMouseListener chartListener = new MyMouseListener(this);
-        addListener(SWT.MouseMove, chartListener);
-        addListener(SWT.MouseDown, chartListener);
-        addListener(SWT.MouseUp, chartListener);
+		MyMouseListener chartListener = new MyMouseListener(this);
+		addListener(SWT.MouseMove, chartListener);
+//		addListener(SWT.MouseDown, chartListener);
+//		addListener(SWT.MouseUp, chartListener);
+        
+    	MyMouseTrackListener plotTrackAreaListener = new MyMouseTrackListener(getPlotArea());
+        getPlotArea().addMouseTrackListener(plotTrackAreaListener);
+
+        MyMouseTrackListener chartTrackListener = new MyMouseTrackListener(this);
+        addMouseTrackListener(chartTrackListener);
     }
 
     /**
@@ -403,5 +417,40 @@ public class TimelineChart extends Chart implements IPropertyChangeListener {
                 break;
             }
         }
+    }
+    private class MyMouseTrackListener extends MouseTrackAdapter{
+    	
+        private Control control;
+        
+        private int position;
+
+        public MyMouseTrackListener(Control control) {
+    		this.control = control;
+    	}
+
+		private int getPosition(MouseEvent event) {
+			int position;
+            if (control instanceof Chart) {
+                position = event.x - getPlotArea().getBounds().x;
+            } else if (control instanceof PlotArea) {
+                position = event.x;
+            } else {
+                throw new IllegalStateException("unknown object");//$NON-NLS-1$
+            }
+            return position;
+		}
+
+		@Override
+		public void mouseEnter(MouseEvent e) {
+			position = getPosition(e);
+			marker.setPosition(position);
+		}
+
+		@Override
+		public void mouseExit(MouseEvent e) {
+			if (!marker.isDisposed()) {
+				marker.dispose();
+			}
+		}
     }
 }

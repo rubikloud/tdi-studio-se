@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -27,10 +29,10 @@ import org.talend.designer.runtime.visualization.MBean.IMonitoredMXBeanGroup.Axi
 public class Marker {
 
     /** The margin for text on hover. */
-    private static final int MARGIN = 3;
+    private static final int MARGIN = 5;
 
     /** The offset of hover that is the size of hover arrow. */
-    private static final int OFFSET = 25;
+    private static final int OFFSET = 10;
 
     /** The key for hover to show time. */
     private static final String TIME_KEY = "time"; //$NON-NLS-1$
@@ -44,9 +46,12 @@ public class Marker {
     /** The hover texts. */
     Map<String, String> texts;
 
-    /** The mouse position. */
+    /** The mouse x position. */
     private int mouseXPosition;
+    
+    private Shell lineHover;
 
+    private int[] symbols;
     /**
      * The constructor.
      * 
@@ -95,10 +100,47 @@ public class Marker {
         createHovers();
         if (invertedSeriesIndex != null) {
             configureHovers(invertedSeriesIndex);
+
+            createLineHover(invertedSeriesIndex);
         }
+        
     }
 
-    /**
+	private void createLineHover(Integer invertedSeriesIndex) {
+		if(lineHover == null || lineHover.isDisposed() || !lineHover.isVisible()){
+        	lineHover = new Shell(chart.getShell(), SWT.NO_TRIM | SWT.ON_TOP | SWT.NO_FOCUS | SWT.TOOL | SWT.NO_BACKGROUND);
+        	lineHover.addPaintListener(new PaintListener() {
+        		@Override
+        		public void paintControl(PaintEvent e) {
+        			e.gc.setLineStyle(SWT.LINE_DOT);
+        			e.gc.setAntialias(SWT.ON);
+        			e.gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+//        			e.gc.fillOval(2-1,150-1, 3, 3);
+        			e.gc.drawLine(2,0, 2, chart.getPlotArea().getSize().y);
+        		}
+        	});
+        	lineHover.addMouseTrackListener(new MouseTrackAdapter() {
+
+				@Override
+				public void mouseEnter(MouseEvent e) {
+					if(!isDisposed()){
+						setPosition(mouseXPosition);
+					}
+				}
+        		
+			});
+        }
+        lineHover.setSize(4, chart.getPlotArea().getSize().y);
+        ISeries largestSeries = getLargestSeries();
+        Date[] dates = largestSeries.getXDateSeries();
+        long time = dates[dates.length - invertedSeriesIndex].getTime();
+        int timeInPixel = chart.getAxisSet().getXAxes()[0].getPixelCoordinate(time);
+        lineHover.setLocation(chart.getPlotArea().toDisplay(timeInPixel-3,0));
+        lineHover.redraw();
+        lineHover.setVisible(true);
+	}
+    
+	/**
      * Creates the hovers.
      */
     private void createHovers() {
@@ -142,8 +184,8 @@ public class Marker {
      * @return The hover
      */
     private Shell createHover(final String key) {
-        Shell hover = new Shell(Display.getDefault().getActiveShell(), SWT.NO_TRIM | SWT.ON_TOP | SWT.NO_FOCUS | SWT.TOOL);
-
+        Shell hover = new Shell(lineHover, SWT.NO_TRIM | SWT.ON_TOP | SWT.NO_FOCUS | SWT.TOOL);
+        hover.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
         hover.addPaintListener(new PaintListener() {
 
             @Override
@@ -154,10 +196,31 @@ public class Marker {
                 }
             }
         });
-        hover.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_GREEN));
-        hover.setAlpha(200);
-
+        hover.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_DARK_GREEN));
+        hover.setAlpha(150);
         return hover;
+    }
+    
+    private String redefineHoverText(String oldText){
+    	if(oldText.equals(MonitorAttributeName.HEAP_MEMORY_USE)){
+    		return "Used Heap"; 
+    	}
+    	if(oldText.equals(MonitorAttributeName.HEAP_MEMORY_SIZE)){
+    		return "Heap Size"; 
+    	}
+    	if(oldText.equals(MonitorAttributeName.HEAP_MEMORY_NINTY)){
+    		return "90% Heap"; 
+    	}
+    	if(oldText.equals(MonitorAttributeName.HEAP_MEMORY_NINTY)){
+    		return "90% Heap"; 
+    	}
+    	if(oldText.equals(MonitorAttributeName.HEAP_MEMORY_THREE_QUARTER)){
+    		return "75% Heap"; 
+    	}
+    	if(oldText.equals(MonitorAttributeName.CPU_TIME)){
+    		return MonitorAttributeName.CPU_USE; 
+    	}
+    	return oldText;
     }
 
     /**
@@ -176,7 +239,7 @@ public class Marker {
         long time = dates[dates.length - invertedSeriesIndex].getTime();
 
         StringBuffer buffer = new StringBuffer();
-        buffer.append(Messages.timeLabel).append(' ').append(new SimpleDateFormat("HH:mm:ss") //$NON-NLS-1$
+        buffer/*.append(Messages.timeLabel).append(' ')*/.append(new SimpleDateFormat("hh:mm:ss a") //$NON-NLS-1$
                 .format(time));
         texts.put(TIME_KEY, buffer.toString());
 
@@ -190,10 +253,11 @@ public class Marker {
             if (seriesIndex < 0) {
                 continue;
             }
-
+            String newText = redefineHoverText(series.getId());
             buffer = new StringBuffer();
-            buffer.append(series.getId()).append(": ") //$NON-NLS-1$
-                    .append(getFormattedValue(ySeries[seriesIndex]));
+            buffer.append(newText)
+            		.append(": ")
+            		.append(getFormattedValue(ySeries[seriesIndex]));
             texts.put(series.getId(), buffer.toString());
 
             int valueInPixel = chart.getAxisSet().getYAxes()[0].getPixelCoordinate(ySeries[seriesIndex]);
@@ -210,7 +274,7 @@ public class Marker {
      * @param y The y coordinate in pixels
      * @param showBelow <tt>true</tt> to show hover below data point
      */
-    private void configureHover(Shell hover, String text, int x, int y, boolean showBelow) {
+    private void configureHover(Shell hover, String text, final int x, int y, boolean showBelow) {
 
         // set size
         Point textExtent = getExtent(hover, text);
@@ -218,8 +282,9 @@ public class Marker {
         hover.setSize(hoverSize);
 
         // set location
-        boolean showOnRight = Display.getDefault().map(chart.getPlotArea(), null, x + hoverSize.x, y).x < Display.getDefault()
-                .getBounds().width;
+//        boolean showOnRight = Display.getDefault().map(chart.getPlotArea(), null, x + hoverSize.x, y).x < (Display.getDefault()
+//                .getBounds().width - x);
+        boolean showOnRight = chart.getPlotArea().getSize().x - hoverSize.x > x ;
         int hoverX = showOnRight ? x : x - hoverSize.x;
         int hoverY = showBelow ? y : y - hoverSize.y;
         hover.setLocation(chart.getPlotArea().toDisplay(hoverX, hoverY));
@@ -364,5 +429,9 @@ public class Marker {
         }
         hovers.clear();
         texts.clear();
+        
+        if(lineHover!=null && !lineHover.isDisposed()){
+        	lineHover.setVisible(false);
+        }
     }
 }

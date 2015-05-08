@@ -12,32 +12,32 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="CustomizationFieldType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_checkBox"/>
- *     &lt;enumeration value="_currency"/>
- *     &lt;enumeration value="_date"/>
- *     &lt;enumeration value="_datetime"/>
- *     &lt;enumeration value="_decimalNumber"/>
- *     &lt;enumeration value="_document"/>
- *     &lt;enumeration value="_eMailAddress"/>
- *     &lt;enumeration value="_freeFormText"/>
- *     &lt;enumeration value="_help"/>
- *     &lt;enumeration value="_hyperlink"/>
- *     &lt;enumeration value="_image"/>
- *     &lt;enumeration value="_inlineHTML"/>
- *     &lt;enumeration value="_integerNumber"/>
- *     &lt;enumeration value="_listRecord"/>
- *     &lt;enumeration value="_longText"/>
- *     &lt;enumeration value="_multipleSelect"/>
- *     &lt;enumeration value="_password"/>
- *     &lt;enumeration value="_percent"/>
- *     &lt;enumeration value="_phoneNumber"/>
- *     &lt;enumeration value="_richText"/>
- *     &lt;enumeration value="_textArea"/>
- *     &lt;enumeration value="_timeOfDay"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="CustomizationFieldType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_checkBox"/&gt;
+ *     &lt;enumeration value="_currency"/&gt;
+ *     &lt;enumeration value="_date"/&gt;
+ *     &lt;enumeration value="_datetime"/&gt;
+ *     &lt;enumeration value="_decimalNumber"/&gt;
+ *     &lt;enumeration value="_document"/&gt;
+ *     &lt;enumeration value="_eMailAddress"/&gt;
+ *     &lt;enumeration value="_freeFormText"/&gt;
+ *     &lt;enumeration value="_help"/&gt;
+ *     &lt;enumeration value="_hyperlink"/&gt;
+ *     &lt;enumeration value="_image"/&gt;
+ *     &lt;enumeration value="_inlineHTML"/&gt;
+ *     &lt;enumeration value="_integerNumber"/&gt;
+ *     &lt;enumeration value="_listRecord"/&gt;
+ *     &lt;enumeration value="_longText"/&gt;
+ *     &lt;enumeration value="_multipleSelect"/&gt;
+ *     &lt;enumeration value="_password"/&gt;
+ *     &lt;enumeration value="_percent"/&gt;
+ *     &lt;enumeration value="_phoneNumber"/&gt;
+ *     &lt;enumeration value="_richText"/&gt;
+ *     &lt;enumeration value="_textArea"/&gt;
+ *     &lt;enumeration value="_timeOfDay"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

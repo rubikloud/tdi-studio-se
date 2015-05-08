@@ -12,35 +12,35 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemAccountMappingItemAccount">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_asset"/>
- *     &lt;enumeration value="_costOfGoods"/>
- *     &lt;enumeration value="_customerReturnVariance"/>
- *     &lt;enumeration value="_deferral"/>
- *     &lt;enumeration value="_deferredRevenue"/>
- *     &lt;enumeration value="_discount"/>
- *     &lt;enumeration value="_dropShipExpense"/>
- *     &lt;enumeration value="_exchangeRateVariance"/>
- *     &lt;enumeration value="_expense"/>
- *     &lt;enumeration value="_gainLoss"/>
- *     &lt;enumeration value="_income"/>
- *     &lt;enumeration value="_liability"/>
- *     &lt;enumeration value="_markup"/>
- *     &lt;enumeration value="_payment"/>
- *     &lt;enumeration value="_priceVariance"/>
- *     &lt;enumeration value="_productionPriceVariance"/>
- *     &lt;enumeration value="_productionQuantityVariance"/>
- *     &lt;enumeration value="_purchasePriceVariance"/>
- *     &lt;enumeration value="_quantityVariance"/>
- *     &lt;enumeration value="_scrap"/>
- *     &lt;enumeration value="_unbuildVariance"/>
- *     &lt;enumeration value="_vendorReturnVariance"/>
- *     &lt;enumeration value="_wipVariance"/>
- *     &lt;enumeration value="_workInProcess"/>
- *     &lt;enumeration value="_writeOff"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemAccountMappingItemAccount"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_asset"/&gt;
+ *     &lt;enumeration value="_costOfGoods"/&gt;
+ *     &lt;enumeration value="_customerReturnVariance"/&gt;
+ *     &lt;enumeration value="_deferral"/&gt;
+ *     &lt;enumeration value="_deferredRevenue"/&gt;
+ *     &lt;enumeration value="_discount"/&gt;
+ *     &lt;enumeration value="_dropShipExpense"/&gt;
+ *     &lt;enumeration value="_exchangeRateVariance"/&gt;
+ *     &lt;enumeration value="_expense"/&gt;
+ *     &lt;enumeration value="_gainLoss"/&gt;
+ *     &lt;enumeration value="_income"/&gt;
+ *     &lt;enumeration value="_liability"/&gt;
+ *     &lt;enumeration value="_markup"/&gt;
+ *     &lt;enumeration value="_payment"/&gt;
+ *     &lt;enumeration value="_priceVariance"/&gt;
+ *     &lt;enumeration value="_productionPriceVariance"/&gt;
+ *     &lt;enumeration value="_productionQuantityVariance"/&gt;
+ *     &lt;enumeration value="_purchasePriceVariance"/&gt;
+ *     &lt;enumeration value="_quantityVariance"/&gt;
+ *     &lt;enumeration value="_scrap"/&gt;
+ *     &lt;enumeration value="_unbuildVariance"/&gt;
+ *     &lt;enumeration value="_vendorReturnVariance"/&gt;
+ *     &lt;enumeration value="_wipVariance"/&gt;
+ *     &lt;enumeration value="_workInProcess"/&gt;
+ *     &lt;enumeration value="_writeOff"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

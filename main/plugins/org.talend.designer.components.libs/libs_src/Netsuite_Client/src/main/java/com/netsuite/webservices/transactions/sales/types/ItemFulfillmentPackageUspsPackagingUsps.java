@@ -12,19 +12,19 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemFulfillmentPackageUspsPackagingUsps">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_parcel"/>
- *     &lt;enumeration value="_flatRateBox"/>
- *     &lt;enumeration value="_flatRateEnvelope"/>
- *     &lt;enumeration value="_smallFlatRateBox"/>
- *     &lt;enumeration value="_mediumFlatRateBox"/>
- *     &lt;enumeration value="_largeFlatRateBox"/>
- *     &lt;enumeration value="_irregularPackage"/>
- *     &lt;enumeration value="_largePackage"/>
- *     &lt;enumeration value="_oversizedPackage"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemFulfillmentPackageUspsPackagingUsps"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_parcel"/&gt;
+ *     &lt;enumeration value="_flatRateBox"/&gt;
+ *     &lt;enumeration value="_flatRateEnvelope"/&gt;
+ *     &lt;enumeration value="_smallFlatRateBox"/&gt;
+ *     &lt;enumeration value="_mediumFlatRateBox"/&gt;
+ *     &lt;enumeration value="_largeFlatRateBox"/&gt;
+ *     &lt;enumeration value="_irregularPackage"/&gt;
+ *     &lt;enumeration value="_largePackage"/&gt;
+ *     &lt;enumeration value="_oversizedPackage"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

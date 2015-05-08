@@ -3,6 +3,7 @@ package com.netsuite.webservices.activities.scheduling;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import com.netsuite.webservices.activities.scheduling.types.CalendarEventAttendeeAttendance;
 import com.netsuite.webservices.platform.core.RecordRef;
@@ -15,18 +16,18 @@ import com.netsuite.webservices.platform.core.types.CalendarEventAttendeeRespons
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="CalendarEventAttendee">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="sendEmail" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="attendee" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="response" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}CalendarEventAttendeeResponse" minOccurs="0"/>
- *         &lt;element name="attendance" type="{urn:types.scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventAttendeeAttendance" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="CalendarEventAttendee"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="sendEmail" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="attendee" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="response" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}CalendarEventAttendeeResponse" minOccurs="0"/&gt;
+ *         &lt;element name="attendance" type="{urn:types.scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventAttendeeAttendance" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -42,7 +43,9 @@ public class CalendarEventAttendee {
 
     protected Boolean sendEmail;
     protected RecordRef attendee;
+    @XmlSchemaType(name = "string")
     protected CalendarEventAttendeeResponse response;
+    @XmlSchemaType(name = "string")
     protected CalendarEventAttendeeAttendance attendance;
 
     /**

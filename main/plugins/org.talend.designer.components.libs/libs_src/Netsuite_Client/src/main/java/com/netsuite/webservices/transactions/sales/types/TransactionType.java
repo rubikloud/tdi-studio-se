@@ -12,46 +12,46 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="TransactionType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_assemblyBuild"/>
- *     &lt;enumeration value="_assemblyUnbuild"/>
- *     &lt;enumeration value="_binTransfer"/>
- *     &lt;enumeration value="_binWorksheet"/>
- *     &lt;enumeration value="_cashRefund"/>
- *     &lt;enumeration value="_cashSale"/>
- *     &lt;enumeration value="_check"/>
- *     &lt;enumeration value="_creditMemo"/>
- *     &lt;enumeration value="_customerDeposit"/>
- *     &lt;enumeration value="_customerPayment"/>
- *     &lt;enumeration value="_customerRefund"/>
- *     &lt;enumeration value="_deposit"/>
- *     &lt;enumeration value="_depositApplication"/>
- *     &lt;enumeration value="_estimate"/>
- *     &lt;enumeration value="_expenseReport"/>
- *     &lt;enumeration value="_inventoryAdjustment"/>
- *     &lt;enumeration value="_inventoryCostRevaluation"/>
- *     &lt;enumeration value="_inventoryTransfer"/>
- *     &lt;enumeration value="_invoice"/>
- *     &lt;enumeration value="_itemFulfillment"/>
- *     &lt;enumeration value="_itemReceipt"/>
- *     &lt;enumeration value="_journal"/>
- *     &lt;enumeration value="_opportunity"/>
- *     &lt;enumeration value="_paycheckJournal"/>
- *     &lt;enumeration value="_purchaseOrder"/>
- *     &lt;enumeration value="_returnAuthorization"/>
- *     &lt;enumeration value="_salesOrder"/>
- *     &lt;enumeration value="_transferOrder"/>
- *     &lt;enumeration value="_vendorBill"/>
- *     &lt;enumeration value="_vendorCredit"/>
- *     &lt;enumeration value="_vendorPayment"/>
- *     &lt;enumeration value="_vendorReturnAuthorization"/>
- *     &lt;enumeration value="_workOrder"/>
- *     &lt;enumeration value="_workOrderClose"/>
- *     &lt;enumeration value="_workOrderCompletion"/>
- *     &lt;enumeration value="_workOrderIssue"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="TransactionType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_assemblyBuild"/&gt;
+ *     &lt;enumeration value="_assemblyUnbuild"/&gt;
+ *     &lt;enumeration value="_binTransfer"/&gt;
+ *     &lt;enumeration value="_binWorksheet"/&gt;
+ *     &lt;enumeration value="_cashRefund"/&gt;
+ *     &lt;enumeration value="_cashSale"/&gt;
+ *     &lt;enumeration value="_check"/&gt;
+ *     &lt;enumeration value="_creditMemo"/&gt;
+ *     &lt;enumeration value="_customerDeposit"/&gt;
+ *     &lt;enumeration value="_customerPayment"/&gt;
+ *     &lt;enumeration value="_customerRefund"/&gt;
+ *     &lt;enumeration value="_deposit"/&gt;
+ *     &lt;enumeration value="_depositApplication"/&gt;
+ *     &lt;enumeration value="_estimate"/&gt;
+ *     &lt;enumeration value="_expenseReport"/&gt;
+ *     &lt;enumeration value="_inventoryAdjustment"/&gt;
+ *     &lt;enumeration value="_inventoryCostRevaluation"/&gt;
+ *     &lt;enumeration value="_inventoryTransfer"/&gt;
+ *     &lt;enumeration value="_invoice"/&gt;
+ *     &lt;enumeration value="_itemFulfillment"/&gt;
+ *     &lt;enumeration value="_itemReceipt"/&gt;
+ *     &lt;enumeration value="_journal"/&gt;
+ *     &lt;enumeration value="_opportunity"/&gt;
+ *     &lt;enumeration value="_paycheckJournal"/&gt;
+ *     &lt;enumeration value="_purchaseOrder"/&gt;
+ *     &lt;enumeration value="_returnAuthorization"/&gt;
+ *     &lt;enumeration value="_salesOrder"/&gt;
+ *     &lt;enumeration value="_transferOrder"/&gt;
+ *     &lt;enumeration value="_vendorBill"/&gt;
+ *     &lt;enumeration value="_vendorCredit"/&gt;
+ *     &lt;enumeration value="_vendorPayment"/&gt;
+ *     &lt;enumeration value="_vendorReturnAuthorization"/&gt;
+ *     &lt;enumeration value="_workOrder"/&gt;
+ *     &lt;enumeration value="_workOrderClose"/&gt;
+ *     &lt;enumeration value="_workOrderCompletion"/&gt;
+ *     &lt;enumeration value="_workOrderIssue"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

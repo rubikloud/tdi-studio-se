@@ -3,6 +3,7 @@ package com.netsuite.webservices.transactions.demandplanning;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import com.netsuite.webservices.transactions.demandplanning.types.DayOfTheWeek;
 
@@ -13,16 +14,16 @@ import com.netsuite.webservices.transactions.demandplanning.types.DayOfTheWeek;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="PeriodDemandPlan">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="quantity" type="{http://www.w3.org/2001/XMLSchema}double"/>
- *         &lt;element name="dayOfTheWeek" type="{urn:types.demandplanning_2014_2.transactions.webservices.netsuite.com}DayOfTheWeek" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="PeriodDemandPlan"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="quantity" type="{http://www.w3.org/2001/XMLSchema}double"/&gt;
+ *         &lt;element name="dayOfTheWeek" type="{urn:types.demandplanning_2014_2.transactions.webservices.netsuite.com}DayOfTheWeek" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -35,6 +36,7 @@ import com.netsuite.webservices.transactions.demandplanning.types.DayOfTheWeek;
 public class PeriodDemandPlan {
 
     protected double quantity;
+    @XmlSchemaType(name = "string")
     protected DayOfTheWeek dayOfTheWeek;
 
     /**

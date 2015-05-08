@@ -12,15 +12,15 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="RecurrenceFrequency">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_none"/>
- *     &lt;enumeration value="_day"/>
- *     &lt;enumeration value="_week"/>
- *     &lt;enumeration value="_month"/>
- *     &lt;enumeration value="_year"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="RecurrenceFrequency"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_none"/&gt;
+ *     &lt;enumeration value="_day"/&gt;
+ *     &lt;enumeration value="_week"/&gt;
+ *     &lt;enumeration value="_month"/&gt;
+ *     &lt;enumeration value="_year"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

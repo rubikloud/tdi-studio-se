@@ -12,12 +12,12 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="EmployeeUseTimeData">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_wage"/>
- *     &lt;enumeration value="_salary"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="EmployeeUseTimeData"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_wage"/&gt;
+ *     &lt;enumeration value="_salary"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

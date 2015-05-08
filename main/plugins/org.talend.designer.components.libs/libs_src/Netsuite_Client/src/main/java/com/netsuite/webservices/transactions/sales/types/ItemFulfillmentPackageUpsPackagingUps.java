@@ -12,15 +12,15 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemFulfillmentPackageUpsPackagingUps">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_upsExpressBox"/>
- *     &lt;enumeration value="_upsLetter"/>
- *     &lt;enumeration value="_upsPak"/>
- *     &lt;enumeration value="_upsTube"/>
- *     &lt;enumeration value="_yourPackaging"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemFulfillmentPackageUpsPackagingUps"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_upsExpressBox"/&gt;
+ *     &lt;enumeration value="_upsLetter"/&gt;
+ *     &lt;enumeration value="_upsPak"/&gt;
+ *     &lt;enumeration value="_upsTube"/&gt;
+ *     &lt;enumeration value="_yourPackaging"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

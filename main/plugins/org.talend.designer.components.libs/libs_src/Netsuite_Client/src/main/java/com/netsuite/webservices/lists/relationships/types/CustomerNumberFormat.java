@@ -12,16 +12,16 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="CustomerNumberFormat">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_spaceAsDigitGroupSeparatorAndDecimalComma"/>
- *     &lt;enumeration value="_spaceAsDigitGroupSeparatorAndDecimalPoint"/>
- *     &lt;enumeration value="_commaAsDigitGroupSeparatorAndDecimalPoint"/>
- *     &lt;enumeration value="_pointAsDigitGroupSeparatorAndDecimalComma"/>
- *     &lt;enumeration value="_apostropheAsDigitGroupSeparatorAndDecimalComma"/>
- *     &lt;enumeration value="_apostropheAsDigitGroupSeparatorAndDecimalPoint"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="CustomerNumberFormat"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_spaceAsDigitGroupSeparatorAndDecimalComma"/&gt;
+ *     &lt;enumeration value="_spaceAsDigitGroupSeparatorAndDecimalPoint"/&gt;
+ *     &lt;enumeration value="_commaAsDigitGroupSeparatorAndDecimalPoint"/&gt;
+ *     &lt;enumeration value="_pointAsDigitGroupSeparatorAndDecimalComma"/&gt;
+ *     &lt;enumeration value="_apostropheAsDigitGroupSeparatorAndDecimalComma"/&gt;
+ *     &lt;enumeration value="_apostropheAsDigitGroupSeparatorAndDecimalPoint"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

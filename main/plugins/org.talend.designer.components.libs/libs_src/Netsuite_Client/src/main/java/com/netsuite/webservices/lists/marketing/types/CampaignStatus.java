@@ -12,17 +12,17 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="CampaignStatus">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_closed"/>
- *     &lt;enumeration value="_completed"/>
- *     &lt;enumeration value="_execute"/>
- *     &lt;enumeration value="_inProgress"/>
- *     &lt;enumeration value="_scheduled"/>
- *     &lt;enumeration value="_sent"/>
- *     &lt;enumeration value="_toPrint"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="CampaignStatus"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_closed"/&gt;
+ *     &lt;enumeration value="_completed"/&gt;
+ *     &lt;enumeration value="_execute"/&gt;
+ *     &lt;enumeration value="_inProgress"/&gt;
+ *     &lt;enumeration value="_scheduled"/&gt;
+ *     &lt;enumeration value="_sent"/&gt;
+ *     &lt;enumeration value="_toPrint"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

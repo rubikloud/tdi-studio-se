@@ -12,34 +12,34 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="TransactionLineType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_adjustedQuantity"/>
- *     &lt;enumeration value="_billExchangeRateVariance"/>
- *     &lt;enumeration value="_billPriceVariance"/>
- *     &lt;enumeration value="_billQuantityVariance"/>
- *     &lt;enumeration value="_countQuantity"/>
- *     &lt;enumeration value="_dropshipExpense"/>
- *     &lt;enumeration value="_gainLoss"/>
- *     &lt;enumeration value="_item"/>
- *     &lt;enumeration value="_materialOverhead"/>
- *     &lt;enumeration value="_nonReimbursuableExpenseOffset"/>
- *     &lt;enumeration value="_nonReimbursuableExpenseOriginal"/>
- *     &lt;enumeration value="_productionPriceVariance"/>
- *     &lt;enumeration value="_productionQuantityVariance"/>
- *     &lt;enumeration value="_purchasePriceVariance"/>
- *     &lt;enumeration value="_receiving"/>
- *     &lt;enumeration value="_routingItem"/>
- *     &lt;enumeration value="_routingWorkInProcess"/>
- *     &lt;enumeration value="_scrap"/>
- *     &lt;enumeration value="_shipping"/>
- *     &lt;enumeration value="_snapshotQuantity"/>
- *     &lt;enumeration value="_totalBillVariance"/>
- *     &lt;enumeration value="_unbuildVariance"/>
- *     &lt;enumeration value="_workInProcess"/>
- *     &lt;enumeration value="_workInProcessVariance"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="TransactionLineType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_adjustedQuantity"/&gt;
+ *     &lt;enumeration value="_billExchangeRateVariance"/&gt;
+ *     &lt;enumeration value="_billPriceVariance"/&gt;
+ *     &lt;enumeration value="_billQuantityVariance"/&gt;
+ *     &lt;enumeration value="_countQuantity"/&gt;
+ *     &lt;enumeration value="_dropshipExpense"/&gt;
+ *     &lt;enumeration value="_gainLoss"/&gt;
+ *     &lt;enumeration value="_item"/&gt;
+ *     &lt;enumeration value="_materialOverhead"/&gt;
+ *     &lt;enumeration value="_nonReimbursuableExpenseOffset"/&gt;
+ *     &lt;enumeration value="_nonReimbursuableExpenseOriginal"/&gt;
+ *     &lt;enumeration value="_productionPriceVariance"/&gt;
+ *     &lt;enumeration value="_productionQuantityVariance"/&gt;
+ *     &lt;enumeration value="_purchasePriceVariance"/&gt;
+ *     &lt;enumeration value="_receiving"/&gt;
+ *     &lt;enumeration value="_routingItem"/&gt;
+ *     &lt;enumeration value="_routingWorkInProcess"/&gt;
+ *     &lt;enumeration value="_scrap"/&gt;
+ *     &lt;enumeration value="_shipping"/&gt;
+ *     &lt;enumeration value="_snapshotQuantity"/&gt;
+ *     &lt;enumeration value="_totalBillVariance"/&gt;
+ *     &lt;enumeration value="_unbuildVariance"/&gt;
+ *     &lt;enumeration value="_workInProcess"/&gt;
+ *     &lt;enumeration value="_workInProcessVariance"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

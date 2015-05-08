@@ -12,16 +12,16 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemPreferenceCriterion">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_A"/>
- *     &lt;enumeration value="_B"/>
- *     &lt;enumeration value="_C"/>
- *     &lt;enumeration value="_D"/>
- *     &lt;enumeration value="_E"/>
- *     &lt;enumeration value="_F"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemPreferenceCriterion"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_A"/&gt;
+ *     &lt;enumeration value="_B"/&gt;
+ *     &lt;enumeration value="_C"/&gt;
+ *     &lt;enumeration value="_D"/&gt;
+ *     &lt;enumeration value="_E"/&gt;
+ *     &lt;enumeration value="_F"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

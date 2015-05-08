@@ -12,17 +12,17 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemFulfillmentPackageFedExPackagingFedEx">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_fedExBox"/>
- *     &lt;enumeration value="_fedEx10kgBox"/>
- *     &lt;enumeration value="_fedEx25kgBox"/>
- *     &lt;enumeration value="_fedExEnvelope"/>
- *     &lt;enumeration value="_fedExPak"/>
- *     &lt;enumeration value="_fedExTube"/>
- *     &lt;enumeration value="_yourPackaging"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemFulfillmentPackageFedExPackagingFedEx"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_fedExBox"/&gt;
+ *     &lt;enumeration value="_fedEx10kgBox"/&gt;
+ *     &lt;enumeration value="_fedEx25kgBox"/&gt;
+ *     &lt;enumeration value="_fedExEnvelope"/&gt;
+ *     &lt;enumeration value="_fedExPak"/&gt;
+ *     &lt;enumeration value="_fedExTube"/&gt;
+ *     &lt;enumeration value="_yourPackaging"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

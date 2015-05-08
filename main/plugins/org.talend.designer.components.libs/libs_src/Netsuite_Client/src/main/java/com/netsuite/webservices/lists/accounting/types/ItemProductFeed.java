@@ -12,15 +12,15 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemProductFeed">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_googleBase"/>
- *     &lt;enumeration value="_nexTag"/>
- *     &lt;enumeration value="_shoppingCom"/>
- *     &lt;enumeration value="_shopzilla"/>
- *     &lt;enumeration value="_yahooShopping"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemProductFeed"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_googleBase"/&gt;
+ *     &lt;enumeration value="_nexTag"/&gt;
+ *     &lt;enumeration value="_shoppingCom"/&gt;
+ *     &lt;enumeration value="_shopzilla"/&gt;
+ *     &lt;enumeration value="_yahooShopping"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

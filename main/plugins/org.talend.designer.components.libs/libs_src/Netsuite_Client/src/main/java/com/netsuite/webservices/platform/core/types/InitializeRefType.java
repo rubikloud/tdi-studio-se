@@ -12,32 +12,32 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="InitializeRefType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="assemblyItem"/>
- *     &lt;enumeration value="assemblyBuild"/>
- *     &lt;enumeration value="cashSale"/>
- *     &lt;enumeration value="creditMemo"/>
- *     &lt;enumeration value="customer"/>
- *     &lt;enumeration value="customerDeposit"/>
- *     &lt;enumeration value="employee"/>
- *     &lt;enumeration value="estimate"/>
- *     &lt;enumeration value="interCompanyTransferOrder"/>
- *     &lt;enumeration value="invoice"/>
- *     &lt;enumeration value="location"/>
- *     &lt;enumeration value="lotNumberedAssemblyItem"/>
- *     &lt;enumeration value="opportunity"/>
- *     &lt;enumeration value="purchaseOrder"/>
- *     &lt;enumeration value="returnAuthorization"/>
- *     &lt;enumeration value="salesOrder"/>
- *     &lt;enumeration value="serializedAssemblyItem"/>
- *     &lt;enumeration value="transferOrder"/>
- *     &lt;enumeration value="vendor"/>
- *     &lt;enumeration value="vendorBill"/>
- *     &lt;enumeration value="vendorReturnAuthorization"/>
- *     &lt;enumeration value="workOrder"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="InitializeRefType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="assemblyItem"/&gt;
+ *     &lt;enumeration value="assemblyBuild"/&gt;
+ *     &lt;enumeration value="cashSale"/&gt;
+ *     &lt;enumeration value="creditMemo"/&gt;
+ *     &lt;enumeration value="customer"/&gt;
+ *     &lt;enumeration value="customerDeposit"/&gt;
+ *     &lt;enumeration value="employee"/&gt;
+ *     &lt;enumeration value="estimate"/&gt;
+ *     &lt;enumeration value="interCompanyTransferOrder"/&gt;
+ *     &lt;enumeration value="invoice"/&gt;
+ *     &lt;enumeration value="location"/&gt;
+ *     &lt;enumeration value="lotNumberedAssemblyItem"/&gt;
+ *     &lt;enumeration value="opportunity"/&gt;
+ *     &lt;enumeration value="purchaseOrder"/&gt;
+ *     &lt;enumeration value="returnAuthorization"/&gt;
+ *     &lt;enumeration value="salesOrder"/&gt;
+ *     &lt;enumeration value="serializedAssemblyItem"/&gt;
+ *     &lt;enumeration value="transferOrder"/&gt;
+ *     &lt;enumeration value="vendor"/&gt;
+ *     &lt;enumeration value="vendorBill"/&gt;
+ *     &lt;enumeration value="vendorReturnAuthorization"/&gt;
+ *     &lt;enumeration value="workOrder"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

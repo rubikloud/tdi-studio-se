@@ -17,18 +17,18 @@ import com.netsuite.webservices.platform.core.types.SearchDateFieldOperator;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="SearchDateCustomField">
- *   &lt;complexContent>
- *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}SearchCustomField">
- *       &lt;sequence>
- *         &lt;element name="predefinedSearchValue" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}SearchDate" minOccurs="0"/>
- *         &lt;element name="searchValue" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
- *         &lt;element name="searchValue2" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
- *       &lt;/sequence>
- *       &lt;attribute name="operator" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}SearchDateFieldOperator" />
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="SearchDateCustomField"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}SearchCustomField"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="predefinedSearchValue" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}SearchDate" minOccurs="0"/&gt;
+ *         &lt;element name="searchValue" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
+ *         &lt;element name="searchValue2" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *       &lt;attribute name="operator" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}SearchDateFieldOperator" /&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -43,6 +43,7 @@ public class SearchDateCustomField
     extends SearchCustomField
 {
 
+    @XmlSchemaType(name = "string")
     protected SearchDate predefinedSearchValue;
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar searchValue;

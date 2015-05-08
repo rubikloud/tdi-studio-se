@@ -12,24 +12,24 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="SearchDateFieldOperator">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="after"/>
- *     &lt;enumeration value="before"/>
- *     &lt;enumeration value="empty"/>
- *     &lt;enumeration value="notAfter"/>
- *     &lt;enumeration value="notBefore"/>
- *     &lt;enumeration value="notEmpty"/>
- *     &lt;enumeration value="notOn"/>
- *     &lt;enumeration value="notOnOrAfter"/>
- *     &lt;enumeration value="notOnOrBefore"/>
- *     &lt;enumeration value="notWithin"/>
- *     &lt;enumeration value="on"/>
- *     &lt;enumeration value="onOrAfter"/>
- *     &lt;enumeration value="onOrBefore"/>
- *     &lt;enumeration value="within"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="SearchDateFieldOperator"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="after"/&gt;
+ *     &lt;enumeration value="before"/&gt;
+ *     &lt;enumeration value="empty"/&gt;
+ *     &lt;enumeration value="notAfter"/&gt;
+ *     &lt;enumeration value="notBefore"/&gt;
+ *     &lt;enumeration value="notEmpty"/&gt;
+ *     &lt;enumeration value="notOn"/&gt;
+ *     &lt;enumeration value="notOnOrAfter"/&gt;
+ *     &lt;enumeration value="notOnOrBefore"/&gt;
+ *     &lt;enumeration value="notWithin"/&gt;
+ *     &lt;enumeration value="on"/&gt;
+ *     &lt;enumeration value="onOrAfter"/&gt;
+ *     &lt;enumeration value="onOrBefore"/&gt;
+ *     &lt;enumeration value="within"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

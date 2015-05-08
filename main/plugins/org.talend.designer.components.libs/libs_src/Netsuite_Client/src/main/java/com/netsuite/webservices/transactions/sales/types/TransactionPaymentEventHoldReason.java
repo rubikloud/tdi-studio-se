@@ -12,24 +12,24 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="TransactionPaymentEventHoldReason">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_authorizationDecline"/>
- *     &lt;enumeration value="_cardExpired"/>
- *     &lt;enumeration value="_cardInvalid"/>
- *     &lt;enumeration value="_externalFraudRejection"/>
- *     &lt;enumeration value="_externalFraudReview"/>
- *     &lt;enumeration value="_forwardedToPayerAuthentication"/>
- *     &lt;enumeration value="_forwardRequested"/>
- *     &lt;enumeration value="_gatewayError"/>
- *     &lt;enumeration value="_overridenBy"/>
- *     &lt;enumeration value="_partnerDecline"/>
- *     &lt;enumeration value="_systemError"/>
- *     &lt;enumeration value="_verbalAuthorizationRequested"/>
- *     &lt;enumeration value="_verificationRejection"/>
- *     &lt;enumeration value="_verificationRequired"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="TransactionPaymentEventHoldReason"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_authorizationDecline"/&gt;
+ *     &lt;enumeration value="_cardExpired"/&gt;
+ *     &lt;enumeration value="_cardInvalid"/&gt;
+ *     &lt;enumeration value="_externalFraudRejection"/&gt;
+ *     &lt;enumeration value="_externalFraudReview"/&gt;
+ *     &lt;enumeration value="_forwardedToPayerAuthentication"/&gt;
+ *     &lt;enumeration value="_forwardRequested"/&gt;
+ *     &lt;enumeration value="_gatewayError"/&gt;
+ *     &lt;enumeration value="_overridenBy"/&gt;
+ *     &lt;enumeration value="_partnerDecline"/&gt;
+ *     &lt;enumeration value="_systemError"/&gt;
+ *     &lt;enumeration value="_verbalAuthorizationRequested"/&gt;
+ *     &lt;enumeration value="_verificationRejection"/&gt;
+ *     &lt;enumeration value="_verificationRequired"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

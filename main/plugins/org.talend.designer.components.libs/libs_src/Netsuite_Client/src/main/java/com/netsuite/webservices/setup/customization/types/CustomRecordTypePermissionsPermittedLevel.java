@@ -12,15 +12,15 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="CustomRecordTypePermissionsPermittedLevel">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_create"/>
- *     &lt;enumeration value="_edit"/>
- *     &lt;enumeration value="_full"/>
- *     &lt;enumeration value="_none"/>
- *     &lt;enumeration value="_view"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="CustomRecordTypePermissionsPermittedLevel"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_create"/&gt;
+ *     &lt;enumeration value="_edit"/&gt;
+ *     &lt;enumeration value="_full"/&gt;
+ *     &lt;enumeration value="_none"/&gt;
+ *     &lt;enumeration value="_view"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

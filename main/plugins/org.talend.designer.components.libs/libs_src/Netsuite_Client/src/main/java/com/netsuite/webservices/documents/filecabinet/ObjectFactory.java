@@ -24,8 +24,8 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _FolderSearch_QNAME = new QName("urn:filecabinet_2014_2.documents.webservices.netsuite.com", "folderSearch");
     private final static QName _FileSearch_QNAME = new QName("urn:filecabinet_2014_2.documents.webservices.netsuite.com", "fileSearch");
+    private final static QName _FolderSearch_QNAME = new QName("urn:filecabinet_2014_2.documents.webservices.netsuite.com", "folderSearch");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.netsuite.webservices.documents.filecabinet
@@ -51,19 +51,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link FileSearchAdvanced }
+     * Create an instance of {@link File }
      * 
      */
-    public FileSearchAdvanced createFileSearchAdvanced() {
-        return new FileSearchAdvanced();
-    }
-
-    /**
-     * Create an instance of {@link FolderSearchRow }
-     * 
-     */
-    public FolderSearchRow createFolderSearchRow() {
-        return new FolderSearchRow();
+    public File createFile() {
+        return new File();
     }
 
     /**
@@ -75,19 +67,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Folder }
-     * 
-     */
-    public Folder createFolder() {
-        return new Folder();
-    }
-
-    /**
      * Create an instance of {@link FileSiteCategoryList }
      * 
      */
     public FileSiteCategoryList createFileSiteCategoryList() {
         return new FileSiteCategoryList();
+    }
+
+    /**
+     * Create an instance of {@link FileSearchAdvanced }
+     * 
+     */
+    public FileSearchAdvanced createFileSearchAdvanced() {
+        return new FileSearchAdvanced();
     }
 
     /**
@@ -99,11 +91,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link File }
+     * Create an instance of {@link Folder }
      * 
      */
-    public File createFile() {
-        return new File();
+    public Folder createFolder() {
+        return new Folder();
     }
 
     /**
@@ -115,12 +107,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link FolderSearch }{@code >}}
+     * Create an instance of {@link FolderSearchRow }
      * 
      */
-    @XmlElementDecl(namespace = "urn:filecabinet_2014_2.documents.webservices.netsuite.com", name = "folderSearch")
-    public JAXBElement<FolderSearch> createFolderSearch(FolderSearch value) {
-        return new JAXBElement<FolderSearch>(_FolderSearch_QNAME, FolderSearch.class, null, value);
+    public FolderSearchRow createFolderSearchRow() {
+        return new FolderSearchRow();
     }
 
     /**
@@ -130,6 +121,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "urn:filecabinet_2014_2.documents.webservices.netsuite.com", name = "fileSearch")
     public JAXBElement<FileSearch> createFileSearch(FileSearch value) {
         return new JAXBElement<FileSearch>(_FileSearch_QNAME, FileSearch.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FolderSearch }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "urn:filecabinet_2014_2.documents.webservices.netsuite.com", name = "folderSearch")
+    public JAXBElement<FolderSearch> createFolderSearch(FolderSearch value) {
+        return new JAXBElement<FolderSearch>(_FolderSearch_QNAME, FolderSearch.class, null, value);
     }
 
 }

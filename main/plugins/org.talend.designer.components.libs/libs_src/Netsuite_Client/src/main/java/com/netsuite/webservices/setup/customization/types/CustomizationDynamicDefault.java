@@ -12,16 +12,16 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="CustomizationDynamicDefault">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_currentDateTime"/>
- *     &lt;enumeration value="_currentUser"/>
- *     &lt;enumeration value="_currentUsersDepartment"/>
- *     &lt;enumeration value="_currentUsersLocation"/>
- *     &lt;enumeration value="_currentUsersSupervisor"/>
- *     &lt;enumeration value="_currentUsersSubsidiary"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="CustomizationDynamicDefault"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_currentDateTime"/&gt;
+ *     &lt;enumeration value="_currentUser"/&gt;
+ *     &lt;enumeration value="_currentUsersDepartment"/&gt;
+ *     &lt;enumeration value="_currentUsersLocation"/&gt;
+ *     &lt;enumeration value="_currentUsersSupervisor"/&gt;
+ *     &lt;enumeration value="_currentUsersSubsidiary"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

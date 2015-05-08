@@ -3,6 +3,7 @@ package com.netsuite.webservices.transactions.sales;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import com.netsuite.webservices.transactions.sales.types.ItemFulfillmentPackageUpsCodMethodUps;
 import com.netsuite.webservices.transactions.sales.types.ItemFulfillmentPackageUpsDeliveryConfUps;
@@ -15,30 +16,30 @@ import com.netsuite.webservices.transactions.sales.types.ItemFulfillmentPackageU
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="ItemFulfillmentPackageUps">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="packageWeightUps" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
- *         &lt;element name="packageDescrUps" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="packageTrackingNumberUps" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="packagingUps" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageUpsPackagingUps" minOccurs="0"/>
- *         &lt;element name="useInsuredValueUps" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="insuredValueUps" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
- *         &lt;element name="reference1Ups" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="reference2Ups" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="packageLengthUps" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="packageWidthUps" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="packageHeightUps" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="additionalHandlingUps" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="useCodUps" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="codAmountUps" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
- *         &lt;element name="codMethodUps" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageUpsCodMethodUps" minOccurs="0"/>
- *         &lt;element name="deliveryConfUps" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageUpsDeliveryConfUps" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="ItemFulfillmentPackageUps"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="packageWeightUps" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
+ *         &lt;element name="packageDescrUps" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="packageTrackingNumberUps" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="packagingUps" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageUpsPackagingUps" minOccurs="0"/&gt;
+ *         &lt;element name="useInsuredValueUps" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="insuredValueUps" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
+ *         &lt;element name="reference1Ups" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="reference2Ups" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="packageLengthUps" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="packageWidthUps" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="packageHeightUps" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="additionalHandlingUps" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="useCodUps" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="codAmountUps" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
+ *         &lt;element name="codMethodUps" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageUpsCodMethodUps" minOccurs="0"/&gt;
+ *         &lt;element name="deliveryConfUps" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageUpsDeliveryConfUps" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -67,6 +68,7 @@ public class ItemFulfillmentPackageUps {
     protected Double packageWeightUps;
     protected String packageDescrUps;
     protected String packageTrackingNumberUps;
+    @XmlSchemaType(name = "string")
     protected ItemFulfillmentPackageUpsPackagingUps packagingUps;
     protected Boolean useInsuredValueUps;
     protected Double insuredValueUps;
@@ -78,7 +80,9 @@ public class ItemFulfillmentPackageUps {
     protected Boolean additionalHandlingUps;
     protected Boolean useCodUps;
     protected Double codAmountUps;
+    @XmlSchemaType(name = "string")
     protected ItemFulfillmentPackageUpsCodMethodUps codMethodUps;
+    @XmlSchemaType(name = "string")
     protected ItemFulfillmentPackageUpsDeliveryConfUps deliveryConfUps;
 
     /**

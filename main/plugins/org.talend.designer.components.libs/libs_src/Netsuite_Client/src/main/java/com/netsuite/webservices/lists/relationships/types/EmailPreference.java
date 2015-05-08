@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="EmailPreference">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_default"/>
- *     &lt;enumeration value="_hTML"/>
- *     &lt;enumeration value="_pDF"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="EmailPreference"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_default"/&gt;
+ *     &lt;enumeration value="_hTML"/&gt;
+ *     &lt;enumeration value="_pDF"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

@@ -37,6 +37,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Employee }
+     * 
+     */
+    public Employee createEmployee() {
+        return new Employee();
+    }
+
+    /**
      * Create an instance of {@link EmployeeSearch }
      * 
      */
@@ -61,59 +69,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Employee }
+     * Create an instance of {@link EmployeeSubscriptions }
      * 
      */
-    public Employee createEmployee() {
-        return new Employee();
-    }
-
-    /**
-     * Create an instance of {@link EmployeeHrEducationList }
-     * 
-     */
-    public EmployeeHrEducationList createEmployeeHrEducationList() {
-        return new EmployeeHrEducationList();
-    }
-
-    /**
-     * Create an instance of {@link EmployeeCompanyContribution }
-     * 
-     */
-    public EmployeeCompanyContribution createEmployeeCompanyContribution() {
-        return new EmployeeCompanyContribution();
-    }
-
-    /**
-     * Create an instance of {@link EmployeeDirectDeposit }
-     * 
-     */
-    public EmployeeDirectDeposit createEmployeeDirectDeposit() {
-        return new EmployeeDirectDeposit();
-    }
-
-    /**
-     * Create an instance of {@link EmployeeSearchAdvanced }
-     * 
-     */
-    public EmployeeSearchAdvanced createEmployeeSearchAdvanced() {
-        return new EmployeeSearchAdvanced();
-    }
-
-    /**
-     * Create an instance of {@link EmployeeDeductionList }
-     * 
-     */
-    public EmployeeDeductionList createEmployeeDeductionList() {
-        return new EmployeeDeductionList();
-    }
-
-    /**
-     * Create an instance of {@link EmployeeEarningList }
-     * 
-     */
-    public EmployeeEarningList createEmployeeEarningList() {
-        return new EmployeeEarningList();
+    public EmployeeSubscriptions createEmployeeSubscriptions() {
+        return new EmployeeSubscriptions();
     }
 
     /**
@@ -125,43 +85,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link PayrollItemSearchAdvanced }
+     * Create an instance of {@link EmployeeAddressbook }
      * 
      */
-    public PayrollItemSearchAdvanced createPayrollItemSearchAdvanced() {
-        return new PayrollItemSearchAdvanced();
+    public EmployeeAddressbook createEmployeeAddressbook() {
+        return new EmployeeAddressbook();
     }
 
     /**
-     * Create an instance of {@link EmployeeEmergencyContact }
+     * Create an instance of {@link EmployeeAddressbookList }
      * 
      */
-    public EmployeeEmergencyContact createEmployeeEmergencyContact() {
-        return new EmployeeEmergencyContact();
-    }
-
-    /**
-     * Create an instance of {@link EmployeeDirectDepositList }
-     * 
-     */
-    public EmployeeDirectDepositList createEmployeeDirectDepositList() {
-        return new EmployeeDirectDepositList();
-    }
-
-    /**
-     * Create an instance of {@link EmployeeEarning }
-     * 
-     */
-    public EmployeeEarning createEmployeeEarning() {
-        return new EmployeeEarning();
-    }
-
-    /**
-     * Create an instance of {@link PayrollItemSearchRow }
-     * 
-     */
-    public PayrollItemSearchRow createPayrollItemSearchRow() {
-        return new PayrollItemSearchRow();
+    public EmployeeAddressbookList createEmployeeAddressbookList() {
+        return new EmployeeAddressbookList();
     }
 
     /**
@@ -173,11 +109,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link EmployeeEmergencyContactList }
+     * Create an instance of {@link EmployeeRolesList }
      * 
      */
-    public EmployeeEmergencyContactList createEmployeeEmergencyContactList() {
-        return new EmployeeEmergencyContactList();
+    public EmployeeRolesList createEmployeeRolesList() {
+        return new EmployeeRolesList();
+    }
+
+    /**
+     * Create an instance of {@link EmployeeSearchAdvanced }
+     * 
+     */
+    public EmployeeSearchAdvanced createEmployeeSearchAdvanced() {
+        return new EmployeeSearchAdvanced();
     }
 
     /**
@@ -189,19 +133,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link EmployeeSubscriptions }
+     * Create an instance of {@link EmployeeEmergencyContact }
      * 
      */
-    public EmployeeSubscriptions createEmployeeSubscriptions() {
-        return new EmployeeSubscriptions();
+    public EmployeeEmergencyContact createEmployeeEmergencyContact() {
+        return new EmployeeEmergencyContact();
     }
 
     /**
-     * Create an instance of {@link EmployeeAddressbook }
+     * Create an instance of {@link EmployeeEmergencyContactList }
      * 
      */
-    public EmployeeAddressbook createEmployeeAddressbook() {
-        return new EmployeeAddressbook();
+    public EmployeeEmergencyContactList createEmployeeEmergencyContactList() {
+        return new EmployeeEmergencyContactList();
     }
 
     /**
@@ -213,27 +157,19 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link EmployeeHrEducationList }
+     * 
+     */
+    public EmployeeHrEducationList createEmployeeHrEducationList() {
+        return new EmployeeHrEducationList();
+    }
+
+    /**
      * Create an instance of {@link EmployeeAccruedTime }
      * 
      */
     public EmployeeAccruedTime createEmployeeAccruedTime() {
         return new EmployeeAccruedTime();
-    }
-
-    /**
-     * Create an instance of {@link EmployeeRolesList }
-     * 
-     */
-    public EmployeeRolesList createEmployeeRolesList() {
-        return new EmployeeRolesList();
-    }
-
-    /**
-     * Create an instance of {@link EmployeeAddressbookList }
-     * 
-     */
-    public EmployeeAddressbookList createEmployeeAddressbookList() {
-        return new EmployeeAddressbookList();
     }
 
     /**
@@ -253,11 +189,75 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link EmployeeDeductionList }
+     * 
+     */
+    public EmployeeDeductionList createEmployeeDeductionList() {
+        return new EmployeeDeductionList();
+    }
+
+    /**
+     * Create an instance of {@link EmployeeCompanyContribution }
+     * 
+     */
+    public EmployeeCompanyContribution createEmployeeCompanyContribution() {
+        return new EmployeeCompanyContribution();
+    }
+
+    /**
      * Create an instance of {@link EmployeeCompanyContributionList }
      * 
      */
     public EmployeeCompanyContributionList createEmployeeCompanyContributionList() {
         return new EmployeeCompanyContributionList();
+    }
+
+    /**
+     * Create an instance of {@link EmployeeEarning }
+     * 
+     */
+    public EmployeeEarning createEmployeeEarning() {
+        return new EmployeeEarning();
+    }
+
+    /**
+     * Create an instance of {@link EmployeeEarningList }
+     * 
+     */
+    public EmployeeEarningList createEmployeeEarningList() {
+        return new EmployeeEarningList();
+    }
+
+    /**
+     * Create an instance of {@link EmployeeDirectDeposit }
+     * 
+     */
+    public EmployeeDirectDeposit createEmployeeDirectDeposit() {
+        return new EmployeeDirectDeposit();
+    }
+
+    /**
+     * Create an instance of {@link EmployeeDirectDepositList }
+     * 
+     */
+    public EmployeeDirectDepositList createEmployeeDirectDepositList() {
+        return new EmployeeDirectDepositList();
+    }
+
+    /**
+     * Create an instance of {@link PayrollItemSearchAdvanced }
+     * 
+     */
+    public PayrollItemSearchAdvanced createPayrollItemSearchAdvanced() {
+        return new PayrollItemSearchAdvanced();
+    }
+
+    /**
+     * Create an instance of {@link PayrollItemSearchRow }
+     * 
+     */
+    public PayrollItemSearchRow createPayrollItemSearchRow() {
+        return new PayrollItemSearchRow();
     }
 
     /**

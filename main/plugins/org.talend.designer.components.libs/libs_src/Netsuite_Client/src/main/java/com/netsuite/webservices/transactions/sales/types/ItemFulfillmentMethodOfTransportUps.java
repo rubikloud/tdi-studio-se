@@ -12,25 +12,25 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemFulfillmentMethodOfTransportUps">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_air"/>
- *     &lt;enumeration value="_airContainerized"/>
- *     &lt;enumeration value="_auto"/>
- *     &lt;enumeration value="_fixedTransportInstallations"/>
- *     &lt;enumeration value="_mail"/>
- *     &lt;enumeration value="_passengerHandcarried"/>
- *     &lt;enumeration value="_pedestrian"/>
- *     &lt;enumeration value="_rail"/>
- *     &lt;enumeration value="_railContainerized"/>
- *     &lt;enumeration value="_roadOther"/>
- *     &lt;enumeration value="_seaBarge"/>
- *     &lt;enumeration value="_seaContainerized"/>
- *     &lt;enumeration value="_seaNoncontainerized"/>
- *     &lt;enumeration value="_truck"/>
- *     &lt;enumeration value="_truckContainerized"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemFulfillmentMethodOfTransportUps"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_air"/&gt;
+ *     &lt;enumeration value="_airContainerized"/&gt;
+ *     &lt;enumeration value="_auto"/&gt;
+ *     &lt;enumeration value="_fixedTransportInstallations"/&gt;
+ *     &lt;enumeration value="_mail"/&gt;
+ *     &lt;enumeration value="_passengerHandcarried"/&gt;
+ *     &lt;enumeration value="_pedestrian"/&gt;
+ *     &lt;enumeration value="_rail"/&gt;
+ *     &lt;enumeration value="_railContainerized"/&gt;
+ *     &lt;enumeration value="_roadOther"/&gt;
+ *     &lt;enumeration value="_seaBarge"/&gt;
+ *     &lt;enumeration value="_seaContainerized"/&gt;
+ *     &lt;enumeration value="_seaNoncontainerized"/&gt;
+ *     &lt;enumeration value="_truck"/&gt;
+ *     &lt;enumeration value="_truckContainerized"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

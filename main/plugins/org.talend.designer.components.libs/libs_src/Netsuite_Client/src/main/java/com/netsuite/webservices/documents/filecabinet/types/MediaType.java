@@ -12,51 +12,51 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="MediaType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_AUTOCAD"/>
- *     &lt;enumeration value="_BMPIMAGE"/>
- *     &lt;enumeration value="_CONFIG"/>
- *     &lt;enumeration value="_CSV"/>
- *     &lt;enumeration value="_EXCEL"/>
- *     &lt;enumeration value="_FLASH"/>
- *     &lt;enumeration value="_FREEMARKER"/>
- *     &lt;enumeration value="_GIFIMAGE"/>
- *     &lt;enumeration value="_GZIP"/>
- *     &lt;enumeration value="_HTMLDOC"/>
- *     &lt;enumeration value="_ICON"/>
- *     &lt;enumeration value="_IMAGE"/>
- *     &lt;enumeration value="_JAVASCRIPT"/>
- *     &lt;enumeration value="_JPGIMAGE"/>
- *     &lt;enumeration value="_JSON"/>
- *     &lt;enumeration value="_MESSAGERFC"/>
- *     &lt;enumeration value="_MISCBINARY"/>
- *     &lt;enumeration value="_MISCTEXT"/>
- *     &lt;enumeration value="_MP3"/>
- *     &lt;enumeration value="_MPEGMOVIE"/>
- *     &lt;enumeration value="_MSPROJECT"/>
- *     &lt;enumeration value="_PDF"/>
- *     &lt;enumeration value="_PJPGIMAGE"/>
- *     &lt;enumeration value="_PLAINTEXT"/>
- *     &lt;enumeration value="_PNGIMAGE"/>
- *     &lt;enumeration value="_POSTSCRIPT"/>
- *     &lt;enumeration value="_POWERPOINT"/>
- *     &lt;enumeration value="_QUICKTIME"/>
- *     &lt;enumeration value="_RTF"/>
- *     &lt;enumeration value="_SMS"/>
- *     &lt;enumeration value="_STYLESHEET"/>
- *     &lt;enumeration value="_TAR"/>
- *     &lt;enumeration value="_TARCOMP"/>
- *     &lt;enumeration value="_TIFFIMAGE"/>
- *     &lt;enumeration value="_VISIO"/>
- *     &lt;enumeration value="_WEBAPPPAGE"/>
- *     &lt;enumeration value="_WEBAPPSCRIPT"/>
- *     &lt;enumeration value="_WORD"/>
- *     &lt;enumeration value="_XMLDOC"/>
- *     &lt;enumeration value="_XSD"/>
- *     &lt;enumeration value="_ZIP"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="MediaType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_AUTOCAD"/&gt;
+ *     &lt;enumeration value="_BMPIMAGE"/&gt;
+ *     &lt;enumeration value="_CONFIG"/&gt;
+ *     &lt;enumeration value="_CSV"/&gt;
+ *     &lt;enumeration value="_EXCEL"/&gt;
+ *     &lt;enumeration value="_FLASH"/&gt;
+ *     &lt;enumeration value="_FREEMARKER"/&gt;
+ *     &lt;enumeration value="_GIFIMAGE"/&gt;
+ *     &lt;enumeration value="_GZIP"/&gt;
+ *     &lt;enumeration value="_HTMLDOC"/&gt;
+ *     &lt;enumeration value="_ICON"/&gt;
+ *     &lt;enumeration value="_IMAGE"/&gt;
+ *     &lt;enumeration value="_JAVASCRIPT"/&gt;
+ *     &lt;enumeration value="_JPGIMAGE"/&gt;
+ *     &lt;enumeration value="_JSON"/&gt;
+ *     &lt;enumeration value="_MESSAGERFC"/&gt;
+ *     &lt;enumeration value="_MISCBINARY"/&gt;
+ *     &lt;enumeration value="_MISCTEXT"/&gt;
+ *     &lt;enumeration value="_MP3"/&gt;
+ *     &lt;enumeration value="_MPEGMOVIE"/&gt;
+ *     &lt;enumeration value="_MSPROJECT"/&gt;
+ *     &lt;enumeration value="_PDF"/&gt;
+ *     &lt;enumeration value="_PJPGIMAGE"/&gt;
+ *     &lt;enumeration value="_PLAINTEXT"/&gt;
+ *     &lt;enumeration value="_PNGIMAGE"/&gt;
+ *     &lt;enumeration value="_POSTSCRIPT"/&gt;
+ *     &lt;enumeration value="_POWERPOINT"/&gt;
+ *     &lt;enumeration value="_QUICKTIME"/&gt;
+ *     &lt;enumeration value="_RTF"/&gt;
+ *     &lt;enumeration value="_SMS"/&gt;
+ *     &lt;enumeration value="_STYLESHEET"/&gt;
+ *     &lt;enumeration value="_TAR"/&gt;
+ *     &lt;enumeration value="_TARCOMP"/&gt;
+ *     &lt;enumeration value="_TIFFIMAGE"/&gt;
+ *     &lt;enumeration value="_VISIO"/&gt;
+ *     &lt;enumeration value="_WEBAPPPAGE"/&gt;
+ *     &lt;enumeration value="_WEBAPPSCRIPT"/&gt;
+ *     &lt;enumeration value="_WORD"/&gt;
+ *     &lt;enumeration value="_XMLDOC"/&gt;
+ *     &lt;enumeration value="_XSD"/&gt;
+ *     &lt;enumeration value="_ZIP"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

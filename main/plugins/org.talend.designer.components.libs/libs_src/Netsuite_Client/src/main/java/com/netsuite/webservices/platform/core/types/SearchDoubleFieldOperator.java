@@ -12,24 +12,24 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="SearchDoubleFieldOperator">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="between"/>
- *     &lt;enumeration value="empty"/>
- *     &lt;enumeration value="equalTo"/>
- *     &lt;enumeration value="greaterThan"/>
- *     &lt;enumeration value="greaterThanOrEqualTo"/>
- *     &lt;enumeration value="lessThan"/>
- *     &lt;enumeration value="lessThanOrEqualTo"/>
- *     &lt;enumeration value="notBetween"/>
- *     &lt;enumeration value="notEmpty"/>
- *     &lt;enumeration value="notEqualTo"/>
- *     &lt;enumeration value="notGreaterThan"/>
- *     &lt;enumeration value="notGreaterThanOrEqualTo"/>
- *     &lt;enumeration value="notLessThan"/>
- *     &lt;enumeration value="notLessThanOrEqualTo"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="SearchDoubleFieldOperator"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="between"/&gt;
+ *     &lt;enumeration value="empty"/&gt;
+ *     &lt;enumeration value="equalTo"/&gt;
+ *     &lt;enumeration value="greaterThan"/&gt;
+ *     &lt;enumeration value="greaterThanOrEqualTo"/&gt;
+ *     &lt;enumeration value="lessThan"/&gt;
+ *     &lt;enumeration value="lessThanOrEqualTo"/&gt;
+ *     &lt;enumeration value="notBetween"/&gt;
+ *     &lt;enumeration value="notEmpty"/&gt;
+ *     &lt;enumeration value="notEqualTo"/&gt;
+ *     &lt;enumeration value="notGreaterThan"/&gt;
+ *     &lt;enumeration value="notGreaterThanOrEqualTo"/&gt;
+ *     &lt;enumeration value="notLessThan"/&gt;
+ *     &lt;enumeration value="notLessThanOrEqualTo"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

@@ -27,46 +27,46 @@ import com.netsuite.webservices.platform.core.RecordRef;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="BillingSchedule">
- *   &lt;complexContent>
- *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}Record">
- *       &lt;sequence>
- *         &lt;element name="scheduleType" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleType" minOccurs="0"/>
- *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="project" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="initialAmount" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="initialTerms" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="frequency" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleFrequency" minOccurs="0"/>
- *         &lt;element name="recurrenceDowMaskList" type="{urn:common_2014_2.platform.webservices.netsuite.com}RecurrenceDowMaskList" minOccurs="0"/>
- *         &lt;element name="yearMode" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleRecurrenceMode" minOccurs="0"/>
- *         &lt;element name="yearDowim" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleYearDowim" minOccurs="0"/>
- *         &lt;element name="yearDow" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleYearDow" minOccurs="0"/>
- *         &lt;element name="yearDowimMonth" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleYearDowimMonth" minOccurs="0"/>
- *         &lt;element name="yearMonth" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleYearMonth" minOccurs="0"/>
- *         &lt;element name="yearDom" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="monthMode" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleRecurrenceMode" minOccurs="0"/>
- *         &lt;element name="monthDowim" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleMonthDowim" minOccurs="0"/>
- *         &lt;element name="monthDow" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleMonthDow" minOccurs="0"/>
- *         &lt;element name="monthDom" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="dayPeriod" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="repeatEvery" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleRepeatEvery" minOccurs="0"/>
- *         &lt;element name="billForActuals" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="numberRemaining" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="inArrears" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="recurrenceTerms" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="isPublic" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="applyToSubtotal" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="transaction" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="isInactive" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="seriesStartDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
- *         &lt;element name="recurrenceList" type="{urn:accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleRecurrenceList" minOccurs="0"/>
- *         &lt;element name="milestoneList" type="{urn:accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleMilestoneList" minOccurs="0"/>
- *       &lt;/sequence>
- *       &lt;attribute name="internalId" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="externalId" type="{http://www.w3.org/2001/XMLSchema}string" />
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="BillingSchedule"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}Record"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="scheduleType" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleType" minOccurs="0"/&gt;
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="project" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="initialAmount" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="initialTerms" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="frequency" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleFrequency" minOccurs="0"/&gt;
+ *         &lt;element name="recurrenceDowMaskList" type="{urn:common_2014_2.platform.webservices.netsuite.com}RecurrenceDowMaskList" minOccurs="0"/&gt;
+ *         &lt;element name="yearMode" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleRecurrenceMode" minOccurs="0"/&gt;
+ *         &lt;element name="yearDowim" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleYearDowim" minOccurs="0"/&gt;
+ *         &lt;element name="yearDow" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleYearDow" minOccurs="0"/&gt;
+ *         &lt;element name="yearDowimMonth" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleYearDowimMonth" minOccurs="0"/&gt;
+ *         &lt;element name="yearMonth" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleYearMonth" minOccurs="0"/&gt;
+ *         &lt;element name="yearDom" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="monthMode" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleRecurrenceMode" minOccurs="0"/&gt;
+ *         &lt;element name="monthDowim" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleMonthDowim" minOccurs="0"/&gt;
+ *         &lt;element name="monthDow" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleMonthDow" minOccurs="0"/&gt;
+ *         &lt;element name="monthDom" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="dayPeriod" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="repeatEvery" type="{urn:types.accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleRepeatEvery" minOccurs="0"/&gt;
+ *         &lt;element name="billForActuals" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="numberRemaining" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="inArrears" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="recurrenceTerms" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="isPublic" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="applyToSubtotal" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="transaction" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="isInactive" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="seriesStartDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
+ *         &lt;element name="recurrenceList" type="{urn:accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleRecurrenceList" minOccurs="0"/&gt;
+ *         &lt;element name="milestoneList" type="{urn:accounting_2014_2.lists.webservices.netsuite.com}BillingScheduleMilestoneList" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *       &lt;attribute name="internalId" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *       &lt;attribute name="externalId" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -108,21 +108,31 @@ public class BillingSchedule
     extends Record
 {
 
+    @XmlSchemaType(name = "string")
     protected BillingScheduleType scheduleType;
     protected String name;
     protected RecordRef project;
     protected String initialAmount;
     protected RecordRef initialTerms;
+    @XmlSchemaType(name = "string")
     protected BillingScheduleFrequency frequency;
     protected RecurrenceDowMaskList recurrenceDowMaskList;
+    @XmlSchemaType(name = "string")
     protected BillingScheduleRecurrenceMode yearMode;
+    @XmlSchemaType(name = "string")
     protected BillingScheduleYearDowim yearDowim;
+    @XmlSchemaType(name = "string")
     protected BillingScheduleYearDow yearDow;
+    @XmlSchemaType(name = "string")
     protected BillingScheduleYearDowimMonth yearDowimMonth;
+    @XmlSchemaType(name = "string")
     protected BillingScheduleYearMonth yearMonth;
     protected Long yearDom;
+    @XmlSchemaType(name = "string")
     protected BillingScheduleRecurrenceMode monthMode;
+    @XmlSchemaType(name = "string")
     protected BillingScheduleMonthDowim monthDowim;
+    @XmlSchemaType(name = "string")
     protected BillingScheduleMonthDow monthDow;
     protected Long monthDom;
     protected Long dayPeriod;

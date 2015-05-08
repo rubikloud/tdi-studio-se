@@ -51,67 +51,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link DepositOtherList }
-     * 
-     */
-    public DepositOtherList createDepositOtherList() {
-        return new DepositOtherList();
-    }
-
-    /**
      * Create an instance of {@link CheckLandedCostList }
      * 
      */
     public CheckLandedCostList createCheckLandedCostList() {
         return new CheckLandedCostList();
-    }
-
-    /**
-     * Create an instance of {@link DepositCashBack }
-     * 
-     */
-    public DepositCashBack createDepositCashBack() {
-        return new DepositCashBack();
-    }
-
-    /**
-     * Create an instance of {@link CheckItem }
-     * 
-     */
-    public CheckItem createCheckItem() {
-        return new CheckItem();
-    }
-
-    /**
-     * Create an instance of {@link CheckItemList }
-     * 
-     */
-    public CheckItemList createCheckItemList() {
-        return new CheckItemList();
-    }
-
-    /**
-     * Create an instance of {@link DepositCashBackList }
-     * 
-     */
-    public DepositCashBackList createDepositCashBackList() {
-        return new DepositCashBackList();
-    }
-
-    /**
-     * Create an instance of {@link DepositPaymentList }
-     * 
-     */
-    public DepositPaymentList createDepositPaymentList() {
-        return new DepositPaymentList();
-    }
-
-    /**
-     * Create an instance of {@link DepositOther }
-     * 
-     */
-    public DepositOther createDepositOther() {
-        return new DepositOther();
     }
 
     /**
@@ -131,11 +75,67 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link CheckItem }
+     * 
+     */
+    public CheckItem createCheckItem() {
+        return new CheckItem();
+    }
+
+    /**
+     * Create an instance of {@link CheckItemList }
+     * 
+     */
+    public CheckItemList createCheckItemList() {
+        return new CheckItemList();
+    }
+
+    /**
      * Create an instance of {@link DepositPayment }
      * 
      */
     public DepositPayment createDepositPayment() {
         return new DepositPayment();
+    }
+
+    /**
+     * Create an instance of {@link DepositPaymentList }
+     * 
+     */
+    public DepositPaymentList createDepositPaymentList() {
+        return new DepositPaymentList();
+    }
+
+    /**
+     * Create an instance of {@link DepositCashBack }
+     * 
+     */
+    public DepositCashBack createDepositCashBack() {
+        return new DepositCashBack();
+    }
+
+    /**
+     * Create an instance of {@link DepositCashBackList }
+     * 
+     */
+    public DepositCashBackList createDepositCashBackList() {
+        return new DepositCashBackList();
+    }
+
+    /**
+     * Create an instance of {@link DepositOther }
+     * 
+     */
+    public DepositOther createDepositOther() {
+        return new DepositOther();
+    }
+
+    /**
+     * Create an instance of {@link DepositOtherList }
+     * 
+     */
+    public DepositOtherList createDepositOtherList() {
+        return new DepositOtherList();
     }
 
     /**

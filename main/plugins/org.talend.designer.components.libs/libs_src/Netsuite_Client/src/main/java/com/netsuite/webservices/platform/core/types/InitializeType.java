@@ -12,34 +12,34 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="InitializeType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="assemblyBuild"/>
- *     &lt;enumeration value="assemblyUnbuild"/>
- *     &lt;enumeration value="binWorksheet"/>
- *     &lt;enumeration value="cashRefund"/>
- *     &lt;enumeration value="cashSale"/>
- *     &lt;enumeration value="creditMemo"/>
- *     &lt;enumeration value="customerPayment"/>
- *     &lt;enumeration value="customerRefund"/>
- *     &lt;enumeration value="depositApplication"/>
- *     &lt;enumeration value="estimate"/>
- *     &lt;enumeration value="invoice"/>
- *     &lt;enumeration value="itemFulfillment"/>
- *     &lt;enumeration value="itemReceipt"/>
- *     &lt;enumeration value="inventoryTransfer"/>
- *     &lt;enumeration value="returnAuthorization"/>
- *     &lt;enumeration value="salesOrder"/>
- *     &lt;enumeration value="vendorBill"/>
- *     &lt;enumeration value="vendorCredit"/>
- *     &lt;enumeration value="vendorReturnAuthorization"/>
- *     &lt;enumeration value="vendorPayment"/>
- *     &lt;enumeration value="workOrder"/>
- *     &lt;enumeration value="workOrderIssue"/>
- *     &lt;enumeration value="workOrderCompletion"/>
- *     &lt;enumeration value="workOrderClose"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="InitializeType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="assemblyBuild"/&gt;
+ *     &lt;enumeration value="assemblyUnbuild"/&gt;
+ *     &lt;enumeration value="binWorksheet"/&gt;
+ *     &lt;enumeration value="cashRefund"/&gt;
+ *     &lt;enumeration value="cashSale"/&gt;
+ *     &lt;enumeration value="creditMemo"/&gt;
+ *     &lt;enumeration value="customerPayment"/&gt;
+ *     &lt;enumeration value="customerRefund"/&gt;
+ *     &lt;enumeration value="depositApplication"/&gt;
+ *     &lt;enumeration value="estimate"/&gt;
+ *     &lt;enumeration value="invoice"/&gt;
+ *     &lt;enumeration value="itemFulfillment"/&gt;
+ *     &lt;enumeration value="itemReceipt"/&gt;
+ *     &lt;enumeration value="inventoryTransfer"/&gt;
+ *     &lt;enumeration value="returnAuthorization"/&gt;
+ *     &lt;enumeration value="salesOrder"/&gt;
+ *     &lt;enumeration value="vendorBill"/&gt;
+ *     &lt;enumeration value="vendorCredit"/&gt;
+ *     &lt;enumeration value="vendorReturnAuthorization"/&gt;
+ *     &lt;enumeration value="vendorPayment"/&gt;
+ *     &lt;enumeration value="workOrder"/&gt;
+ *     &lt;enumeration value="workOrderIssue"/&gt;
+ *     &lt;enumeration value="workOrderCompletion"/&gt;
+ *     &lt;enumeration value="workOrderClose"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

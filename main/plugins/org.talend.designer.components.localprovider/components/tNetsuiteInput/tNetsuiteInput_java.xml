@@ -15461,14 +15461,10 @@
     
     <CODEGENERATION>
         <IMPORTS>
-            <IMPORT NAME="Netsuite_Client" MODULE="Netsuite_Client.jar" MVN="mvn:org.talend.libraries/Netsuite_Client/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.custom/lib/Netsuite_Client.jar" REQUIRED="true" />
-            <IMPORT NAME="NetSuite_Management" MODULE="NetSuite_Management.jar" MVN="mvn:org.talend.libraries/NetSuite_Management/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.custom/lib/NetSuite_Management.jar" REQUIRED="true" />
-            <IMPORT NAME="CXF" MODULE="cxf-2.7.7-modified.jar" MVN="mvn:org.talend.libraries/cxf-2.7.7-modified/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/cxf-2.7.7-modified.jar" REQUIRED="true" />
-            <IMPORT NAME="NEETHI" MODULE="neethi-3.0.2.jar" MVN="mvn:org.talend.libraries/neethi-3.0.2/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.axis2/lib/neethi-3.0.2.jar" REQUIRED="true" />
-            <IMPORT NAME="WSDL4J" MODULE="wsdl4j-1.6.3.jar" MVN="mvn:org.talend.libraries/wsdl4j-1.6.3/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/wsdl4j-1.6.3.jar" REQUIRED="true" />
-            <IMPORT NAME="XMLSCHEMA-CORE" MODULE="xmlschema-core-2.0.3.jar" MVN="mvn:org.talend.libraries/xmlschema-core-2.0.3/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/xmlschema-core-2.0.3.jar" REQUIRED="true" />
-            <IMPORT NAME="STAX2-API" MODULE="stax2-api-3.1.1.jar" MVN="mvn:org.talend.libraries/stax2-api-3.1.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/stax2-api-3.1.1.jar" REQUIRED="true" />
-            <IMPORT NAME="WOODSTOX-CORE-ASL" MODULE="woodstox-core-asl-4.2.0.jar" MVN="mvn:org.talend.libraries/woodstox-core-asl-4.2.0/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/woodstox-core-asl-4.2.0.jar" REQUIRED="true" />
+            <IMPORT NAME="Netsuite_Client" MODULE="Netsuite_Client.jar" MVN="mvn:org.talend.libraries/Netsuite_Client/6.0.0" UrlPath="platform:/plugin/org.talend.libraries.netsuite/lib/Netsuite_Client.jar" REQUIRED="true" />
+            <IMPORT NAME="NetSuite_Management" MODULE="NetSuite_Management.jar" MVN="mvn:org.talend.libraries/NetSuite_Management/6.0.0" UrlPath="platform:/plugin/org.talend.libraries.netsuite/lib/NetSuite_Management.jar" REQUIRED="true" />
+            <IMPORT NAME="CXF-CORE" MODULE="cxf-core-3.1.0-modified.jar" MVN="mvn:org.talend.libraries/cxf-core-3.1.0-modified/6.0.0" UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/cxf-core-3.1.0-modified.jar" REQUIRED="true" />
+            <IMPORT NAME="CXF-RT-DATABINDING-JAXB" MODULE="cxf-rt-databinding-jaxb-3.1.0.jar" MVN="mvn:org.talend.libraries/cxf-rt-databinding-jaxb-3.1.0/6.0.0" UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/cxf-rt-databinding-jaxb-3.1.0.jar" REQUIRED="true" />
         </IMPORTS>
     </CODEGENERATION>
     

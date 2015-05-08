@@ -12,20 +12,20 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="CampaignResponseCategory">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_bounced"/>
- *     &lt;enumeration value="_clickedThrough"/>
- *     &lt;enumeration value="_failed"/>
- *     &lt;enumeration value="_purchased"/>
- *     &lt;enumeration value="_queued"/>
- *     &lt;enumeration value="_received"/>
- *     &lt;enumeration value="_responded"/>
- *     &lt;enumeration value="_sent"/>
- *     &lt;enumeration value="_subscribed"/>
- *     &lt;enumeration value="_unsubscribed"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="CampaignResponseCategory"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_bounced"/&gt;
+ *     &lt;enumeration value="_clickedThrough"/&gt;
+ *     &lt;enumeration value="_failed"/&gt;
+ *     &lt;enumeration value="_purchased"/&gt;
+ *     &lt;enumeration value="_queued"/&gt;
+ *     &lt;enumeration value="_received"/&gt;
+ *     &lt;enumeration value="_responded"/&gt;
+ *     &lt;enumeration value="_sent"/&gt;
+ *     &lt;enumeration value="_subscribed"/&gt;
+ *     &lt;enumeration value="_unsubscribed"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

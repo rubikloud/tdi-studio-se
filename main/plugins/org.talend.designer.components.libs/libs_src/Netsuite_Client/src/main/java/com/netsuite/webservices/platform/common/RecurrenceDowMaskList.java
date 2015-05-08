@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import com.netsuite.webservices.platform.common.types.RecurrenceDow;
 
@@ -16,15 +17,15 @@ import com.netsuite.webservices.platform.common.types.RecurrenceDow;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="RecurrenceDowMaskList">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="recurrenceDowMask" type="{urn:types.common_2014_2.platform.webservices.netsuite.com}RecurrenceDow" maxOccurs="7"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="RecurrenceDowMaskList"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="recurrenceDowMask" type="{urn:types.common_2014_2.platform.webservices.netsuite.com}RecurrenceDow" maxOccurs="7"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -36,6 +37,7 @@ import com.netsuite.webservices.platform.common.types.RecurrenceDow;
 public class RecurrenceDowMaskList {
 
     @XmlElement(required = true)
+    @XmlSchemaType(name = "string")
     protected List<RecurrenceDow> recurrenceDowMask;
 
     /**

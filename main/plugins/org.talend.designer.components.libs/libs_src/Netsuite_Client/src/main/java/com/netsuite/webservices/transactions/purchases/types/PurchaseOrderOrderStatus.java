@@ -12,18 +12,18 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="PurchaseOrderOrderStatus">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_closed"/>
- *     &lt;enumeration value="_fullyBilled"/>
- *     &lt;enumeration value="_partiallyReceived"/>
- *     &lt;enumeration value="_pendingBillingPartiallyReceived"/>
- *     &lt;enumeration value="_pendingBilling"/>
- *     &lt;enumeration value="_pendingReceipt"/>
- *     &lt;enumeration value="_pendingSupervisorApproval"/>
- *     &lt;enumeration value="_rejectedBySupervisor"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="PurchaseOrderOrderStatus"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_closed"/&gt;
+ *     &lt;enumeration value="_fullyBilled"/&gt;
+ *     &lt;enumeration value="_partiallyReceived"/&gt;
+ *     &lt;enumeration value="_pendingBillingPartiallyReceived"/&gt;
+ *     &lt;enumeration value="_pendingBilling"/&gt;
+ *     &lt;enumeration value="_pendingReceipt"/&gt;
+ *     &lt;enumeration value="_pendingSupervisorApproval"/&gt;
+ *     &lt;enumeration value="_rejectedBySupervisor"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

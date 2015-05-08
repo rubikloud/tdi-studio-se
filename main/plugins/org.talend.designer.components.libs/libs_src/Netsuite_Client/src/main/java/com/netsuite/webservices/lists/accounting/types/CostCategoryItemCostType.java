@@ -12,22 +12,22 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="CostCategoryItemCostType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_laborRun"/>
- *     &lt;enumeration value="_laborRunOverhead"/>
- *     &lt;enumeration value="_laborSetup"/>
- *     &lt;enumeration value="_laborSetupOverhead"/>
- *     &lt;enumeration value="_landed"/>
- *     &lt;enumeration value="_machineRun"/>
- *     &lt;enumeration value="_machineRunOverhead"/>
- *     &lt;enumeration value="_machineSetup"/>
- *     &lt;enumeration value="_machineSetupOverhead"/>
- *     &lt;enumeration value="_material"/>
- *     &lt;enumeration value="_materialOverhead"/>
- *     &lt;enumeration value="_service"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="CostCategoryItemCostType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_laborRun"/&gt;
+ *     &lt;enumeration value="_laborRunOverhead"/&gt;
+ *     &lt;enumeration value="_laborSetup"/&gt;
+ *     &lt;enumeration value="_laborSetupOverhead"/&gt;
+ *     &lt;enumeration value="_landed"/&gt;
+ *     &lt;enumeration value="_machineRun"/&gt;
+ *     &lt;enumeration value="_machineRunOverhead"/&gt;
+ *     &lt;enumeration value="_machineSetup"/&gt;
+ *     &lt;enumeration value="_machineSetupOverhead"/&gt;
+ *     &lt;enumeration value="_material"/&gt;
+ *     &lt;enumeration value="_materialOverhead"/&gt;
+ *     &lt;enumeration value="_service"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

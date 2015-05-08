@@ -4,6 +4,7 @@ package com.netsuite.webservices.platform.core;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import com.netsuite.webservices.platform.core.types.RecordType;
 
@@ -14,21 +15,21 @@ import com.netsuite.webservices.platform.core.types.RecordType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="GetSelectValueFieldDescription">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="recordType" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}RecordType" minOccurs="0"/>
- *         &lt;element name="customRecordType" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="sublist" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="field" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="customForm" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="filter" type="{urn:core_2014_2.platform.webservices.netsuite.com}GetSelectValueFilter" minOccurs="0"/>
- *         &lt;element name="filterByValueList" type="{urn:core_2014_2.platform.webservices.netsuite.com}GetSelectFilterByFieldValueList" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="GetSelectValueFieldDescription"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="recordType" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}RecordType" minOccurs="0"/&gt;
+ *         &lt;element name="customRecordType" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="sublist" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="field" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="customForm" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="filter" type="{urn:core_2014_2.platform.webservices.netsuite.com}GetSelectValueFilter" minOccurs="0"/&gt;
+ *         &lt;element name="filterByValueList" type="{urn:core_2014_2.platform.webservices.netsuite.com}GetSelectFilterByFieldValueList" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -45,6 +46,7 @@ import com.netsuite.webservices.platform.core.types.RecordType;
 })
 public class GetSelectValueFieldDescription {
 
+    @XmlSchemaType(name = "string")
     protected RecordType recordType;
     protected RecordRef customRecordType;
     protected String sublist;

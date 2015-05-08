@@ -12,32 +12,32 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="GetAllRecordType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="budgetCategory"/>
- *     &lt;enumeration value="campaignAudience"/>
- *     &lt;enumeration value="campaignCategory"/>
- *     &lt;enumeration value="campaignChannel"/>
- *     &lt;enumeration value="campaignFamily"/>
- *     &lt;enumeration value="campaignOffer"/>
- *     &lt;enumeration value="campaignSearchEngine"/>
- *     &lt;enumeration value="campaignSubscription"/>
- *     &lt;enumeration value="campaignVertical"/>
- *     &lt;enumeration value="costCategory"/>
- *     &lt;enumeration value="currency"/>
- *     &lt;enumeration value="leadSource"/>
- *     &lt;enumeration value="salesTaxItem"/>
- *     &lt;enumeration value="state"/>
- *     &lt;enumeration value="supportCaseIssue"/>
- *     &lt;enumeration value="supportCaseOrigin"/>
- *     &lt;enumeration value="supportCasePriority"/>
- *     &lt;enumeration value="supportCaseStatus"/>
- *     &lt;enumeration value="supportCaseType"/>
- *     &lt;enumeration value="taxAcct"/>
- *     &lt;enumeration value="taxGroup"/>
- *     &lt;enumeration value="taxType"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="GetAllRecordType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="budgetCategory"/&gt;
+ *     &lt;enumeration value="campaignAudience"/&gt;
+ *     &lt;enumeration value="campaignCategory"/&gt;
+ *     &lt;enumeration value="campaignChannel"/&gt;
+ *     &lt;enumeration value="campaignFamily"/&gt;
+ *     &lt;enumeration value="campaignOffer"/&gt;
+ *     &lt;enumeration value="campaignSearchEngine"/&gt;
+ *     &lt;enumeration value="campaignSubscription"/&gt;
+ *     &lt;enumeration value="campaignVertical"/&gt;
+ *     &lt;enumeration value="costCategory"/&gt;
+ *     &lt;enumeration value="currency"/&gt;
+ *     &lt;enumeration value="leadSource"/&gt;
+ *     &lt;enumeration value="salesTaxItem"/&gt;
+ *     &lt;enumeration value="state"/&gt;
+ *     &lt;enumeration value="supportCaseIssue"/&gt;
+ *     &lt;enumeration value="supportCaseOrigin"/&gt;
+ *     &lt;enumeration value="supportCasePriority"/&gt;
+ *     &lt;enumeration value="supportCaseStatus"/&gt;
+ *     &lt;enumeration value="supportCaseType"/&gt;
+ *     &lt;enumeration value="taxAcct"/&gt;
+ *     &lt;enumeration value="taxGroup"/&gt;
+ *     &lt;enumeration value="taxType"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

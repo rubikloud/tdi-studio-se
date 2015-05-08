@@ -12,29 +12,29 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="PayrollItemItemTypeNoHierarchy">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_addition"/>
- *     &lt;enumeration value="_commission"/>
- *     &lt;enumeration value="_deduction"/>
- *     &lt;enumeration value="_directDeposit"/>
- *     &lt;enumeration value="_disability"/>
- *     &lt;enumeration value="_earning"/>
- *     &lt;enumeration value="_employerContribution"/>
- *     &lt;enumeration value="_expense"/>
- *     &lt;enumeration value="_federal"/>
- *     &lt;enumeration value="_medicare"/>
- *     &lt;enumeration value="_other"/>
- *     &lt;enumeration value="_salary"/>
- *     &lt;enumeration value="_sick"/>
- *     &lt;enumeration value="_socialSecurity"/>
- *     &lt;enumeration value="_state"/>
- *     &lt;enumeration value="_tax"/>
- *     &lt;enumeration value="_unemployment"/>
- *     &lt;enumeration value="_vacation"/>
- *     &lt;enumeration value="_wage"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="PayrollItemItemTypeNoHierarchy"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_addition"/&gt;
+ *     &lt;enumeration value="_commission"/&gt;
+ *     &lt;enumeration value="_deduction"/&gt;
+ *     &lt;enumeration value="_directDeposit"/&gt;
+ *     &lt;enumeration value="_disability"/&gt;
+ *     &lt;enumeration value="_earning"/&gt;
+ *     &lt;enumeration value="_employerContribution"/&gt;
+ *     &lt;enumeration value="_expense"/&gt;
+ *     &lt;enumeration value="_federal"/&gt;
+ *     &lt;enumeration value="_medicare"/&gt;
+ *     &lt;enumeration value="_other"/&gt;
+ *     &lt;enumeration value="_salary"/&gt;
+ *     &lt;enumeration value="_sick"/&gt;
+ *     &lt;enumeration value="_socialSecurity"/&gt;
+ *     &lt;enumeration value="_state"/&gt;
+ *     &lt;enumeration value="_tax"/&gt;
+ *     &lt;enumeration value="_unemployment"/&gt;
+ *     &lt;enumeration value="_vacation"/&gt;
+ *     &lt;enumeration value="_wage"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

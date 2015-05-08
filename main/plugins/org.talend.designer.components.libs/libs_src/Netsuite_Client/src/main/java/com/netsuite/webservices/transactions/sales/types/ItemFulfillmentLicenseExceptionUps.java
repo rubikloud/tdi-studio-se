@@ -12,28 +12,28 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemFulfillmentLicenseExceptionUps">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_agr"/>
- *     &lt;enumeration value="_apr"/>
- *     &lt;enumeration value="_avs"/>
- *     &lt;enumeration value="_bag"/>
- *     &lt;enumeration value="_civ"/>
- *     &lt;enumeration value="_ctp"/>
- *     &lt;enumeration value="_enc"/>
- *     &lt;enumeration value="_gbs"/>
- *     &lt;enumeration value="_gft"/>
- *     &lt;enumeration value="_gov"/>
- *     &lt;enumeration value="_kmi"/>
- *     &lt;enumeration value="_lvs"/>
- *     &lt;enumeration value="_nlr"/>
- *     &lt;enumeration value="_rpl"/>
- *     &lt;enumeration value="_tmp"/>
- *     &lt;enumeration value="_tspa"/>
- *     &lt;enumeration value="_tsr"/>
- *     &lt;enumeration value="_tsu"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemFulfillmentLicenseExceptionUps"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_agr"/&gt;
+ *     &lt;enumeration value="_apr"/&gt;
+ *     &lt;enumeration value="_avs"/&gt;
+ *     &lt;enumeration value="_bag"/&gt;
+ *     &lt;enumeration value="_civ"/&gt;
+ *     &lt;enumeration value="_ctp"/&gt;
+ *     &lt;enumeration value="_enc"/&gt;
+ *     &lt;enumeration value="_gbs"/&gt;
+ *     &lt;enumeration value="_gft"/&gt;
+ *     &lt;enumeration value="_gov"/&gt;
+ *     &lt;enumeration value="_kmi"/&gt;
+ *     &lt;enumeration value="_lvs"/&gt;
+ *     &lt;enumeration value="_nlr"/&gt;
+ *     &lt;enumeration value="_rpl"/&gt;
+ *     &lt;enumeration value="_tmp"/&gt;
+ *     &lt;enumeration value="_tspa"/&gt;
+ *     &lt;enumeration value="_tsr"/&gt;
+ *     &lt;enumeration value="_tsu"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

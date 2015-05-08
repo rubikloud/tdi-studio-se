@@ -12,16 +12,16 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="IssueTrackCode">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_never"/>
- *     &lt;enumeration value="_onAnyChange"/>
- *     &lt;enumeration value="_whenBaseStatusIsClosed"/>
- *     &lt;enumeration value="_whenBaseStatusIsOnHold"/>
- *     &lt;enumeration value="_whenBaseStatusIsOpen"/>
- *     &lt;enumeration value="_whenBaseStatusIsResolved"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="IssueTrackCode"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_never"/&gt;
+ *     &lt;enumeration value="_onAnyChange"/&gt;
+ *     &lt;enumeration value="_whenBaseStatusIsClosed"/&gt;
+ *     &lt;enumeration value="_whenBaseStatusIsOnHold"/&gt;
+ *     &lt;enumeration value="_whenBaseStatusIsOpen"/&gt;
+ *     &lt;enumeration value="_whenBaseStatusIsResolved"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

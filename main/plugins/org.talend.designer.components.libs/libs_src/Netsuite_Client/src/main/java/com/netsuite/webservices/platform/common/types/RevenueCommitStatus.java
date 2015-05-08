@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="RevenueCommitStatus">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_committed"/>
- *     &lt;enumeration value="_partiallyCommitted"/>
- *     &lt;enumeration value="_pendingCommitment"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="RevenueCommitStatus"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_committed"/&gt;
+ *     &lt;enumeration value="_partiallyCommitted"/&gt;
+ *     &lt;enumeration value="_pendingCommitment"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

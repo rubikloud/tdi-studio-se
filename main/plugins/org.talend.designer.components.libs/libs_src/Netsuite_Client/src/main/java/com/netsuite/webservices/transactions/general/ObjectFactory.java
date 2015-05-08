@@ -24,8 +24,8 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _InterCompanyJournalEntry_QNAME = new QName("urn:general_2014_2.transactions.webservices.netsuite.com", "InterCompanyJournalEntry");
     private final static QName _JournalEntry_QNAME = new QName("urn:general_2014_2.transactions.webservices.netsuite.com", "JournalEntry");
+    private final static QName _InterCompanyJournalEntry_QNAME = new QName("urn:general_2014_2.transactions.webservices.netsuite.com", "InterCompanyJournalEntry");
     private final static QName _StatisticalJournalEntry_QNAME = new QName("urn:general_2014_2.transactions.webservices.netsuite.com", "StatisticalJournalEntry");
 
     /**
@@ -33,6 +33,14 @@ public class ObjectFactory {
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link JournalEntry }
+     * 
+     */
+    public JournalEntry createJournalEntry() {
+        return new JournalEntry();
     }
 
     /**
@@ -52,35 +60,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JournalEntry }
-     * 
-     */
-    public JournalEntry createJournalEntry() {
-        return new JournalEntry();
-    }
-
-    /**
-     * Create an instance of {@link InterCompanyJournalEntryLineList }
-     * 
-     */
-    public InterCompanyJournalEntryLineList createInterCompanyJournalEntryLineList() {
-        return new InterCompanyJournalEntryLineList();
-    }
-
-    /**
      * Create an instance of {@link JournalEntryLine }
      * 
      */
     public JournalEntryLine createJournalEntryLine() {
         return new JournalEntryLine();
-    }
-
-    /**
-     * Create an instance of {@link StatisticalJournalEntryLine }
-     * 
-     */
-    public StatisticalJournalEntryLine createStatisticalJournalEntryLine() {
-        return new StatisticalJournalEntryLine();
     }
 
     /**
@@ -100,20 +84,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link InterCompanyJournalEntryLineList }
+     * 
+     */
+    public InterCompanyJournalEntryLineList createInterCompanyJournalEntryLineList() {
+        return new InterCompanyJournalEntryLineList();
+    }
+
+    /**
+     * Create an instance of {@link StatisticalJournalEntryLine }
+     * 
+     */
+    public StatisticalJournalEntryLine createStatisticalJournalEntryLine() {
+        return new StatisticalJournalEntryLine();
+    }
+
+    /**
      * Create an instance of {@link StatisticalJournalEntryLineList }
      * 
      */
     public StatisticalJournalEntryLineList createStatisticalJournalEntryLineList() {
         return new StatisticalJournalEntryLineList();
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link InterCompanyJournalEntry }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "urn:general_2014_2.transactions.webservices.netsuite.com", name = "InterCompanyJournalEntry")
-    public JAXBElement<InterCompanyJournalEntry> createInterCompanyJournalEntry(InterCompanyJournalEntry value) {
-        return new JAXBElement<InterCompanyJournalEntry>(_InterCompanyJournalEntry_QNAME, InterCompanyJournalEntry.class, null, value);
     }
 
     /**
@@ -123,6 +114,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "urn:general_2014_2.transactions.webservices.netsuite.com", name = "JournalEntry")
     public JAXBElement<JournalEntry> createJournalEntry(JournalEntry value) {
         return new JAXBElement<JournalEntry>(_JournalEntry_QNAME, JournalEntry.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InterCompanyJournalEntry }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "urn:general_2014_2.transactions.webservices.netsuite.com", name = "InterCompanyJournalEntry")
+    public JAXBElement<InterCompanyJournalEntry> createInterCompanyJournalEntry(InterCompanyJournalEntry value) {
+        return new JAXBElement<InterCompanyJournalEntry>(_InterCompanyJournalEntry_QNAME, InterCompanyJournalEntry.class, null, value);
     }
 
     /**

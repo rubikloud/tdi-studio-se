@@ -12,16 +12,16 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemCostingMethod">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_average"/>
- *     &lt;enumeration value="_fifo"/>
- *     &lt;enumeration value="_lifo"/>
- *     &lt;enumeration value="_lotNumbered"/>
- *     &lt;enumeration value="_serialized"/>
- *     &lt;enumeration value="_standard"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemCostingMethod"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_average"/&gt;
+ *     &lt;enumeration value="_fifo"/&gt;
+ *     &lt;enumeration value="_lifo"/&gt;
+ *     &lt;enumeration value="_lotNumbered"/&gt;
+ *     &lt;enumeration value="_serialized"/&gt;
+ *     &lt;enumeration value="_standard"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

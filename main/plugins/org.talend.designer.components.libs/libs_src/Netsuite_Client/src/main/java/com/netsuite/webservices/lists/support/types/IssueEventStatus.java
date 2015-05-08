@@ -12,14 +12,14 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="IssueEventStatus">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_closed"/>
- *     &lt;enumeration value="_onHold"/>
- *     &lt;enumeration value="_open"/>
- *     &lt;enumeration value="_resolved"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="IssueEventStatus"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_closed"/&gt;
+ *     &lt;enumeration value="_onHold"/&gt;
+ *     &lt;enumeration value="_open"/&gt;
+ *     &lt;enumeration value="_resolved"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

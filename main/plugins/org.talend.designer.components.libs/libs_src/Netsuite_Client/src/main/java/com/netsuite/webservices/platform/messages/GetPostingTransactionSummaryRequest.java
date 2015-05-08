@@ -15,17 +15,17 @@ import com.netsuite.webservices.platform.core.PostingTransactionSummaryFilter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="GetPostingTransactionSummaryRequest">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="fields" type="{urn:core_2014_2.platform.webservices.netsuite.com}PostingTransactionSummaryField"/>
- *         &lt;element name="filters" type="{urn:core_2014_2.platform.webservices.netsuite.com}PostingTransactionSummaryFilter" minOccurs="0"/>
- *         &lt;element name="pageIndex" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="GetPostingTransactionSummaryRequest"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="fields" type="{urn:core_2014_2.platform.webservices.netsuite.com}PostingTransactionSummaryField"/&gt;
+ *         &lt;element name="filters" type="{urn:core_2014_2.platform.webservices.netsuite.com}PostingTransactionSummaryFilter" minOccurs="0"/&gt;
+ *         &lt;element name="pageIndex" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

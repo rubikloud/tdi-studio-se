@@ -12,17 +12,17 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="WorkOrderOrderStatus">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_built"/>
- *     &lt;enumeration value="_cancelled"/>
- *     &lt;enumeration value="_closed"/>
- *     &lt;enumeration value="_inProcess"/>
- *     &lt;enumeration value="_planned"/>
- *     &lt;enumeration value="_released"/>
- *     &lt;enumeration value="_undefined"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="WorkOrderOrderStatus"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_built"/&gt;
+ *     &lt;enumeration value="_cancelled"/&gt;
+ *     &lt;enumeration value="_closed"/&gt;
+ *     &lt;enumeration value="_inProcess"/&gt;
+ *     &lt;enumeration value="_planned"/&gt;
+ *     &lt;enumeration value="_released"/&gt;
+ *     &lt;enumeration value="_undefined"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

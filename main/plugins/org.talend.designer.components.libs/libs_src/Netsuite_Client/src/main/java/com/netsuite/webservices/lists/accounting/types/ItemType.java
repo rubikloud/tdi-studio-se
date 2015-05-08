@@ -12,24 +12,24 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_assembly"/>
- *     &lt;enumeration value="_description"/>
- *     &lt;enumeration value="_discount"/>
- *     &lt;enumeration value="_downloadItem"/>
- *     &lt;enumeration value="_giftCertificateItem"/>
- *     &lt;enumeration value="_inventoryItem"/>
- *     &lt;enumeration value="_itemGroup"/>
- *     &lt;enumeration value="_kit"/>
- *     &lt;enumeration value="_markup"/>
- *     &lt;enumeration value="_nonInventoryItem"/>
- *     &lt;enumeration value="_otherCharge"/>
- *     &lt;enumeration value="_payment"/>
- *     &lt;enumeration value="_service"/>
- *     &lt;enumeration value="_subtotal"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_assembly"/&gt;
+ *     &lt;enumeration value="_description"/&gt;
+ *     &lt;enumeration value="_discount"/&gt;
+ *     &lt;enumeration value="_downloadItem"/&gt;
+ *     &lt;enumeration value="_giftCertificateItem"/&gt;
+ *     &lt;enumeration value="_inventoryItem"/&gt;
+ *     &lt;enumeration value="_itemGroup"/&gt;
+ *     &lt;enumeration value="_kit"/&gt;
+ *     &lt;enumeration value="_markup"/&gt;
+ *     &lt;enumeration value="_nonInventoryItem"/&gt;
+ *     &lt;enumeration value="_otherCharge"/&gt;
+ *     &lt;enumeration value="_payment"/&gt;
+ *     &lt;enumeration value="_service"/&gt;
+ *     &lt;enumeration value="_subtotal"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

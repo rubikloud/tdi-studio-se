@@ -12,18 +12,18 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemCostEstimateType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_averageCost"/>
- *     &lt;enumeration value="_custom"/>
- *     &lt;enumeration value="_derivedFromMemberItems"/>
- *     &lt;enumeration value="_itemDefinedCost"/>
- *     &lt;enumeration value="_lastPurchasePrice"/>
- *     &lt;enumeration value="_preferredVendorRate"/>
- *     &lt;enumeration value="_purchaseOrderRate"/>
- *     &lt;enumeration value="_purchasePrice"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemCostEstimateType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_averageCost"/&gt;
+ *     &lt;enumeration value="_custom"/&gt;
+ *     &lt;enumeration value="_derivedFromMemberItems"/&gt;
+ *     &lt;enumeration value="_itemDefinedCost"/&gt;
+ *     &lt;enumeration value="_lastPurchasePrice"/&gt;
+ *     &lt;enumeration value="_preferredVendorRate"/&gt;
+ *     &lt;enumeration value="_purchaseOrderRate"/&gt;
+ *     &lt;enumeration value="_purchasePrice"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

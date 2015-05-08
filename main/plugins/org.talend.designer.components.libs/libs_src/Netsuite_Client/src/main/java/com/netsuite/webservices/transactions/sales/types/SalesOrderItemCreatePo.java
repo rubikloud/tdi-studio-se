@@ -12,12 +12,12 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="SalesOrderItemCreatePo">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_dropShipment"/>
- *     &lt;enumeration value="_specialOrder"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="SalesOrderItemCreatePo"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_dropShipment"/&gt;
+ *     &lt;enumeration value="_specialOrder"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

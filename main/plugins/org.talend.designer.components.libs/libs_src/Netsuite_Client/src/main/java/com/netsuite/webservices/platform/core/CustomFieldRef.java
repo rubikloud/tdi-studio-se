@@ -14,14 +14,14 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="CustomFieldRef">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="internalId" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="scriptId" type="{http://www.w3.org/2001/XMLSchema}string" />
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="CustomFieldRef"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;attribute name="internalId" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *       &lt;attribute name="scriptId" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -29,13 +29,13 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "CustomFieldRef")
 @XmlSeeAlso({
-    SelectCustomFieldRef.class,
-    DoubleCustomFieldRef.class,
     LongCustomFieldRef.class,
+    DoubleCustomFieldRef.class,
     BooleanCustomFieldRef.class,
-    MultiSelectCustomFieldRef.class,
     StringCustomFieldRef.class,
-    DateCustomFieldRef.class
+    DateCustomFieldRef.class,
+    SelectCustomFieldRef.class,
+    MultiSelectCustomFieldRef.class
 })
 public abstract class CustomFieldRef {
 

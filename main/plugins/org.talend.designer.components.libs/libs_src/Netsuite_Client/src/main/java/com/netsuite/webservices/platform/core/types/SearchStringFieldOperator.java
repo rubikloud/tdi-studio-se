@@ -12,19 +12,19 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="SearchStringFieldOperator">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="contains"/>
- *     &lt;enumeration value="doesNotContain"/>
- *     &lt;enumeration value="doesNotStartWith"/>
- *     &lt;enumeration value="empty"/>
- *     &lt;enumeration value="hasKeywords"/>
- *     &lt;enumeration value="is"/>
- *     &lt;enumeration value="isNot"/>
- *     &lt;enumeration value="notEmpty"/>
- *     &lt;enumeration value="startsWith"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="SearchStringFieldOperator"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="contains"/&gt;
+ *     &lt;enumeration value="doesNotContain"/&gt;
+ *     &lt;enumeration value="doesNotStartWith"/&gt;
+ *     &lt;enumeration value="empty"/&gt;
+ *     &lt;enumeration value="hasKeywords"/&gt;
+ *     &lt;enumeration value="is"/&gt;
+ *     &lt;enumeration value="isNot"/&gt;
+ *     &lt;enumeration value="notEmpty"/&gt;
+ *     &lt;enumeration value="startsWith"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

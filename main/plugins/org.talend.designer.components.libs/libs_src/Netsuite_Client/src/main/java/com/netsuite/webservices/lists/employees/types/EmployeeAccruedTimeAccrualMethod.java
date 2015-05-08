@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="EmployeeAccruedTimeAccrualMethod">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_lumpSums"/>
- *     &lt;enumeration value="_perHourWorked"/>
- *     &lt;enumeration value="_perPayPeriod"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="EmployeeAccruedTimeAccrualMethod"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_lumpSums"/&gt;
+ *     &lt;enumeration value="_perHourWorked"/&gt;
+ *     &lt;enumeration value="_perPayPeriod"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

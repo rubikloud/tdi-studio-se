@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemOverheadType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_amountBaseUnit"/>
- *     &lt;enumeration value="_percentOfMaterial"/>
- *     &lt;enumeration value="_percentOfTotal"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemOverheadType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_amountBaseUnit"/&gt;
+ *     &lt;enumeration value="_percentOfMaterial"/&gt;
+ *     &lt;enumeration value="_percentOfTotal"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

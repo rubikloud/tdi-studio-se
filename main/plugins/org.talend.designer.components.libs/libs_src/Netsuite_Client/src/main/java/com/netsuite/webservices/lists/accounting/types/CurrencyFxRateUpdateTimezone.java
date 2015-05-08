@@ -12,14 +12,14 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="CurrencyFxRateUpdateTimezone">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_americaNewYork"/>
- *     &lt;enumeration value="_asiaMagadan"/>
- *     &lt;enumeration value="_asiaTokyo"/>
- *     &lt;enumeration value="_europeParis"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="CurrencyFxRateUpdateTimezone"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_americaNewYork"/&gt;
+ *     &lt;enumeration value="_asiaMagadan"/&gt;
+ *     &lt;enumeration value="_asiaTokyo"/&gt;
+ *     &lt;enumeration value="_europeParis"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

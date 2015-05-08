@@ -12,15 +12,15 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="RevRecScheduleRecurrenceType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_custom"/>
- *     &lt;enumeration value="_straightLineByEvenPeriods"/>
- *     &lt;enumeration value="_straightLineProrateFirstAndLastPeriod"/>
- *     &lt;enumeration value="_straightLineProrateFirstAndLastPeriodPeriodRate"/>
- *     &lt;enumeration value="_straightLineUsingExactDays"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="RevRecScheduleRecurrenceType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_custom"/&gt;
+ *     &lt;enumeration value="_straightLineByEvenPeriods"/&gt;
+ *     &lt;enumeration value="_straightLineProrateFirstAndLastPeriod"/&gt;
+ *     &lt;enumeration value="_straightLineProrateFirstAndLastPeriodPeriodRate"/&gt;
+ *     &lt;enumeration value="_straightLineUsingExactDays"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

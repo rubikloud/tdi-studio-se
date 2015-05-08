@@ -12,15 +12,15 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemOutOfStockBehavior">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_allowBackOrdersButDisplayOutOfStockMessage"/>
- *     &lt;enumeration value="_allowBackOrdersWithNoOutOfStockMessage"/>
- *     &lt;enumeration value="_default"/>
- *     &lt;enumeration value="_disallowBackOrdersButDisplayOutOfStockMessage"/>
- *     &lt;enumeration value="_removeItemWhenOutOfStock"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemOutOfStockBehavior"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_allowBackOrdersButDisplayOutOfStockMessage"/&gt;
+ *     &lt;enumeration value="_allowBackOrdersWithNoOutOfStockMessage"/&gt;
+ *     &lt;enumeration value="_default"/&gt;
+ *     &lt;enumeration value="_disallowBackOrdersButDisplayOutOfStockMessage"/&gt;
+ *     &lt;enumeration value="_removeItemWhenOutOfStock"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

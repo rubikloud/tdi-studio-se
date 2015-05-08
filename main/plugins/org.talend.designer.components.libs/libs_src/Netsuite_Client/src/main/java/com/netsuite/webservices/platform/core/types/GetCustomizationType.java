@@ -12,20 +12,20 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="GetCustomizationType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="crmCustomField"/>
- *     &lt;enumeration value="customList"/>
- *     &lt;enumeration value="customRecordType"/>
- *     &lt;enumeration value="entityCustomField"/>
- *     &lt;enumeration value="itemCustomField"/>
- *     &lt;enumeration value="itemNumberCustomField"/>
- *     &lt;enumeration value="itemOptionCustomField"/>
- *     &lt;enumeration value="otherCustomField"/>
- *     &lt;enumeration value="transactionBodyCustomField"/>
- *     &lt;enumeration value="transactionColumnCustomField"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="GetCustomizationType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="crmCustomField"/&gt;
+ *     &lt;enumeration value="customList"/&gt;
+ *     &lt;enumeration value="customRecordType"/&gt;
+ *     &lt;enumeration value="entityCustomField"/&gt;
+ *     &lt;enumeration value="itemCustomField"/&gt;
+ *     &lt;enumeration value="itemNumberCustomField"/&gt;
+ *     &lt;enumeration value="itemOptionCustomField"/&gt;
+ *     &lt;enumeration value="otherCustomField"/&gt;
+ *     &lt;enumeration value="transactionBodyCustomField"/&gt;
+ *     &lt;enumeration value="transactionColumnCustomField"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

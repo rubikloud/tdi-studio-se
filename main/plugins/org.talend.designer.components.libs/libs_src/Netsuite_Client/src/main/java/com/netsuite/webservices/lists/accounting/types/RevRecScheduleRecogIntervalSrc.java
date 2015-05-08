@@ -12,14 +12,14 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="RevRecScheduleRecogIntervalSrc">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_revRecDatesSpecifiedOnTransaction"/>
- *     &lt;enumeration value="_billingScheduleTranDateOnSalesOrder"/>
- *     &lt;enumeration value="_billingScheduleRevRecDateOnSalesOrder"/>
- *     &lt;enumeration value="_revRecDatesSpecifiedOnSalesOrder"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="RevRecScheduleRecogIntervalSrc"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_revRecDatesSpecifiedOnTransaction"/&gt;
+ *     &lt;enumeration value="_billingScheduleTranDateOnSalesOrder"/&gt;
+ *     &lt;enumeration value="_billingScheduleRevRecDateOnSalesOrder"/&gt;
+ *     &lt;enumeration value="_revRecDatesSpecifiedOnSalesOrder"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

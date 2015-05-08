@@ -19,39 +19,39 @@ import com.netsuite.webservices.platform.core.RecordRef;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="PromotionCode">
- *   &lt;complexContent>
- *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}Record">
- *       &lt;sequence>
- *         &lt;element name="implementation" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="customForm" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="useType" type="{urn:types.marketing_2014_2.lists.webservices.netsuite.com}PromotionCodeUseType" minOccurs="0"/>
- *         &lt;element name="displayLineDiscounts" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="codePattern" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="numberToGenerate" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="isInactive" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="discount" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="rate" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="discountType" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="applyDiscountTo" type="{urn:types.marketing_2014_2.lists.webservices.netsuite.com}PromotionCodeApplyDiscountTo" minOccurs="0"/>
- *         &lt;element name="freeShipMethod" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="minimumOrderAmount" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
- *         &lt;element name="startDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
- *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
- *         &lt;element name="isPublic" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="currencyList" type="{urn:marketing_2014_2.lists.webservices.netsuite.com}PromotionCodeCurrencyList" minOccurs="0"/>
- *         &lt;element name="excludeItems" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="itemsList" type="{urn:marketing_2014_2.lists.webservices.netsuite.com}PromotionCodeItemsList" minOccurs="0"/>
- *         &lt;element name="partnersList" type="{urn:marketing_2014_2.lists.webservices.netsuite.com}PromotionCodePartnersList" minOccurs="0"/>
- *       &lt;/sequence>
- *       &lt;attribute name="internalId" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="externalId" type="{http://www.w3.org/2001/XMLSchema}string" />
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="PromotionCode"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}Record"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="implementation" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="customForm" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="useType" type="{urn:types.marketing_2014_2.lists.webservices.netsuite.com}PromotionCodeUseType" minOccurs="0"/&gt;
+ *         &lt;element name="displayLineDiscounts" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="codePattern" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="numberToGenerate" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="isInactive" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="discount" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="rate" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="discountType" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="applyDiscountTo" type="{urn:types.marketing_2014_2.lists.webservices.netsuite.com}PromotionCodeApplyDiscountTo" minOccurs="0"/&gt;
+ *         &lt;element name="freeShipMethod" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="minimumOrderAmount" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
+ *         &lt;element name="startDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
+ *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
+ *         &lt;element name="isPublic" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="currencyList" type="{urn:marketing_2014_2.lists.webservices.netsuite.com}PromotionCodeCurrencyList" minOccurs="0"/&gt;
+ *         &lt;element name="excludeItems" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="itemsList" type="{urn:marketing_2014_2.lists.webservices.netsuite.com}PromotionCodeItemsList" minOccurs="0"/&gt;
+ *         &lt;element name="partnersList" type="{urn:marketing_2014_2.lists.webservices.netsuite.com}PromotionCodePartnersList" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *       &lt;attribute name="internalId" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *       &lt;attribute name="externalId" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -88,6 +88,7 @@ public class PromotionCode
 
     protected RecordRef implementation;
     protected RecordRef customForm;
+    @XmlSchemaType(name = "string")
     protected PromotionCodeUseType useType;
     protected Boolean displayLineDiscounts;
     protected String code;
@@ -98,6 +99,7 @@ public class PromotionCode
     protected RecordRef discount;
     protected String rate;
     protected Boolean discountType;
+    @XmlSchemaType(name = "string")
     protected PromotionCodeApplyDiscountTo applyDiscountTo;
     protected RecordRef freeShipMethod;
     protected Double minimumOrderAmount;

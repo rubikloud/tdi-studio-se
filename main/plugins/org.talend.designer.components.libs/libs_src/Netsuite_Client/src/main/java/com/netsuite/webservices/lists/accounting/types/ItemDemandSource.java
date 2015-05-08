@@ -12,14 +12,14 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemDemandSource">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_enteredAndPlannedOrders"/>
- *     &lt;enumeration value="_forecastAndOrders"/>
- *     &lt;enumeration value="_forecastConsumption"/>
- *     &lt;enumeration value="_forecastFromDemandPlan"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemDemandSource"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_enteredAndPlannedOrders"/&gt;
+ *     &lt;enumeration value="_forecastAndOrders"/&gt;
+ *     &lt;enumeration value="_forecastConsumption"/&gt;
+ *     &lt;enumeration value="_forecastFromDemandPlan"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

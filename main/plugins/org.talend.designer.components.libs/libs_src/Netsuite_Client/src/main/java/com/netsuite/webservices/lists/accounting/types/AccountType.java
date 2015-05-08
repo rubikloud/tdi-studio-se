@@ -12,30 +12,30 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="AccountType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_accountsPayable"/>
- *     &lt;enumeration value="_accountsReceivable"/>
- *     &lt;enumeration value="_bank"/>
- *     &lt;enumeration value="_costOfGoodsSold"/>
- *     &lt;enumeration value="_creditCard"/>
- *     &lt;enumeration value="_deferredExpense"/>
- *     &lt;enumeration value="_deferredRevenue"/>
- *     &lt;enumeration value="_equity"/>
- *     &lt;enumeration value="_expense"/>
- *     &lt;enumeration value="_fixedAsset"/>
- *     &lt;enumeration value="_income"/>
- *     &lt;enumeration value="_longTermLiability"/>
- *     &lt;enumeration value="_nonPosting"/>
- *     &lt;enumeration value="_otherAsset"/>
- *     &lt;enumeration value="_otherCurrentAsset"/>
- *     &lt;enumeration value="_otherCurrentLiability"/>
- *     &lt;enumeration value="_otherExpense"/>
- *     &lt;enumeration value="_otherIncome"/>
- *     &lt;enumeration value="_statistical"/>
- *     &lt;enumeration value="_unbilledReceivable"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="AccountType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_accountsPayable"/&gt;
+ *     &lt;enumeration value="_accountsReceivable"/&gt;
+ *     &lt;enumeration value="_bank"/&gt;
+ *     &lt;enumeration value="_costOfGoodsSold"/&gt;
+ *     &lt;enumeration value="_creditCard"/&gt;
+ *     &lt;enumeration value="_deferredExpense"/&gt;
+ *     &lt;enumeration value="_deferredRevenue"/&gt;
+ *     &lt;enumeration value="_equity"/&gt;
+ *     &lt;enumeration value="_expense"/&gt;
+ *     &lt;enumeration value="_fixedAsset"/&gt;
+ *     &lt;enumeration value="_income"/&gt;
+ *     &lt;enumeration value="_longTermLiability"/&gt;
+ *     &lt;enumeration value="_nonPosting"/&gt;
+ *     &lt;enumeration value="_otherAsset"/&gt;
+ *     &lt;enumeration value="_otherCurrentAsset"/&gt;
+ *     &lt;enumeration value="_otherCurrentLiability"/&gt;
+ *     &lt;enumeration value="_otherExpense"/&gt;
+ *     &lt;enumeration value="_otherIncome"/&gt;
+ *     &lt;enumeration value="_statistical"/&gt;
+ *     &lt;enumeration value="_unbilledReceivable"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

@@ -12,14 +12,14 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemFulfillmentB13AFilingOptionFedEx">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_filedElectronically"/>
- *     &lt;enumeration value="_manuallyAttached"/>
- *     &lt;enumeration value="_notRequired"/>
- *     &lt;enumeration value="_summaryReporting"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemFulfillmentB13AFilingOptionFedEx"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_filedElectronically"/&gt;
+ *     &lt;enumeration value="_manuallyAttached"/&gt;
+ *     &lt;enumeration value="_notRequired"/&gt;
+ *     &lt;enumeration value="_summaryReporting"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

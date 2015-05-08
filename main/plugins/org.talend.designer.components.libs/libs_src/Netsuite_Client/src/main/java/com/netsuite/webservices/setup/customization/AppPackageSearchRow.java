@@ -17,19 +17,19 @@ import com.netsuite.webservices.platform.core.SearchRow;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="AppPackageSearchRow">
- *   &lt;complexContent>
- *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}SearchRow">
- *       &lt;sequence>
- *         &lt;element name="basic" type="{urn:common_2014_2.platform.webservices.netsuite.com}AppPackageSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="appDefinitionJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}AppDefinitionSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="creatorJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}EmployeeSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="packageFileJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}FileSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="userJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}EmployeeSearchRowBasic" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="AppPackageSearchRow"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}SearchRow"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="basic" type="{urn:common_2014_2.platform.webservices.netsuite.com}AppPackageSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="appDefinitionJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}AppDefinitionSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="creatorJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}EmployeeSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="packageFileJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}FileSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="userJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}EmployeeSearchRowBasic" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

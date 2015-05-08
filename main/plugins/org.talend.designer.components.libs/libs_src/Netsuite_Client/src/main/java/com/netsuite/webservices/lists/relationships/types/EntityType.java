@@ -12,21 +12,21 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="EntityType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_company"/>
- *     &lt;enumeration value="_contact"/>
- *     &lt;enumeration value="_customer"/>
- *     &lt;enumeration value="_employee"/>
- *     &lt;enumeration value="_genericResource"/>
- *     &lt;enumeration value="_group"/>
- *     &lt;enumeration value="_internal"/>
- *     &lt;enumeration value="_job"/>
- *     &lt;enumeration value="_otherName"/>
- *     &lt;enumeration value="_partner"/>
- *     &lt;enumeration value="_vendor"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="EntityType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_company"/&gt;
+ *     &lt;enumeration value="_contact"/&gt;
+ *     &lt;enumeration value="_customer"/&gt;
+ *     &lt;enumeration value="_employee"/&gt;
+ *     &lt;enumeration value="_genericResource"/&gt;
+ *     &lt;enumeration value="_group"/&gt;
+ *     &lt;enumeration value="_internal"/&gt;
+ *     &lt;enumeration value="_job"/&gt;
+ *     &lt;enumeration value="_otherName"/&gt;
+ *     &lt;enumeration value="_partner"/&gt;
+ *     &lt;enumeration value="_vendor"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

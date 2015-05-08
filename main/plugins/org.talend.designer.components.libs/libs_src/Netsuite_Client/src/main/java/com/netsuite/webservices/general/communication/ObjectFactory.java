@@ -25,31 +25,15 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _Note_QNAME = new QName("urn:communication_2014_2.general.webservices.netsuite.com", "Note");
+    private final static QName _NoteSearch_QNAME = new QName("urn:communication_2014_2.general.webservices.netsuite.com", "noteSearch");
     private final static QName _Message_QNAME = new QName("urn:communication_2014_2.general.webservices.netsuite.com", "Message");
     private final static QName _MessageSearch_QNAME = new QName("urn:communication_2014_2.general.webservices.netsuite.com", "messageSearch");
-    private final static QName _NoteSearch_QNAME = new QName("urn:communication_2014_2.general.webservices.netsuite.com", "noteSearch");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.netsuite.webservices.general.communication
      * 
      */
     public ObjectFactory() {
-    }
-
-    /**
-     * Create an instance of {@link MessageSearch }
-     * 
-     */
-    public MessageSearch createMessageSearch() {
-        return new MessageSearch();
-    }
-
-    /**
-     * Create an instance of {@link Message }
-     * 
-     */
-    public Message createMessage() {
-        return new Message();
     }
 
     /**
@@ -69,11 +53,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link MessageSearchAdvanced }
+     * Create an instance of {@link Message }
      * 
      */
-    public MessageSearchAdvanced createMessageSearchAdvanced() {
-        return new MessageSearchAdvanced();
+    public Message createMessage() {
+        return new Message();
+    }
+
+    /**
+     * Create an instance of {@link MessageSearch }
+     * 
+     */
+    public MessageSearch createMessageSearch() {
+        return new MessageSearch();
     }
 
     /**
@@ -85,11 +77,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link MessageSearchRow }
+     * Create an instance of {@link NoteSearchRow }
      * 
      */
-    public MessageSearchRow createMessageSearchRow() {
-        return new MessageSearchRow();
+    public NoteSearchRow createNoteSearchRow() {
+        return new NoteSearchRow();
     }
 
     /**
@@ -101,11 +93,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link NoteSearchRow }
+     * Create an instance of {@link MessageSearchAdvanced }
      * 
      */
-    public NoteSearchRow createNoteSearchRow() {
-        return new NoteSearchRow();
+    public MessageSearchAdvanced createMessageSearchAdvanced() {
+        return new MessageSearchAdvanced();
+    }
+
+    /**
+     * Create an instance of {@link MessageSearchRow }
+     * 
+     */
+    public MessageSearchRow createMessageSearchRow() {
+        return new MessageSearchRow();
     }
 
     /**
@@ -115,6 +115,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "urn:communication_2014_2.general.webservices.netsuite.com", name = "Note")
     public JAXBElement<Note> createNote(Note value) {
         return new JAXBElement<Note>(_Note_QNAME, Note.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link NoteSearch }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "urn:communication_2014_2.general.webservices.netsuite.com", name = "noteSearch")
+    public JAXBElement<NoteSearch> createNoteSearch(NoteSearch value) {
+        return new JAXBElement<NoteSearch>(_NoteSearch_QNAME, NoteSearch.class, null, value);
     }
 
     /**
@@ -133,15 +142,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "urn:communication_2014_2.general.webservices.netsuite.com", name = "messageSearch")
     public JAXBElement<MessageSearch> createMessageSearch(MessageSearch value) {
         return new JAXBElement<MessageSearch>(_MessageSearch_QNAME, MessageSearch.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link NoteSearch }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "urn:communication_2014_2.general.webservices.netsuite.com", name = "noteSearch")
-    public JAXBElement<NoteSearch> createNoteSearch(NoteSearch value) {
-        return new JAXBElement<NoteSearch>(_NoteSearch_QNAME, NoteSearch.class, null, value);
     }
 
 }

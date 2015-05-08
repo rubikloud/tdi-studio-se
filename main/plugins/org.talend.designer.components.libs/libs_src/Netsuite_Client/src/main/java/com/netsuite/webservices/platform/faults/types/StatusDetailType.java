@@ -11,13 +11,13 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="StatusDetailType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="ERROR"/>
- *     &lt;enumeration value="WARN"/>
- *     &lt;enumeration value="INFO"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="StatusDetailType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="ERROR"/&gt;
+ *     &lt;enumeration value="WARN"/&gt;
+ *     &lt;enumeration value="INFO"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

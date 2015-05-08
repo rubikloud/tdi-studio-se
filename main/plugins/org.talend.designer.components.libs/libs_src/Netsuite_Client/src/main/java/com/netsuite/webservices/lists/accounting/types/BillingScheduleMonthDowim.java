@@ -12,15 +12,15 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="BillingScheduleMonthDowim">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_first"/>
- *     &lt;enumeration value="_second"/>
- *     &lt;enumeration value="_third"/>
- *     &lt;enumeration value="_fourth"/>
- *     &lt;enumeration value="_last"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="BillingScheduleMonthDowim"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_first"/&gt;
+ *     &lt;enumeration value="_second"/&gt;
+ *     &lt;enumeration value="_third"/&gt;
+ *     &lt;enumeration value="_fourth"/&gt;
+ *     &lt;enumeration value="_last"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

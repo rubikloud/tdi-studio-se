@@ -17,21 +17,21 @@ import com.netsuite.webservices.platform.core.RecordRef;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="ManufacturingOperationTaskPredecessor">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="task" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="type" type="{urn:types.supplychain_2014_2.lists.webservices.netsuite.com}ManufacturingOperationTaskPredecessorPredecessorType" minOccurs="0"/>
- *         &lt;element name="startDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
- *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
- *         &lt;element name="lagType" type="{urn:types.supplychain_2014_2.lists.webservices.netsuite.com}ManufacturingLagType" minOccurs="0"/>
- *         &lt;element name="lagAmount" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="lagUnits" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="ManufacturingOperationTaskPredecessor"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="task" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="type" type="{urn:types.supplychain_2014_2.lists.webservices.netsuite.com}ManufacturingOperationTaskPredecessorPredecessorType" minOccurs="0"/&gt;
+ *         &lt;element name="startDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
+ *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
+ *         &lt;element name="lagType" type="{urn:types.supplychain_2014_2.lists.webservices.netsuite.com}ManufacturingLagType" minOccurs="0"/&gt;
+ *         &lt;element name="lagAmount" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="lagUnits" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -49,11 +49,13 @@ import com.netsuite.webservices.platform.core.RecordRef;
 public class ManufacturingOperationTaskPredecessor {
 
     protected RecordRef task;
+    @XmlSchemaType(name = "string")
     protected ManufacturingOperationTaskPredecessorPredecessorType type;
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar startDate;
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar endDate;
+    @XmlSchemaType(name = "string")
     protected ManufacturingLagType lagType;
     protected Long lagAmount;
     protected String lagUnits;

@@ -12,18 +12,18 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="TextFileEncoding">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_big5"/>
- *     &lt;enumeration value="_gb2312"/>
- *     &lt;enumeration value="_gb18030"/>
- *     &lt;enumeration value="_iso88591"/>
- *     &lt;enumeration value="_macRoman"/>
- *     &lt;enumeration value="_shiftJis"/>
- *     &lt;enumeration value="_utf8"/>
- *     &lt;enumeration value="_windows1252"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="TextFileEncoding"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_big5"/&gt;
+ *     &lt;enumeration value="_gb2312"/&gt;
+ *     &lt;enumeration value="_gb18030"/&gt;
+ *     &lt;enumeration value="_iso88591"/&gt;
+ *     &lt;enumeration value="_macRoman"/&gt;
+ *     &lt;enumeration value="_shiftJis"/&gt;
+ *     &lt;enumeration value="_utf8"/&gt;
+ *     &lt;enumeration value="_windows1252"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

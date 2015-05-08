@@ -31,36 +31,36 @@ import com.netsuite.webservices.platform.core.SearchRow;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="ItemSearchRow">
- *   &lt;complexContent>
- *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}SearchRow">
- *       &lt;sequence>
- *         &lt;element name="basic" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="binNumberJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}BinSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="binOnHandJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemBinNumberSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="correlatedItemJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="effectiveRevisionJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemRevisionSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="fileJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}FileSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="inventoryDetailJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}InventoryDetailSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="inventoryLocationJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}LocationSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="inventoryNumberJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}InventoryNumberSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="inventoryNumberBinOnHandJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}InventoryNumberBinSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="memberItemJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="obsoleteRevisionJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemRevisionSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="parentJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="preferredLocationJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}LocationSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="preferredVendorJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}VendorSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="pricingJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}PricingSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="shopperJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}CustomerSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="transactionJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}TransactionSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="userJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}EmployeeSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="userNotesJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}NoteSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="vendorJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}VendorSearchRowBasic" minOccurs="0"/>
- *         &lt;element name="customSearchJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}CustomSearchRowBasic" maxOccurs="unbounded" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="ItemSearchRow"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}SearchRow"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="basic" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="binNumberJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}BinSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="binOnHandJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemBinNumberSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="correlatedItemJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="effectiveRevisionJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemRevisionSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="fileJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}FileSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="inventoryDetailJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}InventoryDetailSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="inventoryLocationJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}LocationSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="inventoryNumberJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}InventoryNumberSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="inventoryNumberBinOnHandJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}InventoryNumberBinSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="memberItemJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="obsoleteRevisionJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemRevisionSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="parentJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="preferredLocationJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}LocationSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="preferredVendorJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}VendorSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="pricingJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}PricingSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="shopperJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}CustomerSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="transactionJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}TransactionSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="userJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}EmployeeSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="userNotesJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}NoteSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="vendorJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}VendorSearchRowBasic" minOccurs="0"/&gt;
+ *         &lt;element name="customSearchJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}CustomSearchRowBasic" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

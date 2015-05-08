@@ -14,18 +14,18 @@ import com.netsuite.webservices.platform.core.SearchRecord;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="AppDefinitionSearchAdvanced">
- *   &lt;complexContent>
- *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}SearchRecord">
- *       &lt;sequence>
- *         &lt;element name="criteria" type="{urn:customization_2014_2.setup.webservices.netsuite.com}AppDefinitionSearch" minOccurs="0"/>
- *         &lt;element name="columns" type="{urn:customization_2014_2.setup.webservices.netsuite.com}AppDefinitionSearchRow" minOccurs="0"/>
- *       &lt;/sequence>
- *       &lt;attribute name="savedSearchId" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="savedSearchScriptId" type="{http://www.w3.org/2001/XMLSchema}string" />
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="AppDefinitionSearchAdvanced"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}SearchRecord"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="criteria" type="{urn:customization_2014_2.setup.webservices.netsuite.com}AppDefinitionSearch" minOccurs="0"/&gt;
+ *         &lt;element name="columns" type="{urn:customization_2014_2.setup.webservices.netsuite.com}AppDefinitionSearchRow" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *       &lt;attribute name="savedSearchId" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *       &lt;attribute name="savedSearchScriptId" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

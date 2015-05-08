@@ -12,14 +12,14 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="LandedCostMethod">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_quantity"/>
- *     &lt;enumeration value="_value"/>
- *     &lt;enumeration value="_weight"/>
- *     &lt;enumeration value="_line"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="LandedCostMethod"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_quantity"/&gt;
+ *     &lt;enumeration value="_value"/&gt;
+ *     &lt;enumeration value="_weight"/&gt;
+ *     &lt;enumeration value="_line"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

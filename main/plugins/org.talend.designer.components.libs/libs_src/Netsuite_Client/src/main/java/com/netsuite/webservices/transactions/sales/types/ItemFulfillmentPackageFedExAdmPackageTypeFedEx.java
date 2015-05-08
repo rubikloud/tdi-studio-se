@@ -12,39 +12,39 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemFulfillmentPackageFedExAdmPackageTypeFedEx">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_bag"/>
- *     &lt;enumeration value="_barrel"/>
- *     &lt;enumeration value="_basketOrHamper"/>
- *     &lt;enumeration value="_box"/>
- *     &lt;enumeration value="_bucket"/>
- *     &lt;enumeration value="_bundle"/>
- *     &lt;enumeration value="_cage"/>
- *     &lt;enumeration value="_carton"/>
- *     &lt;enumeration value="_case"/>
- *     &lt;enumeration value="_chest"/>
- *     &lt;enumeration value="_container"/>
- *     &lt;enumeration value="_crate"/>
- *     &lt;enumeration value="_cylinder"/>
- *     &lt;enumeration value="_drum"/>
- *     &lt;enumeration value="_envelope"/>
- *     &lt;enumeration value="_package"/>
- *     &lt;enumeration value="_pail"/>
- *     &lt;enumeration value="_pallet"/>
- *     &lt;enumeration value="_parcel"/>
- *     &lt;enumeration value="_pieces"/>
- *     &lt;enumeration value="_reel"/>
- *     &lt;enumeration value="_roll"/>
- *     &lt;enumeration value="_sack"/>
- *     &lt;enumeration value="_shrinkWrapped"/>
- *     &lt;enumeration value="_skid"/>
- *     &lt;enumeration value="_tank"/>
- *     &lt;enumeration value="_toteBin"/>
- *     &lt;enumeration value="_tube"/>
- *     &lt;enumeration value="_unit"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemFulfillmentPackageFedExAdmPackageTypeFedEx"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_bag"/&gt;
+ *     &lt;enumeration value="_barrel"/&gt;
+ *     &lt;enumeration value="_basketOrHamper"/&gt;
+ *     &lt;enumeration value="_box"/&gt;
+ *     &lt;enumeration value="_bucket"/&gt;
+ *     &lt;enumeration value="_bundle"/&gt;
+ *     &lt;enumeration value="_cage"/&gt;
+ *     &lt;enumeration value="_carton"/&gt;
+ *     &lt;enumeration value="_case"/&gt;
+ *     &lt;enumeration value="_chest"/&gt;
+ *     &lt;enumeration value="_container"/&gt;
+ *     &lt;enumeration value="_crate"/&gt;
+ *     &lt;enumeration value="_cylinder"/&gt;
+ *     &lt;enumeration value="_drum"/&gt;
+ *     &lt;enumeration value="_envelope"/&gt;
+ *     &lt;enumeration value="_package"/&gt;
+ *     &lt;enumeration value="_pail"/&gt;
+ *     &lt;enumeration value="_pallet"/&gt;
+ *     &lt;enumeration value="_parcel"/&gt;
+ *     &lt;enumeration value="_pieces"/&gt;
+ *     &lt;enumeration value="_reel"/&gt;
+ *     &lt;enumeration value="_roll"/&gt;
+ *     &lt;enumeration value="_sack"/&gt;
+ *     &lt;enumeration value="_shrinkWrapped"/&gt;
+ *     &lt;enumeration value="_skid"/&gt;
+ *     &lt;enumeration value="_tank"/&gt;
+ *     &lt;enumeration value="_toteBin"/&gt;
+ *     &lt;enumeration value="_tube"/&gt;
+ *     &lt;enumeration value="_unit"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

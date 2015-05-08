@@ -13,15 +13,15 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="SelectCustomFieldRef">
- *   &lt;complexContent>
- *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}CustomFieldRef">
- *       &lt;sequence>
- *         &lt;element name="value" type="{urn:core_2014_2.platform.webservices.netsuite.com}ListOrRecordRef"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="SelectCustomFieldRef"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}CustomFieldRef"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="value" type="{urn:core_2014_2.platform.webservices.netsuite.com}ListOrRecordRef"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

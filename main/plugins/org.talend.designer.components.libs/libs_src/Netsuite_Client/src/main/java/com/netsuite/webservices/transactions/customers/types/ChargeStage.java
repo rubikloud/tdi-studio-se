@@ -12,14 +12,14 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ChargeStage">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_hold"/>
- *     &lt;enumeration value="_nonBillable"/>
- *     &lt;enumeration value="_processed"/>
- *     &lt;enumeration value="_ready"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ChargeStage"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_hold"/&gt;
+ *     &lt;enumeration value="_nonBillable"/&gt;
+ *     &lt;enumeration value="_processed"/&gt;
+ *     &lt;enumeration value="_ready"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

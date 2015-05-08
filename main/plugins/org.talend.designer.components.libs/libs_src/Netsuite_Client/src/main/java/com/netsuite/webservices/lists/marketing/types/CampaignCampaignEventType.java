@@ -12,16 +12,16 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="CampaignCampaignEventType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_default"/>
- *     &lt;enumeration value="_directMail"/>
- *     &lt;enumeration value="_email"/>
- *     &lt;enumeration value="_integration"/>
- *     &lt;enumeration value="_leadNurturingEmail"/>
- *     &lt;enumeration value="_other"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="CampaignCampaignEventType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_default"/&gt;
+ *     &lt;enumeration value="_directMail"/&gt;
+ *     &lt;enumeration value="_email"/&gt;
+ *     &lt;enumeration value="_integration"/&gt;
+ *     &lt;enumeration value="_leadNurturingEmail"/&gt;
+ *     &lt;enumeration value="_other"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

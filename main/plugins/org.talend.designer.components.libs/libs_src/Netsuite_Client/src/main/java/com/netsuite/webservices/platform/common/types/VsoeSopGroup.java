@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="VsoeSopGroup">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_exclude"/>
- *     &lt;enumeration value="_normal"/>
- *     &lt;enumeration value="_software"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="VsoeSopGroup"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_exclude"/&gt;
+ *     &lt;enumeration value="_normal"/&gt;
+ *     &lt;enumeration value="_software"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

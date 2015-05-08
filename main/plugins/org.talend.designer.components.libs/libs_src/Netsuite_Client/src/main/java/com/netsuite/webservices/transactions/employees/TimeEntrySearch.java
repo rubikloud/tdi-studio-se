@@ -33,33 +33,33 @@ import com.netsuite.webservices.platform.core.SearchRecord;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="TimeEntrySearch">
- *   &lt;complexContent>
- *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}SearchRecord">
- *       &lt;sequence>
- *         &lt;element name="basic" type="{urn:common_2014_2.platform.webservices.netsuite.com}TimeEntrySearchBasic" minOccurs="0"/>
- *         &lt;element name="callJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}PhoneCallSearchBasic" minOccurs="0"/>
- *         &lt;element name="caseJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}SupportCaseSearchBasic" minOccurs="0"/>
- *         &lt;element name="classJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ClassificationSearchBasic" minOccurs="0"/>
- *         &lt;element name="customerJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}CustomerSearchBasic" minOccurs="0"/>
- *         &lt;element name="departmentJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}DepartmentSearchBasic" minOccurs="0"/>
- *         &lt;element name="employeeJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}EmployeeSearchBasic" minOccurs="0"/>
- *         &lt;element name="eventJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}CalendarEventSearchBasic" minOccurs="0"/>
- *         &lt;element name="itemJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemSearchBasic" minOccurs="0"/>
- *         &lt;element name="jobJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}JobSearchBasic" minOccurs="0"/>
- *         &lt;element name="locationJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}LocationSearchBasic" minOccurs="0"/>
- *         &lt;element name="projectTaskJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ProjectTaskSearchBasic" minOccurs="0"/>
- *         &lt;element name="projectTaskAssignmentJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ProjectTaskAssignmentSearchBasic" minOccurs="0"/>
- *         &lt;element name="resourceAllocationJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ResourceAllocationSearchBasic" minOccurs="0"/>
- *         &lt;element name="taskJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}TaskSearchBasic" minOccurs="0"/>
- *         &lt;element name="timeSheetJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}TimeSheetSearchBasic" minOccurs="0"/>
- *         &lt;element name="userJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}EmployeeSearchBasic" minOccurs="0"/>
- *         &lt;element name="vendorJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}VendorSearchBasic" minOccurs="0"/>
- *         &lt;element name="customSearchJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}CustomSearchJoin" maxOccurs="unbounded" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="TimeEntrySearch"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}SearchRecord"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="basic" type="{urn:common_2014_2.platform.webservices.netsuite.com}TimeEntrySearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="callJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}PhoneCallSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="caseJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}SupportCaseSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="classJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ClassificationSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="customerJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}CustomerSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="departmentJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}DepartmentSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="employeeJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}EmployeeSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="eventJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}CalendarEventSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="itemJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ItemSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="jobJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}JobSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="locationJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}LocationSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="projectTaskJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ProjectTaskSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="projectTaskAssignmentJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ProjectTaskAssignmentSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="resourceAllocationJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ResourceAllocationSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="taskJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}TaskSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="timeSheetJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}TimeSheetSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="userJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}EmployeeSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="vendorJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}VendorSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="customSearchJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}CustomSearchJoin" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

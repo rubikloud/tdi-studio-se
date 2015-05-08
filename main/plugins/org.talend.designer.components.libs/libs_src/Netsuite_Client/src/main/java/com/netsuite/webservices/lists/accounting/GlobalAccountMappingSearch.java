@@ -22,22 +22,22 @@ import com.netsuite.webservices.platform.core.SearchRecord;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="GlobalAccountMappingSearch">
- *   &lt;complexContent>
- *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}SearchRecord">
- *       &lt;sequence>
- *         &lt;element name="basic" type="{urn:common_2014_2.platform.webservices.netsuite.com}GlobalAccountMappingSearchBasic" minOccurs="0"/>
- *         &lt;element name="classJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ClassificationSearchBasic" minOccurs="0"/>
- *         &lt;element name="departmentJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}DepartmentSearchBasic" minOccurs="0"/>
- *         &lt;element name="destinationAccountJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}AccountSearchBasic" minOccurs="0"/>
- *         &lt;element name="locationJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}LocationSearchBasic" minOccurs="0"/>
- *         &lt;element name="sourceAccountJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}AccountSearchBasic" minOccurs="0"/>
- *         &lt;element name="subsidiaryJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}SubsidiarySearchBasic" minOccurs="0"/>
- *         &lt;element name="customSearchJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}CustomSearchJoin" maxOccurs="unbounded" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="GlobalAccountMappingSearch"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}SearchRecord"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="basic" type="{urn:common_2014_2.platform.webservices.netsuite.com}GlobalAccountMappingSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="classJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}ClassificationSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="departmentJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}DepartmentSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="destinationAccountJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}AccountSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="locationJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}LocationSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="sourceAccountJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}AccountSearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="subsidiaryJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}SubsidiarySearchBasic" minOccurs="0"/&gt;
+ *         &lt;element name="customSearchJoin" type="{urn:common_2014_2.platform.webservices.netsuite.com}CustomSearchJoin" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

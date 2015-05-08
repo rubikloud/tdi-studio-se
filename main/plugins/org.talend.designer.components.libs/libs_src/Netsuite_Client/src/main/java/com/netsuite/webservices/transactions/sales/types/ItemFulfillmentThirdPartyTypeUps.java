@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemFulfillmentThirdPartyTypeUps">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_consigneeBilling"/>
- *     &lt;enumeration value="_noneSelected"/>
- *     &lt;enumeration value="_thirdPartyBilling"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemFulfillmentThirdPartyTypeUps"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_consigneeBilling"/&gt;
+ *     &lt;enumeration value="_noneSelected"/&gt;
+ *     &lt;enumeration value="_thirdPartyBilling"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

@@ -13,15 +13,15 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="DetachBasicReference">
- *   &lt;complexContent>
- *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}DetachReference">
- *       &lt;sequence>
- *         &lt;element name="detachedRecord" type="{urn:core_2014_2.platform.webservices.netsuite.com}BaseRef"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="DetachBasicReference"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}DetachReference"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="detachedRecord" type="{urn:core_2014_2.platform.webservices.netsuite.com}BaseRef"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

@@ -35,14 +35,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link SiteCategorySearch }
-     * 
-     */
-    public SiteCategorySearch createSiteCategorySearch() {
-        return new SiteCategorySearch();
-    }
-
-    /**
      * Create an instance of {@link SiteCategory }
      * 
      */
@@ -51,11 +43,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link SiteCategoryPresentationItemList }
+     * Create an instance of {@link SiteCategorySearch }
      * 
      */
-    public SiteCategoryPresentationItemList createSiteCategoryPresentationItemList() {
-        return new SiteCategoryPresentationItemList();
+    public SiteCategorySearch createSiteCategorySearch() {
+        return new SiteCategorySearch();
     }
 
     /**
@@ -67,14 +59,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link SiteCategorySearchRow }
-     * 
-     */
-    public SiteCategorySearchRow createSiteCategorySearchRow() {
-        return new SiteCategorySearchRow();
-    }
-
-    /**
      * Create an instance of {@link SiteCategoryTranslationList }
      * 
      */
@@ -83,11 +67,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link SiteCategoryPresentationItemList }
+     * 
+     */
+    public SiteCategoryPresentationItemList createSiteCategoryPresentationItemList() {
+        return new SiteCategoryPresentationItemList();
+    }
+
+    /**
      * Create an instance of {@link SiteCategorySearchAdvanced }
      * 
      */
     public SiteCategorySearchAdvanced createSiteCategorySearchAdvanced() {
         return new SiteCategorySearchAdvanced();
+    }
+
+    /**
+     * Create an instance of {@link SiteCategorySearchRow }
+     * 
+     */
+    public SiteCategorySearchRow createSiteCategorySearchRow() {
+        return new SiteCategorySearchRow();
     }
 
     /**

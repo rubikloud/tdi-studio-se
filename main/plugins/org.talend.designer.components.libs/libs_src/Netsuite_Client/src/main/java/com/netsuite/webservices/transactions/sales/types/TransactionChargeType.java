@@ -12,20 +12,20 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="TransactionChargeType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_concession"/>
- *     &lt;enumeration value="_fixedDate"/>
- *     &lt;enumeration value="_fixedUsage"/>
- *     &lt;enumeration value="_milestone"/>
- *     &lt;enumeration value="_oneTime"/>
- *     &lt;enumeration value="_penalty"/>
- *     &lt;enumeration value="_projectProgress"/>
- *     &lt;enumeration value="_recurringService"/>
- *     &lt;enumeration value="_timeBased"/>
- *     &lt;enumeration value="_variableUsage"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="TransactionChargeType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_concession"/&gt;
+ *     &lt;enumeration value="_fixedDate"/&gt;
+ *     &lt;enumeration value="_fixedUsage"/&gt;
+ *     &lt;enumeration value="_milestone"/&gt;
+ *     &lt;enumeration value="_oneTime"/&gt;
+ *     &lt;enumeration value="_penalty"/&gt;
+ *     &lt;enumeration value="_projectProgress"/&gt;
+ *     &lt;enumeration value="_recurringService"/&gt;
+ *     &lt;enumeration value="_timeBased"/&gt;
+ *     &lt;enumeration value="_variableUsage"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

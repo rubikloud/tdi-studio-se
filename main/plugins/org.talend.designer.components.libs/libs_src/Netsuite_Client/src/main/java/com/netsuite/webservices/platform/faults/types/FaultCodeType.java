@@ -11,33 +11,33 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="FaultCodeType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="ACCT_TEMP_UNAVAILABLE"/>
- *     &lt;enumeration value="EMAIL_ADDRS_REQD"/>
- *     &lt;enumeration value="INVALID_ACCT"/>
- *     &lt;enumeration value="INVALID_JOB_ID"/>
- *     &lt;enumeration value="INVALID_LOGIN_CREDENTIALS"/>
- *     &lt;enumeration value="INVALID_PAGE_INDEX"/>
- *     &lt;enumeration value="INVALID_ROLE"/>
- *     &lt;enumeration value="INVALID_WS_VERSION"/>
- *     &lt;enumeration value="JOB_NOT_COMPLETE"/>
- *     &lt;enumeration value="LOGIN_DISABLED"/>
- *     &lt;enumeration value="MAX_RCRDS_EXCEEDED"/>
- *     &lt;enumeration value="OI_FEATURE_REQD"/>
- *     &lt;enumeration value="OI_PERMISSION_REQD"/>
- *     &lt;enumeration value="PSWD_REQD"/>
- *     &lt;enumeration value="ROLE_REQUIRED"/>
- *     &lt;enumeration value="SESSION_TIMED_OUT"/>
- *     &lt;enumeration value="UNEXPECTED_ERROR"/>
- *     &lt;enumeration value="UNSUPPORTED_WS_VERSION"/>
- *     &lt;enumeration value="USER_ERROR"/>
- *     &lt;enumeration value="WS_CONCUR_SESSION_DISALLWD"/>
- *     &lt;enumeration value="WS_FEATURE_REQD"/>
- *     &lt;enumeration value="WS_PERMISSION_REQD"/>
- *     &lt;enumeration value="WS_LOG_IN_REQD"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="FaultCodeType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="ACCT_TEMP_UNAVAILABLE"/&gt;
+ *     &lt;enumeration value="EMAIL_ADDRS_REQD"/&gt;
+ *     &lt;enumeration value="INVALID_ACCT"/&gt;
+ *     &lt;enumeration value="INVALID_JOB_ID"/&gt;
+ *     &lt;enumeration value="INVALID_LOGIN_CREDENTIALS"/&gt;
+ *     &lt;enumeration value="INVALID_PAGE_INDEX"/&gt;
+ *     &lt;enumeration value="INVALID_ROLE"/&gt;
+ *     &lt;enumeration value="INVALID_WS_VERSION"/&gt;
+ *     &lt;enumeration value="JOB_NOT_COMPLETE"/&gt;
+ *     &lt;enumeration value="LOGIN_DISABLED"/&gt;
+ *     &lt;enumeration value="MAX_RCRDS_EXCEEDED"/&gt;
+ *     &lt;enumeration value="OI_FEATURE_REQD"/&gt;
+ *     &lt;enumeration value="OI_PERMISSION_REQD"/&gt;
+ *     &lt;enumeration value="PSWD_REQD"/&gt;
+ *     &lt;enumeration value="ROLE_REQUIRED"/&gt;
+ *     &lt;enumeration value="SESSION_TIMED_OUT"/&gt;
+ *     &lt;enumeration value="UNEXPECTED_ERROR"/&gt;
+ *     &lt;enumeration value="UNSUPPORTED_WS_VERSION"/&gt;
+ *     &lt;enumeration value="USER_ERROR"/&gt;
+ *     &lt;enumeration value="WS_CONCUR_SESSION_DISALLWD"/&gt;
+ *     &lt;enumeration value="WS_FEATURE_REQD"/&gt;
+ *     &lt;enumeration value="WS_PERMISSION_REQD"/&gt;
+ *     &lt;enumeration value="WS_LOG_IN_REQD"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

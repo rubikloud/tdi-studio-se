@@ -25,51 +25,51 @@ import com.netsuite.webservices.platform.core.RecordRef;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="CalendarEvent">
- *   &lt;complexContent>
- *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}Record">
- *       &lt;sequence>
- *         &lt;element name="company" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="contact" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="supportCase" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="transaction" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="period" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="frequency" type="{urn:types.common_2014_2.platform.webservices.netsuite.com}RecurrenceFrequency" minOccurs="0"/>
- *         &lt;element name="recurrenceDowMaskList" type="{urn:common_2014_2.platform.webservices.netsuite.com}RecurrenceDowMaskList" minOccurs="0"/>
- *         &lt;element name="recurrenceDow" type="{urn:types.common_2014_2.platform.webservices.netsuite.com}RecurrenceDow" minOccurs="0"/>
- *         &lt;element name="recurrenceDowim" type="{urn:types.common_2014_2.platform.webservices.netsuite.com}RecurrenceDowim" minOccurs="0"/>
- *         &lt;element name="seriesStartDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
- *         &lt;element name="endByDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
- *         &lt;element name="noEndDate" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="sendEmail" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="customForm" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="recurrence" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="location" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="startDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
- *         &lt;element name="allDayEvent" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="timedEvent" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="reminderType" type="{urn:types.scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventReminderType" minOccurs="0"/>
- *         &lt;element name="reminderMinutes" type="{urn:types.scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventReminderMinutes" minOccurs="0"/>
- *         &lt;element name="status" type="{urn:types.scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventStatus" minOccurs="0"/>
- *         &lt;element name="accessLevel" type="{urn:types.scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventAccessLevel" minOccurs="0"/>
- *         &lt;element name="organizer" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="message" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="createdDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
- *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
- *         &lt;element name="exclusionDateList" type="{urn:scheduling_2014_2.activities.webservices.netsuite.com}ExclusionDateList" minOccurs="0"/>
- *         &lt;element name="lastModifiedDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
- *         &lt;element name="owner" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/>
- *         &lt;element name="attendeeList" type="{urn:scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventAttendeeList" minOccurs="0"/>
- *         &lt;element name="resourceList" type="{urn:scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventResourceList" minOccurs="0"/>
- *         &lt;element name="timeItemList" type="{urn:scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventTimeItemList" minOccurs="0"/>
- *         &lt;element name="customFieldList" type="{urn:core_2014_2.platform.webservices.netsuite.com}CustomFieldList" minOccurs="0"/>
- *       &lt;/sequence>
- *       &lt;attribute name="internalId" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="externalId" type="{http://www.w3.org/2001/XMLSchema}string" />
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="CalendarEvent"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}Record"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="company" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="contact" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="supportCase" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="transaction" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="period" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="frequency" type="{urn:types.common_2014_2.platform.webservices.netsuite.com}RecurrenceFrequency" minOccurs="0"/&gt;
+ *         &lt;element name="recurrenceDowMaskList" type="{urn:common_2014_2.platform.webservices.netsuite.com}RecurrenceDowMaskList" minOccurs="0"/&gt;
+ *         &lt;element name="recurrenceDow" type="{urn:types.common_2014_2.platform.webservices.netsuite.com}RecurrenceDow" minOccurs="0"/&gt;
+ *         &lt;element name="recurrenceDowim" type="{urn:types.common_2014_2.platform.webservices.netsuite.com}RecurrenceDowim" minOccurs="0"/&gt;
+ *         &lt;element name="seriesStartDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
+ *         &lt;element name="endByDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
+ *         &lt;element name="noEndDate" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="sendEmail" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="customForm" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="recurrence" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="location" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="startDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
+ *         &lt;element name="allDayEvent" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="timedEvent" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="reminderType" type="{urn:types.scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventReminderType" minOccurs="0"/&gt;
+ *         &lt;element name="reminderMinutes" type="{urn:types.scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventReminderMinutes" minOccurs="0"/&gt;
+ *         &lt;element name="status" type="{urn:types.scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventStatus" minOccurs="0"/&gt;
+ *         &lt;element name="accessLevel" type="{urn:types.scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventAccessLevel" minOccurs="0"/&gt;
+ *         &lt;element name="organizer" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="message" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="createdDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
+ *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
+ *         &lt;element name="exclusionDateList" type="{urn:scheduling_2014_2.activities.webservices.netsuite.com}ExclusionDateList" minOccurs="0"/&gt;
+ *         &lt;element name="lastModifiedDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
+ *         &lt;element name="owner" type="{urn:core_2014_2.platform.webservices.netsuite.com}RecordRef" minOccurs="0"/&gt;
+ *         &lt;element name="attendeeList" type="{urn:scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventAttendeeList" minOccurs="0"/&gt;
+ *         &lt;element name="resourceList" type="{urn:scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventResourceList" minOccurs="0"/&gt;
+ *         &lt;element name="timeItemList" type="{urn:scheduling_2014_2.activities.webservices.netsuite.com}CalendarEventTimeItemList" minOccurs="0"/&gt;
+ *         &lt;element name="customFieldList" type="{urn:core_2014_2.platform.webservices.netsuite.com}CustomFieldList" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *       &lt;attribute name="internalId" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *       &lt;attribute name="externalId" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -121,9 +121,12 @@ public class CalendarEvent
     protected RecordRef supportCase;
     protected RecordRef transaction;
     protected Long period;
+    @XmlSchemaType(name = "string")
     protected RecurrenceFrequency frequency;
     protected RecurrenceDowMaskList recurrenceDowMaskList;
+    @XmlSchemaType(name = "string")
     protected RecurrenceDow recurrenceDow;
+    @XmlSchemaType(name = "string")
     protected RecurrenceDowim recurrenceDowim;
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar seriesStartDate;
@@ -139,9 +142,12 @@ public class CalendarEvent
     protected XMLGregorianCalendar startDate;
     protected Boolean allDayEvent;
     protected Boolean timedEvent;
+    @XmlSchemaType(name = "string")
     protected CalendarEventReminderType reminderType;
     protected String reminderMinutes;
+    @XmlSchemaType(name = "string")
     protected CalendarEventStatus status;
+    @XmlSchemaType(name = "string")
     protected CalendarEventAccessLevel accessLevel;
     protected RecordRef organizer;
     protected String message;

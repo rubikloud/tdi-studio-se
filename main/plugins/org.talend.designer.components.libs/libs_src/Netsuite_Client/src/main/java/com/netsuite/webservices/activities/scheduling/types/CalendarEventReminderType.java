@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="CalendarEventReminderType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_none"/>
- *     &lt;enumeration value="_eMail"/>
- *     &lt;enumeration value="_popupWindow"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="CalendarEventReminderType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_none"/&gt;
+ *     &lt;enumeration value="_eMail"/&gt;
+ *     &lt;enumeration value="_popupWindow"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

@@ -12,14 +12,14 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="BillingScheduleRecurrenceRecurrenceUnits">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_custom"/>
- *     &lt;enumeration value="_days"/>
- *     &lt;enumeration value="_months"/>
- *     &lt;enumeration value="_weeks"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="BillingScheduleRecurrenceRecurrenceUnits"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_custom"/&gt;
+ *     &lt;enumeration value="_days"/&gt;
+ *     &lt;enumeration value="_months"/&gt;
+ *     &lt;enumeration value="_weeks"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

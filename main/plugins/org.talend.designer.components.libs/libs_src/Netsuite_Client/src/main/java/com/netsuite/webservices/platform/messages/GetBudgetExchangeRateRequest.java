@@ -14,15 +14,15 @@ import com.netsuite.webservices.platform.core.BudgetExchangeRateFilter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="GetBudgetExchangeRateRequest">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="budgetExchangeRateFilter" type="{urn:core_2014_2.platform.webservices.netsuite.com}BudgetExchangeRateFilter"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="GetBudgetExchangeRateRequest"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="budgetExchangeRateFilter" type="{urn:core_2014_2.platform.webservices.netsuite.com}BudgetExchangeRateFilter"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

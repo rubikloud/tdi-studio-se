@@ -12,37 +12,37 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="CampaignResponse">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_clickedThrough"/>
- *     &lt;enumeration value="_failedDeliveryFailure"/>
- *     &lt;enumeration value="_failedInvalidAddress"/>
- *     &lt;enumeration value="_failedOther"/>
- *     &lt;enumeration value="_failedSpam"/>
- *     &lt;enumeration value="_failedTemplateError"/>
- *     &lt;enumeration value="_failedUnexpectedError"/>
- *     &lt;enumeration value="_invalidSenderAddress"/>
- *     &lt;enumeration value="_mailboxDisabled"/>
- *     &lt;enumeration value="_mailboxIsFull"/>
- *     &lt;enumeration value="_mailboxNotAcceptingMessages"/>
- *     &lt;enumeration value="_mailProtocolIssues"/>
- *     &lt;enumeration value="_mediaError"/>
- *     &lt;enumeration value="_messageExceedsSizeLengthLimits"/>
- *     &lt;enumeration value="_networkServerIssues"/>
- *     &lt;enumeration value="_opened"/>
- *     &lt;enumeration value="_purchased"/>
- *     &lt;enumeration value="_queued"/>
- *     &lt;enumeration value="_received"/>
- *     &lt;enumeration value="_responded"/>
- *     &lt;enumeration value="_securityIssues"/>
- *     &lt;enumeration value="_sent"/>
- *     &lt;enumeration value="_skippedDueToPreviousHardBounce"/>
- *     &lt;enumeration value="_subscribed"/>
- *     &lt;enumeration value="_tooManyRecipients"/>
- *     &lt;enumeration value="_unsubscribed"/>
- *     &lt;enumeration value="_unsubscribedByFeedbackLoop"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="CampaignResponse"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_clickedThrough"/&gt;
+ *     &lt;enumeration value="_failedDeliveryFailure"/&gt;
+ *     &lt;enumeration value="_failedInvalidAddress"/&gt;
+ *     &lt;enumeration value="_failedOther"/&gt;
+ *     &lt;enumeration value="_failedSpam"/&gt;
+ *     &lt;enumeration value="_failedTemplateError"/&gt;
+ *     &lt;enumeration value="_failedUnexpectedError"/&gt;
+ *     &lt;enumeration value="_invalidSenderAddress"/&gt;
+ *     &lt;enumeration value="_mailboxDisabled"/&gt;
+ *     &lt;enumeration value="_mailboxIsFull"/&gt;
+ *     &lt;enumeration value="_mailboxNotAcceptingMessages"/&gt;
+ *     &lt;enumeration value="_mailProtocolIssues"/&gt;
+ *     &lt;enumeration value="_mediaError"/&gt;
+ *     &lt;enumeration value="_messageExceedsSizeLengthLimits"/&gt;
+ *     &lt;enumeration value="_networkServerIssues"/&gt;
+ *     &lt;enumeration value="_opened"/&gt;
+ *     &lt;enumeration value="_purchased"/&gt;
+ *     &lt;enumeration value="_queued"/&gt;
+ *     &lt;enumeration value="_received"/&gt;
+ *     &lt;enumeration value="_responded"/&gt;
+ *     &lt;enumeration value="_securityIssues"/&gt;
+ *     &lt;enumeration value="_sent"/&gt;
+ *     &lt;enumeration value="_skippedDueToPreviousHardBounce"/&gt;
+ *     &lt;enumeration value="_subscribed"/&gt;
+ *     &lt;enumeration value="_tooManyRecipients"/&gt;
+ *     &lt;enumeration value="_unsubscribed"/&gt;
+ *     &lt;enumeration value="_unsubscribedByFeedbackLoop"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

@@ -12,15 +12,15 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="JobBillingType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_none"/>
- *     &lt;enumeration value="_chargeBased"/>
- *     &lt;enumeration value="_fixedBidInterval"/>
- *     &lt;enumeration value="_fixedBidMilestone"/>
- *     &lt;enumeration value="_timeAndMaterials"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="JobBillingType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_none"/&gt;
+ *     &lt;enumeration value="_chargeBased"/&gt;
+ *     &lt;enumeration value="_fixedBidInterval"/&gt;
+ *     &lt;enumeration value="_fixedBidMilestone"/&gt;
+ *     &lt;enumeration value="_timeAndMaterials"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

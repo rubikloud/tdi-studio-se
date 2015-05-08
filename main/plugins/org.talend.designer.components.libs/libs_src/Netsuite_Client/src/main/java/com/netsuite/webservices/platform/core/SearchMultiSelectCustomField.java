@@ -16,16 +16,16 @@ import com.netsuite.webservices.platform.core.types.SearchMultiSelectFieldOperat
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="SearchMultiSelectCustomField">
- *   &lt;complexContent>
- *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}SearchCustomField">
- *       &lt;sequence>
- *         &lt;element name="searchValue" type="{urn:core_2014_2.platform.webservices.netsuite.com}ListOrRecordRef" maxOccurs="unbounded" minOccurs="0"/>
- *       &lt;/sequence>
- *       &lt;attribute name="operator" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}SearchMultiSelectFieldOperator" />
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="SearchMultiSelectCustomField"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{urn:core_2014_2.platform.webservices.netsuite.com}SearchCustomField"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="searchValue" type="{urn:core_2014_2.platform.webservices.netsuite.com}ListOrRecordRef" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *       &lt;attribute name="operator" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}SearchMultiSelectFieldOperator" /&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

@@ -3,6 +3,7 @@ package com.netsuite.webservices.transactions.sales;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import com.netsuite.webservices.transactions.sales.types.ItemFulfillmentPackageFedExAdmPackageTypeFedEx;
 import com.netsuite.webservices.transactions.sales.types.ItemFulfillmentPackageFedExCodFreightTypeFedEx;
@@ -19,38 +20,38 @@ import com.netsuite.webservices.transactions.sales.types.ItemFulfillmentPackageF
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="ItemFulfillmentPackageFedEx">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="packageWeightFedEx" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
- *         &lt;element name="dryIceWeightFedEx" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
- *         &lt;element name="packageTrackingNumberFedEx" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="packagingFedEx" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageFedExPackagingFedEx" minOccurs="0"/>
- *         &lt;element name="admPackageTypeFedEx" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageFedExAdmPackageTypeFedEx" minOccurs="0"/>
- *         &lt;element name="isNonStandardContainerFedEx" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="isAlcoholFedEx" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="isNonHazLithiumFedEx" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="insuredValueFedEx" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
- *         &lt;element name="useInsuredValueFedEx" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="reference1FedEx" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="priorityAlertTypeFedEx" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageFedExPriorityAlertTypeFedEx" minOccurs="0"/>
- *         &lt;element name="priorityAlertContentFedEx" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="packageLengthFedEx" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="packageWidthFedEx" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="packageHeightFedEx" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="useCodFedEx" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="codAmountFedEx" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
- *         &lt;element name="codMethodFedEx" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageFedExCodMethodFedEx" minOccurs="0"/>
- *         &lt;element name="codFreightTypeFedEx" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageFedExCodFreightTypeFedEx" minOccurs="0"/>
- *         &lt;element name="deliveryConfFedEx" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageFedExDeliveryConfFedEx" minOccurs="0"/>
- *         &lt;element name="signatureOptionsFedEx" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageFedExSignatureOptionsFedEx" minOccurs="0"/>
- *         &lt;element name="signatureReleaseFedEx" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="authorizationNumberFedEx" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="ItemFulfillmentPackageFedEx"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="packageWeightFedEx" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
+ *         &lt;element name="dryIceWeightFedEx" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
+ *         &lt;element name="packageTrackingNumberFedEx" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="packagingFedEx" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageFedExPackagingFedEx" minOccurs="0"/&gt;
+ *         &lt;element name="admPackageTypeFedEx" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageFedExAdmPackageTypeFedEx" minOccurs="0"/&gt;
+ *         &lt;element name="isNonStandardContainerFedEx" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="isAlcoholFedEx" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="isNonHazLithiumFedEx" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="insuredValueFedEx" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
+ *         &lt;element name="useInsuredValueFedEx" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="reference1FedEx" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="priorityAlertTypeFedEx" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageFedExPriorityAlertTypeFedEx" minOccurs="0"/&gt;
+ *         &lt;element name="priorityAlertContentFedEx" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="packageLengthFedEx" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="packageWidthFedEx" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="packageHeightFedEx" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="useCodFedEx" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
+ *         &lt;element name="codAmountFedEx" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
+ *         &lt;element name="codMethodFedEx" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageFedExCodMethodFedEx" minOccurs="0"/&gt;
+ *         &lt;element name="codFreightTypeFedEx" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageFedExCodFreightTypeFedEx" minOccurs="0"/&gt;
+ *         &lt;element name="deliveryConfFedEx" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageFedExDeliveryConfFedEx" minOccurs="0"/&gt;
+ *         &lt;element name="signatureOptionsFedEx" type="{urn:types.sales_2014_2.transactions.webservices.netsuite.com}ItemFulfillmentPackageFedExSignatureOptionsFedEx" minOccurs="0"/&gt;
+ *         &lt;element name="signatureReleaseFedEx" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="authorizationNumberFedEx" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -87,7 +88,9 @@ public class ItemFulfillmentPackageFedEx {
     protected Double packageWeightFedEx;
     protected Double dryIceWeightFedEx;
     protected String packageTrackingNumberFedEx;
+    @XmlSchemaType(name = "string")
     protected ItemFulfillmentPackageFedExPackagingFedEx packagingFedEx;
+    @XmlSchemaType(name = "string")
     protected ItemFulfillmentPackageFedExAdmPackageTypeFedEx admPackageTypeFedEx;
     protected Boolean isNonStandardContainerFedEx;
     protected Boolean isAlcoholFedEx;
@@ -95,6 +98,7 @@ public class ItemFulfillmentPackageFedEx {
     protected Double insuredValueFedEx;
     protected Boolean useInsuredValueFedEx;
     protected String reference1FedEx;
+    @XmlSchemaType(name = "string")
     protected ItemFulfillmentPackageFedExPriorityAlertTypeFedEx priorityAlertTypeFedEx;
     protected String priorityAlertContentFedEx;
     protected Long packageLengthFedEx;
@@ -102,9 +106,13 @@ public class ItemFulfillmentPackageFedEx {
     protected Long packageHeightFedEx;
     protected Boolean useCodFedEx;
     protected Double codAmountFedEx;
+    @XmlSchemaType(name = "string")
     protected ItemFulfillmentPackageFedExCodMethodFedEx codMethodFedEx;
+    @XmlSchemaType(name = "string")
     protected ItemFulfillmentPackageFedExCodFreightTypeFedEx codFreightTypeFedEx;
+    @XmlSchemaType(name = "string")
     protected ItemFulfillmentPackageFedExDeliveryConfFedEx deliveryConfFedEx;
+    @XmlSchemaType(name = "string")
     protected ItemFulfillmentPackageFedExSignatureOptionsFedEx signatureOptionsFedEx;
     protected String signatureReleaseFedEx;
     protected String authorizationNumberFedEx;

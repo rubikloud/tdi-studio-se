@@ -4,6 +4,7 @@ package com.netsuite.webservices.platform.core;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import com.netsuite.webservices.platform.core.types.InitializeType;
 
@@ -14,18 +15,18 @@ import com.netsuite.webservices.platform.core.types.InitializeType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="InitializeRecord">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="type" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}InitializeType"/>
- *         &lt;element name="reference" type="{urn:core_2014_2.platform.webservices.netsuite.com}InitializeRef" minOccurs="0"/>
- *         &lt;element name="auxReference" type="{urn:core_2014_2.platform.webservices.netsuite.com}InitializeAuxRef" minOccurs="0"/>
- *         &lt;element name="referenceList" type="{urn:core_2014_2.platform.webservices.netsuite.com}InitializeRefList" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="InitializeRecord"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="type" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}InitializeType"/&gt;
+ *         &lt;element name="reference" type="{urn:core_2014_2.platform.webservices.netsuite.com}InitializeRef" minOccurs="0"/&gt;
+ *         &lt;element name="auxReference" type="{urn:core_2014_2.platform.webservices.netsuite.com}InitializeAuxRef" minOccurs="0"/&gt;
+ *         &lt;element name="referenceList" type="{urn:core_2014_2.platform.webservices.netsuite.com}InitializeRefList" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -40,6 +41,7 @@ import com.netsuite.webservices.platform.core.types.InitializeType;
 public class InitializeRecord {
 
     @XmlElement(required = true)
+    @XmlSchemaType(name = "string")
     protected InitializeType type;
     protected InitializeRef reference;
     protected InitializeAuxRef auxReference;

@@ -12,25 +12,25 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="Source">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_adp"/>
- *     &lt;enumeration value="_automatedMemorizedTransaction"/>
- *     &lt;enumeration value="_csv"/>
- *     &lt;enumeration value="_customerCenter"/>
- *     &lt;enumeration value="_ebay"/>
- *     &lt;enumeration value="_mobile"/>
- *     &lt;enumeration value="_offlineClient"/>
- *     &lt;enumeration value="_perquest"/>
- *     &lt;enumeration value="_qif"/>
- *     &lt;enumeration value="_quickbooks"/>
- *     &lt;enumeration value="_smbxml"/>
- *     &lt;enumeration value="_sync"/>
- *     &lt;enumeration value="_web"/>
- *     &lt;enumeration value="_webServices"/>
- *     &lt;enumeration value="_yahoo"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="Source"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_adp"/&gt;
+ *     &lt;enumeration value="_automatedMemorizedTransaction"/&gt;
+ *     &lt;enumeration value="_csv"/&gt;
+ *     &lt;enumeration value="_customerCenter"/&gt;
+ *     &lt;enumeration value="_ebay"/&gt;
+ *     &lt;enumeration value="_mobile"/&gt;
+ *     &lt;enumeration value="_offlineClient"/&gt;
+ *     &lt;enumeration value="_perquest"/&gt;
+ *     &lt;enumeration value="_qif"/&gt;
+ *     &lt;enumeration value="_quickbooks"/&gt;
+ *     &lt;enumeration value="_smbxml"/&gt;
+ *     &lt;enumeration value="_sync"/&gt;
+ *     &lt;enumeration value="_web"/&gt;
+ *     &lt;enumeration value="_webServices"/&gt;
+ *     &lt;enumeration value="_yahoo"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

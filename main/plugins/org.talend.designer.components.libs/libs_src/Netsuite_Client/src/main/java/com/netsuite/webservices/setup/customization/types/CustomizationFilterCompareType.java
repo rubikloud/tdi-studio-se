@@ -12,16 +12,16 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="CustomizationFilterCompareType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_equal"/>
- *     &lt;enumeration value="_greaterThan"/>
- *     &lt;enumeration value="_greaterThanOrEqual"/>
- *     &lt;enumeration value="_lessThan"/>
- *     &lt;enumeration value="_lessThanOrEqual"/>
- *     &lt;enumeration value="_notEqual"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="CustomizationFilterCompareType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_equal"/&gt;
+ *     &lt;enumeration value="_greaterThan"/&gt;
+ *     &lt;enumeration value="_greaterThanOrEqual"/&gt;
+ *     &lt;enumeration value="_lessThan"/&gt;
+ *     &lt;enumeration value="_lessThanOrEqual"/&gt;
+ *     &lt;enumeration value="_notEqual"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

@@ -12,15 +12,15 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="CustomizationDisplayType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_disabled"/>
- *     &lt;enumeration value="_hidden"/>
- *     &lt;enumeration value="_inlineText"/>
- *     &lt;enumeration value="_normal"/>
- *     &lt;enumeration value="_showAsList"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="CustomizationDisplayType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_disabled"/&gt;
+ *     &lt;enumeration value="_hidden"/&gt;
+ *     &lt;enumeration value="_inlineText"/&gt;
+ *     &lt;enumeration value="_normal"/&gt;
+ *     &lt;enumeration value="_showAsList"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

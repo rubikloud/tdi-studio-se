@@ -12,53 +12,53 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="Language">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_arabic"/>
- *     &lt;enumeration value="_australian"/>
- *     &lt;enumeration value="_bengali"/>
- *     &lt;enumeration value="_bulgarian"/>
- *     &lt;enumeration value="_catalan"/>
- *     &lt;enumeration value="_chineseSimplified"/>
- *     &lt;enumeration value="_chineseTraditional"/>
- *     &lt;enumeration value="_croatian"/>
- *     &lt;enumeration value="_czech"/>
- *     &lt;enumeration value="_danish"/>
- *     &lt;enumeration value="_dutch"/>
- *     &lt;enumeration value="_english"/>
- *     &lt;enumeration value="_estonian"/>
- *     &lt;enumeration value="_finnish"/>
- *     &lt;enumeration value="_frenchCanada"/>
- *     &lt;enumeration value="_frenchFrance"/>
- *     &lt;enumeration value="_german"/>
- *     &lt;enumeration value="_greek"/>
- *     &lt;enumeration value="_haitian"/>
- *     &lt;enumeration value="_hebrew"/>
- *     &lt;enumeration value="_hungarian"/>
- *     &lt;enumeration value="_icelandic"/>
- *     &lt;enumeration value="_indonesian"/>
- *     &lt;enumeration value="_italian"/>
- *     &lt;enumeration value="_japanese"/>
- *     &lt;enumeration value="_korean"/>
- *     &lt;enumeration value="_latinAmericanSpanish"/>
- *     &lt;enumeration value="_latvian"/>
- *     &lt;enumeration value="_lithuanian"/>
- *     &lt;enumeration value="_norwegian"/>
- *     &lt;enumeration value="_polish"/>
- *     &lt;enumeration value="_portugueseBrazil"/>
- *     &lt;enumeration value="_portuguesePortugal"/>
- *     &lt;enumeration value="_romanian"/>
- *     &lt;enumeration value="_russian"/>
- *     &lt;enumeration value="_slovak"/>
- *     &lt;enumeration value="_slovenian"/>
- *     &lt;enumeration value="_spanish"/>
- *     &lt;enumeration value="_swedish"/>
- *     &lt;enumeration value="_thai"/>
- *     &lt;enumeration value="_turkish"/>
- *     &lt;enumeration value="_usEnglish"/>
- *     &lt;enumeration value="_vietnamese"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="Language"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_arabic"/&gt;
+ *     &lt;enumeration value="_australian"/&gt;
+ *     &lt;enumeration value="_bengali"/&gt;
+ *     &lt;enumeration value="_bulgarian"/&gt;
+ *     &lt;enumeration value="_catalan"/&gt;
+ *     &lt;enumeration value="_chineseSimplified"/&gt;
+ *     &lt;enumeration value="_chineseTraditional"/&gt;
+ *     &lt;enumeration value="_croatian"/&gt;
+ *     &lt;enumeration value="_czech"/&gt;
+ *     &lt;enumeration value="_danish"/&gt;
+ *     &lt;enumeration value="_dutch"/&gt;
+ *     &lt;enumeration value="_english"/&gt;
+ *     &lt;enumeration value="_estonian"/&gt;
+ *     &lt;enumeration value="_finnish"/&gt;
+ *     &lt;enumeration value="_frenchCanada"/&gt;
+ *     &lt;enumeration value="_frenchFrance"/&gt;
+ *     &lt;enumeration value="_german"/&gt;
+ *     &lt;enumeration value="_greek"/&gt;
+ *     &lt;enumeration value="_haitian"/&gt;
+ *     &lt;enumeration value="_hebrew"/&gt;
+ *     &lt;enumeration value="_hungarian"/&gt;
+ *     &lt;enumeration value="_icelandic"/&gt;
+ *     &lt;enumeration value="_indonesian"/&gt;
+ *     &lt;enumeration value="_italian"/&gt;
+ *     &lt;enumeration value="_japanese"/&gt;
+ *     &lt;enumeration value="_korean"/&gt;
+ *     &lt;enumeration value="_latinAmericanSpanish"/&gt;
+ *     &lt;enumeration value="_latvian"/&gt;
+ *     &lt;enumeration value="_lithuanian"/&gt;
+ *     &lt;enumeration value="_norwegian"/&gt;
+ *     &lt;enumeration value="_polish"/&gt;
+ *     &lt;enumeration value="_portugueseBrazil"/&gt;
+ *     &lt;enumeration value="_portuguesePortugal"/&gt;
+ *     &lt;enumeration value="_romanian"/&gt;
+ *     &lt;enumeration value="_russian"/&gt;
+ *     &lt;enumeration value="_slovak"/&gt;
+ *     &lt;enumeration value="_slovenian"/&gt;
+ *     &lt;enumeration value="_spanish"/&gt;
+ *     &lt;enumeration value="_swedish"/&gt;
+ *     &lt;enumeration value="_thai"/&gt;
+ *     &lt;enumeration value="_turkish"/&gt;
+ *     &lt;enumeration value="_usEnglish"/&gt;
+ *     &lt;enumeration value="_vietnamese"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

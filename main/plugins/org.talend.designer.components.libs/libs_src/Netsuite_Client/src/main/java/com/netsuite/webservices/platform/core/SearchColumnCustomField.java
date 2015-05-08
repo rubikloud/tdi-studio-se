@@ -14,17 +14,17 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="SearchColumnCustomField">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="customLabel" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *       &lt;/sequence>
- *       &lt;attribute name="internalId" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="scriptId" type="{http://www.w3.org/2001/XMLSchema}string" />
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="SearchColumnCustomField"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="customLabel" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *       &lt;attribute name="internalId" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *       &lt;attribute name="scriptId" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -34,13 +34,13 @@ import javax.xml.bind.annotation.XmlType;
     "customLabel"
 })
 @XmlSeeAlso({
-    SearchColumnSelectCustomField.class,
+    SearchColumnBooleanCustomField.class,
     SearchColumnStringCustomField.class,
     SearchColumnLongCustomField.class,
     SearchColumnDoubleCustomField.class,
-    SearchColumnEnumMultiSelectCustomField.class,
-    SearchColumnBooleanCustomField.class,
     SearchColumnDateCustomField.class,
+    SearchColumnEnumMultiSelectCustomField.class,
+    SearchColumnSelectCustomField.class,
     SearchColumnMultiSelectCustomField.class
 })
 public abstract class SearchColumnCustomField {

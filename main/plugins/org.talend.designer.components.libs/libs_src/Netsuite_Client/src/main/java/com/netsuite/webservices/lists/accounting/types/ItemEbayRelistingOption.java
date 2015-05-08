@@ -12,14 +12,14 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemEbayRelistingOption">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_doNotRelist"/>
- *     &lt;enumeration value="_relistWhenItemExpires"/>
- *     &lt;enumeration value="_relistWhenItemIsSold"/>
- *     &lt;enumeration value="_relistWhenItemIsSoldExpires"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemEbayRelistingOption"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_doNotRelist"/&gt;
+ *     &lt;enumeration value="_relistWhenItemExpires"/&gt;
+ *     &lt;enumeration value="_relistWhenItemIsSold"/&gt;
+ *     &lt;enumeration value="_relistWhenItemIsSoldExpires"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

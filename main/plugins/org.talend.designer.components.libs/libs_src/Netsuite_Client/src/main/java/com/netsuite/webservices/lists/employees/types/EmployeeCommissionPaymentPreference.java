@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="EmployeeCommissionPaymentPreference">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_accountsPayable"/>
- *     &lt;enumeration value="_payroll"/>
- *     &lt;enumeration value="_systemPreference"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="EmployeeCommissionPaymentPreference"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_accountsPayable"/&gt;
+ *     &lt;enumeration value="_payroll"/&gt;
+ *     &lt;enumeration value="_systemPreference"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

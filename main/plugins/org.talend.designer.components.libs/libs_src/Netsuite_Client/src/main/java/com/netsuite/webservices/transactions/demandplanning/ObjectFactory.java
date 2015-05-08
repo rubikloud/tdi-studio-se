@@ -24,9 +24,9 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _ItemDemandPlan_QNAME = new QName("urn:demandplanning_2014_2.transactions.webservices.netsuite.com", "itemDemandPlan");
     private final static QName _ItemDemandPlanSearch_QNAME = new QName("urn:demandplanning_2014_2.transactions.webservices.netsuite.com", "itemDemandPlanSearch");
     private final static QName _ItemSupplyPlan_QNAME = new QName("urn:demandplanning_2014_2.transactions.webservices.netsuite.com", "itemSupplyPlan");
-    private final static QName _ItemDemandPlan_QNAME = new QName("urn:demandplanning_2014_2.transactions.webservices.netsuite.com", "itemDemandPlan");
     private final static QName _ItemSupplyPlanSearch_QNAME = new QName("urn:demandplanning_2014_2.transactions.webservices.netsuite.com", "itemSupplyPlanSearch");
 
     /**
@@ -34,6 +34,14 @@ public class ObjectFactory {
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link ItemDemandPlan }
+     * 
+     */
+    public ItemDemandPlan createItemDemandPlan() {
+        return new ItemDemandPlan();
     }
 
     /**
@@ -53,27 +61,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ItemDemandPlan }
-     * 
-     */
-    public ItemDemandPlan createItemDemandPlan() {
-        return new ItemDemandPlan();
-    }
-
-    /**
      * Create an instance of {@link ItemSupplyPlanSearch }
      * 
      */
     public ItemSupplyPlanSearch createItemSupplyPlanSearch() {
         return new ItemSupplyPlanSearch();
-    }
-
-    /**
-     * Create an instance of {@link PeriodDemandPlanList }
-     * 
-     */
-    public PeriodDemandPlanList createPeriodDemandPlanList() {
-        return new PeriodDemandPlanList();
     }
 
     /**
@@ -85,14 +77,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ItemSupplyPlanOrder }
-     * 
-     */
-    public ItemSupplyPlanOrder createItemSupplyPlanOrder() {
-        return new ItemSupplyPlanOrder();
-    }
-
-    /**
      * Create an instance of {@link DemandPlanMatrix }
      * 
      */
@@ -101,35 +85,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ItemSupplyPlanSearchRow }
+     * Create an instance of {@link PeriodDemandPlanList }
      * 
      */
-    public ItemSupplyPlanSearchRow createItemSupplyPlanSearchRow() {
-        return new ItemSupplyPlanSearchRow();
-    }
-
-    /**
-     * Create an instance of {@link ItemDemandPlanSearchRow }
-     * 
-     */
-    public ItemDemandPlanSearchRow createItemDemandPlanSearchRow() {
-        return new ItemDemandPlanSearchRow();
-    }
-
-    /**
-     * Create an instance of {@link ItemDemandPlanSearchAdvanced }
-     * 
-     */
-    public ItemDemandPlanSearchAdvanced createItemDemandPlanSearchAdvanced() {
-        return new ItemDemandPlanSearchAdvanced();
-    }
-
-    /**
-     * Create an instance of {@link ItemSupplyPlanSearchAdvanced }
-     * 
-     */
-    public ItemSupplyPlanSearchAdvanced createItemSupplyPlanSearchAdvanced() {
-        return new ItemSupplyPlanSearchAdvanced();
+    public PeriodDemandPlanList createPeriodDemandPlanList() {
+        return new PeriodDemandPlanList();
     }
 
     /**
@@ -141,11 +101,60 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ItemDemandPlanSearchAdvanced }
+     * 
+     */
+    public ItemDemandPlanSearchAdvanced createItemDemandPlanSearchAdvanced() {
+        return new ItemDemandPlanSearchAdvanced();
+    }
+
+    /**
+     * Create an instance of {@link ItemDemandPlanSearchRow }
+     * 
+     */
+    public ItemDemandPlanSearchRow createItemDemandPlanSearchRow() {
+        return new ItemDemandPlanSearchRow();
+    }
+
+    /**
+     * Create an instance of {@link ItemSupplyPlanOrder }
+     * 
+     */
+    public ItemSupplyPlanOrder createItemSupplyPlanOrder() {
+        return new ItemSupplyPlanOrder();
+    }
+
+    /**
      * Create an instance of {@link ItemSupplyPlanOrderList }
      * 
      */
     public ItemSupplyPlanOrderList createItemSupplyPlanOrderList() {
         return new ItemSupplyPlanOrderList();
+    }
+
+    /**
+     * Create an instance of {@link ItemSupplyPlanSearchAdvanced }
+     * 
+     */
+    public ItemSupplyPlanSearchAdvanced createItemSupplyPlanSearchAdvanced() {
+        return new ItemSupplyPlanSearchAdvanced();
+    }
+
+    /**
+     * Create an instance of {@link ItemSupplyPlanSearchRow }
+     * 
+     */
+    public ItemSupplyPlanSearchRow createItemSupplyPlanSearchRow() {
+        return new ItemSupplyPlanSearchRow();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ItemDemandPlan }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "urn:demandplanning_2014_2.transactions.webservices.netsuite.com", name = "itemDemandPlan")
+    public JAXBElement<ItemDemandPlan> createItemDemandPlan(ItemDemandPlan value) {
+        return new JAXBElement<ItemDemandPlan>(_ItemDemandPlan_QNAME, ItemDemandPlan.class, null, value);
     }
 
     /**
@@ -164,15 +173,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "urn:demandplanning_2014_2.transactions.webservices.netsuite.com", name = "itemSupplyPlan")
     public JAXBElement<ItemSupplyPlan> createItemSupplyPlan(ItemSupplyPlan value) {
         return new JAXBElement<ItemSupplyPlan>(_ItemSupplyPlan_QNAME, ItemSupplyPlan.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ItemDemandPlan }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "urn:demandplanning_2014_2.transactions.webservices.netsuite.com", name = "itemDemandPlan")
-    public JAXBElement<ItemDemandPlan> createItemDemandPlan(ItemDemandPlan value) {
-        return new JAXBElement<ItemDemandPlan>(_ItemDemandPlan_QNAME, ItemDemandPlan.class, null, value);
     }
 
     /**

@@ -4,6 +4,7 @@ package com.netsuite.webservices.platform.core;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import com.netsuite.webservices.platform.core.types.AsyncStatusType;
 
@@ -14,18 +15,18 @@ import com.netsuite.webservices.platform.core.types.AsyncStatusType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="AsyncStatusResult">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="jobId" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="status" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}AsyncStatusType"/>
- *         &lt;element name="percentCompleted" type="{http://www.w3.org/2001/XMLSchema}double"/>
- *         &lt;element name="estRemainingDuration" type="{http://www.w3.org/2001/XMLSchema}double"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="AsyncStatusResult"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="jobId" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="status" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}AsyncStatusType"/&gt;
+ *         &lt;element name="percentCompleted" type="{http://www.w3.org/2001/XMLSchema}double"/&gt;
+ *         &lt;element name="estRemainingDuration" type="{http://www.w3.org/2001/XMLSchema}double"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -42,6 +43,7 @@ public class AsyncStatusResult {
     @XmlElement(required = true)
     protected String jobId;
     @XmlElement(required = true)
+    @XmlSchemaType(name = "string")
     protected AsyncStatusType status;
     protected double percentCompleted;
     protected double estRemainingDuration;

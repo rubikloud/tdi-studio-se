@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="TimeBillTimeType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_actualTime"/>
- *     &lt;enumeration value="_allocatedTime"/>
- *     &lt;enumeration value="_plannedTime"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="TimeBillTimeType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_actualTime"/&gt;
+ *     &lt;enumeration value="_allocatedTime"/&gt;
+ *     &lt;enumeration value="_plannedTime"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

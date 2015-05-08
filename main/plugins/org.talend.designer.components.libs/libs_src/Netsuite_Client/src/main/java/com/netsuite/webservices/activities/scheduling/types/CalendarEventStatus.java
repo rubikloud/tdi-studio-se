@@ -12,14 +12,14 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="CalendarEventStatus">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_canceled"/>
- *     &lt;enumeration value="_completed"/>
- *     &lt;enumeration value="_confirmed"/>
- *     &lt;enumeration value="_tentative"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="CalendarEventStatus"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_canceled"/&gt;
+ *     &lt;enumeration value="_completed"/&gt;
+ *     &lt;enumeration value="_confirmed"/&gt;
+ *     &lt;enumeration value="_tentative"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

@@ -12,15 +12,15 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="MessageMessageType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_email"/>
- *     &lt;enumeration value="_emailedReport"/>
- *     &lt;enumeration value="_fax"/>
- *     &lt;enumeration value="_pdf"/>
- *     &lt;enumeration value="_print"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="MessageMessageType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_email"/&gt;
+ *     &lt;enumeration value="_emailedReport"/&gt;
+ *     &lt;enumeration value="_fax"/&gt;
+ *     &lt;enumeration value="_pdf"/&gt;
+ *     &lt;enumeration value="_print"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

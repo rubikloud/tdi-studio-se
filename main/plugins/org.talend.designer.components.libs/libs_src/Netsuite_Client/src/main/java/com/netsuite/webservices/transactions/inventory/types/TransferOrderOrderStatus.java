@@ -12,19 +12,19 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="TransferOrderOrderStatus">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_pendingApproval"/>
- *     &lt;enumeration value="_pendingFulfillment"/>
- *     &lt;enumeration value="_rejected"/>
- *     &lt;enumeration value="_partiallyFulfilled"/>
- *     &lt;enumeration value="_pendingReceiptPartFulfilled"/>
- *     &lt;enumeration value="_pendingReceipt"/>
- *     &lt;enumeration value="_received"/>
- *     &lt;enumeration value="_closed"/>
- *     &lt;enumeration value="_undefined"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="TransferOrderOrderStatus"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_pendingApproval"/&gt;
+ *     &lt;enumeration value="_pendingFulfillment"/&gt;
+ *     &lt;enumeration value="_rejected"/&gt;
+ *     &lt;enumeration value="_partiallyFulfilled"/&gt;
+ *     &lt;enumeration value="_pendingReceiptPartFulfilled"/&gt;
+ *     &lt;enumeration value="_pendingReceipt"/&gt;
+ *     &lt;enumeration value="_received"/&gt;
+ *     &lt;enumeration value="_closed"/&gt;
+ *     &lt;enumeration value="_undefined"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

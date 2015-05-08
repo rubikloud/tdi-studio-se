@@ -12,40 +12,40 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="PostingPeriodDate">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_firstFiscalQuarterOfLastFy"/>
- *     &lt;enumeration value="_firstFiscalQuarterOfThisFy"/>
- *     &lt;enumeration value="_fiscalQuarterBeforeLast"/>
- *     &lt;enumeration value="_fiscalYearBeforeLast"/>
- *     &lt;enumeration value="_fourthFiscalQuarterOfLastFy"/>
- *     &lt;enumeration value="_fourthFiscalQuarterOfThisFy"/>
- *     &lt;enumeration value="_lastFiscalQuarter"/>
- *     &lt;enumeration value="_lastFiscalQuarterOneFiscalYearAgo"/>
- *     &lt;enumeration value="_lastFiscalQuarterToPeriod"/>
- *     &lt;enumeration value="_lastFiscalYear"/>
- *     &lt;enumeration value="_lastFiscalYearToPeriod"/>
- *     &lt;enumeration value="_lastPeriod"/>
- *     &lt;enumeration value="_lastPeriodOneFiscalQuarterAgo"/>
- *     &lt;enumeration value="_lastPeriodOneFiscalYearAgo"/>
- *     &lt;enumeration value="_lastRolling18periods"/>
- *     &lt;enumeration value="_lastRolling6fiscalQuarters"/>
- *     &lt;enumeration value="_periodBeforeLast"/>
- *     &lt;enumeration value="_sameFiscalQuarterOfLastFy"/>
- *     &lt;enumeration value="_sameFiscalQuarterOfLastFyToPeriod"/>
- *     &lt;enumeration value="_samePeriodOfLastFiscalQuarter"/>
- *     &lt;enumeration value="_samePeriodOfLastFy"/>
- *     &lt;enumeration value="_secondFiscalQuarterOfLastFy"/>
- *     &lt;enumeration value="_secondFiscalQuarterOfThisFy"/>
- *     &lt;enumeration value="_thirdFiscalQuarterOfLastFy"/>
- *     &lt;enumeration value="_thirdFiscalQuarterOfThisFy"/>
- *     &lt;enumeration value="_thisFiscalQuarter"/>
- *     &lt;enumeration value="_thisFiscalQuarterToPeriod"/>
- *     &lt;enumeration value="_thisFiscalYear"/>
- *     &lt;enumeration value="_thisFiscalYearToPeriod"/>
- *     &lt;enumeration value="_thisPeriod"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="PostingPeriodDate"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_firstFiscalQuarterOfLastFy"/&gt;
+ *     &lt;enumeration value="_firstFiscalQuarterOfThisFy"/&gt;
+ *     &lt;enumeration value="_fiscalQuarterBeforeLast"/&gt;
+ *     &lt;enumeration value="_fiscalYearBeforeLast"/&gt;
+ *     &lt;enumeration value="_fourthFiscalQuarterOfLastFy"/&gt;
+ *     &lt;enumeration value="_fourthFiscalQuarterOfThisFy"/&gt;
+ *     &lt;enumeration value="_lastFiscalQuarter"/&gt;
+ *     &lt;enumeration value="_lastFiscalQuarterOneFiscalYearAgo"/&gt;
+ *     &lt;enumeration value="_lastFiscalQuarterToPeriod"/&gt;
+ *     &lt;enumeration value="_lastFiscalYear"/&gt;
+ *     &lt;enumeration value="_lastFiscalYearToPeriod"/&gt;
+ *     &lt;enumeration value="_lastPeriod"/&gt;
+ *     &lt;enumeration value="_lastPeriodOneFiscalQuarterAgo"/&gt;
+ *     &lt;enumeration value="_lastPeriodOneFiscalYearAgo"/&gt;
+ *     &lt;enumeration value="_lastRolling18periods"/&gt;
+ *     &lt;enumeration value="_lastRolling6fiscalQuarters"/&gt;
+ *     &lt;enumeration value="_periodBeforeLast"/&gt;
+ *     &lt;enumeration value="_sameFiscalQuarterOfLastFy"/&gt;
+ *     &lt;enumeration value="_sameFiscalQuarterOfLastFyToPeriod"/&gt;
+ *     &lt;enumeration value="_samePeriodOfLastFiscalQuarter"/&gt;
+ *     &lt;enumeration value="_samePeriodOfLastFy"/&gt;
+ *     &lt;enumeration value="_secondFiscalQuarterOfLastFy"/&gt;
+ *     &lt;enumeration value="_secondFiscalQuarterOfThisFy"/&gt;
+ *     &lt;enumeration value="_thirdFiscalQuarterOfLastFy"/&gt;
+ *     &lt;enumeration value="_thirdFiscalQuarterOfThisFy"/&gt;
+ *     &lt;enumeration value="_thisFiscalQuarter"/&gt;
+ *     &lt;enumeration value="_thisFiscalQuarterToPeriod"/&gt;
+ *     &lt;enumeration value="_thisFiscalYear"/&gt;
+ *     &lt;enumeration value="_thisFiscalYearToPeriod"/&gt;
+ *     &lt;enumeration value="_thisPeriod"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

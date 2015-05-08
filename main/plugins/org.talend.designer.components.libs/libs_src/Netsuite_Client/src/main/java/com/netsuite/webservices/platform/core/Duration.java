@@ -4,6 +4,7 @@ package com.netsuite.webservices.platform.core;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import com.netsuite.webservices.platform.core.types.DurationUnit;
 
@@ -14,16 +15,16 @@ import com.netsuite.webservices.platform.core.types.DurationUnit;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Duration">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="timeSpan" type="{http://www.w3.org/2001/XMLSchema}double"/>
- *         &lt;element name="unit" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}DurationUnit"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="Duration"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="timeSpan" type="{http://www.w3.org/2001/XMLSchema}double"/&gt;
+ *         &lt;element name="unit" type="{urn:types.core_2014_2.platform.webservices.netsuite.com}DurationUnit"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -37,6 +38,7 @@ public class Duration {
 
     protected double timeSpan;
     @XmlElement(required = true)
+    @XmlSchemaType(name = "string")
     protected DurationUnit unit;
 
     /**

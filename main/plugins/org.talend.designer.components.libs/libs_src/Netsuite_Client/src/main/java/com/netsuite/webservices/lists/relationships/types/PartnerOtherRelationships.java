@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="PartnerOtherRelationships">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_customer"/>
- *     &lt;enumeration value="_otherName"/>
- *     &lt;enumeration value="_vendor"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="PartnerOtherRelationships"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_customer"/&gt;
+ *     &lt;enumeration value="_otherName"/&gt;
+ *     &lt;enumeration value="_vendor"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

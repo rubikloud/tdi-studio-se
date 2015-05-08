@@ -16,16 +16,16 @@ import com.netsuite.webservices.platform.core.Status;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="WriteResponseList">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element ref="{urn:core_2014_2.platform.webservices.netsuite.com}status" minOccurs="0"/>
- *         &lt;element name="writeResponse" type="{urn:messages_2014_2.platform.webservices.netsuite.com}WriteResponse" maxOccurs="unbounded"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="WriteResponseList"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element ref="{urn:core_2014_2.platform.webservices.netsuite.com}status" minOccurs="0"/&gt;
+ *         &lt;element name="writeResponse" type="{urn:messages_2014_2.platform.webservices.netsuite.com}WriteResponse" maxOccurs="unbounded"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

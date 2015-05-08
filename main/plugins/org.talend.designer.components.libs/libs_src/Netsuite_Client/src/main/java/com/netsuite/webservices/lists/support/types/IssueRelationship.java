@@ -12,21 +12,21 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="IssueRelationship">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_blocks"/>
- *     &lt;enumeration value="_dependsOn"/>
- *     &lt;enumeration value="_duplicatedBy"/>
- *     &lt;enumeration value="_duplicates"/>
- *     &lt;enumeration value="_followedUpBy"/>
- *     &lt;enumeration value="_followUpFor"/>
- *     &lt;enumeration value="_injectedBy"/>
- *     &lt;enumeration value="_injects"/>
- *     &lt;enumeration value="_isBlockedBy"/>
- *     &lt;enumeration value="_isRequiredFor"/>
- *     &lt;enumeration value="_relatedTo"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="IssueRelationship"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_blocks"/&gt;
+ *     &lt;enumeration value="_dependsOn"/&gt;
+ *     &lt;enumeration value="_duplicatedBy"/&gt;
+ *     &lt;enumeration value="_duplicates"/&gt;
+ *     &lt;enumeration value="_followedUpBy"/&gt;
+ *     &lt;enumeration value="_followUpFor"/&gt;
+ *     &lt;enumeration value="_injectedBy"/&gt;
+ *     &lt;enumeration value="_injects"/&gt;
+ *     &lt;enumeration value="_isBlockedBy"/&gt;
+ *     &lt;enumeration value="_isRequiredFor"/&gt;
+ *     &lt;enumeration value="_relatedTo"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

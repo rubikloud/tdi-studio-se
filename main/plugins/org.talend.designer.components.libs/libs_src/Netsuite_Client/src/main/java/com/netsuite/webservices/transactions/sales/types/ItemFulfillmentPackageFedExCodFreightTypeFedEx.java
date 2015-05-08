@@ -12,16 +12,16 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="ItemFulfillmentPackageFedExCodFreightTypeFedEx">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="_cODCharge"/>
- *     &lt;enumeration value="_noneSelected"/>
- *     &lt;enumeration value="_orderChargeNet"/>
- *     &lt;enumeration value="_orderChargeTotal"/>
- *     &lt;enumeration value="_shippingCharge"/>
- *     &lt;enumeration value="_totalCharge"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="ItemFulfillmentPackageFedExCodFreightTypeFedEx"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="_cODCharge"/&gt;
+ *     &lt;enumeration value="_noneSelected"/&gt;
+ *     &lt;enumeration value="_orderChargeNet"/&gt;
+ *     &lt;enumeration value="_orderChargeTotal"/&gt;
+ *     &lt;enumeration value="_shippingCharge"/&gt;
+ *     &lt;enumeration value="_totalCharge"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

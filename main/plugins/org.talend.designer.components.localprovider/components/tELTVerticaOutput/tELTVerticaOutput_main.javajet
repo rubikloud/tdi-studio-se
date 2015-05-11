@@ -86,7 +86,7 @@ imports="
 			driverClass = "com.vertica.jdbc.Driver";
 		}
 %>
-	    String driverClass_<%=cid%> = "<%=%>";
+	    String driverClass_<%=cid%> = "<%=driverClass%>";
 	    java.lang.Class.forName(driverClass_<%=cid%>);
 <%
 		if(dbproperties == null || ("\"\"").equals(dbproperties) || ("").equals(dbproperties)) {
@@ -245,15 +245,44 @@ imports="
 			}
 			counterOuter ++;
 		}
-
+		
+		boolean direct = "true".equals(ElementParameterParser.getValue(node, "__DIRECT__"));
+		boolean setLabel = "true".equals(ElementParameterParser.getValue(node, "__SET_LABEL__"));
+		String sqlLabel = ElementParameterParser.getValue(node, "__SQL_LABEL__");
+		boolean useLabel = setLabel && sqlLabel!=null && !"".equals(sqlLabel) && !"\"\"".equals(sqlLabel);
+%>
+		StringBuilder info_<%=cid%> = new StringBuilder();
+<%
+		if(direct || useLabel) {
+%>
+		info_<%=cid%>.append("/*");
+<%
+		}
+		
+		if(direct) {
+%>
+		info_<%=cid%>.append("+ direct ");
+<%
+		} else if(useLabel) {
+%>
+		info_<%=cid%>.append("+ label(").append(<%=sqlLabel%>).append(") ");
+<%
+		}
+		
+		if(direct || useLabel) {
+%>
+		info_<%=cid%>.append("*/");
+<%
+		}
+		
 		if(("INSERT").equals(dataAction)){
 %>	
-		String insertQuery = "INSERT INTO "+tableName_<%=cid%>+" (<%=insertColName.toString()%>) ("+select_query+")";
+		String insertQuery = "INSERT " + info_<%=cid%> + " INTO "+tableName_<%=cid%>+" (<%=insertColName.toString()%>) ("+select_query+")";
 		pstmt_<%=cid %> = conn_<%=cid%>.prepareStatement(insertQuery);
 <%
 		} else if (("UPDATE").equals(dataAction)) {
 %>
-		String updateQuery = "UPDATE "+tableName_<%=cid%>+" SET <%=updateSetStmt.toString()%> "
+		String updateQuery = "UPDATE " + info_<%=cid%> + " "+tableName_<%=cid%>+" SET <%=updateSetStmt.toString()%> "
 <%
 			if(CodeGenerationUtils.hasAlphaNumericCharacter(whereClause)) {
 %>
@@ -267,7 +296,7 @@ imports="
 <%		
 		}else if (("DELETE").equals(dataAction)){
 %>
-		String deleteQuery = "DELETE  FROM "+ tableName_<%=cid%>+" WHERE EXISTS ("+ select_query.replaceAll(selectQueryColumnsName, "*")+") " 
+		String deleteQuery = "DELETE " + info_<%=cid%> + " FROM "+ tableName_<%=cid%>+" WHERE EXISTS ("+ select_query.replaceAll(selectQueryColumnsName, "*")+") " 
 <%
 			if(CodeGenerationUtils.hasAlphaNumericCharacter(whereClause)) {
 %>

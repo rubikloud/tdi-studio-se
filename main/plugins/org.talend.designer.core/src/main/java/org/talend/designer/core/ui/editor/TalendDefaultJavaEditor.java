@@ -57,7 +57,7 @@ public class TalendDefaultJavaEditor extends CompilationUnitEditor {
                 boolean isRoutine = openedFilePath.startsWith(routineFolderPath);
                 boolean isTalendGeneratedFile = openedFilePath.startsWith(talendSrcFolderPath);
                 String systemRoutineFolderName = "system"; //$NON-NLS-1$
-                String systemRoutineFolderPath = routineFolderPath + pathSeperator + systemRoutineFolderName + pathSeperator;
+                String systemRoutineFolderPath = routineFolderPath + systemRoutineFolderName + pathSeperator;
                 boolean isSystemRoutine = openedFilePath.startsWith(systemRoutineFolderPath);
 
                 if (isSystemRoutine) {

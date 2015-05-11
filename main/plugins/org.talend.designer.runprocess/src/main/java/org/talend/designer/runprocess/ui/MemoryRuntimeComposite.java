@@ -19,9 +19,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.commons.collections.BidiMap;
-import org.apache.commons.collections.buffer.UnboundedFifoBuffer;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchManager;
@@ -37,7 +38,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
@@ -48,10 +48,8 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.exolab.castor.util.Iterator;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.core.CorePlugin;
 import org.talend.core.model.process.EComponentCategory;
@@ -74,10 +72,11 @@ import org.talend.designer.runtime.visualization.IActiveJvm;
 import org.talend.designer.runtime.visualization.IHost;
 import org.talend.designer.runtime.visualization.JvmCoreException;
 import org.talend.designer.runtime.visualization.JvmModel;
-import org.talend.designer.runtime.visualization.ReportMessage;
 import org.talend.designer.runtime.visualization.ReportMessageManager;
 import org.talend.designer.runtime.visualization.views.AbstractRuntimeGraphcsComposite;
 import org.talend.designer.runtime.visualization.views.RuntimeGraphcsComposite;
+
+import routines.TalendDate;
 
 /**
  * created by ldong on Apr 3, 2015 Detailled comment
@@ -90,6 +89,8 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
     private Combo periodCombo;
     
     private ComboViewer contextCombo;
+    
+    private Button gcCheckButton;
 
     private RunProcessContext processContext;
 
@@ -103,11 +104,15 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
 
     private PropertyChangeListener propertyChangeListener;
     
-    private ProcessComposite basicRunComposite;
-    
     private ProcessManager processManager;
     
     private  ReportMessageManager messageManager;
+    
+    private static boolean isGCSelected = false;
+    
+    private static int periodComboSelectionIndex = 0;
+    
+    private static Timer timer = new Timer();
     
     public MemoryRuntimeComposite(ProcessView viewPart, Composite parent, RunProcessContext processContext, int style) {
         super(parent, style);
@@ -167,8 +172,6 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
         	setRuntimeButtonByStatus(true);
         }
         runtimeButton.setEnabled(true);
-//        runtimeButton.setImage(ImageProvider.getImage(ERunprocessImages.RUN_PROCESS_ACTION));
-//        runtimeButton.setText("Run"); //$NON-NLS-1$
         FormData runButtonData = new FormData();
         Point execSize = null;
         runButtonData.left = new FormAttachment(0, 10);
@@ -178,11 +181,13 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
         runButtonData.height = 30;
         runtimeButton.setLayoutData(runButtonData);
 
-        Button gcCheckButton = new Button(topGroup,SWT.CHECK);
+        gcCheckButton = new Button(topGroup,SWT.CHECK);
         FormData gcCheckButtonData = new FormData();
         gcCheckButtonData.left = new FormAttachment(runtimeButton,15,SWT.RIGHT);
         gcCheckButtonData.height = 30;
         gcCheckButton.setLayoutData(gcCheckButtonData);
+        gcCheckButton.setEnabled(true);
+        gcCheckButton.setSelection(isGCSelected);
 
         Label periodLabel = new Label(topGroup, SWT.NULL);
         periodLabel.setText(Messages.getString("ProcessView.moniorPeriod")); //$NON-NLS-1$
@@ -202,9 +207,14 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
         periodData.top = new FormAttachment(0,3);
         periodData.height = 25;
         periodCombo.setLayoutData(periodData);
-        periodCombo.setItems(new String[] { "30 sec", "60 sec", "120 sec" });
-        periodCombo.select(0);
-        
+        periodCombo.setItems(new String[] { "Select", "30 sec", "60 sec", "120 sec" });
+        periodCombo.setEnabled(isGCSelected);
+        if(isGCSelected){
+        	periodCombo.select(periodComboSelectionIndex);
+        }else{
+        	periodCombo.select(0);
+        	periodComboSelectionIndex = 0;
+        }
         
         contextCombo = new ComboViewer(topGroup, SWT.BORDER | SWT.READ_ONLY);
         contextCombo.getCombo().setLayout(new FormLayout());
@@ -230,6 +240,7 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
         chartComposite.setLayoutData(charLayData);
     }
 
+	@SuppressWarnings("unchecked")
 	private void initContextInput() {
 		List<IContext> contextList = (List<IContext>) viewPart.getContextComposite().getContextComboInput();
         if(contextList!=null){
@@ -306,49 +317,62 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
             		runtimeButton.setEnabled(false);
             		exec();
             	}
-                if (processContext != null && processContext.isRunning()) {
-                	if(runtimeButton.getText().equals(Messages.getString("ProcessComposite.exec"))){
-                		
-                		long startTime = System.currentTimeMillis();
-                		long endTime;
-                		while(true){
-                			if(initCurrentActiveJobJvm()){
-                				break;
-                			}
-                			endTime = System.currentTimeMillis();
-                			if(endTime - startTime > 30000){
-                				MessageDialog.openWarning(getShell(), "Warning", Messages.getString("ProcessView.noJobRunning"));
-                				runtimeButton.setEnabled(true);
-                				return;
-                			}
-                		}
-                		initMonitoringModel();
-                		refreshMonitorComposite();
-                		processContext.setMonitoring(true);
-                		setRuntimeButtonByStatus(!processContext.isMonitoring());
-                		//need to extract
-                		String content = "Start time : "+ new SimpleDateFormat("hh:mm:ss a MM/dd/YYYY").format(new Date())+"\r\n";
-                		messageManager.setStartMessage(content, getDisplay().getSystemColor(SWT.COLOR_BLUE), getDisplay().getSystemColor(SWT.COLOR_WHITE));
-                		((RuntimeGraphcsComposite)chartComposite).displayReportField();
-                	
-                	}else if(runtimeButton.getText().equals(Messages.getString("ProcessComposite.kill"))){
-                		processContext.kill();
-                		processContext.setMonitoring(false);
-                		setRuntimeButtonByStatus(!processContext.isMonitoring());
-                		//need to extract
-//                		String content = "End time : "+ new SimpleDateFormat("hh:mm:ss a MM/dd/YYYY").format(new Date())+"\r\n";
-//            			messageManager.setEndMessage(content, getDisplay().getSystemColor(SWT.COLOR_BLUE), getDisplay().getSystemColor(SWT.COLOR_WHITE));
-//            			((RuntimeGraphcsComposite)chartComposite).displayReportField();
-                	
-                	}
+            	if (processContext != null && processContext.isRunning()) {
+            		if(runtimeButton.getText().equals(Messages.getString("ProcessComposite.exec"))){
+            			//seems not work using background thread, fix later 
+            			acquireJVM();
+            			
+            			initMonitoringModel();
+            			refreshMonitorComposite();
+            			processContext.setMonitoring(true);
+            			setRuntimeButtonByStatus(!processContext.isMonitoring());
+            			
+            			if(periodCombo.isEnabled() && periodCombo.getSelectionIndex()!=0){
+            				startCustomerGCSchedule();
+            			}
+            			//need to extract
+            			String content = "Start time : "+ new SimpleDateFormat("hh:mm:ss a MM/dd/YYYY").format(new Date())+"\r\n";
+            			messageManager.setStartMessage(content, getDisplay().getSystemColor(SWT.COLOR_BLUE), getDisplay().getSystemColor(SWT.COLOR_WHITE));
+            			((RuntimeGraphcsComposite)chartComposite).displayReportField();
+            			
+            		}else if(runtimeButton.getText().equals(Messages.getString("ProcessComposite.kill"))){
+            			processContext.kill();
+            			processContext.setMonitoring(false);
+            			setRuntimeButtonByStatus(!processContext.isMonitoring());
+            		}
 //                    runtimeButton.setEnabled(!processContext.isMonitoring());
-                } else {
-                    MessageDialog.openWarning(getShell(), "Warning", Messages.getString("ProcessView.noJobRunning")); //$NON-NLS-1$//$NON-NLS-2$
-                }
-                runtimeButton.setEnabled(true);
+            	} else {
+            		MessageDialog.openWarning(getShell(), "Warning", Messages.getString("ProcessView.noJobRunning")); //$NON-NLS-1$//$NON-NLS-2$
+            	}
+            	runtimeButton.setEnabled(true);
             }
         });
+        
+        gcCheckButton.addSelectionListener(new SelectionAdapter() {
 
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				isGCSelected = gcCheckButton.getSelection();
+				periodCombo.setEnabled(isGCSelected);
+				if(!isGCSelected){
+					periodCombo.select(0);
+					if(processContext!=null && processContext.isRunning()){
+//						cancel GC timer task during job running.
+						doScheduledGc(0);
+					}
+				}
+			}
+		});
+
+        periodCombo.addSelectionListener(new SelectionAdapter() {
+        	
+        	@Override
+			public void widgetSelected(SelectionEvent e) {
+        		startCustomerGCSchedule();
+			}
+			
+		});
+        
         propertyChangeListener = new PropertyChangeListener() {
 
             @Override
@@ -358,7 +382,70 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
         };
 
     }
-
+    
+    private void startCustomerGCSchedule() {
+    	periodComboSelectionIndex =  periodCombo.getSelectionIndex();
+    	if(processContext != null && processContext.isRunning()){
+    		String item = periodCombo.getItem(periodComboSelectionIndex);
+    		if(periodComboSelectionIndex != 0){
+    			int interval = Integer.valueOf(item.split(" ")[0]);
+    			System.out.println("set new interval: " + interval);
+    			doScheduledGc(interval);
+    		}
+    	}
+	}
+    
+	protected void doScheduledGc(int interval) {
+		timer.cancel();
+		if(interval == 0){
+			return;
+		}
+		timer = null;
+		timer = new Timer();
+		TimerTask gcTask = new TimerTask() {
+			@Override
+			public void run() {
+				if(processContext!= null && processContext.isRunning()){
+					if(currentJvm != null){
+						try {
+							currentJvm.getMBeanServer().runGarbageCollector();
+							System.out.println("GC executed at " + TalendDate.getDate("HH:mm:ss"));
+						} catch (JvmCoreException e) {
+							//do nothing.
+						}
+					}
+				}else{
+					timer.cancel();
+					System.out.println("timer cancelled at " + TalendDate.getDate("HH:mm:ss"));
+				}
+			}
+		}; 
+		timer.schedule(gcTask, interval*1000, interval*1000);
+	}
+	
+	private void acquireJVM() {
+		long startTime = System.currentTimeMillis();
+		long endTime;
+		
+		while(true){
+			System.out.println("background thread searching...");
+			if(initCurrentActiveJobJvm()){
+				break;
+			}
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			endTime = System.currentTimeMillis();
+			if(endTime - startTime > 10*1000){
+				MessageDialog.openWarning(getShell(), "Warning", Messages.getString("ProcessView.noJobRunning"));
+				runtimeButton.setEnabled(true);
+				return;
+			}
+		}
+	}
+	
 	private boolean initCurrentActiveJobJvm() {
     	boolean isJvmFound = false;
         JvmModel jvmModel = JvmModel.getInstance();
@@ -412,7 +499,7 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
                     	setRuntimeButtonByStatus(processContext != null && processContext.isRunning());
                     	if(processContext == null){
                     		setRuntimeButtonByStatus(false);
-                    	}else if(processContext != null && processContext.isRunning()){
+                    	}else if(processContext.isRunning()){
                     		setRuntimeButtonByStatus(false);
                     	}else{
                     		setRuntimeButtonByStatus(true);
@@ -443,7 +530,6 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
         }
 
         if (runtimeButton != null && !runtimeButton.isDisposed()) {
-//            runtimeButton.setEnabled(processContext != null && processContext.isRunning());
         	runtimeButton.setEnabled(processContext != null);
         	//imporve this logic later
         	if(processContext == null){
@@ -457,16 +543,26 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
         	}
         }
 
-        if (periodCombo != null && !periodCombo.isDisposed()) {
-            periodCombo.setEnabled(processContext != null && processContext.isRunning());
+        if (gcCheckButton != null && !gcCheckButton.isDisposed()) {
+        	gcCheckButton.setEnabled(processContext != null);
+        	gcCheckButton.setSelection(isGCSelected);
         }
+
+        if (periodCombo != null && !periodCombo.isDisposed()) {
+            periodCombo.setEnabled(processContext != null && gcCheckButton.getSelection());
+        }
+        
+        
         if (contextCombo !=null && !contextCombo.getCombo().isDisposed()){
         	if(processContext == null){
         		contextCombo.setInput(null);
         	}else{
         		initContextInput();
         	}
-        		contextCombo.getCombo().setEnabled(processContext != null);
+    		contextCombo.getCombo().setEnabled(processContext != null);
+        }
+        if(processContext != null && processContext.isRunning()){
+        	((RuntimeGraphcsComposite)chartComposite).displayReportField();
         }
     }
 

@@ -649,20 +649,24 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
 	    		FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
 				dialog.setFilterPath(".");
 				String fileName = dialog.open();
-				
-	    		FileWriter writer = null;
-	    		try {
-					writer = new FileWriter(fileName);
-					writer.write(content.toString());
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				} finally {
+				if(fileName != null){
+					FileWriter writer = null;
 					try {
-						writer.close();
+						writer = new FileWriter(fileName);
+						writer.write(content.toString());
 					} catch (IOException e1) {
 						e1.printStackTrace();
+					} finally {
+						try {
+							if(writer!=null){
+								writer.close();
+							}
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
 					}
 				}
+				
 	    	}
 		});
     }

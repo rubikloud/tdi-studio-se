@@ -18,6 +18,11 @@ class="MomConnection"
 	
 	String dbuser= ElementParameterParser.getValue(node, "__USER__");
 	String serverType=ElementParameterParser.getValue(node, "__SERVER__");
+	boolean isUseSSL = ("true").equals(ElementParameterParser.getValue(node, "__USE_SSL__"));
+	String transProtocol="tcp";
+	if(isUseSSL){
+		transProtocol = "ssl";
+	}
 	final boolean isLog4jEnabled = ("true").equals(ElementParameterParser.getValue(node.getProcess(), "__LOG4J_ACTIVATE__"));
 	
 	boolean isUseSharedConnection = ("true").equals(ElementParameterParser.getValue(node, "__USE_SHARED_CONNECTION__"));
@@ -53,7 +58,7 @@ class="MomConnection"
 				<%
 				}
 				%>
-				url_<%=cid %> = url_<%=cid %> +"tcp://";
+				url_<%=cid %> = url_<%=cid %> +"<%=transProtocol%>://";
 				url_<%=cid %> = url_<%=cid %> +<%=strHost%>;
 				url_<%=cid %> = url_<%=cid %> +":";
 				url_<%=cid %> = url_<%=cid %> +<%=strPort%>;
@@ -69,7 +74,7 @@ class="MomConnection"
 			<%
 			}
 		}else{%>
-			url_<%=cid %> = "tcp://"+<%=host%>+":"+<%=port%>;
+			url_<%=cid %> = "<%=transProtocol%>://"+<%=host%>+":"+<%=port%>;
 		<%}%>			
 		
 		<%

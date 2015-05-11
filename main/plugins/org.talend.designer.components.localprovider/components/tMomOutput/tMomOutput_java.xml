@@ -58,13 +58,21 @@
       </ITEMS>
     </PARAMETER>
 
-    <PARAMETER NAME="SERVER" FIELD="CLOSED_LIST" NUM_ROW="20"
+    <PARAMETER NAME="SERVER" FIELD="CLOSED_LIST" NUM_ROW="18"
         SHOW_IF="USE_CONNECTION == 'false'">
       <ITEMS DEFAULT="WEBSPHERE">
         <ITEM NAME="WEBSPHERE" VALUE="WebSphere" />
         <ITEM NAME="JBOSS" VALUE="JBoss" />
         <ITEM NAME="ACTIVEMQ" VALUE="ActiveMQ" />
       </ITEMS>
+    </PARAMETER>
+    
+    <PARAMETER NAME="USE_SSL" FIELD="CHECK" REQUIRED="false" NUM_ROW="19" SHOW_IF="(USE_CONNECTION == 'false') AND (SERVER == 'ACTIVEMQ')">
+      <DEFAULT>false</DEFAULT>
+    </PARAMETER>
+    
+    <PARAMETER NAME="USE_SSL_NOTE" FIELD="LABEL" REQUIRED="false" NUM_ROW="19" COLOR="255;0;0" SHOW_IF="(USE_CONNECTION == 'false') AND (SERVER == 'ACTIVEMQ') AND (USE_SSL == 'true')">
+      <DEFAULT><![CDATA[Notice: You should use tSetKeysore or JVM arguments to specify keystore or truststore]]></DEFAULT>
     </PARAMETER>
 
     <PARAMETER NAME="SERVERADDRESS" FIELD="TEXT" NUM_ROW="20"

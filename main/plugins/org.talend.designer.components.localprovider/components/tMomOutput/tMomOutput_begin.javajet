@@ -41,7 +41,12 @@ class="MomInput"
 
 	String dbuser= ElementParameterParser.getValue(node, "__USER__");
 	final boolean isLog4jEnabled = ("true").equals(ElementParameterParser.getValue(node.getProcess(), "__LOG4J_ACTIVATE__"));
-
+	
+	boolean isUseSSL = ("true").equals(ElementParameterParser.getValue(node, "__USE_SSL__"));
+	String transProtocol="tcp";
+	if(isUseSSL){
+		transProtocol = "ssl";
+	}
 		
 	String strHost = null;
 	String strPort = null;
@@ -211,7 +216,7 @@ class="MomInput"
 					<%
 					}
 					%>
-					url_<%=cid %> = url_<%=cid %> +"tcp://";
+					url_<%=cid %> = url_<%=cid %> +"<%=transProtocol%>://";
 					url_<%=cid %> = url_<%=cid %> +<%=strHost%>;
 					url_<%=cid %> = url_<%=cid %> +":";
 					url_<%=cid %> = url_<%=cid %> +<%=strPort%>;
@@ -226,9 +231,8 @@ class="MomInput"
 					url_<%=cid %> = url_<%=cid %> +"&"+<%=optrion.get("OPTION_NAME")%>+"="+<%=optrion.get("OPTION_VALUE")%>;
 				<%
 				}
-		   }
-			else{%>
-				url_<%=cid %> = "tcp://"+<%=host%>+":"+<%=port%>;
+			}else{%>
+				url_<%=cid %> = "<%=transProtocol%>://"+<%=host%>+":"+<%=port%>;
 			<%}%>			
 			
 			System.out.println("Connecting to URL: " + url_<%=cid %>);

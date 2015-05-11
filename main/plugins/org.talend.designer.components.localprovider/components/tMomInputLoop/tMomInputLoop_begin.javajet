@@ -43,7 +43,12 @@ imports="
 	
 	String dbuser= ElementParameterParser.getValue(node, "__USER__");
 	final boolean isLog4jEnabled = ("true").equals(ElementParameterParser.getValue(node.getProcess(), "__LOG4J_ACTIVATE__"));
-
+	
+	boolean isUseSSL = ("true").equals(ElementParameterParser.getValue(node, "__USE_SSL__"));
+	String transProtocol="tcp";
+	if(isUseSSL){
+		transProtocol = "ssl";
+	}
 
 	String strHost = null;
 	String strPort = null;
@@ -291,7 +296,7 @@ imports="
 						<%
 						}
 						%>
-						url_<%=cid %> = url_<%=cid %> +"tcp://";
+						url_<%=cid %> = url_<%=cid %> +"<%=transProtocol%>://";
 						url_<%=cid %> = url_<%=cid %> +<%=strHost%>;
 						url_<%=cid %> = url_<%=cid %> +":";
 						url_<%=cid %> = url_<%=cid %> +<%=strPort%>;
@@ -307,7 +312,7 @@ imports="
 					<%
 					}
 				}else{%>
-					url_<%=cid %> = "tcp://"+<%=host%>+":"+<%=port%>;
+					url_<%=cid %> = "<%=transProtocol%>://"+<%=host%>+":"+<%=port%>;
 				<%}%>			
 	
 				<%

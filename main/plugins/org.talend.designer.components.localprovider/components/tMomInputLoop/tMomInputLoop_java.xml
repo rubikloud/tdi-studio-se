@@ -217,12 +217,12 @@
     </PARAMETER>
 
     <PARAMETER NAME="ROLLBACK" FIELD="CHECK" REQUIRED="true" NUM_ROW="90"
-        SHOW_IF="(USE_CONNECTION == 'false') and (SERVER == 'WEBSPHERE') AND (KEEPLISTENING == 'false') AND (COMMIT == 'false') AND (BROWSE == 'false')">
+        SHOW_IF="(USE_CONNECTION == 'false') and (SERVER == 'WEBSPHERE') AND (KEEPLISTENING == 'false') AND (COMMIT == 'false') AND (BROWSE == 'false') AND (AUTO_BACKOUT == 'false')">
       <DEFAULT>false</DEFAULT>
     </PARAMETER>
     
     <PARAMETER NAME="AUTO_BACKOUT" FIELD="CHECK" REQUIRED="true" NUM_ROW="95"
-        SHOW_IF="(isShow[ROLLBACK]) AND (ROLLBACK=='true')">
+        SHOW_IF="(USE_CONNECTION == 'false') and (SERVER == 'WEBSPHERE') AND (KEEPLISTENING == 'false') AND (COMMIT == 'false') AND (BROWSE == 'false') AND (ROLLBACK == 'false')">
       <DEFAULT>false</DEFAULT>
     </PARAMETER>
 

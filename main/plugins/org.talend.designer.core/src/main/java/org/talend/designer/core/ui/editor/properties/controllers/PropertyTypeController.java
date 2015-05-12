@@ -204,7 +204,10 @@ public class PropertyTypeController extends AbstractRepositoryController {
         data.height = STANDARD_HEIGHT - 2;
         button.setLayoutData(data);
 
-        dynamicProperty.setCurRowSize(buttonSize.y + ITabbedPropertyConstants.VSPACE);
+        int buttonHeight = buttonSize.y + ITabbedPropertyConstants.VSPACE;
+        if (dynamicProperty.getCurRowSize() < buttonHeight) {
+            dynamicProperty.setCurRowSize(buttonHeight);
+        }
         // } else {
         //            button = getWidgetFactory().createButton(subComposite, "", SWT.NONE); //$NON-NLS-1$
         //            button.setText("select file"); //$NON-NLS-N$

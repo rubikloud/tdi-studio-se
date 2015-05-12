@@ -486,19 +486,19 @@ public class MultipleThreadDynamicComposite extends ScrolledComposite implements
                                 }
                             }
 
-                            maxRowSize = 0;
+                            //maxRowSize = 0;
                             if (curRowSize > maxRowSize) {
                                 maxRowSize = curRowSize;
-                                isCompute = true;
+                                // isCompute = true;
                             }
                         }
                     }
                 }
             }
-            if (isCompute) {
-                heightSize += maxRowSize;
-                isCompute = false;
-            }
+            // if (isCompute) {
+            heightSize += maxRowSize;
+            // isCompute = false;
+            // }
 
         }
         if (synchronizeSchemaParam != null) {

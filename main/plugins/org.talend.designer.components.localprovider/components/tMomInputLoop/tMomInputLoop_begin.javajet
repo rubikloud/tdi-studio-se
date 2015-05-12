@@ -545,7 +545,7 @@ imports="
 			String sslCipher = ElementParameterParser.getValue(node, "__MQ_SSL_CIPHER__");
 			isCommit = isCommit && !isBrowse;
 			isBrowse = isBrowse && !isRollback && !isCommit;
-			isAutoBackout = isAutoBackout && !isBrowse && isRollback && !isCommit && (!("true").equals(kListen));
+			isAutoBackout = isAutoBackout && !isBrowse && !isRollback && !isCommit && (!("true").equals(kListen));
 			
 			if(isAutoBackout){
 			%>

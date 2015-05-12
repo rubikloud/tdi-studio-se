@@ -85,22 +85,22 @@
 
 	<CODEGENERATION>
 		<IMPORTS>
-			<IMPORT NAME="commons_cli" MODULE="commons-cli-1.0.jar" UrlPath="platform:/base/plugins/org.apache.commons.cli_1.0.0.v201105210649.jar" REQUIRED="true" />
-			<IMPORT NAME="commons_lang" MODULE="commons-lang-1.0.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang-1.0.jar" REQUIRED="true" />
-			<IMPORT NAME="commons_logging" MODULE="commons-logging-1.0.4.jar" UrlPath="platform:/base/plugins/org.apache.commons.logging_1.0.4.v201101211617.jar" REQUIRED="true" />
-			<IMPORT NAME="hapi_base" MODULE="hapi-base-1.0.1.jar" UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-base-1.0.1.jar" REQUIRED="true" />
-			<IMPORT NAME="hapi_structures_V21" MODULE="hapi-structures-v21-1.0.1.jar" UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v21-1.0.1.jar" REQUIRED="true" />
-			<IMPORT NAME="hapi_structures_V22" MODULE="hapi-structures-v22-1.0.1.jar" UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v22-1.0.1.jar" REQUIRED="true" />
-			<IMPORT NAME="hapi_structures_V23" MODULE="hapi-structures-v23-1.0.1.jar" UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v23-1.0.1.jar" REQUIRED="true" />
-			<IMPORT NAME="hapi_structures_V231" MODULE="hapi-structures-v231-1.0.1.jar" UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v231-1.0.1.jar" REQUIRED="true" />
-			<IMPORT NAME="hapi_structures_V24" MODULE="hapi-structures-v24-1.0.1.jar" UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v24-1.0.1.jar" REQUIRED="true" />
-			<IMPORT NAME="hapi_structures_V25" MODULE="hapi-structures-v25-1.0.1.jar" UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v25-1.0.1.jar" REQUIRED="true" />
-			<IMPORT NAME="hapi_structures_V251" MODULE="hapi-structures-v251-1.0.1.jar" UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v251-1.0.1.jar" REQUIRED="true" />
-			<IMPORT NAME="hapi_structures_V26" MODULE="hapi-structures-v26-1.0.1.jar" UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v26-1.0.1.jar" REQUIRED="true" />
-			<IMPORT NAME="jboss_j2ee" MODULE="jboss-j2ee-4.0.2.jar" UrlPath="platform:/plugin/org.talend.libraries.jboss/lib/jboss-j2ee-4.0.2.jar" REQUIRED="true" />
-			<IMPORT NAME="jdom" MODULE="jdom-1.1.jar" UrlPath="platform:/plugin/org.talend.libraries.jdom/lib/jdom-1.1.jar" REQUIRED="true" />
-			<IMPORT NAME="log4j" MODULE="log4j-1.2.15.jar" UrlPath="platform:/base/plugins/org.apache.log4j_1.2.15.v201012070815.jar" REQUIRED="true" BundleID="" />
-			<IMPORT NAME="XercesImpl" MODULE="xercesImpl-2.4.0.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.xml/lib/xercesImpl-2.4.0.jar" REQUIRED="true" />
+			<IMPORT NAME="commons_cli" MODULE="commons-cli-1.0.jar" MVN="mvn:org.talend.libraries/commons-cli-1.0/6.0.0"  UrlPath="platform:/base/plugins/org.apache.commons.cli_1.0.0.v201105210649.jar" REQUIRED="true" />
+			<IMPORT NAME="commons_lang" MODULE="commons-lang-1.0.jar" MVN="mvn:org.talend.libraries/commons-lang-1.0/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang-1.0.jar" REQUIRED="true" />
+			<IMPORT NAME="commons_logging" MODULE="commons-logging-1.0.4.jar" MVN="mvn:org.talend.libraries/commons-logging-1.0.4/6.0.0"  UrlPath="platform:/base/plugins/org.apache.commons.logging_1.0.4.v201101211617.jar" REQUIRED="true" />
+			<IMPORT NAME="hapi_base" MODULE="hapi-base-1.0.1.jar" MVN="mvn:org.talend.libraries/hapi-base-1.0.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-base-1.0.1.jar" REQUIRED="true" />
+			<IMPORT NAME="hapi_structures_V21" MODULE="hapi-structures-v21-1.0.1.jar" MVN="mvn:org.talend.libraries/hapi-structures-v21-1.0.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v21-1.0.1.jar" REQUIRED="true" />
+			<IMPORT NAME="hapi_structures_V22" MODULE="hapi-structures-v22-1.0.1.jar" MVN="mvn:org.talend.libraries/hapi-structures-v22-1.0.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v22-1.0.1.jar" REQUIRED="true" />
+			<IMPORT NAME="hapi_structures_V23" MODULE="hapi-structures-v23-1.0.1.jar" MVN="mvn:org.talend.libraries/hapi-structures-v23-1.0.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v23-1.0.1.jar" REQUIRED="true" />
+			<IMPORT NAME="hapi_structures_V231" MODULE="hapi-structures-v231-1.0.1.jar" MVN="mvn:org.talend.libraries/hapi-structures-v231-1.0.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v231-1.0.1.jar" REQUIRED="true" />
+			<IMPORT NAME="hapi_structures_V24" MODULE="hapi-structures-v24-1.0.1.jar" MVN="mvn:org.talend.libraries/hapi-structures-v24-1.0.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v24-1.0.1.jar" REQUIRED="true" />
+			<IMPORT NAME="hapi_structures_V25" MODULE="hapi-structures-v25-1.0.1.jar" MVN="mvn:org.talend.libraries/hapi-structures-v25-1.0.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v25-1.0.1.jar" REQUIRED="true" />
+			<IMPORT NAME="hapi_structures_V251" MODULE="hapi-structures-v251-1.0.1.jar" MVN="mvn:org.talend.libraries/hapi-structures-v251-1.0.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v251-1.0.1.jar" REQUIRED="true" />
+			<IMPORT NAME="hapi_structures_V26" MODULE="hapi-structures-v26-1.0.1.jar" MVN="mvn:org.talend.libraries/hapi-structures-v26-1.0.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.hl7/lib/hapi-structures-v26-1.0.1.jar" REQUIRED="true" />
+			<IMPORT NAME="jboss_j2ee" MODULE="jboss-j2ee-4.0.2.jar" MVN="mvn:org.talend.libraries/jboss-j2ee-4.0.2/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jboss/lib/jboss-j2ee-4.0.2.jar" REQUIRED="true" />
+			<IMPORT NAME="jdom" MODULE="jdom-1.1.jar" MVN="mvn:org.talend.libraries/jdom-1.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jdom/lib/jdom-1.1.jar" REQUIRED="true" />
+			<IMPORT NAME="log4j" MODULE="log4j-1.2.15.jar" MVN="mvn:org.talend.libraries/log4j-1.2.15/6.0.0"  UrlPath="platform:/base/plugins/org.apache.log4j_1.2.15.v201012070815.jar" REQUIRED="true" BundleID="" />
+			<IMPORT NAME="XercesImpl" MODULE="xercesImpl-2.4.0.jar" MVN="mvn:org.talend.libraries/xercesImpl-2.4.0/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.xml/lib/xercesImpl-2.4.0.jar" REQUIRED="true" />
 		</IMPORTS>
 	</CODEGENERATION>
 

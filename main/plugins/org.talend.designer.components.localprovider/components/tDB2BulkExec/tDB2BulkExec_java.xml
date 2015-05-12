@@ -308,9 +308,9 @@
 
   <CODEGENERATION>
     <IMPORTS>
-      	<IMPORT NAME="Driver-DB2" MODULE="db2jcc.jar" REQUIRED="true" />
-		<IMPORT NAME="Driver-DB2" MODULE="db2jcc_license_cu.jar" REQUIRED="true" />
-		<IMPORT NAME="Driver-DB2" MODULE="db2jcc_license_cisuz.jar" REQUIRED="true" />
+      	<IMPORT NAME="Driver-DB2" MODULE="db2jcc.jar" MVN="mvn:org.talend.libraries/db2jcc/6.0.0"  REQUIRED="true" />
+		<IMPORT NAME="Driver-DB2" MODULE="db2jcc_license_cu.jar" MVN="mvn:org.talend.libraries/db2jcc_license_cu/6.0.0"  REQUIRED="true" />
+		<IMPORT NAME="Driver-DB2" MODULE="db2jcc_license_cisuz.jar" MVN="mvn:org.talend.libraries/db2jcc_license_cisuz/6.0.0"  REQUIRED="true" />
     </IMPORTS>
   </CODEGENERATION>
 

@@ -86,7 +86,7 @@
 
 	<CODEGENERATION>
 		<IMPORTS>
-			<IMPORT NAME="cobolX" MODULE="cobolX.jar" UrlPath="platform:/plugin/org.talend.libraries.ebcdic/lib/cobolX.jar" REQUIRED="true" />
+			<IMPORT NAME="cobolX" MODULE="cobolX.jar" MVN="mvn:org.talend.libraries/cobolX/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.ebcdic/lib/cobolX.jar" REQUIRED="true" />
 		</IMPORTS>
 	</CODEGENERATION>
 

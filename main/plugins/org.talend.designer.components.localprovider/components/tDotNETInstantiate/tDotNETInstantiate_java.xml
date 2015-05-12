@@ -40,7 +40,7 @@
 	</ADVANCED_PARAMETERS>
 	<CODEGENERATION>
 		<IMPORTS>
-			<IMPORT MODULE="janet-java-1.0-SNAPSHOT.jar" NAME="janet-java-1.0-SNAPSHOT"
+			<IMPORT MODULE="janet-java-1.0-SNAPSHOT.jar" MVN="mvn:org.talend.libraries/janet-java-1.0-SNAPSHOT/6.0.0"  NAME="janet-java-1.0-SNAPSHOT"
 				REQUIRED="true" />
 		</IMPORTS>
 	</CODEGENERATION>

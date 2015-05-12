@@ -214,7 +214,7 @@
     <TEMPLATE_PARAM SOURCE="self.AUTO_COMMIT" TARGET="in.AUTO_COMMIT"/>
     </TEMPLATES>
      <IMPORTS>
-       <IMPORT NAME="Driver-MysqlConnector" MODULE="mysql-connector-java-5.1.30-bin.jar"/>
+       <IMPORT NAME="Driver-MysqlConnector" MODULE="mysql-connector-java-5.1.30-bin.jar" MVN="mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0" />
      </IMPORTS>
     </CODEGENERATION>
    <RETURNS/>

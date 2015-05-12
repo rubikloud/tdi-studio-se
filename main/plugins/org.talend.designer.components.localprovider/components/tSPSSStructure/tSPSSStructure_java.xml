@@ -70,7 +70,7 @@
 	
    <CODEGENERATION>
     <IMPORTS>
-      <IMPORT NAME="Java_SPSS" MODULE="JSPSS.jar" REQUIRED="true" />
+      <IMPORT NAME="Java_SPSS" MODULE="JSPSS.jar" MVN="mvn:org.talend.libraries/JSPSS/6.0.0"  REQUIRED="true" />
     </IMPORTS>
   </CODEGENERATION>
 

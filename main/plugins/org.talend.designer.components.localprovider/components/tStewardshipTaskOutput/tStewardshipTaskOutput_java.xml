@@ -89,11 +89,11 @@
   </ADVANCED_PARAMETERS>
   <CODEGENERATION>
   	<IMPORTS>
-		<IMPORT NAME="talend-stewardship-task" MODULE="talend-stewardshipTask.jar" REQUIRED="true" />
-		<IMPORT NAME="talend-stewardship-client" MODULE="org.talend.taskloadclient.jar" REQUIRED="true" />
-		<IMPORT NAME="dom4j" MODULE="dom4j-1.6.1.jar" UrlPath="platform:/plugin/org.talend.libraries.dom4j-jaxen/lib/dom4j-1.6.1.jar" REQUIRED="true" />
-		<IMPORT NAME="talend-shipTask" MODULE="commons-lang-2.6.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang-2.6.jar" REQUIRED="true" />
-		<IMPORT NAME="commons-codec-1.4" MODULE="commons-codec-1.4.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-codec-1.4.jar" REQUIRED="true" />
+		<IMPORT NAME="talend-stewardship-task" MODULE="talend-stewardshipTask.jar" MVN="mvn:org.talend.libraries/talend-stewardshipTask/6.0.0"  REQUIRED="true" />
+		<IMPORT NAME="talend-stewardship-client" MODULE="org.talend.taskloadclient.jar" MVN="mvn:org.talend.libraries/org.talend.taskloadclient/6.0.0"  REQUIRED="true" />
+		<IMPORT NAME="dom4j" MODULE="dom4j-1.6.1.jar" MVN="mvn:org.talend.libraries/dom4j-1.6.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.dom4j-jaxen/lib/dom4j-1.6.1.jar" REQUIRED="true" />
+		<IMPORT NAME="talend-shipTask" MODULE="commons-lang-2.6.jar" MVN="mvn:org.talend.libraries/commons-lang-2.6/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang-2.6.jar" REQUIRED="true" />
+		<IMPORT NAME="commons-codec-1.4" MODULE="commons-codec-1.4.jar" MVN="mvn:org.talend.libraries/commons-codec-1.4/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-codec-1.4.jar" REQUIRED="true" />
   	</IMPORTS>
   </CODEGENERATION>
   <RETURNS>

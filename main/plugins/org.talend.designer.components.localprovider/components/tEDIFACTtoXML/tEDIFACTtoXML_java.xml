@@ -104,85 +104,85 @@
 
   <CODEGENERATION>
 	<IMPORTS>
-			<IMPORT NAME="d00a-mapping-1.4" MODULE="d00a-mapping-1.4-20101230.181140-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d00a-mapping-1.4-20101230.181140-1.jar"
+			<IMPORT NAME="d00a-mapping-1.4" MODULE="d00a-mapping-1.4-20101230.181140-1.jar" MVN="mvn:org.talend.libraries/d00a-mapping-1.4-20101230.181140-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d00a-mapping-1.4-20101230.181140-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d00b-mapping-1.4" MODULE="d00b-mapping-1.4-20101230.182448-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d00b-mapping-1.4-20101230.182448-1.jar"
+			<IMPORT NAME="d00b-mapping-1.4" MODULE="d00b-mapping-1.4-20101230.182448-1.jar" MVN="mvn:org.talend.libraries/d00b-mapping-1.4-20101230.182448-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d00b-mapping-1.4-20101230.182448-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d01a-mapping-1.4" MODULE="d01a-mapping-1.4-20101230.183534-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d01a-mapping-1.4-20101230.183534-1.jar"
+			<IMPORT NAME="d01a-mapping-1.4" MODULE="d01a-mapping-1.4-20101230.183534-1.jar" MVN="mvn:org.talend.libraries/d01a-mapping-1.4-20101230.183534-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d01a-mapping-1.4-20101230.183534-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d01b-mapping-1.4" MODULE="d01b-mapping-1.4-20101230.185159-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d01b-mapping-1.4-20101230.185159-1.jar"
+			<IMPORT NAME="d01b-mapping-1.4" MODULE="d01b-mapping-1.4-20101230.185159-1.jar" MVN="mvn:org.talend.libraries/d01b-mapping-1.4-20101230.185159-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d01b-mapping-1.4-20101230.185159-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d01c-mapping-1.4" MODULE="d01c-mapping-1.4-20101230.190625-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d01c-mapping-1.4-20101230.190625-1.jar"
+			<IMPORT NAME="d01c-mapping-1.4" MODULE="d01c-mapping-1.4-20101230.190625-1.jar" MVN="mvn:org.talend.libraries/d01c-mapping-1.4-20101230.190625-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d01c-mapping-1.4-20101230.190625-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d02a-mapping-1.4" MODULE="d02a-mapping-1.4-20101230.191840-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d02a-mapping-1.4-20101230.191840-1.jar"
+			<IMPORT NAME="d02a-mapping-1.4" MODULE="d02a-mapping-1.4-20101230.191840-1.jar" MVN="mvn:org.talend.libraries/d02a-mapping-1.4-20101230.191840-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d02a-mapping-1.4-20101230.191840-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d02b-mapping-1.4" MODULE="d02b-mapping-1.4-20101230.193459-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d02b-mapping-1.4-20101230.193459-1.jar"
+			<IMPORT NAME="d02b-mapping-1.4" MODULE="d02b-mapping-1.4-20101230.193459-1.jar" MVN="mvn:org.talend.libraries/d02b-mapping-1.4-20101230.193459-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d02b-mapping-1.4-20101230.193459-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d03a-mapping-1.4" MODULE="d03a-mapping-1.4-20101230.195010-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d03a-mapping-1.4-20101230.195010-1.jar"
+			<IMPORT NAME="d03a-mapping-1.4" MODULE="d03a-mapping-1.4-20101230.195010-1.jar" MVN="mvn:org.talend.libraries/d03a-mapping-1.4-20101230.195010-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d03a-mapping-1.4-20101230.195010-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d03b-mapping-1.4" MODULE="d03b-mapping-1.4-20101230.201023-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d03b-mapping-1.4-20101230.201023-1.jar"
+			<IMPORT NAME="d03b-mapping-1.4" MODULE="d03b-mapping-1.4-20101230.201023-1.jar" MVN="mvn:org.talend.libraries/d03b-mapping-1.4-20101230.201023-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d03b-mapping-1.4-20101230.201023-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d04a-mapping-1.4" MODULE="d04a-mapping-1.4-20101230.202950-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d04a-mapping-1.4-20101230.202950-1.jar"
+			<IMPORT NAME="d04a-mapping-1.4" MODULE="d04a-mapping-1.4-20101230.202950-1.jar" MVN="mvn:org.talend.libraries/d04a-mapping-1.4-20101230.202950-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d04a-mapping-1.4-20101230.202950-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d04b-mapping-1.4" MODULE="d04b-mapping-1.4-20101230.204717-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d04b-mapping-1.4-20101230.204717-1.jar"
+			<IMPORT NAME="d04b-mapping-1.4" MODULE="d04b-mapping-1.4-20101230.204717-1.jar" MVN="mvn:org.talend.libraries/d04b-mapping-1.4-20101230.204717-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d04b-mapping-1.4-20101230.204717-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d05a-mapping-1.4" MODULE="d05a-mapping-1.4-20101230.210746-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d05a-mapping-1.4-20101230.210746-1.jar"
+			<IMPORT NAME="d05a-mapping-1.4" MODULE="d05a-mapping-1.4-20101230.210746-1.jar" MVN="mvn:org.talend.libraries/d05a-mapping-1.4-20101230.210746-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d05a-mapping-1.4-20101230.210746-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d05b-mapping-1.4" MODULE="d05b-mapping-1.4-20101230.212643-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d05b-mapping-1.4-20101230.212643-1.jar"
+			<IMPORT NAME="d05b-mapping-1.4" MODULE="d05b-mapping-1.4-20101230.212643-1.jar" MVN="mvn:org.talend.libraries/d05b-mapping-1.4-20101230.212643-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d05b-mapping-1.4-20101230.212643-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d06a-mapping-1.4" MODULE="d06a-mapping-1.4-20101230.214557-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d06a-mapping-1.4-20101230.214557-1.jar"
+			<IMPORT NAME="d06a-mapping-1.4" MODULE="d06a-mapping-1.4-20101230.214557-1.jar" MVN="mvn:org.talend.libraries/d06a-mapping-1.4-20101230.214557-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d06a-mapping-1.4-20101230.214557-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d06b-mapping-1.4" MODULE="d06b-mapping-1.4-20101230.220647-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d06b-mapping-1.4-20101230.220647-1.jar"
+			<IMPORT NAME="d06b-mapping-1.4" MODULE="d06b-mapping-1.4-20101230.220647-1.jar" MVN="mvn:org.talend.libraries/d06b-mapping-1.4-20101230.220647-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d06b-mapping-1.4-20101230.220647-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d07a-mapping-1.4" MODULE="d07a-mapping-1.4-20101230.222824-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d07a-mapping-1.4-20101230.222824-1.jar"
+			<IMPORT NAME="d07a-mapping-1.4" MODULE="d07a-mapping-1.4-20101230.222824-1.jar" MVN="mvn:org.talend.libraries/d07a-mapping-1.4-20101230.222824-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d07a-mapping-1.4-20101230.222824-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d07b-mapping-1.4" MODULE="d07b-mapping-1.4-20101230.224645-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d07b-mapping-1.4-20101230.224645-1.jar"
+			<IMPORT NAME="d07b-mapping-1.4" MODULE="d07b-mapping-1.4-20101230.224645-1.jar" MVN="mvn:org.talend.libraries/d07b-mapping-1.4-20101230.224645-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d07b-mapping-1.4-20101230.224645-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d08a-mapping-1.4" MODULE="d08a-mapping-1.4-20101230.230844-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d08a-mapping-1.4-20101230.230844-1.jar"
+			<IMPORT NAME="d08a-mapping-1.4" MODULE="d08a-mapping-1.4-20101230.230844-1.jar" MVN="mvn:org.talend.libraries/d08a-mapping-1.4-20101230.230844-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d08a-mapping-1.4-20101230.230844-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d08b-mapping-1.4" MODULE="d08b-mapping-1.4-20101230.231449-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d08b-mapping-1.4-20101230.231449-1.jar"
+			<IMPORT NAME="d08b-mapping-1.4" MODULE="d08b-mapping-1.4-20101230.231449-1.jar" MVN="mvn:org.talend.libraries/d08b-mapping-1.4-20101230.231449-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d08b-mapping-1.4-20101230.231449-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d09a-mapping-1.4" MODULE="d09a-mapping-1.4-20101230.233910-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d09a-mapping-1.4-20101230.233910-1.jar"
+			<IMPORT NAME="d09a-mapping-1.4" MODULE="d09a-mapping-1.4-20101230.233910-1.jar" MVN="mvn:org.talend.libraries/d09a-mapping-1.4-20101230.233910-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d09a-mapping-1.4-20101230.233910-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d09b-mapping-1.4" MODULE="d09b-mapping-1.4-20101231.000627-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d09b-mapping-1.4-20101231.000627-1.jar"
+			<IMPORT NAME="d09b-mapping-1.4" MODULE="d09b-mapping-1.4-20101231.000627-1.jar" MVN="mvn:org.talend.libraries/d09b-mapping-1.4-20101231.000627-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d09b-mapping-1.4-20101231.000627-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d93a-mapping-1.4" MODULE="d93a-mapping-1.4-20101231.003027-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d93a-mapping-1.4-20101231.003027-1.jar"
+			<IMPORT NAME="d93a-mapping-1.4" MODULE="d93a-mapping-1.4-20101231.003027-1.jar" MVN="mvn:org.talend.libraries/d93a-mapping-1.4-20101231.003027-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d93a-mapping-1.4-20101231.003027-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d94a-mapping-1.4" MODULE="d94a-mapping-1.4-20101231.004159-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d94a-mapping-1.4-20101231.004159-1.jar"
+			<IMPORT NAME="d94a-mapping-1.4" MODULE="d94a-mapping-1.4-20101231.004159-1.jar" MVN="mvn:org.talend.libraries/d94a-mapping-1.4-20101231.004159-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d94a-mapping-1.4-20101231.004159-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d94b-mapping-1.4" MODULE="d94b-mapping-1.4-20101231.005548-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d94b-mapping-1.4-20101231.005548-1.jar"
+			<IMPORT NAME="d94b-mapping-1.4" MODULE="d94b-mapping-1.4-20101231.005548-1.jar" MVN="mvn:org.talend.libraries/d94b-mapping-1.4-20101231.005548-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d94b-mapping-1.4-20101231.005548-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d95a-mapping-1.4" MODULE="d95a-mapping-1.4-20101231.010614-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d95a-mapping-1.4-20101231.010614-1.jar"
+			<IMPORT NAME="d95a-mapping-1.4" MODULE="d95a-mapping-1.4-20101231.010614-1.jar" MVN="mvn:org.talend.libraries/d95a-mapping-1.4-20101231.010614-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d95a-mapping-1.4-20101231.010614-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d95b-mapping-1.4" MODULE="d95b-mapping-1.4-20101231.012144-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d95b-mapping-1.4-20101231.012144-1.jar"
+			<IMPORT NAME="d95b-mapping-1.4" MODULE="d95b-mapping-1.4-20101231.012144-1.jar" MVN="mvn:org.talend.libraries/d95b-mapping-1.4-20101231.012144-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d95b-mapping-1.4-20101231.012144-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d96a-mapping-1.4" MODULE="d96a-mapping-1.4-20101231.013900-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d96a-mapping-1.4-20101231.013900-1.jar"
+			<IMPORT NAME="d96a-mapping-1.4" MODULE="d96a-mapping-1.4-20101231.013900-1.jar" MVN="mvn:org.talend.libraries/d96a-mapping-1.4-20101231.013900-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d96a-mapping-1.4-20101231.013900-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d96b-mapping-1.4" MODULE="d96b-mapping-1.4-20101231.015118-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d96b-mapping-1.4-20101231.015118-1.jar"
+			<IMPORT NAME="d96b-mapping-1.4" MODULE="d96b-mapping-1.4-20101231.015118-1.jar" MVN="mvn:org.talend.libraries/d96b-mapping-1.4-20101231.015118-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d96b-mapping-1.4-20101231.015118-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d97a-mapping-1.4" MODULE="d97a-mapping-1.4-20101231.020712-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d97a-mapping-1.4-20101231.020712-1.jar"
+			<IMPORT NAME="d97a-mapping-1.4" MODULE="d97a-mapping-1.4-20101231.020712-1.jar" MVN="mvn:org.talend.libraries/d97a-mapping-1.4-20101231.020712-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d97a-mapping-1.4-20101231.020712-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d97b-mapping-1.4" MODULE="d97b-mapping-1.4-20101231.022307-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d97b-mapping-1.4-20101231.022307-1.jar"
+			<IMPORT NAME="d97b-mapping-1.4" MODULE="d97b-mapping-1.4-20101231.022307-1.jar" MVN="mvn:org.talend.libraries/d97b-mapping-1.4-20101231.022307-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d97b-mapping-1.4-20101231.022307-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d98a-mapping-1.4" MODULE="d98a-mapping-1.4-20101231.023634-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d98a-mapping-1.4-20101231.023634-1.jar"
+			<IMPORT NAME="d98a-mapping-1.4" MODULE="d98a-mapping-1.4-20101231.023634-1.jar" MVN="mvn:org.talend.libraries/d98a-mapping-1.4-20101231.023634-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d98a-mapping-1.4-20101231.023634-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d98b-mapping-1.4" MODULE="d98b-mapping-1.4-20101231.025003-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d98b-mapping-1.4-20101231.025003-1.jar"
+			<IMPORT NAME="d98b-mapping-1.4" MODULE="d98b-mapping-1.4-20101231.025003-1.jar" MVN="mvn:org.talend.libraries/d98b-mapping-1.4-20101231.025003-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d98b-mapping-1.4-20101231.025003-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d99a-mapping-1.4" MODULE="d99a-mapping-1.4-20101231.030914-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d99a-mapping-1.4-20101231.030914-1.jar"
+			<IMPORT NAME="d99a-mapping-1.4" MODULE="d99a-mapping-1.4-20101231.030914-1.jar" MVN="mvn:org.talend.libraries/d99a-mapping-1.4-20101231.030914-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d99a-mapping-1.4-20101231.030914-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="d99b-mapping-1.4" MODULE="d99b-mapping-1.4-20101231.032348-1.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d99b-mapping-1.4-20101231.032348-1.jar"
+			<IMPORT NAME="d99b-mapping-1.4" MODULE="d99b-mapping-1.4-20101231.032348-1.jar" MVN="mvn:org.talend.libraries/d99b-mapping-1.4-20101231.032348-1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/d99b-mapping-1.4-20101231.032348-1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="mylin-smooks" MODULE="milyn-smooks-all-1.4.jar" UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/milyn-smooks-all-1.4.jar"
+			<IMPORT NAME="mylin-smooks" MODULE="milyn-smooks-all-1.4.jar" MVN="mvn:org.talend.libraries/milyn-smooks-all-1.4/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.edifact/lib/milyn-smooks-all-1.4.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="jaxen" MODULE="jaxen-1.1.1.jar" UrlPath="platform:/plugin/org.talend.libraries.dom4j-jaxen/lib/jaxen-1.1.1.jar" BundleID="org.apache.servicemix.bundles.jaxen"
+			<IMPORT NAME="jaxen" MODULE="jaxen-1.1.1.jar" MVN="mvn:org.talend.libraries/jaxen-1.1.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.dom4j-jaxen/lib/jaxen-1.1.1.jar" BundleID="org.apache.servicemix.bundles.jaxen"
 				REQUIRED="true" />
-			<IMPORT NAME="commons-logging" MODULE="commons-logging-1.1.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-logging-1.1.jar"
+			<IMPORT NAME="commons-logging" MODULE="commons-logging-1.1.jar" MVN="mvn:org.talend.libraries/commons-logging-1.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-logging-1.1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="commons-collections" MODULE="commons-collections-3.1.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-collections-3.1.jar"
+			<IMPORT NAME="commons-collections" MODULE="commons-collections-3.1.jar" MVN="mvn:org.talend.libraries/commons-collections-3.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-collections-3.1.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="commons-lang" MODULE="commons-lang-2.6.jar" UrlPath="platform:/base/plugins/org.apache.commons.lang_2.6.0.v201404270220.jar"
+			<IMPORT NAME="commons-lang" MODULE="commons-lang-2.6.jar" MVN="mvn:org.talend.libraries/commons-lang-2.6/6.0.0"  UrlPath="platform:/base/plugins/org.apache.commons.lang_2.6.0.v201404270220.jar"
 				REQUIRED="true" />
-			<IMPORT NAME="dom4j" MODULE="dom4j-1.6.1.jar" UrlPath="platform:/plugin/org.talend.libraries.dom4j-jaxen/lib/dom4j-1.6.1.jar" BundleID="org.apache.servicemix.bundles.dom4j"
+			<IMPORT NAME="dom4j" MODULE="dom4j-1.6.1.jar" MVN="mvn:org.talend.libraries/dom4j-1.6.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.dom4j-jaxen/lib/dom4j-1.6.1.jar" BundleID="org.apache.servicemix.bundles.dom4j"
 				REQUIRED="true" />
 	</IMPORTS>
   </CODEGENERATION>

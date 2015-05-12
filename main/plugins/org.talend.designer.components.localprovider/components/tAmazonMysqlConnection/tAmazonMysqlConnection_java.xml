@@ -161,8 +161,8 @@
 
   <CODEGENERATION>
      <IMPORTS>
-       <IMPORT NAME="Driver-MysqlConnector" MODULE="mysql-connector-java-5.1.30-bin.jar" REQUIRED_IF="DB_VERSION == 'MYSQL_5'" />
-       <IMPORT NAME="Driver-MysqlConnector_Old" MODULE="mysql-connector-java-5.1.0-bin.jar" REQUIRED="false" />
+       <IMPORT NAME="Driver-MysqlConnector" MODULE="mysql-connector-java-5.1.30-bin.jar" MVN="mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0"  REQUIRED_IF="DB_VERSION == 'MYSQL_5'" />
+       <IMPORT NAME="Driver-MysqlConnector_Old" MODULE="mysql-connector-java-5.1.0-bin.jar" MVN="mvn:org.talend.libraries/mysql-connector-java-5.1.0-bin/6.0.0"  REQUIRED="false" />
      </IMPORTS>
     </CODEGENERATION>
    <RETURNS/>

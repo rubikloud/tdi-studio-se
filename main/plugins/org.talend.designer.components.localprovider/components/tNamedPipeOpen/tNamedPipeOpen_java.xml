@@ -71,9 +71,9 @@
 	
 	<CODEGENERATION> 
 		<IMPORTS> 
-			<IMPORT MODULE="namedpipe-1.0.jar" NAME="namedpipe-1.0.jar" REQUIRED="true"/> 
-			<IMPORT MODULE="namedpipe_jni_64bit.dll" NAME="namedpipe_jni_64bit.dll" REQUIRED="false"/> 
-			<IMPORT MODULE="namedpipe_jni.dll" NAME="namedpipe_jni.dll" REQUIRED="false"/> 
+			<IMPORT MODULE="namedpipe-1.0.jar" MVN="mvn:org.talend.libraries/namedpipe-1.0/6.0.0"  NAME="namedpipe-1.0.jar" REQUIRED="true"/> 
+			<IMPORT MODULE="namedpipe_jni_64bit.dll" MVN="mvn:org.talend.libraries/namedpipe_jni_64bit/6.0.0"  NAME="namedpipe_jni_64bit.dll" REQUIRED="false"/> 
+			<IMPORT MODULE="namedpipe_jni.dll" MVN="mvn:org.talend.libraries/namedpipe_jni/6.0.0"  NAME="namedpipe_jni.dll" REQUIRED="false"/> 
 		</IMPORTS> 
 	</CODEGENERATION>
 	

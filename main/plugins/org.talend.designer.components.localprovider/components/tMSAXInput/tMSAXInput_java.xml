@@ -179,15 +179,15 @@
 
    <CODEGENERATION>
      <IMPORTS>
-       <IMPORT NAME="MSAX-JInterop" MODULE="a-j-interop.jar" UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/a-j-interop.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'"/>
-       <IMPORT NAME="MSAX-Iwonbat" MODULE="b-iwombat.jar" UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/b-iwombat.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'"/>
-       <IMPORT NAME="MSAX-Jarapac" MODULE="b-jarapac.jar" UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/b-jarapac.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'"/>
-       <IMPORT NAME="MSAX-Jcifs" MODULE="b-jcifs-1.2.9.jar" UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/b-jcifs-1.2.9.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'"/>
-       <IMPORT NAME="MSAX-Jcifs-ntlm-auth" MODULE="b-jcifs-ntlm-auth.jar" UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/b-jcifs-ntlm-auth.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'"/>
-       <IMPORT NAME="MSAX-Ncacn_ip_tcp" MODULE="b-ncacn_ip_tcp.jar" UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/b-ncacn_ip_tcp.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'" />
-       <IMPORT NAME="MSAX-Ncacn_np" MODULE="b-ncacn_np.jar" UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/b-ncacn_np.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'"/>
-       <IMPORT NAME="MSAX-Ntlm-securityt" MODULE="b-ntlm-security.jar" UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/b-ntlm-security.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'"/>
-       <IMPORT NAME="MSAX-NET-CONNECTOR" MODULE="janet-java-1.0.jar" UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/janet-java-1.0.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DOTNET'"/>
+       <IMPORT NAME="MSAX-JInterop" MODULE="a-j-interop.jar" MVN="mvn:org.talend.libraries/a-j-interop/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/a-j-interop.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'"/>
+       <IMPORT NAME="MSAX-Iwonbat" MODULE="b-iwombat.jar" MVN="mvn:org.talend.libraries/b-iwombat/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/b-iwombat.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'"/>
+       <IMPORT NAME="MSAX-Jarapac" MODULE="b-jarapac.jar" MVN="mvn:org.talend.libraries/b-jarapac/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/b-jarapac.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'"/>
+       <IMPORT NAME="MSAX-Jcifs" MODULE="b-jcifs-1.2.9.jar" MVN="mvn:org.talend.libraries/b-jcifs-1.2.9/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/b-jcifs-1.2.9.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'"/>
+       <IMPORT NAME="MSAX-Jcifs-ntlm-auth" MODULE="b-jcifs-ntlm-auth.jar" MVN="mvn:org.talend.libraries/b-jcifs-ntlm-auth/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/b-jcifs-ntlm-auth.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'"/>
+       <IMPORT NAME="MSAX-Ncacn_ip_tcp" MODULE="b-ncacn_ip_tcp.jar" MVN="mvn:org.talend.libraries/b-ncacn_ip_tcp/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/b-ncacn_ip_tcp.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'" />
+       <IMPORT NAME="MSAX-Ncacn_np" MODULE="b-ncacn_np.jar" MVN="mvn:org.talend.libraries/b-ncacn_np/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/b-ncacn_np.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'"/>
+       <IMPORT NAME="MSAX-Ntlm-securityt" MODULE="b-ntlm-security.jar" MVN="mvn:org.talend.libraries/b-ntlm-security/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/b-ntlm-security.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DCOM'"/>
+       <IMPORT NAME="MSAX-NET-CONNECTOR" MODULE="janet-java-1.0.jar" MVN="mvn:org.talend.libraries/janet-java-1.0/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/janet-java-1.0.jar" REQUIRED="false" REQUIRED_IF="CONNECTION_TYPE == 'DOTNET'"/>
      </IMPORTS>
    </CODEGENERATION>
 

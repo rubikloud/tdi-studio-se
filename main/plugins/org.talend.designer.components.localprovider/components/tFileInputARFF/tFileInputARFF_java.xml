@@ -74,7 +74,7 @@
 
   <CODEGENERATION>
     <IMPORTS>
-      <IMPORT NAME="WEKA" MODULE="weka.jar" REQUIRED="true" />
+      <IMPORT NAME="WEKA" MODULE="weka.jar" MVN="mvn:org.talend.libraries/weka/6.0.0"  REQUIRED="true" />
     </IMPORTS>
   </CODEGENERATION>
 

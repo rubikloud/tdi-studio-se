@@ -210,7 +210,7 @@
 
   <CODEGENERATION>
     <IMPORTS>
-    	<IMPORT NAME="Driver-jTDS" MODULE="jtds-1.2.5.jar" UrlPath="platform:/plugin/org.talend.libraries.jdbc.jtds/lib/jtds-1.2.5.jar" REQUIRED="true" />
+    	<IMPORT NAME="Driver-jTDS" MODULE="jtds-1.2.5.jar" MVN="mvn:org.talend.libraries/jtds-1.2.5/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jdbc.jtds/lib/jtds-1.2.5.jar" REQUIRED="true" />
     </IMPORTS>
   </CODEGENERATION>
 

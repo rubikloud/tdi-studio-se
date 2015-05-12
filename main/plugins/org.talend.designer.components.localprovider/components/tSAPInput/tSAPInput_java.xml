@@ -220,12 +220,12 @@
   </ADVANCED_PARAMETERS>
   <CODEGENERATION>
     <IMPORTS>
-      <IMPORT NAME="sapjco-ntintel-2.1.8" MODULE="sapjco.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false' and DB_VERSION == 'sapjco.jar')" BundleID="" />       
-      <IMPORT NAME="sapjco-ntintel-3" MODULE="sapjco3.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false' and DB_VERSION == 'sapjco3.jar')" BundleID="" />
-      <IMPORT NAME="talend-sap" MODULE="talend-sap.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false' and DB_VERSION == 'sapjco3.jar')" />
-      <IMPORT NAME="sap-api.jar" MODULE="sap-api.jar" UrlPath="platform:/plugin/org.talend.libraries.sap/lib/sap-api.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false' and DB_VERSION == 'sapjco3.jar')" />
-      <IMPORT NAME="sap-impl.jar" MODULE="sap-impl.jar" UrlPath="platform:/plugin/org.talend.libraries.sap/lib/sap-impl.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false' and DB_VERSION == 'sapjco3.jar')" />
-      <IMPORT NAME="Java_DOM4J1.6" MODULE="dom4j-1.6.1.jar" BundleID="org.apache.servicemix.bundles.dom4j" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false' and DB_VERSION == 'sapjco3.jar')" />   
+      <IMPORT NAME="sapjco-ntintel-2.1.8" MODULE="sapjco.jar" MVN="mvn:org.talend.libraries/sapjco/6.0.0"  REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false' and DB_VERSION == 'sapjco.jar')" BundleID="" />       
+      <IMPORT NAME="sapjco-ntintel-3" MODULE="sapjco3.jar" MVN="mvn:org.talend.libraries/sapjco3/6.0.0"  REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false' and DB_VERSION == 'sapjco3.jar')" BundleID="" />
+      <IMPORT NAME="talend-sap" MODULE="talend-sap.jar" MVN="mvn:org.talend.libraries/talend-sap/6.0.0"  REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false' and DB_VERSION == 'sapjco3.jar')" />
+      <IMPORT NAME="sap-api.jar" MODULE="sap-api.jar" MVN="mvn:org.talend.libraries/sap-api/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.sap/lib/sap-api.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false' and DB_VERSION == 'sapjco3.jar')" />
+      <IMPORT NAME="sap-impl.jar" MODULE="sap-impl.jar" MVN="mvn:org.talend.libraries/sap-impl/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.sap/lib/sap-impl.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false' and DB_VERSION == 'sapjco3.jar')" />
+      <IMPORT NAME="Java_DOM4J1.6" MODULE="dom4j-1.6.1.jar" MVN="mvn:org.talend.libraries/dom4j-1.6.1/6.0.0"  BundleID="org.apache.servicemix.bundles.dom4j" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false' and DB_VERSION == 'sapjco3.jar')" />   
     </IMPORTS>
   </CODEGENERATION>
   

@@ -268,9 +268,9 @@
       <TEMPLATE_PARAM SOURCE="self.INCLUDEHEADER"  TARGET="Out.INCLUDEHEADER" />
     </TEMPLATES>
     <IMPORTS>
-        <IMPORT NAME="Driver-Teradata" MODULE="terajdbc4.jar" UrlPath="platform:/plugin/org.talend.libraries.jdbc.teradata/lib/terajdbc4.jar"
+        <IMPORT NAME="Driver-Teradata" MODULE="terajdbc4.jar" MVN="mvn:org.talend.libraries/terajdbc4/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jdbc.teradata/lib/terajdbc4.jar"
                 REQUIRED_IF="IS_VIRTUAL_COMPONENT=='true'" />
-        <IMPORT NAME="Driver-Teradata" MODULE="tdgssconfig.jar" UrlPath="platform:/plugin/org.talend.libraries.jdbc.teradata/lib/tdgssconfig.jar"
+        <IMPORT NAME="Driver-Teradata" MODULE="tdgssconfig.jar" MVN="mvn:org.talend.libraries/tdgssconfig/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jdbc.teradata/lib/tdgssconfig.jar"
                 REQUIRED_IF="IS_VIRTUAL_COMPONENT=='true'" />
     </IMPORTS>
   </CODEGENERATION>

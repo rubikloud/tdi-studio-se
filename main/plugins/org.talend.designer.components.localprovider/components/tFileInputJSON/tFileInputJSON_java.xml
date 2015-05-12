@@ -138,35 +138,35 @@
 	<CODEGENERATION>
 		<IMPORTS>
 			<!-- json path by javascript api -->
-			<IMPORT NAME="json_simple" MODULE="json_simple-1.1.jar" UrlPath="platform:/plugin/org.talend.libraries.jackson/lib/json_simple-1.1.jar"
+			<IMPORT NAME="json_simple" MODULE="json_simple-1.1.jar" MVN="mvn:org.talend.libraries/json_simple-1.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jackson/lib/json_simple-1.1.jar"
 				REQUIRED_IF="(READ_BY == 'JSONPATH_WITHOUTPUT_LOOP')" />
-			<IMPORT NAME="jsonpath" MODULE="jsonpath.jar" UrlPath="platform:/plugin/org.talend.libraries.jackson/lib/jsonpath.jar" REQUIRED_IF="(READ_BY == 'JSONPATH_WITHOUTPUT_LOOP')" />
+			<IMPORT NAME="jsonpath" MODULE="jsonpath.jar" MVN="mvn:org.talend.libraries/jsonpath/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jackson/lib/jsonpath.jar" REQUIRED_IF="(READ_BY == 'JSONPATH_WITHOUTPUT_LOOP')" />
 			
 			<!-- xpath -->
-			<IMPORT NAME="Java_DOM4J1.6" MODULE="dom4j-1.6.1.jar" UrlPath="platform:/plugin/org.talend.libraries.dom4j-jaxen/lib/dom4j-1.6.1.jar"
+			<IMPORT NAME="Java_DOM4J1.6" MODULE="dom4j-1.6.1.jar" MVN="mvn:org.talend.libraries/dom4j-1.6.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.dom4j-jaxen/lib/dom4j-1.6.1.jar"
 				REQUIRED_IF="(READ_BY == 'XPATH')" />
-			<IMPORT NAME="Java_JAXEN1.1" MODULE="jaxen-1.1.1.jar" UrlPath="platform:/plugin/org.talend.libraries.dom4j-jaxen/lib/jaxen-1.1.1.jar"
+			<IMPORT NAME="Java_JAXEN1.1" MODULE="jaxen-1.1.1.jar" MVN="mvn:org.talend.libraries/jaxen-1.1.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.dom4j-jaxen/lib/jaxen-1.1.1.jar"
 				REQUIRED_IF="(READ_BY == 'XPATH')" />
-			<IMPORT NAME="json-lib" MODULE="json-lib-2.4-jdk15.jar" UrlPath="platform:/plugin/org.talend.libraries.jackson/lib/json-lib-2.4-jdk15.jar"
+			<IMPORT NAME="json-lib" MODULE="json-lib-2.4-jdk15.jar" MVN="mvn:org.talend.libraries/json-lib-2.4-jdk15/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jackson/lib/json-lib-2.4-jdk15.jar"
 				REQUIRED_IF="(READ_BY == 'XPATH')" />
-			<IMPORT NAME="commons_lang" MODULE="commons-lang-2.6.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang-2.6.jar"
+			<IMPORT NAME="commons_lang" MODULE="commons-lang-2.6.jar" MVN="mvn:org.talend.libraries/commons-lang-2.6/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang-2.6.jar"
 				REQUIRED_IF="(READ_BY == 'XPATH')" />
-			<IMPORT NAME="commons_logging" MODULE="commons-logging-1.1.1.jar" UrlPath="platform:/base/plugins/org.apache.commons.logging_1.1.1.v201101211721.jar"
+			<IMPORT NAME="commons_logging" MODULE="commons-logging-1.1.1.jar" MVN="mvn:org.talend.libraries/commons-logging-1.1.1/6.0.0"  UrlPath="platform:/base/plugins/org.apache.commons.logging_1.1.1.v201101211721.jar"
 				REQUIRED_IF="(READ_BY == 'XPATH')" />
-			<IMPORT NAME="ezmorph" MODULE="ezmorph-1.0.6.jar" UrlPath="platform:/plugin/org.talend.libraries.jackson/lib/ezmorph-1.0.6.jar" REQUIRED_IF="(READ_BY == 'XPATH')" />
-			<IMPORT NAME="xom" MODULE="xom-1.2.7.jar" REQUIRED_IF="(READ_BY == 'XPATH')" />
-			<IMPORT NAME="commons_beanutils" MODULE="commons-beanutils-1.8.3.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-beanutils-1.8.3.jar"
+			<IMPORT NAME="ezmorph" MODULE="ezmorph-1.0.6.jar" MVN="mvn:org.talend.libraries/ezmorph-1.0.6/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jackson/lib/ezmorph-1.0.6.jar" REQUIRED_IF="(READ_BY == 'XPATH')" />
+			<IMPORT NAME="xom" MODULE="xom-1.2.7.jar" MVN="mvn:org.talend.libraries/xom-1.2.7/6.0.0"  REQUIRED_IF="(READ_BY == 'XPATH')" />
+			<IMPORT NAME="commons_beanutils" MODULE="commons-beanutils-1.8.3.jar" MVN="mvn:org.talend.libraries/commons-beanutils-1.8.3/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-beanutils-1.8.3.jar"
 				REQUIRED_IF="(READ_BY == 'XPATH')" />
-			<IMPORT NAME="commons_collections" MODULE="commons-collections-3.2.1.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-collections-3.2.1.jar"
+			<IMPORT NAME="commons_collections" MODULE="commons-collections-3.2.1.jar" MVN="mvn:org.talend.libraries/commons-collections-3.2.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-collections-3.2.1.jar"
 				REQUIRED_IF="(READ_BY == 'XPATH')" />
-			<IMPORT NAME="staxon" MODULE="staxon-1.2.jar" REQUIRED_IF="(READ_BY == 'XPATH')" />
+			<IMPORT NAME="staxon" MODULE="staxon-1.2.jar" MVN="mvn:org.talend.libraries/staxon-1.2/6.0.0"  REQUIRED_IF="(READ_BY == 'XPATH')" />
 			
 			<!-- json path -->
-			<IMPORT NAME="json-path-1.2.0.jar" MODULE="json-path-1.2.0.jar" REQUIRED_IF="(READ_BY == 'JSONPATH')" />
-            <IMPORT NAME="json-smart-2.1.0.jar" MODULE="json-smart-2.1.0.jar" REQUIRED_IF="(READ_BY == 'JSONPATH')" />
-            <IMPORT NAME="asm-1.0.2.jar" MODULE="asm-1.0.2.jar" REQUIRED_IF="(READ_BY == 'JSONPATH')" />
-            <IMPORT NAME="slf4j-api-1.7.5.jar" MODULE="slf4j-api-1.7.5.jar" UrlPath="platform:/plugin/org.talend.libraries.slf4j/lib/slf4j-api-1.7.5.jar" REQUIRED_IF="(READ_BY == 'JSONPATH')" />
-            <IMPORT NAME="slf4j-log4j12-1.7.5.jar" MODULE="slf4j-log4j12-1.7.5.jar" UrlPath="platform:/plugin/org.talend.libraries.slf4j/lib/slf4j-log4j12-1.7.5.jar" REQUIRED_IF="(READ_BY == 'JSONPATH')" />
+			<IMPORT NAME="json-path-1.2.0.jar" MODULE="json-path-1.2.0.jar" MVN="mvn:org.talend.libraries/json-path-1.2.0/6.0.0"  REQUIRED_IF="(READ_BY == 'JSONPATH')" />
+            <IMPORT NAME="json-smart-2.1.0.jar" MODULE="json-smart-2.1.0.jar" MVN="mvn:org.talend.libraries/json-smart-2.1.0/6.0.0"  REQUIRED_IF="(READ_BY == 'JSONPATH')" />
+            <IMPORT NAME="asm-1.0.2.jar" MODULE="asm-1.0.2.jar" MVN="mvn:org.talend.libraries/asm-1.0.2/6.0.0"  REQUIRED_IF="(READ_BY == 'JSONPATH')" />
+            <IMPORT NAME="slf4j-api-1.7.5.jar" MODULE="slf4j-api-1.7.5.jar" MVN="mvn:org.talend.libraries/slf4j-api-1.7.5/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.slf4j/lib/slf4j-api-1.7.5.jar" REQUIRED_IF="(READ_BY == 'JSONPATH')" />
+            <IMPORT NAME="slf4j-log4j12-1.7.5.jar" MODULE="slf4j-log4j12-1.7.5.jar" MVN="mvn:org.talend.libraries/slf4j-log4j12-1.7.5/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.slf4j/lib/slf4j-log4j12-1.7.5.jar" REQUIRED_IF="(READ_BY == 'JSONPATH')" />
 		</IMPORTS>
 	</CODEGENERATION>
 

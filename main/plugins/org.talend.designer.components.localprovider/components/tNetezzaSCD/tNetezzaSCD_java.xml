@@ -526,7 +526,7 @@
 
   <CODEGENERATION>
      <IMPORTS>
-       <IMPORT NAME="Driver-Netezza" MODULE="nzjdbc.jar" REQUIRED="true" />
+       <IMPORT NAME="Driver-Netezza" MODULE="nzjdbc.jar" MVN="mvn:org.talend.libraries/nzjdbc/6.0.0"  REQUIRED="true" />
      </IMPORTS>
   </CODEGENERATION>
    

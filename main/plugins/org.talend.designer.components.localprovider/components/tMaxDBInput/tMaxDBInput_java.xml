@@ -161,7 +161,7 @@
 
    <CODEGENERATION>
      <IMPORTS>
-		<IMPORT NAME="MaxDB_Driver" MODULE="sapdbc.jar" REQUIRED="true" />
+		<IMPORT NAME="MaxDB_Driver" MODULE="sapdbc.jar" MVN="mvn:org.talend.libraries/sapdbc/6.0.0"  REQUIRED="true" />
      </IMPORTS>
    </CODEGENERATION>
 

@@ -97,7 +97,7 @@
 	</ADVANCED_PARAMETERS>	
 	<CODEGENERATION>
 		<IMPORTS>
-			<IMPORT NAME="Java Message Service" MODULE="jms.jar" UrlPath="platform:/plugin/org.talend.libraries.esb.ext/lib/jms.jar" REQUIRED="true" />
+			<IMPORT NAME="Java Message Service" MODULE="jms.jar" MVN="mvn:org.talend.libraries/jms/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.esb.ext/lib/jms.jar" REQUIRED="true" />
 		</IMPORTS>
 	</CODEGENERATION>
 	<RETURNS>

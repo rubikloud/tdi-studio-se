@@ -111,33 +111,33 @@
 
   <CODEGENERATION>
 	<IMPORTS>
-      <IMPORT NAME="Talend_CSV" MODULE="talendcsv.jar" UrlPath="platform:/plugin/org.talend.libraries.csv/lib/talendcsv.jar" REQUIRED="true" />
-      <IMPORT NAME="Jasper" MODULE="jasperreports-3.7.3.jar" REQUIRED="true" />
-      <IMPORT NAME="Barcode4j" MODULE="barcode4j-2.0.jar" REQUIRED="true" />
-	  <IMPORT NAME="BatikBridge" MODULE="batik-bridge-1.7.jar" UrlPath="platform:/base/plugins/org.apache.batik.bridge_1.7.0.v201011041433.jar" REQUIRED="true" />
-	  <IMPORT NAME="BatikSsvgDom" MODULE="batik-svg-dom-1.7.jar" UrlPath="platform:/base/plugins/org.apache.batik.dom.svg_1.7.0.v201011041433.jar" REQUIRED="true" />
-	  <IMPORT NAME="BatikDom" MODULE="batik-dom-1.7.jar" UrlPath="platform:/base/plugins/org.apache.batik.dom_1.7.0.v201011041433.jar" REQUIRED="true" />
-	  <IMPORT NAME="BatikUtil" MODULE="batik-util-1.7.jar" UrlPath="platform:/base/plugins/org.apache.batik.util_1.7.0.v201011041433.jar" REQUIRED="true" />
-	  <IMPORT NAME="BatikCSS" MODULE="batik-css-1.7.jar" UrlPath="platform:/base/plugins/org.apache.batik.css_1.7.0.v201011041433.jar" REQUIRED="true" />
-	  <IMPORT NAME="BatikExt" MODULE="batik-ext-1.7.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.batik/lib/batik-ext-1.7.jar" REQUIRED="true" />
-	  <IMPORT NAME="BatikXml" MODULE="batik-xml-1.7.jar" UrlPath="platform:/base/plugins/org.apache.batik.xml_1.7.0.v201011041433.jar" REQUIRED="true" />
-	  <IMPORT NAME="BatikParser" MODULE="batik-parser-1.7.jar" UrlPath="platform:/base/plugins/org.apache.batik.parser_1.7.0.v201011041433.jar" REQUIRED="true" />
-	  <IMPORT NAME="BatikAdmin" MODULE="batik-anim-1.7.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.batik/lib/batik-anim-1.7.jar" REQUIRED="true" />
-	  <IMPORT NAME="BatikScript" MODULE="batik-script-1.7.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.batik/lib/batik-script-1.7.jar" REQUIRED="true" />
-	  <IMPORT NAME="BatikGvt" MODULE="batik-gvt-1.7.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.batik/lib/batik-gvt-1.7.jar" REQUIRED="true" />
-	  <IMPORT NAME="BatikAwt" MODULE="batik-awt-util-1.7.jar" UrlPath="platform:/base/plugins/org.apache.batik.ext.awt_1.7.0.v201011041433.jar" REQUIRED="true" />
-	  <IMPORT NAME="BatikSvggen" MODULE="batik-svggen-1.7.jar" UrlPath="platform:/base/plugins/org.apache.batik.svggen_1.7.0.v201011041433.jar" REQUIRED="true" />
-	  <IMPORT NAME="XmlApisExt" MODULE="xml-apis-ext-1.4.jar" UrlPath="platform:/plugin/org.talend.libraries.xml/lib/xml-apis-ext-1.4.jar" REQUIRED="true" />
-	  <IMPORT NAME="Barbecue" MODULE="barbecue-1.5-beta1.jar" REQUIRED="true" />
-	  <IMPORT NAME="CommonsDigester" MODULE="commons-digester-1.7.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-digester-1.7.jar" REQUIRED="true" />
-	  <IMPORT NAME="JdtCompiler" MODULE="jdt-compiler-3.1.1.jar" UrlPath="platform:/plugin/org.talend.libraries.jasperreport/lib/jdt-compiler-3.1.1.jar" REQUIRED="true" />
-	  <IMPORT NAME="CommonsCollections" MODULE="commons-collections-3.2.jar" UrlPath="platform:/base/plugins/org.apache.commons.collections_3.2.0.v2013030210310.jar" REQUIRED="true" />
-	  <IMPORT NAME="CommonsLogging" MODULE="commons-logging-1.1.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-logging-1.1.jar" REQUIRED="true" />
-	  <IMPORT NAME="CommonsBeanutils" MODULE="commons-beanutils-1.7.jar" UrlPath="platform:/base/plugins/org.apache.commons.beanutils_1.7.0.v200902170505.jar" REQUIRED="true" />
-	  <IMPORT NAME="Itext" MODULE="iText-2.1.7.jar" REQUIRED="true" />
-	  <IMPORT NAME="Poi" MODULE="poi-3.6.jar" UrlPath="platform:/plugin/org.talend.libraries.excel/lib/poi-3.6.jar" REQUIRED="true" />
-	  <IMPORT NAME="Jfreechart" MODULE="jfreechart-1.0.13.jar" UrlPath="platform:/plugin/org.talend.libraries.jfreechart/lib/jfreechart-1.0.13.jar" REQUIRED="true" />
-	  <IMPORT NAME="Jcommon" MODULE="jcommon-1.0.6.jar" REQUIRED="true" />
+      <IMPORT NAME="Talend_CSV" MODULE="talendcsv.jar" MVN="mvn:org.talend.libraries/talendcsv/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.csv/lib/talendcsv.jar" REQUIRED="true" />
+      <IMPORT NAME="Jasper" MODULE="jasperreports-3.7.3.jar" MVN="mvn:org.talend.libraries/jasperreports-3.7.3/6.0.0"  REQUIRED="true" />
+      <IMPORT NAME="Barcode4j" MODULE="barcode4j-2.0.jar" MVN="mvn:org.talend.libraries/barcode4j-2.0/6.0.0"  REQUIRED="true" />
+	  <IMPORT NAME="BatikBridge" MODULE="batik-bridge-1.7.jar" MVN="mvn:org.talend.libraries/batik-bridge-1.7/6.0.0"  UrlPath="platform:/base/plugins/org.apache.batik.bridge_1.7.0.v201011041433.jar" REQUIRED="true" />
+	  <IMPORT NAME="BatikSsvgDom" MODULE="batik-svg-dom-1.7.jar" MVN="mvn:org.talend.libraries/batik-svg-dom-1.7/6.0.0"  UrlPath="platform:/base/plugins/org.apache.batik.dom.svg_1.7.0.v201011041433.jar" REQUIRED="true" />
+	  <IMPORT NAME="BatikDom" MODULE="batik-dom-1.7.jar" MVN="mvn:org.talend.libraries/batik-dom-1.7/6.0.0"  UrlPath="platform:/base/plugins/org.apache.batik.dom_1.7.0.v201011041433.jar" REQUIRED="true" />
+	  <IMPORT NAME="BatikUtil" MODULE="batik-util-1.7.jar" MVN="mvn:org.talend.libraries/batik-util-1.7/6.0.0"  UrlPath="platform:/base/plugins/org.apache.batik.util_1.7.0.v201011041433.jar" REQUIRED="true" />
+	  <IMPORT NAME="BatikCSS" MODULE="batik-css-1.7.jar" MVN="mvn:org.talend.libraries/batik-css-1.7/6.0.0"  UrlPath="platform:/base/plugins/org.apache.batik.css_1.7.0.v201011041433.jar" REQUIRED="true" />
+	  <IMPORT NAME="BatikExt" MODULE="batik-ext-1.7.jar" MVN="mvn:org.talend.libraries/batik-ext-1.7/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.batik/lib/batik-ext-1.7.jar" REQUIRED="true" />
+	  <IMPORT NAME="BatikXml" MODULE="batik-xml-1.7.jar" MVN="mvn:org.talend.libraries/batik-xml-1.7/6.0.0"  UrlPath="platform:/base/plugins/org.apache.batik.xml_1.7.0.v201011041433.jar" REQUIRED="true" />
+	  <IMPORT NAME="BatikParser" MODULE="batik-parser-1.7.jar" MVN="mvn:org.talend.libraries/batik-parser-1.7/6.0.0"  UrlPath="platform:/base/plugins/org.apache.batik.parser_1.7.0.v201011041433.jar" REQUIRED="true" />
+	  <IMPORT NAME="BatikAdmin" MODULE="batik-anim-1.7.jar" MVN="mvn:org.talend.libraries/batik-anim-1.7/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.batik/lib/batik-anim-1.7.jar" REQUIRED="true" />
+	  <IMPORT NAME="BatikScript" MODULE="batik-script-1.7.jar" MVN="mvn:org.talend.libraries/batik-script-1.7/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.batik/lib/batik-script-1.7.jar" REQUIRED="true" />
+	  <IMPORT NAME="BatikGvt" MODULE="batik-gvt-1.7.jar" MVN="mvn:org.talend.libraries/batik-gvt-1.7/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.batik/lib/batik-gvt-1.7.jar" REQUIRED="true" />
+	  <IMPORT NAME="BatikAwt" MODULE="batik-awt-util-1.7.jar" MVN="mvn:org.talend.libraries/batik-awt-util-1.7/6.0.0"  UrlPath="platform:/base/plugins/org.apache.batik.ext.awt_1.7.0.v201011041433.jar" REQUIRED="true" />
+	  <IMPORT NAME="BatikSvggen" MODULE="batik-svggen-1.7.jar" MVN="mvn:org.talend.libraries/batik-svggen-1.7/6.0.0"  UrlPath="platform:/base/plugins/org.apache.batik.svggen_1.7.0.v201011041433.jar" REQUIRED="true" />
+	  <IMPORT NAME="XmlApisExt" MODULE="xml-apis-ext-1.4.jar" MVN="mvn:org.talend.libraries/xml-apis-ext-1.4/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.xml/lib/xml-apis-ext-1.4.jar" REQUIRED="true" />
+	  <IMPORT NAME="Barbecue" MODULE="barbecue-1.5-beta1.jar" MVN="mvn:org.talend.libraries/barbecue-1.5-beta1/6.0.0"  REQUIRED="true" />
+	  <IMPORT NAME="CommonsDigester" MODULE="commons-digester-1.7.jar" MVN="mvn:org.talend.libraries/commons-digester-1.7/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-digester-1.7.jar" REQUIRED="true" />
+	  <IMPORT NAME="JdtCompiler" MODULE="jdt-compiler-3.1.1.jar" MVN="mvn:org.talend.libraries/jdt-compiler-3.1.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jasperreport/lib/jdt-compiler-3.1.1.jar" REQUIRED="true" />
+	  <IMPORT NAME="CommonsCollections" MODULE="commons-collections-3.2.jar" MVN="mvn:org.talend.libraries/commons-collections-3.2/6.0.0"  UrlPath="platform:/base/plugins/org.apache.commons.collections_3.2.0.v2013030210310.jar" REQUIRED="true" />
+	  <IMPORT NAME="CommonsLogging" MODULE="commons-logging-1.1.jar" MVN="mvn:org.talend.libraries/commons-logging-1.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-logging-1.1.jar" REQUIRED="true" />
+	  <IMPORT NAME="CommonsBeanutils" MODULE="commons-beanutils-1.7.jar" MVN="mvn:org.talend.libraries/commons-beanutils-1.7/6.0.0"  UrlPath="platform:/base/plugins/org.apache.commons.beanutils_1.7.0.v200902170505.jar" REQUIRED="true" />
+	  <IMPORT NAME="Itext" MODULE="iText-2.1.7.jar" MVN="mvn:org.talend.libraries/iText-2.1.7/6.0.0"  REQUIRED="true" />
+	  <IMPORT NAME="Poi" MODULE="poi-3.6.jar" MVN="mvn:org.talend.libraries/poi-3.6/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.excel/lib/poi-3.6.jar" REQUIRED="true" />
+	  <IMPORT NAME="Jfreechart" MODULE="jfreechart-1.0.13.jar" MVN="mvn:org.talend.libraries/jfreechart-1.0.13/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jfreechart/lib/jfreechart-1.0.13.jar" REQUIRED="true" />
+	  <IMPORT NAME="Jcommon" MODULE="jcommon-1.0.6.jar" MVN="mvn:org.talend.libraries/jcommon-1.0.6/6.0.0"  REQUIRED="true" />
     </IMPORTS>
   </CODEGENERATION>
 

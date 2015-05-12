@@ -213,8 +213,8 @@
 	<CODEGENERATION>
 		<IMPORTS>
 			<IMPORT NAME="Talen File Enhanced"
-				MODULE="talend_file_enhanced_20070724.jar" UrlPath="platform:/plugin/org.talend.libraries.custom/lib/talend_file_enhanced_20070724.jar" REQUIRED="true" />
-			<IMPORT NAME="Talend_CSV" MODULE="talendcsv.jar" UrlPath="platform:/plugin/org.talend.libraries.csv/lib/talendcsv.jar"
+				MODULE="talend_file_enhanced_20070724.jar" MVN="mvn:org.talend.libraries/talend_file_enhanced_20070724/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.custom/lib/talend_file_enhanced_20070724.jar" REQUIRED="true" />
+			<IMPORT NAME="Talend_CSV" MODULE="talendcsv.jar" MVN="mvn:org.talend.libraries/talendcsv/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.csv/lib/talendcsv.jar"
 				REQUIRED="true"  />
 		</IMPORTS>
 	</CODEGENERATION>

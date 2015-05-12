@@ -127,7 +127,7 @@
     <IMPORTS>
       <IMPORT
         NAME="Geo-IP"
-        MODULE="geoip.jar"
+        MODULE="geoip.jar" MVN="mvn:org.talend.libraries/geoip/6.0.0" 
         REQUIRED="true"
       />
     </IMPORTS>

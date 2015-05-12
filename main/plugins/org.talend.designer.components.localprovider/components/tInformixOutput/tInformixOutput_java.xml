@@ -388,12 +388,12 @@
 
   <CODEGENERATION>
      <IMPORTS>
-		<IMPORT NAME="Driver-Informix" MODULE="ifxjdbc.jar" REQUIRED="true" />
-		<IMPORT NAME="Driver-Informix" MODULE="ifxjdbcx.jar" REQUIRED="true" />
-		<IMPORT NAME="Driver-Informix" MODULE="ifxlang.jar" REQUIRED="true" />
-		<IMPORT NAME="Driver-Informix" MODULE="ifxlsupp.jar" REQUIRED="true" />
-		<IMPORT NAME="Driver-Informix" MODULE="ifxsqlj.jar" REQUIRED="true" />
-		<IMPORT NAME="Driver-Informix" MODULE="ifxtools.jar" REQUIRED="true" />
+		<IMPORT NAME="Driver-Informix" MODULE="ifxjdbc.jar" MVN="mvn:org.talend.libraries/ifxjdbc/6.0.0"  REQUIRED="true" />
+		<IMPORT NAME="Driver-Informix" MODULE="ifxjdbcx.jar" MVN="mvn:org.talend.libraries/ifxjdbcx/6.0.0"  REQUIRED="true" />
+		<IMPORT NAME="Driver-Informix" MODULE="ifxlang.jar" MVN="mvn:org.talend.libraries/ifxlang/6.0.0"  REQUIRED="true" />
+		<IMPORT NAME="Driver-Informix" MODULE="ifxlsupp.jar" MVN="mvn:org.talend.libraries/ifxlsupp/6.0.0"  REQUIRED="true" />
+		<IMPORT NAME="Driver-Informix" MODULE="ifxsqlj.jar" MVN="mvn:org.talend.libraries/ifxsqlj/6.0.0"  REQUIRED="true" />
+		<IMPORT NAME="Driver-Informix" MODULE="ifxtools.jar" MVN="mvn:org.talend.libraries/ifxtools/6.0.0"  REQUIRED="true" />
      </IMPORTS>
   </CODEGENERATION>
 

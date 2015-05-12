@@ -306,9 +306,9 @@
 
    <CODEGENERATION>
      <IMPORTS>
-		<IMPORT NAME="Driver-SAS" MODULE="sas.core.jar" REQUIRED="true" />
-		<IMPORT NAME="Driver-SAS" MODULE="sas.svc.connection.jar" REQUIRED="true" />
-		<IMPORT NAME="Driver-SAS" MODULE="sas.security.sspi.jar" REQUIRED="true" />
+		<IMPORT NAME="Driver-SAS" MODULE="sas.core.jar" MVN="mvn:org.talend.libraries/sas.core/6.0.0"  REQUIRED="true" />
+		<IMPORT NAME="Driver-SAS" MODULE="sas.svc.connection.jar" MVN="mvn:org.talend.libraries/sas.svc.connection/6.0.0"  REQUIRED="true" />
+		<IMPORT NAME="Driver-SAS" MODULE="sas.security.sspi.jar" MVN="mvn:org.talend.libraries/sas.security.sspi/6.0.0"  REQUIRED="true" />
      </IMPORTS>
    </CODEGENERATION>
    

@@ -134,14 +134,14 @@
 
 	<CODEGENERATION>
 		<IMPORTS>
-			<IMPORT NAME="activation" MODULE="activation.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.axis2/lib/activation.jar" REQUIRED="true" BundleID="" />
-			<IMPORT NAME="jaxqname" MODULE="jax-qname.jar" UrlPath="platform:/plugin/org.talend.libraries.jax/lib/jax-qname.jar" REQUIRED="true" BundleID="" />
-			<IMPORT NAME="jaxpapi" MODULE="jaxp-api.jar" UrlPath="platform:/plugin/org.talend.libraries.jax/lib/jaxp-api.jar" REQUIRED="true" BundleID="" />
-			<IMPORT NAME="jaxpri" MODULE="jaxp-ri.jar" UrlPath="platform:/plugin/org.talend.libraries.jax/lib/jaxp-ri.jar" REQUIRED="true" BundleID="" />
-			<IMPORT NAME="saajapi" MODULE="saaj-api.jar" UrlPath="platform:/plugin/org.talend.libraries.saaj/lib/saaj-api.jar" REQUIRED="true" BundleID="" />
-			<IMPORT NAME="saajimpl" MODULE="saaj-impl.jar" UrlPath="platform:/plugin/org.talend.libraries.saaj/lib/saaj-impl.jar" REQUIRED="true" BundleID="" />
-			<IMPORT NAME="jdom" MODULE="jdom-1.1.jar" UrlPath="platform:/plugin/org.talend.libraries.jdom/lib/jdom-1.1.jar" REQUIRED="true" BundleID="org.apache.servicemix.bundles.jdom" />
-			<IMPORT NAME="talendsoap" MODULE="talend-soap.jar" REQUIRED="true" />
+			<IMPORT NAME="activation" MODULE="activation.jar" MVN="mvn:org.talend.libraries/activation/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.axis2/lib/activation.jar" REQUIRED="true" BundleID="" />
+			<IMPORT NAME="jaxqname" MODULE="jax-qname.jar" MVN="mvn:org.talend.libraries/jax-qname/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jax/lib/jax-qname.jar" REQUIRED="true" BundleID="" />
+			<IMPORT NAME="jaxpapi" MODULE="jaxp-api.jar" MVN="mvn:org.talend.libraries/jaxp-api/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jax/lib/jaxp-api.jar" REQUIRED="true" BundleID="" />
+			<IMPORT NAME="jaxpri" MODULE="jaxp-ri.jar" MVN="mvn:org.talend.libraries/jaxp-ri/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jax/lib/jaxp-ri.jar" REQUIRED="true" BundleID="" />
+			<IMPORT NAME="saajapi" MODULE="saaj-api.jar" MVN="mvn:org.talend.libraries/saaj-api/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.saaj/lib/saaj-api.jar" REQUIRED="true" BundleID="" />
+			<IMPORT NAME="saajimpl" MODULE="saaj-impl.jar" MVN="mvn:org.talend.libraries/saaj-impl/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.saaj/lib/saaj-impl.jar" REQUIRED="true" BundleID="" />
+			<IMPORT NAME="jdom" MODULE="jdom-1.1.jar" MVN="mvn:org.talend.libraries/jdom-1.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jdom/lib/jdom-1.1.jar" REQUIRED="true" BundleID="org.apache.servicemix.bundles.jdom" />
+			<IMPORT NAME="talendsoap" MODULE="talend-soap.jar" MVN="mvn:org.talend.libraries/talend-soap/6.0.0"  REQUIRED="true" />
 		</IMPORTS>
 	</CODEGENERATION>
 

@@ -191,11 +191,11 @@
 
 	<CODEGENERATION>
 	 <IMPORTS>
-		<IMPORT NAME="Driver-HSQLDb" MODULE="hsqldb.jar" UrlPath="platform:/plugin/org.talend.libraries.jdbc.hsql/lib/hsqldb.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') and (JDBC_ODBC=='JDBC')"/>
-		<IMPORT NAME="Driver-ucanaccess" MODULE="ucanaccess-2.0.9.4.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') and (JDBC_ODBC=='JDBC')"/>
-		<IMPORT NAME="Driver-JACKCESS" MODULE="jackcess-2.0.8.jar" UrlPath="platform:/plugin/org.talend.libraries.jdbc.access/lib/jackcess-2.0.8.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') and (JDBC_ODBC=='JDBC')"/>
-		<IMPORT NAME="common2.6" MODULE="commons-lang-2.6.jar"  UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang-2.6.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') and (JDBC_ODBC=='JDBC')"/>
-		<IMPORT NAME="common-logging1.1.3" MODULE="commons-logging-1.1.3.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-logging-1.1.3.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') and (JDBC_ODBC=='JDBC')"/>
+		<IMPORT NAME="Driver-HSQLDb" MODULE="hsqldb.jar" MVN="mvn:org.talend.libraries/hsqldb/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jdbc.hsql/lib/hsqldb.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') and (JDBC_ODBC=='JDBC')"/>
+		<IMPORT NAME="Driver-ucanaccess" MODULE="ucanaccess-2.0.9.4.jar" MVN="mvn:org.talend.libraries/ucanaccess-2.0.9.4/6.0.0"  REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') and (JDBC_ODBC=='JDBC')"/>
+		<IMPORT NAME="Driver-JACKCESS" MODULE="jackcess-2.0.8.jar" MVN="mvn:org.talend.libraries/jackcess-2.0.8/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jdbc.access/lib/jackcess-2.0.8.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') and (JDBC_ODBC=='JDBC')"/>
+		<IMPORT NAME="common2.6" MODULE="commons-lang-2.6.jar" MVN="mvn:org.talend.libraries/commons-lang-2.6/6.0.0"   UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang-2.6.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') and (JDBC_ODBC=='JDBC')"/>
+		<IMPORT NAME="common-logging1.1.3" MODULE="commons-logging-1.1.3.jar" MVN="mvn:org.talend.libraries/commons-logging-1.1.3/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-logging-1.1.3.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') and (JDBC_ODBC=='JDBC')"/>
 	</IMPORTS>
 	</CODEGENERATION>
 

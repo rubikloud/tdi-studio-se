@@ -321,8 +321,8 @@
 
     </TEMPLATES>
     <IMPORTS>
-       <IMPORT NAME="Driver-Sybase3" MODULE="jconn3.jar" REQUIRED="true" />
-       <IMPORT NAME="Driver-Sybase" MODULE="jodbc.jar" REQUIRED="false" />
+       <IMPORT NAME="Driver-Sybase3" MODULE="jconn3.jar" MVN="mvn:org.talend.libraries/jconn3/6.0.0"  REQUIRED="true" />
+       <IMPORT NAME="Driver-Sybase" MODULE="jodbc.jar" MVN="mvn:org.talend.libraries/jodbc/6.0.0"  REQUIRED="false" />
     </IMPORTS>
   </CODEGENERATION>
   <RETURNS/>

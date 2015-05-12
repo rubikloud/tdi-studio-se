@@ -212,7 +212,7 @@
 
    <CODEGENERATION>
      <IMPORTS>
-       <IMPORT NAME="Driver-Sybase" MODULE="jconn3.jar" REQUIRED="true" />
+       <IMPORT NAME="Driver-Sybase" MODULE="jconn3.jar" MVN="mvn:org.talend.libraries/jconn3/6.0.0"  REQUIRED="true" />
      </IMPORTS>
    </CODEGENERATION>
 

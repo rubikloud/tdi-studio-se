@@ -1459,10 +1459,10 @@
 
   <CODEGENERATION>
     <IMPORTS>
-      <IMPORT NAME="CentricCRM-aspcfs" MODULE="aspcfs.jar" REQUIRED="true" />
-      <IMPORT NAME="Servlet-api" MODULE="servlet-api.jar" REQUIRED="true" />
-      <IMPORT NAME="CentricCRM-darkhorseventures" MODULE="darkhorseventures.jar" REQUIRED="true" />
-      <IMPORT NAME="CentricCRM-zeroio-iteam" MODULE="zeroio-iteam.jar" REQUIRED="true" />
+      <IMPORT NAME="CentricCRM-aspcfs" MODULE="aspcfs.jar" MVN="mvn:org.talend.libraries/aspcfs/6.0.0"  REQUIRED="true" />
+      <IMPORT NAME="Servlet-api" MODULE="servlet-api.jar" MVN="mvn:org.talend.libraries/servlet-api/6.0.0"  REQUIRED="true" />
+      <IMPORT NAME="CentricCRM-darkhorseventures" MODULE="darkhorseventures.jar" MVN="mvn:org.talend.libraries/darkhorseventures/6.0.0"  REQUIRED="true" />
+      <IMPORT NAME="CentricCRM-zeroio-iteam" MODULE="zeroio-iteam.jar" MVN="mvn:org.talend.libraries/zeroio-iteam/6.0.0"  REQUIRED="true" />
     </IMPORTS>
   </CODEGENERATION>
    <RETURNS>

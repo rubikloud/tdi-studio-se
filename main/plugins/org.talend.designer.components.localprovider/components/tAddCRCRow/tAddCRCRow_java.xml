@@ -52,7 +52,7 @@
 
 	<CODEGENERATION>
 		<IMPORTS>
-			<IMPORT NAME="Java-CRC" MODULE="OneWireAPI.jar"
+			<IMPORT NAME="Java-CRC" MODULE="OneWireAPI.jar" MVN="mvn:org.talend.libraries/OneWireAPI/6.0.0" 
 				REQUIRED="true" />
 		</IMPORTS>
 	</CODEGENERATION>

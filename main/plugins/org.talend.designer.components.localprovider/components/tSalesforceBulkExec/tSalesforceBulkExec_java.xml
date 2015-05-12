@@ -3409,20 +3409,20 @@
 	<CODEGENERATION>
 		<IMPORTS>
 			<IMPORT NAME="salesforceBulkAPI"
-				MODULE="salesforceBulkAPI.jar" UrlPath="platform:/plugin/org.talend.libraries.salesforce/lib/salesforceBulkAPI.jar" REQUIRED="true" />
-			<IMPORT NAME="partner" MODULE="partnerBulk.jar" REQUIRED="true" />
-			<IMPORT NAME="wsc" MODULE="wsc.jar"
+				MODULE="salesforceBulkAPI.jar" MVN="mvn:org.talend.libraries/salesforceBulkAPI/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.salesforce/lib/salesforceBulkAPI.jar" REQUIRED="true" />
+			<IMPORT NAME="partner" MODULE="partnerBulk.jar" MVN="mvn:org.talend.libraries/partnerBulk/6.0.0"  REQUIRED="true" />
+			<IMPORT NAME="wsc" MODULE="wsc.jar" MVN="mvn:org.talend.libraries/wsc/6.0.0" 
 				REQUIRED="true" />
-			<IMPORT NAME="Talend_CSV" MODULE="talendcsv.jar" UrlPath="platform:/plugin/org.talend.libraries.csv/lib/talendcsv.jar" REQUIRED="true" />
+			<IMPORT NAME="Talend_CSV" MODULE="talendcsv.jar" MVN="mvn:org.talend.libraries/talendcsv/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.csv/lib/talendcsv.jar" REQUIRED="true" />
             <!-- OAuth2 -->
             <IMPORT NAME="salesforceOAuth"
-                MODULE="salesforceOAuth.jar" UrlPath="platform:/plugin/org.talend.libraries.salesforce/lib/salesforceOAuth.jar" REQUIRED_IF="LOGIN_TYPE=='OAUTH'" />
+                MODULE="salesforceOAuth.jar" MVN="mvn:org.talend.libraries/salesforceOAuth/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.salesforce/lib/salesforceOAuth.jar" REQUIRED_IF="LOGIN_TYPE=='OAUTH'" />
             <IMPORT NAME="jetty-all-8.1.12.v20130726"
-                MODULE="jetty-all-8.1.12.v20130726.jar" UrlPath="platform:/plugin/org.talend.libraries.jetty/lib/jetty-all-8.1.12.v20130726.jar" REQUIRED_IF="LOGIN_TYPE=='OAUTH'" />
+                MODULE="jetty-all-8.1.12.v20130726.jar" MVN="mvn:org.talend.libraries/jetty-all-8.1.12.v20130726/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jetty/lib/jetty-all-8.1.12.v20130726.jar" REQUIRED_IF="LOGIN_TYPE=='OAUTH'" />
             <IMPORT NAME="servlet-api-3.0"
-                MODULE="servlet-api-3.0.jar" UrlPath="platform:/plugin/org.talend.libraries.salesforce/lib/servlet-api-3.0.jar" REQUIRED_IF="LOGIN_TYPE=='OAUTH'" />
+                MODULE="servlet-api-3.0.jar" MVN="mvn:org.talend.libraries/servlet-api-3.0/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.salesforce/lib/servlet-api-3.0.jar" REQUIRED_IF="LOGIN_TYPE=='OAUTH'" />
             <IMPORT NAME="json_simple-1.1"
-                MODULE="json_simple-1.1.jar" UrlPath="platform:/plugin/org.talend.libraries.jackson/lib/json_simple-1.1.jar" REQUIRED_IF="LOGIN_TYPE=='OAUTH'" />
+                MODULE="json_simple-1.1.jar" MVN="mvn:org.talend.libraries/json_simple-1.1/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jackson/lib/json_simple-1.1.jar" REQUIRED_IF="LOGIN_TYPE=='OAUTH'" />
          
 		</IMPORTS>
 	</CODEGENERATION>

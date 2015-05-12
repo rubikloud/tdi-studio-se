@@ -47,28 +47,28 @@
     <IMPORTS>
       <IMPORT
         NAME="Advanced_Persistent_Lookup"
-        MODULE="advancedPersistentLookupLib-1.0.jar"
+        MODULE="advancedPersistentLookupLib-1.0.jar" MVN="mvn:org.talend.libraries/advancedPersistentLookupLib-1.0/6.0.0" 
         REQUIRED="true"
       />
       <IMPORT
         NAME="ApacheCommonsCollection32"
-        MODULE="commons-collections-3.2.jar" UrlPath="platform:/base/plugins/org.apache.commons.collections_3.2.0.v2013030210310.jar"
+        MODULE="commons-collections-3.2.jar" MVN="mvn:org.talend.libraries/commons-collections-3.2/6.0.0"  UrlPath="platform:/base/plugins/org.apache.commons.collections_3.2.0.v2013030210310.jar"
         REQUIRED="true"
         BundleID=""
       />
       <IMPORT
         NAME="Jboss"
-        MODULE="jboss-serialization.jar" UrlPath="platform:/plugin/org.talend.libraries.jboss/lib/jboss-serialization.jar"
+        MODULE="jboss-serialization.jar" MVN="mvn:org.talend.libraries/jboss-serialization/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.jboss/lib/jboss-serialization.jar"
         REQUIRED="true"
       />
       <IMPORT
         NAME="Trove"
-        MODULE="trove.jar"
+        MODULE="trove.jar" MVN="mvn:org.talend.libraries/trove/6.0.0" 
         REQUIRED="true"
       />
       <IMPORT
         NAME="Log4j"
-        MODULE="log4j-1.2.15.jar" UrlPath="platform:/base/plugins/org.apache.log4j_1.2.15.v201012070815.jar"
+        MODULE="log4j-1.2.15.jar" MVN="mvn:org.talend.libraries/log4j-1.2.15/6.0.0"  UrlPath="platform:/base/plugins/org.apache.log4j_1.2.15.v201012070815.jar"
         REQUIRED="true"
         BundleID=""
       />

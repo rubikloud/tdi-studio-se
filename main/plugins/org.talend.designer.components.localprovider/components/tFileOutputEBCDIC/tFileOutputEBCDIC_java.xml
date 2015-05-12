@@ -71,14 +71,14 @@
 
 	<CODEGENERATION>
 		<IMPORTS>
-			<IMPORT NAME="cobol2j.sf.net" MODULE="cobol2j-1.5.3.jar" UrlPath="platform:/plugin/org.talend.libraries.ebcdic/lib/cobol2j-1.5.3.jar" REQUIRED="true" />
-			<IMPORT NAME="cb2xml.sf.net" MODULE="cb2xml.jar" UrlPath="platform:/plugin/org.talend.libraries.ebcdic/lib/cb2xml.jar" REQUIRED="true" />
-			<IMPORT NAME="JAXB-api" MODULE="jaxb-api-2.2.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.axis2/lib/jaxb-api-2.2.jar" REQUIRED="true" />
-			<IMPORT NAME="JAXB-impl" MODULE="jaxb-impl-2.1.8.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.axis2/lib/jaxb-impl-2.1.8.jar" REQUIRED="true" />
-			<IMPORT NAME="jsr173" MODULE="jsr173_1.0_api.jar" UrlPath="platform:/plugin/org.talend.libraries.ebcdic/lib/jsr173_1.0_api.jar" REQUIRED="true" />
-			<IMPORT NAME="commons-lang" MODULE="commons-lang-2.6.jar" UrlPath="platform:/base/plugins/org.apache.commons.lang_2.6.0.v201404270220.jar" REQUIRED="true" />
-			<IMPORT NAME="commons-logging" MODULE="commons-logging-1.1.1.jar" UrlPath="platform:/base/plugins/org.apache.commons.logging_1.1.1.v201101211721.jar" REQUIRED="true" />
-			<IMPORT NAME="cobolX" MODULE="cobolX.jar" UrlPath="platform:/plugin/org.talend.libraries.ebcdic/lib/cobolX.jar" REQUIRED="true" />
+			<IMPORT NAME="cobol2j.sf.net" MODULE="cobol2j-1.5.3.jar" MVN="mvn:org.talend.libraries/cobol2j-1.5.3/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.ebcdic/lib/cobol2j-1.5.3.jar" REQUIRED="true" />
+			<IMPORT NAME="cb2xml.sf.net" MODULE="cb2xml.jar" MVN="mvn:org.talend.libraries/cb2xml/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.ebcdic/lib/cb2xml.jar" REQUIRED="true" />
+			<IMPORT NAME="JAXB-api" MODULE="jaxb-api-2.2.jar" MVN="mvn:org.talend.libraries/jaxb-api-2.2/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.axis2/lib/jaxb-api-2.2.jar" REQUIRED="true" />
+			<IMPORT NAME="JAXB-impl" MODULE="jaxb-impl-2.1.8.jar" MVN="mvn:org.talend.libraries/jaxb-impl-2.1.8/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.axis2/lib/jaxb-impl-2.1.8.jar" REQUIRED="true" />
+			<IMPORT NAME="jsr173" MODULE="jsr173_1.0_api.jar" MVN="mvn:org.talend.libraries/jsr173_1.0_api/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.ebcdic/lib/jsr173_1.0_api.jar" REQUIRED="true" />
+			<IMPORT NAME="commons-lang" MODULE="commons-lang-2.6.jar" MVN="mvn:org.talend.libraries/commons-lang-2.6/6.0.0"  UrlPath="platform:/base/plugins/org.apache.commons.lang_2.6.0.v201404270220.jar" REQUIRED="true" />
+			<IMPORT NAME="commons-logging" MODULE="commons-logging-1.1.1.jar" MVN="mvn:org.talend.libraries/commons-logging-1.1.1/6.0.0"  UrlPath="platform:/base/plugins/org.apache.commons.logging_1.1.1.v201101211721.jar" REQUIRED="true" />
+			<IMPORT NAME="cobolX" MODULE="cobolX.jar" MVN="mvn:org.talend.libraries/cobolX/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.ebcdic/lib/cobolX.jar" REQUIRED="true" />
 		</IMPORTS>
 	</CODEGENERATION>
 

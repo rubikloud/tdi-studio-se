@@ -98,7 +98,7 @@
   </ADVANCED_PARAMETERS>  
   <CODEGENERATION>
   	<IMPORTS>
-  		<IMPORT NAME="talend-stewardship-task" MODULE="talend-stewardshipTask.jar" REQUIRED="true" />
+  		<IMPORT NAME="talend-stewardship-task" MODULE="talend-stewardshipTask.jar" MVN="mvn:org.talend.libraries/talend-stewardshipTask/6.0.0"  REQUIRED="true" />
   	</IMPORTS>
   </CODEGENERATION>  
   <RETURNS> 

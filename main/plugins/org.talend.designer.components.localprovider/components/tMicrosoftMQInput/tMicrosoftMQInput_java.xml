@@ -58,7 +58,7 @@
   <ADVANCED_PARAMETERS/>
   <CODEGENERATION>
     <IMPORTS>
-      <IMPORT MODULE="msmq.jar" UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/msmq.jar" NAME="msmq" REQUIRED="true"/>
+      <IMPORT MODULE="msmq.jar" MVN="mvn:org.talend.libraries/msmq/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.microsoft/lib/msmq.jar" NAME="msmq" REQUIRED="true"/>
     </IMPORTS>
   </CODEGENERATION>
   <RETURNS/>

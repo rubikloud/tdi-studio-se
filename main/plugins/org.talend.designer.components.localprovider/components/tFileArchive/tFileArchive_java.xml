@@ -103,10 +103,10 @@
 
    <CODEGENERATION>
      <IMPORTS>
-       <IMPORT NAME="COMMONS-COMPRESS-1.6" MODULE="commons-compress-1.6.jar" UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-compress-1.6.jar" REQUIRED="true" />
-       <IMPORT NAME="Encrypt-Zip" MODULE="checkArchive.jar" REQUIRED="true" />
-       <IMPORT NAME="zip4j_1.3.1.jar" MODULE="zip4j_1.3.1.jar" REQUIRED="true" />
-       <IMPORT NAME="talendzip.jar" MODULE="talendzip.jar" REQUIRED="true" />
+       <IMPORT NAME="COMMONS-COMPRESS-1.6" MODULE="commons-compress-1.6.jar" MVN="mvn:org.talend.libraries/commons-compress-1.6/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-compress-1.6.jar" REQUIRED="true" />
+       <IMPORT NAME="Encrypt-Zip" MODULE="checkArchive.jar" MVN="mvn:org.talend.libraries/checkArchive/6.0.0"  REQUIRED="true" />
+       <IMPORT NAME="zip4j_1.3.1.jar" MODULE="zip4j_1.3.1.jar" MVN="mvn:org.talend.libraries/zip4j_1.3.1/6.0.0"  REQUIRED="true" />
+       <IMPORT NAME="talendzip.jar" MODULE="talendzip.jar" MVN="mvn:org.talend.libraries/talendzip/6.0.0"  REQUIRED="true" />
      </IMPORTS>
    </CODEGENERATION>
 

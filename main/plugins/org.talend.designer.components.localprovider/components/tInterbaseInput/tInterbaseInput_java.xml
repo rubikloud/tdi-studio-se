@@ -191,7 +191,7 @@
 
    <CODEGENERATION>
      <IMPORTS>
-		<IMPORT NAME="Driver-Interbase" MODULE="interclient.jar" REQUIRED="true" />
+		<IMPORT NAME="Driver-Interbase" MODULE="interclient.jar" MVN="mvn:org.talend.libraries/interclient/6.0.0"  REQUIRED="true" />
      </IMPORTS>
    </CODEGENERATION>
 

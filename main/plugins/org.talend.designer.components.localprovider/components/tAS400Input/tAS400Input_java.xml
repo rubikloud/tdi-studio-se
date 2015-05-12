@@ -202,9 +202,9 @@
 
    <CODEGENERATION>
      <IMPORTS>
-       <IMPORT NAME="Driver-V5R2_V5R4" MODULE="jt400_V5R2.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') AND (DB_VERSION == 'jt400_V5R2.jar')" />
-       <IMPORT NAME="Driver-V5R3_V6R1" MODULE="jt400_V5R3.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') AND (DB_VERSION == 'jt400_V5R3.jar')" />
-       <IMPORT NAME="Driver-V6R1_V7R2" MODULE="jt400_V6R1.jar" REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') AND (DB_VERSION == 'jt400_V6R1.jar')" />
+       <IMPORT NAME="Driver-V5R2_V5R4" MODULE="jt400_V5R2.jar" MVN="mvn:org.talend.libraries/jt400_V5R2/6.0.0"  REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') AND (DB_VERSION == 'jt400_V5R2.jar')" />
+       <IMPORT NAME="Driver-V5R3_V6R1" MODULE="jt400_V5R3.jar" MVN="mvn:org.talend.libraries/jt400_V5R3/6.0.0"  REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') AND (DB_VERSION == 'jt400_V5R3.jar')" />
+       <IMPORT NAME="Driver-V6R1_V7R2" MODULE="jt400_V6R1.jar" MVN="mvn:org.talend.libraries/jt400_V6R1/6.0.0"  REQUIRED_IF="(USE_EXISTING_CONNECTION == 'false') AND (DB_VERSION == 'jt400_V6R1.jar')" />
      </IMPORTS>
 	</CODEGENERATION>
 

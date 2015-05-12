@@ -135,7 +135,7 @@
 
     <CODEGENERATION>
     <IMPORTS>
-      <IMPORT NAME="paloIX" MODULE="paloIX.jar" UrlPath="platform:/plugin/org.talend.libraries.palo/lib/paloIX.jar" REQUIRED="true" />
+      <IMPORT NAME="paloIX" MODULE="paloIX.jar" MVN="mvn:org.talend.libraries/paloIX/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.palo/lib/paloIX.jar" REQUIRED="true" />
     </IMPORTS>
   </CODEGENERATION>
 

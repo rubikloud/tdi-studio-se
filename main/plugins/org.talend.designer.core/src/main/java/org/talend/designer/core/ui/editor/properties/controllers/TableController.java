@@ -648,9 +648,19 @@ public class TableController extends AbstractElementPropertySectionController {
             }
 
             contextParameterNames = contextParameterNamesList.toArray(new String[0]);
-        } else {
-            contextParameterNames = new String[0];
         }
+
+        if (contextParameterNames == null || contextParameterNames.length == 0) {
+            contextParameterNamesList.clear();
+            // in case the job is opened but childjob are missing, or if there is a problem when retrieve the child job
+            // we rerebuild the list here from what was saved in the job before
+            for (HashMap<String, Object> values : (List<HashMap<String, Object>>) param.getValue()) {
+                String name = (String) values.get("PARAM_NAME_COLUMN"); //$NON-NLS-1$
+                contextParameterNamesList.add(name);
+            }
+            contextParameterNames = contextParameterNamesList.toArray(new String[0]);
+        }
+
         // update table values
         TableViewerCreator tableViewerCreator = (TableViewerCreator) hashCurControls.get(param.getName());
         Object[] itemsValue = param.getListItemsValue();
@@ -694,7 +704,7 @@ public class TableController extends AbstractElementPropertySectionController {
                             } else {
                                 if (o instanceof String) {
                                     Integer nb = new Integer(tmpParam.getIndexOfItemFromList((String) o));
-                                    if (nb == -1) {
+                                    if (nb == -1 && !"".equals(tmpParam.getDefaultClosedListValue())) {
                                         currentLine.put(items[j], tmpParam.getDefaultClosedListValue());
                                     }
                                 }
@@ -706,18 +716,6 @@ public class TableController extends AbstractElementPropertySectionController {
         }
         // (bug 3740)
         boolean checked = contextParameterNames != null && contextParameterNames.length > 0;
-        if (!checked) {
-            Object value = param.getValue();
-            if (value != null && value instanceof List) {
-                if (!((List) value).isEmpty()) {
-                    ((List) value).clear();
-                    if (part != null && part.getTalendEditor() != null) {
-                        part.getTalendEditor().setDirty(true);
-                    }
-                }
-            }
-
-        }
         revertToolBarButtonState(checked);
 
     }

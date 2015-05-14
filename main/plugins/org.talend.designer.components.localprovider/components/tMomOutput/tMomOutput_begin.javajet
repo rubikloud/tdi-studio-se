@@ -29,6 +29,13 @@ class="MomInput"
 	String acknowledgmentMode = ElementParameterParser.getValue(node, "__ACKNOWLEDGMENT_MODE__");
 	
 	boolean failover =  ("true").equals(ElementParameterParser.getValue(node, "__FAILOVER__"));
+	
+	/*npruss start: changes for static discovery and custom connection parameters*/
+	boolean staticdiscovery =  ("true").equals(ElementParameterParser.getValue(node, "__STATIC__"));
+	String connectParamFailover = ElementParameterParser.getValue(node, "__CONNECTION_PARAM_FAILOVER__");
+	String connectParamStatic = ElementParameterParser.getValue(node, "__CONNECTION_PARAM_STATIC__");
+	/*npruss end: changes for static discovery and custom connection parameters*/
+	
 	List<Map<String,String>> servers = (List<Map<String,String>>)ElementParameterParser.getObjectValue(node, "__SERVERS__");
 	List<Map<String,String>> additionalOpts = (List<Map<String,String>>)ElementParameterParser.getObjectValue(node, "__ADDITIONAL_OPTIONS__");
 
@@ -183,11 +190,16 @@ class="MomInput"
 		<%
 		}else if(("ActiveMQ").equals(serverType)) {
 		%>	
-			String url_<%=cid %> ="";
-
-      		<%if(failover){%>
-				url_<%=cid %> = "failover:(";
-				<%
+				String url_<%=cid %> ="";
+				String endParam="";
+ 			<%if(failover || staticdiscovery){
+      		if(failover){%>
+					url_<%=cid %> = "failover:(";
+					endParam=<%=connectParamFailover%>;
+				<%}else if(staticdiscovery){%>
+					url_<%=cid %> = "discovery://static:(";
+					endParam=<%=connectParamStatic%>;
+				<%}
 				int i=0;
 				for(Map<String, String> serversMap : servers) {
 					strHost = serversMap.get("SERVERS_HOST");
@@ -207,14 +219,15 @@ class="MomInput"
 					i++;
 				}
 				%>
-				url_<%=cid %> = url_<%=cid %> +")?randomize=false";
+				url_<%=cid %> = url_<%=cid %> +")"+endParam;
 				<%
 				for(Map<String, String> optrion : additionalOpts) {
 				%>
 					url_<%=cid %> = url_<%=cid %> +"&"+<%=optrion.get("OPTION_NAME")%>+"="+<%=optrion.get("OPTION_VALUE")%>;
 				<%
 				}
-			}else{%>
+		   }
+			else{%>
 				url_<%=cid %> = "tcp://"+<%=host%>+":"+<%=port%>;
 			<%}%>			
 			

@@ -17,6 +17,7 @@
     <SIGNATURE />
   </HEADER>
 
+
   <FAMILIES>
     <FAMILY>Internet/MOM and JMS</FAMILY>
   </FAMILIES>
@@ -44,19 +45,33 @@
     <PARAMETER NAME="CONNECTION" FIELD="COMPONENT_LIST" REQUIRED="true" FILTER="tMomConnection" NUM_ROW="15"
         SHOW_IF="USE_CONNECTION == 'true'" DYNAMIC_SETTINGS="true" />
 
+    <!--npruss start: changes for static discovery and custom connection parameters-->	
     <PARAMETER NAME="FAILOVER" FIELD="CHECK" NUM_ROW="16"
-        SHOW_IF="(SERVER == 'ACTIVEMQ') and (USE_CONNECTION == 'false')">
+        SHOW_IF="(SERVER == 'ACTIVEMQ') and (USE_CONNECTION == 'false') and (STATIC == 'false')">
+      <DEFAULT >false</DEFAULT>
+    </PARAMETER>
+	 <PARAMETER NAME="STATIC" FIELD="CHECK" NUM_ROW="17"
+        SHOW_IF="(SERVER == 'ACTIVEMQ') and (USE_CONNECTION == 'false') and (FAILOVER == 'false')">
       <DEFAULT >false</DEFAULT>
     </PARAMETER>
 
+	<PARAMETER NAME="CONNECTION_PARAM_FAILOVER" FIELD="TEXT" NUM_ROW="17"
+		SHOW_IF="(USE_CONNECTION == 'false') and (SERVER == 'ACTIVEMQ') and (FAILOVER == 'true')" >
+      <DEFAULT >"?transport.randomize=false"</DEFAULT>
+    </PARAMETER>
+	<PARAMETER NAME="CONNECTION_PARAM_STATIC" FIELD="TEXT" NUM_ROW="18"
+		SHOW_IF="(USE_CONNECTION == 'false') and (SERVER == 'ACTIVEMQ') and (STATIC == 'true')" >
+      <DEFAULT >"?transport.maxReconnectDelay=5000&amp;transport.useExponentialBackOff=false"</DEFAULT>
+    </PARAMETER>
 
     <PARAMETER NAME="SERVERS" FIELD="TABLE" NB_LINES="5" NUM_ROW="23"
-        SHOW_IF="(USE_CONNECTION == 'false') and (SERVER == 'ACTIVEMQ' and FAILOVER == 'true')">
+        SHOW_IF="(USE_CONNECTION == 'false') and (SERVER == 'ACTIVEMQ' and (FAILOVER == 'true' or STATIC == 'true'))">
       <ITEMS>
         <ITEM NAME="SERVERS_HOST" FIELD="String" />
         <ITEM NAME="SERVERS_PORT" FIELD="String" />
       </ITEMS>
     </PARAMETER>
+	<!--npruss end: changes for static discovery and custom connection parameters-->
 
     <PARAMETER NAME="SERVER" FIELD="CLOSED_LIST" NUM_ROW="20"
         SHOW_IF="USE_CONNECTION == 'false'">
@@ -67,16 +82,19 @@
       </ITEMS>
     </PARAMETER>
 
+    <!--npruss start: changes for static discovery and custom connection parameters-->	
     <PARAMETER NAME="SERVERADDRESS" FIELD="TEXT" NUM_ROW="20"
-        SHOW_IF="(USE_CONNECTION == 'false') and ((SERVER == 'ACTIVEMQ' and FAILOVER == 'false') or (SERVER == 'JBOSS') or (SERVER == 'WEBSPHERE'))">
+        SHOW_IF="(USE_CONNECTION == 'false') and ((SERVER == 'ACTIVEMQ' and (FAILOVER == 'false' and STATIC == 'false')) or (SERVER == 'JBOSS') or (SERVER == 'WEBSPHERE'))">
       <DEFAULT>"localhost"</DEFAULT>
     </PARAMETER>
     <PARAMETER NAME="SERVERPORT" FIELD="TEXT" NUM_ROW="20"
-        SHOW_IF="(USE_CONNECTION == 'false') and ((SERVER == 'ACTIVEMQ' and FAILOVER == 'false') or (SERVER == 'JBOSS') or (SERVER == 'WEBSPHERE'))">
+        SHOW_IF="(USE_CONNECTION == 'false') and ((SERVER == 'ACTIVEMQ' and (FAILOVER == 'false' and STATIC == 'false')) or (SERVER == 'JBOSS') or (SERVER == 'WEBSPHERE'))">
       <DEFAULT IF="(SERVER == 'JBOSS')">"1099"</DEFAULT>
       <DEFAULT IF="(SERVER == 'WEBSPHERE')">"1414"</DEFAULT>
       <DEFAULT IF="(SERVER == 'ACTIVEMQ')">61616</DEFAULT>
     </PARAMETER>
+	<!--npruss end: changes for static discovery and custom connection parameters-->
+
 
     <PARAMETER NAME="USER" FIELD="TEXT" REPOSITORY_VALUE="USERNAME" REQUIRED="false" NUM_ROW="25"
         SHOW_IF="USE_CONNECTION == 'false'">

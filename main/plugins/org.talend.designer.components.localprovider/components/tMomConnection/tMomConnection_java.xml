@@ -42,26 +42,39 @@
       </ITEMS>
     </PARAMETER>
 
-    <PARAMETER NAME="FAILOVER" FIELD="CHECK" NUM_ROW="15" SHOW_IF="(SERVER == 'ACTIVEMQ')">
+  <!--npruss start: changes for static discovery and custom connection parameters-->
+	<PARAMETER NAME="FAILOVER" FIELD="CHECK" NUM_ROW="15" SHOW_IF="STATIC == 'false'">
       <DEFAULT >false</DEFAULT>
     </PARAMETER>
+	<PARAMETER NAME="STATIC" FIELD="CHECK" NUM_ROW="16" SHOW_IF="FAILOVER == 'false'">
+      <DEFAULT >false</DEFAULT>
+    </PARAMETER>
+	
+	<PARAMETER NAME="CONNECTION_PARAM_FAILOVER" FIELD="TEXT" NUM_ROW="16"
+		SHOW_IF="FAILOVER == 'true'" >
+      <DEFAULT >"?transport.randomize=false"</DEFAULT>
+    </PARAMETER>
+	<PARAMETER NAME="CONNECTION_PARAM_STATIC" FIELD="TEXT" NUM_ROW="17"
+		SHOW_IF="STATIC == 'true'" >
+      <DEFAULT >"?transport.maxReconnectDelay=5000&amp;transport.useExponentialBackOff=false"</DEFAULT>
+    </PARAMETER>
     <PARAMETER NAME="SERVERS" FIELD="TABLE" NB_LINES="5" NUM_ROW="23"
-        SHOW_IF="(SERVER == 'ACTIVEMQ') AND (FAILOVER == 'true')">
+        SHOW_IF="((FAILOVER == 'true') OR (STATIC == 'true'))">
       <ITEMS>
         <ITEM NAME="SERVERS_HOST" FIELD="String" />
         <ITEM NAME="SERVERS_PORT" FIELD="String" />
       </ITEMS>
     </PARAMETER>
-
-    <PARAMETER NAME="SERVERADDRESS" FIELD="TEXT" NUM_ROW="22"
-        SHOW_IF="((SERVER == 'ACTIVEMQ' and FAILOVER == 'false') OR (SERVER == 'WEBSPHERE'))">
+	    
+	<PARAMETER NAME="SERVERADDRESS" FIELD="TEXT" NUM_ROW="20"
+        SHOW_IF="((FAILOVER == 'false') AND (STATIC == 'false'))">
       <DEFAULT>"localhost"</DEFAULT>
     </PARAMETER>
-    <PARAMETER NAME="SERVERPORT" FIELD="TEXT" NUM_ROW="22"
-        SHOW_IF="((SERVER == 'ACTIVEMQ' and FAILOVER == 'false') OR (SERVER == 'WEBSPHERE'))">
-      <DEFAULT IF="(SERVER == 'WEBSPHERE')">"1414"</DEFAULT>
-      <DEFAULT IF="(SERVER == 'ACTIVEMQ')">"61616"</DEFAULT>
+    <PARAMETER NAME="SERVERPORT" FIELD="TEXT" NUM_ROW="20"
+        SHOW_IF="((FAILOVER == 'false') AND (STATIC == 'false'))">
+      <DEFAULT>61616</DEFAULT>
     </PARAMETER>
+  <!--npruss end: changes for static discovery and custom connection parameters-->
 
     <PARAMETER NAME="USER" FIELD="TEXT" REPOSITORY_VALUE="USERNAME" REQUIRED="false" NUM_ROW="25">
       <DEFAULT>""</DEFAULT>

@@ -59,9 +59,9 @@ public class SetUrltStewardshipXXXTDI32354 extends
 				String url = "";
 				if(host != null && port != null) {
 					if("tStewardshipTaskOutput".equals(node.getComponentName())){
-						url = "\"http://\" + " + host.getValue() + " + \":\" + " + port.getValue() + " + \"/org.talend.datastewardship/dataloader\"";
+						url = "\"http://\" + " + host.getValue() + " + \":\" + " + port.getValue() + " + \"/talendmdm/services/dsctaskloader\"";
 					} else {
-						url = "\"http://\" + " + host.getValue() + " + \":\" + " + port.getValue() + " + \"/org.talend.datastewardship/services/TDSCWS?wsdl\"";
+						url = "\"http://\" + " + host.getValue() + " + \":\" + " + port.getValue() + " + \"/talendmdm/services/TDSCWS?wsdl\"";
 					}
 				}
 				

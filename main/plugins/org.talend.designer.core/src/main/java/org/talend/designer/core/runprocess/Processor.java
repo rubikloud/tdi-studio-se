@@ -83,6 +83,9 @@ public abstract class Processor implements IProcessor, IEclipseProcessor {
     /** Path to generated context code. */
     protected IPath contextPath;
 
+    /** Path to testContainer dataSet code. */
+    protected IPath dataFilePath;
+
     /** Path to generated job java code. */
     protected IPath codePath;
 
@@ -454,6 +457,7 @@ public abstract class Processor implements IProcessor, IEclipseProcessor {
         return oldBuildJob;
     }
 
+    @Override
     public void setOldBuildJob(boolean oldBuildJob) {
         this.oldBuildJob = oldBuildJob;
     }
@@ -741,6 +745,16 @@ public abstract class Processor implements IProcessor, IEclipseProcessor {
         if (proxyParameters != null) {
             this.proxyParameters = proxyParameters;
         }
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.designer.runprocess.IProcessor#generateDataSetCode()
+     */
+    @Override
+    public void generateDataSetCode() throws ProcessorException {
 
     }
 

@@ -344,6 +344,10 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
         // or target/test-classes/test/testjob_0_1/testjunitjob_0_1/TestjunitJob
         this.compiledCodePath = jobClassFolder.getProjectRelativePath().append(jobName);
 
+        if (isTestJob) {
+            this.dataFilePath = new Path(jobClassPackageFolder).append(JavaUtils.JAVA_DATAS_DIRECTORY);
+        }
+
         /*
          * for context.
          */
@@ -888,6 +892,15 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
      */
     public IPath getSrcContextPath() {
         return this.contextPath;
+    }
+
+    /**
+     * Getter for SrcDataSetPath.
+     * 
+     * @return the SrcDataSetPath
+     */
+    public IPath getSrcDataSetPath() {
+        return this.dataFilePath;
     }
 
     @Override

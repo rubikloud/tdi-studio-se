@@ -555,6 +555,14 @@ public abstract class Processor implements IProcessor, IEclipseProcessor {
     /*
      * (non-Javadoc)
      * 
+     * @see org.talend.designer.runprocess.IProcessor#getDataSetPath()
+     */
+    @Override
+    public abstract IPath getDataSetPath();
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.talend.designer.runprocess.IProcessor#getLineNumber(java.lang.String)
      */
     @Override
@@ -745,16 +753,6 @@ public abstract class Processor implements IProcessor, IEclipseProcessor {
         if (proxyParameters != null) {
             this.proxyParameters = proxyParameters;
         }
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.runprocess.IProcessor#generateDataSetCode()
-     */
-    @Override
-    public void generateDataSetCode() throws ProcessorException {
 
     }
 

@@ -697,6 +697,16 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
     /*
      * (non-Javadoc)
      * 
+     * @see org.talend.designer.runprocess.IProcessor#getDataSetPath()
+     */
+    @Override
+    public IPath getDataSetPath() {
+        return this.states.getDataSetPath();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.talend.designer.runprocess.IProcessor#getCodeProject()
      */
     @Override

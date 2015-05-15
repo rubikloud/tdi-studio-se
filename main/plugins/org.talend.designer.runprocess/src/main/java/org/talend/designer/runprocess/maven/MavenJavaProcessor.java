@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.resource.FileExtensions;
-import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.process.ProcessUtils;
@@ -37,7 +36,6 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
-import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.maven.model.MavenConstants;
 import org.talend.designer.maven.pom.MavenPomManager;
 import org.talend.designer.maven.pom.PomUtil;
@@ -314,22 +312,6 @@ public class MavenJavaProcessor extends JavaProcessor {
         IFolder routinesSrcFolder = this.getTalendJavaProject().getSrcFolder().getFolder(JavaUtils.JAVA_ROUTINES_DIRECTORY);
         String routineModule = routinesSrcFolder.getProjectRelativePath().toString();
         return routineModule;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.runprocess.Processor#generateDataSetCode()
-     */
-    @Override
-    public void generateDataSetCode() throws ProcessorException {
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
-            ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
-                    .getDefault().getService(ITestContainerProviderService.class);
-            if (testContainerService != null) {
-                testContainerService.copyDataSetFiles(process);
-            }
-        }
     }
 
 }

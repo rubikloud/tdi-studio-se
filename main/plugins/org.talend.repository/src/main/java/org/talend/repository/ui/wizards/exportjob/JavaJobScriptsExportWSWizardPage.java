@@ -313,7 +313,6 @@ public class JavaJobScriptsExportWSWizardPage extends JavaJobScriptsExportWizard
 
     @Override
     public void createControl(Composite parent) {
-
         initializeDialogUnits(parent);
         GridLayout layout = new GridLayout();
 
@@ -321,17 +320,23 @@ public class JavaJobScriptsExportWSWizardPage extends JavaJobScriptsExportWizard
             SashForm sash = createExportTree(parent);
             // Added a scrolled composite by Marvin Wang on Feb. 27, 2012 for bug TDI-19198.
             scrolledComposite = new ScrolledComposite(sash, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-            pageComposite = new Group(scrolledComposite, 0);
+            scrolledComposite.setExpandHorizontal(true);
+            scrolledComposite.setExpandVertical(true);
+            scrolledComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+            pageComposite = new Group(scrolledComposite, SWT.NONE);
             pageComposite.setLayout(layout);
-            pageComposite.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_FILL | GridData.HORIZONTAL_ALIGN_FILL));
+            pageComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
             pageComposite.setFont(parent.getFont());
             setControl(sash);
             sash.setWeights(new int[] { 0, 1, 23 });
         } else {
             scrolledComposite = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+            scrolledComposite.setExpandHorizontal(true);
+            scrolledComposite.setExpandVertical(true);
+            scrolledComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
             pageComposite = new Group(scrolledComposite, 0);
             pageComposite.setLayout(layout);
-            pageComposite.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_FILL | GridData.HORIZONTAL_ALIGN_FILL));
+            pageComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
             pageComposite.setFont(parent.getFont());
             setControl(parent);
         }
@@ -339,12 +344,12 @@ public class JavaJobScriptsExportWSWizardPage extends JavaJobScriptsExportWizard
         layout.marginHeight = 0;
         layout.verticalSpacing = 0;
         destinationNameFieldComposite = new Composite(pageComposite, SWT.NONE);
-        GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+        GridData gridData = new GridData(GridData.FILL_BOTH);
         destinationNameFieldComposite.setLayoutData(gridData);
         destinationNameFieldComposite.setLayout(layout);
 
         destinationNameFieldInnerComposite = new Composite(destinationNameFieldComposite, SWT.NONE);
-        gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+        gridData = new GridData(GridData.FILL_BOTH);
         destinationNameFieldInnerComposite.setLayoutData(gridData);
         destinationNameFieldInnerComposite.setLayout(layout);
 
@@ -375,6 +380,7 @@ public class JavaJobScriptsExportWSWizardPage extends JavaJobScriptsExportWizard
         giveFocusToDestination();
 
         pageComposite.setSize(pageComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+        scrolledComposite.setMinSize(pageComposite.getSize());
         scrolledComposite.setContent(pageComposite);
     }
 
@@ -1670,7 +1676,8 @@ public class JavaJobScriptsExportWSWizardPage extends JavaJobScriptsExportWizard
             }
 
         }
-        return super.finish();
+        // return super.finish();
+        return super.finishWithMaven();
     }
 
 }

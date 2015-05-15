@@ -103,7 +103,7 @@ public abstract class JobScriptsManager {
 
     protected static final String JOB_ITEMS_FOLDER_NAME = "items"; //$NON-NLS-1$
 
-    public static final String JOB_CONTEXT_FOLDER = JavaUtils.JAVA_CONTEXTS_DIRECTORY; //$NON-NLS-1$
+    public static final String JOB_CONTEXT_FOLDER = JavaUtils.JAVA_CONTEXTS_DIRECTORY;
 
     public static final String CTX_PARAMETER_ARG = "--context_param"; //$NON-NLS-1$
 
@@ -215,6 +215,8 @@ public abstract class JobScriptsManager {
                         // needJobItem
                         // is
         // selected
+        needTestContainers,
+        mavenIncludeLibs,
         needContext,
         applyToChildren,
         applyLog4jToChildren,
@@ -381,6 +383,7 @@ public abstract class JobScriptsManager {
     /**
      * @deprecated seems never used, so deprecated first.
      */
+    @Deprecated
     protected List<URL> getLauncher(boolean needLauncher, boolean setParameterValues, ProcessItem process, String contextName,
             String environment, int statisticPort, int tracePort, String... codeOptions) {
 

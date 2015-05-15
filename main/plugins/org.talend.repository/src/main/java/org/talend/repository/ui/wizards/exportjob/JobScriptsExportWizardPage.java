@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.dialogs.Dialog;
@@ -75,6 +76,7 @@ import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.utils.PasswordEncryptUtil;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.metadata.MetadataTalendType;
+import org.talend.core.model.process.IContext;
 import org.talend.core.model.properties.FolderItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProcessItem;
@@ -83,7 +85,9 @@ import org.talend.core.model.repository.IRepositoryPrefConstants;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.process.IBuildJobHandler;
 import org.talend.core.services.resource.IExportJobResourcesService;
+import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.ui.export.ArchiveFileExportOperationFullPath;
 import org.talend.core.ui.export.FileSystemExporterFullPath;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
@@ -101,6 +105,7 @@ import org.talend.repository.ui.utils.Log4jPrefsSettingManager;
 import org.talend.repository.ui.utils.ZipToFile;
 import org.talend.repository.ui.wizards.exportjob.JavaJobScriptsExportWSWizardPage.JobExportType;
 import org.talend.repository.ui.wizards.exportjob.action.JobExportAction;
+import org.talend.repository.ui.wizards.exportjob.handler.BuildJobHandler;
 import org.talend.repository.ui.wizards.exportjob.scriptsmanager.JobScriptsManager;
 import org.talend.repository.ui.wizards.exportjob.scriptsmanager.JobScriptsManager.ExportChoice;
 import org.talend.repository.ui.wizards.exportjob.scriptsmanager.petals.PetalsJobJavaScriptsManager;
@@ -166,13 +171,19 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
 
     private String originalRootFolderName;
 
+    protected Button addTestContainersButton;
+
     protected Button addBSButton;
 
     protected Button addAntBSButton;
 
     protected Button addMavenBSButton;
 
+    protected Button includeLibsButton;
+
     private Composite buildScriptsGroup;
+
+    private Composite mavenOptionsComposite;
 
     protected IStructuredSelection selection;
 
@@ -365,9 +376,9 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         layout.verticalSpacing = 0;
         layout.marginHeight = 0;
         layout.marginBottom = 0;
-        Composite composite = new Composite(sash, SWT.BORDER);
+        Composite composite = new Composite(sash, SWT.NONE);
         composite.setLayout(layout);
-        composite.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_FILL | GridData.HORIZONTAL_ALIGN_FILL));
+        composite.setLayoutData(new GridData(GridData.FILL_BOTH));
         composite.setFont(parent.getFont());
 
         createDestinationGroup(composite);
@@ -440,7 +451,7 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         Group versionGroup = new Group(parent, SWT.NONE);
         GridLayout layout = new GridLayout();
         versionGroup.setLayout(layout);
-        versionGroup.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
+        versionGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
         versionGroup.setText(Messages.getString("JobScriptsExportWSWizardPage.newJobVersion", getProcessType())); //$NON-NLS-1$
         versionGroup.setFont(parent.getFont());
 
@@ -527,7 +538,7 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         optionsGroup.setLayout(new GridLayout(1, true));
 
         Composite left = new Composite(optionsGroup, SWT.NONE);
-        left.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, true, false));
+        left.setLayoutData(new GridData(GridData.FILL_BOTH));
         left.setLayout(new GridLayout(3, true));
 
         createOptions(left, font);
@@ -551,7 +562,7 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
      */
     public void createOptions(final Composite optionsGroup, Font font) {
         Group topGroup = new Group(optionsGroup, SWT.NONE);
-        GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+        GridData gridData = new GridData(GridData.FILL_BOTH);
         topGroup.setLayoutData(gridData);
         GridLayout layout = new GridLayout(3, true);
         layout.marginHeight = 0;
@@ -639,7 +650,7 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
 
         // second group
         Group bottomGroup = new Group(optionsGroup, SWT.NONE);
-        gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+        gridData = new GridData(GridData.FILL_BOTH);
         bottomGroup.setLayoutData(gridData);
         layout = new GridLayout(3, true);
         layout.marginHeight = 0;
@@ -658,6 +669,8 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         gd.horizontalSpan = 3;
         jobScriptButton.setLayoutData(gd);
 
+        createTestContainersGroup(bottomGroup);
+
         createBuildScriptGroup(bottomGroup);
 
         jobItemButton = new Button(bottomGroup, SWT.CHECK | SWT.LEFT);
@@ -668,6 +681,28 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         gd.horizontalSpan = 1;
         jobItemButton.setLayoutData(gd);
 
+    }
+
+    private void createTestContainersGroup(Composite optionsGroup) {
+        ITestContainerProviderService testContainerService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+            testContainerService = (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
+                    ITestContainerProviderService.class);
+        }
+        if (testContainerService == null) {
+            return;
+        }
+
+        addTestContainersButton = new Button(optionsGroup, SWT.CHECK | SWT.LEFT);
+        addTestContainersButton.setText(Messages.getString("JobScriptsExportWizardPage.addTestContainersButton.label")); //$NON-NLS-1$
+        GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+        gd.horizontalSpan = 3;
+        addTestContainersButton.setLayoutData(gd);
+        addTestContainersButton.setSelection(true);
+    }
+
+    protected boolean isAddTestContainers() {
+        return addTestContainersButton != null && addTestContainersButton.getSelection();
     }
 
     /**
@@ -697,12 +732,13 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
             public void widgetSelected(SelectionEvent e) {
                 boolean selected = addBSButton.getSelection();
                 addAntBSButton.setEnabled(selected);
-                addAntBSButton.setSelection(true);
                 addMavenBSButton.setEnabled(selected);
+                addMavenBSButton.setSelection(true);
                 if (!selected) {
                     addAntBSButton.setSelection(selected);
                     addMavenBSButton.setSelection(selected);
                 }
+                updateScriptOptions();
             }
         });
 
@@ -743,6 +779,65 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
                 }
             }
         });
+
+        ScriptOptionsSelectionListener optionsSelectionListener = new ScriptOptionsSelectionListener();
+        addMavenBSButton.addSelectionListener(optionsSelectionListener);
+        addAntBSButton.addSelectionListener(optionsSelectionListener);
+
+        Composite scriptOptionsComposite = new Composite(optionsGroup, SWT.NONE);
+        GridData scriptOptionsGD = new GridData(GridData.FILL_BOTH);
+        scriptOptionsGD.horizontalSpan = 3;
+        scriptOptionsComposite.setLayoutData(scriptOptionsGD);
+        GridLayout scriptOptionsGroupLayout = new GridLayout();
+        scriptOptionsGroupLayout.marginWidth = 0;
+        scriptOptionsGroupLayout.marginHeight = 0;
+        scriptOptionsComposite.setLayout(scriptOptionsGroupLayout);
+
+        mavenOptionsComposite = new Composite(scriptOptionsComposite, SWT.NONE);
+        GridData mavenOptionsGD = new GridData(GridData.FILL_BOTH);
+        mavenOptionsComposite.setLayoutData(mavenOptionsGD);
+        GridLayout mavenOptionsGroupLayout = new GridLayout(2, false);
+        mavenOptionsGroupLayout.marginHeight = 0;
+        mavenOptionsComposite.setLayout(mavenOptionsGroupLayout);
+        setHideWidgets(mavenOptionsComposite, true);
+
+        includeLibsButton = new Button(mavenOptionsComposite, SWT.CHECK | SWT.LEFT);
+        includeLibsButton.setText(Messages.getString("JobScriptsExportWizardPage.includeLibsButton.label")); //$NON-NLS-1$
+        includeLibsButton.setFont(font);
+    }
+
+    class ScriptOptionsSelectionListener extends SelectionAdapter {
+
+        @Override
+        public void widgetSelected(SelectionEvent e) {
+            updateScriptOptions();
+        }
+
+    }
+
+    private void updateScriptOptions() {
+        boolean isAddMaven = addMavenBSButton.isEnabled() && addMavenBSButton.getSelection();
+        includeLibsButton.setEnabled(isAddMaven);
+        if (isAddMaven) {
+            setHideWidgets(mavenOptionsComposite, false);
+        } else {
+            setHideWidgets(mavenOptionsComposite, true);
+        }
+        mavenOptionsComposite.getParent().getParent().layout();
+        mavenOptionsComposite.getParent().getParent().getParent().layout();
+    }
+
+    protected boolean isIncludeLibs() {
+        return includeLibsButton != null && includeLibsButton.isEnabled() && includeLibsButton.getSelection();
+    }
+
+    protected void setHideWidgets(Composite composite, boolean hide) {
+        if (composite != null) {
+            GridData dataComposite = (GridData) composite.getLayoutData();
+            dataComposite.exclude = hide;
+            composite.setVisible(!hide);
+            composite.getParent().layout();
+        }
     }
 
     public boolean isAddMavenScript() {
@@ -1434,6 +1529,20 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         }
 
         // end
+        return true;
+    }
+
+    protected boolean finishWithMaven() {
+        String context = (contextCombo == null || contextCombo.isDisposed()) ? IContext.DEFAULT : contextCombo.getText();
+        IBuildJobHandler buildJobHandler = new BuildJobHandler(getExportChoiceMap(), context);
+        try {
+            buildJobHandler.generateItemFiles(processItem, true, new NullProgressMonitor());
+            buildJobHandler.generateJobFiles(processItem, context, getSelectedJobVersion(), new NullProgressMonitor());
+            buildJobHandler.build();
+        } catch (Exception e) {
+            MessageBoxExceptionHandler.process(e, getShell());
+            return false;
+        }
         return true;
     }
 

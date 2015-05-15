@@ -20,6 +20,7 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.repository.ui.wizards.exportjob.scriptsmanager.JobScriptsManager;
+import org.talend.repository.ui.wizards.exportjob.util.ExportJobUtil;
 
 /**
  * Page of the Job Scripts Export Wizard. <br/>
@@ -128,7 +129,7 @@ public abstract class JavaJobScriptsExportWizardPage extends JobScriptsExportWiz
         } catch (PersistenceException e) {
             e.printStackTrace();
         }
-        List<String> contextNames = getJobContexts(getProcessItem());
+        List<String> contextNames = ExportJobUtil.getJobContexts(getProcessItem());
         contextCombo.setItems(contextNames.toArray(new String[contextNames.size()]));
         if (contextNames.size() > 0) {
             contextCombo.select(0);

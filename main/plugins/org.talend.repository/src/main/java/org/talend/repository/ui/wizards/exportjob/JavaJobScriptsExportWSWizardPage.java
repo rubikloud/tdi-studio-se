@@ -74,6 +74,7 @@ import org.talend.repository.ui.wizards.exportjob.scriptsmanager.petals.PetalsEx
 import org.talend.repository.ui.wizards.exportjob.scriptsmanager.petals.PetalsTemporaryOptionsKeeper;
 import org.talend.repository.ui.wizards.exportjob.scriptsmanager.petals.SaUtils;
 import org.talend.repository.ui.wizards.exportjob.scriptsmanager.petals.TalendUtils;
+import org.talend.repository.ui.wizards.exportjob.util.ExportJobUtil;
 
 /**
  * DOC x class global comment. Detailled comment <br/>
@@ -344,12 +345,12 @@ public class JavaJobScriptsExportWSWizardPage extends JavaJobScriptsExportWizard
         layout.marginHeight = 0;
         layout.verticalSpacing = 0;
         destinationNameFieldComposite = new Composite(pageComposite, SWT.NONE);
-        GridData gridData = new GridData(GridData.FILL_BOTH);
+        GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
         destinationNameFieldComposite.setLayoutData(gridData);
         destinationNameFieldComposite.setLayout(layout);
 
         destinationNameFieldInnerComposite = new Composite(destinationNameFieldComposite, SWT.NONE);
-        gridData = new GridData(GridData.FILL_BOTH);
+        gridData = new GridData(GridData.FILL_HORIZONTAL);
         destinationNameFieldInnerComposite.setLayoutData(gridData);
         destinationNameFieldInnerComposite.setLayout(layout);
 
@@ -448,11 +449,10 @@ public class JavaJobScriptsExportWSWizardPage extends JavaJobScriptsExportWizard
             @Override
             public void widgetSelected(SelectionEvent e) {
                 destinationNameFieldInnerComposite.dispose();
-                GridLayout layout = new GridLayout();
                 destinationNameFieldInnerComposite = new Composite(destinationNameFieldComposite, SWT.NONE);
                 GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
                 destinationNameFieldInnerComposite.setLayoutData(gridData);
-                destinationNameFieldInnerComposite.setLayout(layout);
+                destinationNameFieldInnerComposite.setLayout(new GridLayout());
                 createDestinationGroup(destinationNameFieldInnerComposite);
 
                 destinationNameFieldComposite.layout();
@@ -671,7 +671,7 @@ public class JavaJobScriptsExportWSWizardPage extends JavaJobScriptsExportWizard
         }
 
         if (getProcessItem() != null) {
-            List<String> contextNames = getJobContexts(getProcessItem());
+            List<String> contextNames = ExportJobUtil.getJobContexts(getProcessItem());
             contextCombo.setItems(contextNames.toArray(new String[contextNames.size()]));
             contextCombo.setVisibleItemCount(contextNames.size());
             if (contextNames.size() > 0) {
@@ -737,7 +737,7 @@ public class JavaJobScriptsExportWSWizardPage extends JavaJobScriptsExportWizard
             } catch (PersistenceException e) {
                 e.printStackTrace();
             }
-            List<String> contextNames = getJobContexts(getProcessItem());
+            List<String> contextNames = ExportJobUtil.getJobContexts(getProcessItem());
             contextCombo.setItems(contextNames.toArray(new String[contextNames.size()]));
             if (contextNames.size() > 0) {
                 contextCombo.select(0);
@@ -812,7 +812,7 @@ public class JavaJobScriptsExportWSWizardPage extends JavaJobScriptsExportWizard
             } catch (PersistenceException e) {
                 e.printStackTrace();
             }
-            List<String> contextNames = getJobContexts(getProcessItem());
+            List<String> contextNames = ExportJobUtil.getJobContexts(getProcessItem());
             contextCombo.setItems(contextNames.toArray(new String[contextNames.size()]));
             if (contextNames.size() > 0) {
                 contextCombo.select(0);
@@ -887,7 +887,7 @@ public class JavaJobScriptsExportWSWizardPage extends JavaJobScriptsExportWizard
                 throw new RuntimeException(e);
             }
             List<String> contextNames;
-            contextNames = getJobContexts(item);
+            contextNames = ExportJobUtil.getJobContexts(item);
 
             contextCombo.setItems(contextNames.toArray(new String[contextNames.size()]));
             if (contextNames.size() > 0) {
@@ -1188,7 +1188,7 @@ public class JavaJobScriptsExportWSWizardPage extends JavaJobScriptsExportWizard
         contextCombo.setLayoutData(gd);
 
         if (getProcessItem() != null) {
-            List<String> contextNames = getJobContexts(getProcessItem());
+            List<String> contextNames = ExportJobUtil.getJobContexts(getProcessItem());
             contextCombo.setItems(contextNames.toArray(new String[contextNames.size()]));
         }
 
@@ -1333,7 +1333,7 @@ public class JavaJobScriptsExportWSWizardPage extends JavaJobScriptsExportWizard
                 e.printStackTrace();
             }
             jobLabel = (getProcessItem()).getProperty().getLabel();
-            List<String> contextNames = getJobContexts(getProcessItem());
+            List<String> contextNames = ExportJobUtil.getJobContexts(getProcessItem());
             contextCombo.setItems(contextNames.toArray(new String[contextNames.size()]));
             if (contextNames.size() > 0) {
                 contextCombo.select(0);
@@ -1544,7 +1544,6 @@ public class JavaJobScriptsExportWSWizardPage extends JavaJobScriptsExportWizard
         }
     }
 
-    @Override
     public boolean isAddMavenScript() {
         if (addBSButton != null && !addBSButton.isDisposed()) {
             return addBSButton.getSelection();
@@ -1676,8 +1675,7 @@ public class JavaJobScriptsExportWSWizardPage extends JavaJobScriptsExportWizard
             }
 
         }
-        // return super.finish();
-        return super.finishWithMaven();
+        return super.finish();
     }
 
 }

@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -30,7 +31,9 @@ import org.talend.designer.runprocess.IProcessor;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.ui.wizards.exportjob.JavaJobScriptsExportWSWizardPage.JobExportType;
 import org.talend.repository.ui.wizards.exportjob.action.JobExportAction;
+import org.talend.repository.ui.wizards.exportjob.scriptsmanager.BuildJobManager;
 import org.talend.repository.ui.wizards.exportjob.scriptsmanager.JobScriptsManager;
+import org.talend.repository.ui.wizards.exportjob.scriptsmanager.JobScriptsManager.ExportChoice;
 import org.talend.repository.ui.wizards.exportjob.scriptsmanager.JobScriptsManagerFactory;
 import org.talend.repository.ui.wizards.exportjob.scriptsmanager.esb.JobJavaScriptOSGIForESBManager;
 import org.talend.repository.utils.EmfModelUtils;
@@ -56,6 +59,8 @@ public abstract class AbstractPublishJobAction implements IRunnableWithProgress 
 
     private JobScriptsManager jobScriptsManager;
 
+    private Map<ExportChoice, Object> exportChoiceMap;
+
     public AbstractPublishJobAction(IRepositoryNode node, String groupId, String artifactName, String artifactVersion,
             String bundleVersion, String jobVersion) {
         this.node = node;
@@ -71,6 +76,12 @@ public abstract class AbstractPublishJobAction implements IRunnableWithProgress 
             String bundleVersion, String jobVersion, JobExportType exportType, JobScriptsManager jobScriptsManager) {
         this(node, groupId, artifactName, artifactVersion, bundleVersion, jobVersion);
         this.jobScriptsManager = jobScriptsManager;
+    }
+
+    public AbstractPublishJobAction(IRepositoryNode node, String groupId, String artifactName, String artifactVersion,
+            String bundleVersion, String jobVersion, JobExportType exportType, Map<ExportChoice, Object> exportChoiceMap) {
+        this(node, groupId, artifactName, artifactVersion, bundleVersion, jobVersion);
+        this.exportChoiceMap = exportChoiceMap;
     }
 
     protected abstract void process(ProcessItem processItem, FeaturesModel featuresModel, IProgressMonitor monitor)
@@ -134,19 +145,25 @@ public abstract class AbstractPublishJobAction implements IRunnableWithProgress 
     private void exportJobForPOJO(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         File tmpJob = null;
         try {
-            tmpJob = File.createTempFile("item", ".zip", null);
-            jobScriptsManager.setDestinationPath(tmpJob.getAbsolutePath());
-            JobExportAction action = new JobExportAction(Collections.singletonList(node), jobVersion, jobScriptsManager, null,
-                    "job");
-            action.run(monitor);
-            if (!action.isBuildSuccessful()) {
-                return;
-            }
-            monitor.beginTask("Deploy to Artifact Repository....", IProgressMonitor.UNKNOWN);
+            tmpJob = File.createTempFile("item", ".zip", null); // TODO: modify the file path later...
+            // jobScriptsManager.setDestinationPath(tmpJob.getAbsolutePath());
+            // JobExportAction action = new JobExportAction(Collections.singletonList(node), jobVersion,
+            // jobScriptsManager, null,
+            // "job");
+            // action.run(monitor);
+            // if (!action.isBuildSuccessful()) {
+            // return;
+            // }
+
             ProcessItem processItem = (ProcessItem) node.getObject().getProperty().getItem();
+
+            BuildJobManager.getInstance().buildJob(processItem, processItem.getProperty().getVersion(),
+                    processItem.getProcess().getDefaultContext(), exportChoiceMap, exportType);
+
+            monitor.beginTask("Deploy to Artifact Repository....", IProgressMonitor.UNKNOWN);
             FeaturesModel featuresModel = getFeatureModel(tmpJob);
             process(processItem, featuresModel, monitor);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new InvocationTargetException(e);
         } finally {
             if (tmpJob != null && tmpJob.exists()) {

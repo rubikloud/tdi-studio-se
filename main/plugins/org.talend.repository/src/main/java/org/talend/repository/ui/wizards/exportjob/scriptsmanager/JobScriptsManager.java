@@ -176,6 +176,10 @@ public abstract class JobScriptsManager {
         return false;
     }
 
+    public Map<ExportChoice, Object> getExportChoice() {
+        return this.exportChoice;
+    }
+
     /**
      * 
      * DOC Represent exportchoice <br/>
@@ -215,8 +219,10 @@ public abstract class JobScriptsManager {
                         // needJobItem
                         // is
         // selected
-        needTestContainers,
-        mavenIncludeLibs,
+        includeLibs,
+        includeTestSource,
+        executeTests,
+        binaries,
         needContext,
         applyToChildren,
         applyLog4jToChildren,

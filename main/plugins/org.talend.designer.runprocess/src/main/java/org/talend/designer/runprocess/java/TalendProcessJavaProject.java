@@ -148,6 +148,11 @@ public class TalendProcessJavaProject implements ITalendProcessJavaProject {
     }
 
     @Override
+    public IFolder getTestsFolder() {
+        return createFolder(MavenSystemFolders.TEST_REPORTS.getPath());
+    }
+
+    @Override
     public IFolder getSrcSubFolder(IProgressMonitor monitor, String path) {
         return createSubFolder(monitor, getSrcFolder(), path);
     }

@@ -55,6 +55,7 @@ public class ExportJobScriptAction extends AContextualAction {
      * @see org.talend.repository.ui.actions.ITreeContextualAction#init(org.eclipse.jface.viewers.TreeViewer,
      * org.eclipse.jface.viewers.IStructuredSelection)
      */
+    @Override
     public void init(TreeViewer viewer, IStructuredSelection selection) {
         boolean canWork = true;
         if (selection.isEmpty()) {
@@ -112,7 +113,7 @@ public class ExportJobScriptAction extends AContextualAction {
                 return; // don't do anything
             }
         }
-        dialog.setPageSize(830, 500);
+        dialog.setPageSize(830, 580);
         dialog.open();
 
         // collector
@@ -131,10 +132,9 @@ public class ExportJobScriptAction extends AContextualAction {
     private boolean checkDirtyPart(IWorkbench workbench) {
         ISaveablePart[] parts = null;
         IWorkbenchWindow[] windows = workbench.getWorkbenchWindows();
-        for (int i = 0; i < windows.length; i++) {
-            IWorkbenchPage[] pages = windows[i].getPages();
-            for (int j = 0; j < pages.length; j++) {
-                IWorkbenchPage page = pages[j];
+        for (IWorkbenchWindow window : windows) {
+            IWorkbenchPage[] pages = window.getPages();
+            for (IWorkbenchPage page : pages) {
                 parts = page.getDirtyEditors();
             }
         }

@@ -34,6 +34,7 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.runprocess.LastGenerationInfo;
+import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.runprocess.ProcessorUtilities;
 import org.talend.model.bridge.ReponsitoryContextBridge;
 import org.talend.repository.local.ExportItemUtil;
@@ -53,15 +54,46 @@ public class BuildJobHandler extends AbstractBuildJobHandler {
     }
 
     @Override
-    public void generateJobFiles(ProcessItem process, String contextName, String version, IProgressMonitor monitor)
+    public void generateJobFiles(ProcessItem processItem, String contextName, String version, IProgressMonitor monitor)
             throws Exception {
         if (!isOptionChoosed(ExportChoice.needSourceCode)) {
             return;
         }
         LastGenerationInfo.getInstance().getUseDynamicMap().clear();
-        ProcessorUtilities.generateCode(process, contextName, version, false, false,
-                isOptionChoosed(ExportChoice.applyToChildren), isOptionChoosed(ExportChoice.needContext),
-                isOptionChoosed(ExportChoice.needTestContainers), monitor);
+        int generationOption = (isOptionChoosed(ExportChoice.includeTestSource) || isOptionChoosed(ExportChoice.executeTests)) ? ProcessorUtilities.GENERATE_ALL_CHILDS
+                | ProcessorUtilities.GENERATE_TESTS
+                : ProcessorUtilities.GENERATE_ALL_CHILDS;
+        ProcessorUtilities.generateCode(processItem, contextName, version, false, false,
+                isOptionChoosed(ExportChoice.applyToChildren), isOptionChoosed(ExportChoice.needContext), generationOption,
+                monitor);
+    }
+
+    @Override
+    public void generateTestReports(ProcessItem processItem, IProgressMonitor monitor) throws Exception {
+        if (!isOptionChoosed(ExportChoice.includeTestSource)) {
+            return;
+        }
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+            ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
+                    .getDefault().getService(ITestContainerProviderService.class);
+            if (testContainerService != null) {
+                List<IFile> reports = new ArrayList<IFile>();
+                List<ProcessItem> testsItems = testContainerService.getAllTestContainers(processItem);
+                for (ProcessItem testItem : testsItems) {
+                    List<IFile> testReportFiles = testContainerService.getTestReportFiles(testItem);
+                    if (testReportFiles.size() > 0) {
+                        reports.add(testReportFiles.get(0));
+                    }
+                }
+                IFolder testsFolder = talendProcessJavaProject.getTestsFolder();
+                talendProcessJavaProject.cleanFolder(monitor, testsFolder);
+                IFolder parentFolder = talendProcessJavaProject.createSubFolder(monitor, testsFolder, processItem.getProperty()
+                        .getLabel());
+                for (IFile report : reports) {
+                    report.copy(parentFolder.getFile(report.getName()).getFullPath(), true, monitor);
+                }
+            }
+        }
     }
 
     @Override
@@ -69,6 +101,8 @@ public class BuildJobHandler extends AbstractBuildJobHandler {
         if (!isOptionChoosed(ExportChoice.needJobItem)) {
             return;
         }
+        IFolder itemsFolder = talendProcessJavaProject.getItemsFolder();
+        talendProcessJavaProject.cleanFolder(monitor, itemsFolder);
         List<Item> items = new ArrayList<Item>();
         items.add(processItem);
         ExportItemUtil exportItemUtil = new ExportItemUtil();
@@ -78,12 +112,12 @@ public class BuildJobHandler extends AbstractBuildJobHandler {
                 items.add(repositoryObject.getProperty().getItem());
             }
         }
-        File destination = new File(talendProcessJavaProject.getItemsFolder().getLocation().toFile().getAbsolutePath());
+        File destination = new File(itemsFolder.getLocation().toFile().getAbsolutePath());
         exportItemUtil.exportItems(destination, items, false, new NullProgressMonitor());
-        addDQDependencies(processItem);
+        addDQDependencies(processItem, itemsFolder);
     }
 
-    private void addDQDependencies(ProcessItem processItem) throws IOException {
+    private void addDQDependencies(ProcessItem processItem, IFolder parentFolder) throws IOException {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQItemService.class)) {
             ITDQItemService tdqItemService = (ITDQItemService) GlobalServiceRegister.getDefault().getService(
                     ITDQItemService.class);
@@ -92,15 +126,15 @@ public class BuildJobHandler extends AbstractBuildJobHandler {
                 String defIdxFolderName = "TDQ_Libraries"; //$NON-NLS-1$
                 String defIdxFileName = ".Talend.definition"; //$NON-NLS-1$
                 Project pro = getProject(processItem);
-                IFolder itemsFolder = talendProcessJavaProject.getItemsFolder().getFolder(pro.getTechnicalLabel());
-                File itemsFolderDir = new File(itemsFolder.getLocation().toFile().getAbsolutePath());
+                IFolder itemsProjectFolder = parentFolder.getFolder(pro.getTechnicalLabel());
+                File itemsFolderDir = new File(parentFolder.getLocation().toFile().getAbsolutePath());
                 IProject project = ReponsitoryContextBridge.getRootProject();
                 String defIdxRelativePath = defIdxFolderName + PATH_SEPARATOR + defIdxFileName;
                 IFile defIdxFile = project.getFile(defIdxRelativePath);
                 if (defIdxFile.exists()) {
                     File defIdxFileSource = new File(project.getLocation().makeAbsolute().append(defIdxFolderName)
                             .append(defIdxFileName).toFile().toURI());
-                    File defIdxFileTarget = new File(itemsFolder.getFile(defIdxRelativePath).getLocation().toFile()
+                    File defIdxFileTarget = new File(itemsProjectFolder.getFile(defIdxRelativePath).getLocation().toFile()
                             .getAbsolutePath());
                     FilesUtils.copyFile(defIdxFileSource, defIdxFileTarget);
                 }

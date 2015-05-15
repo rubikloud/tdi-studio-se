@@ -20,12 +20,13 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.designer.runprocess.IRunProcessService;
+import org.talend.login.AbstractLoginTask;
 
 /**
  * 
  * DOC ggu class global comment. Detailled comment
  */
-public class CleanMavenFilesLoginTask implements IRunnableWithProgress {
+public class CleanMavenFilesLoginTask extends AbstractLoginTask implements IRunnableWithProgress {
 
     @Override
     public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {

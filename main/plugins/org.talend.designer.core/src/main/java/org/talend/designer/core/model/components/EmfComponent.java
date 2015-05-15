@@ -2913,7 +2913,7 @@ public class EmfComponent extends AbstractComponent {
                                 ModuleNeeded componentImportNeeds = new ModuleNeeded(this.getName(),
                                         moduleNeeded.getModuleName(), moduleNeeded.getInformationMsg(),
                                         moduleNeeded.isRequired(), moduleNeeded.getInstallURL(), moduleNeeded.getRequiredIf(),
-                                        moduleNeeded.getMavenUrl());
+                                        moduleNeeded.getMavenUri());
                                 componentImportNeeds.setModuleLocaion(moduleNeeded.getModuleLocaion());
                                 componentImportNeedsList.add(componentImportNeeds);
                             }
@@ -2964,7 +2964,7 @@ public class EmfComponent extends AbstractComponent {
                         if (!moduleNames.contains(moduleNeeded.getModuleName())) {
                             ModuleNeeded componentImportNeeds = new ModuleNeeded(this.getName(), moduleNeeded.getModuleName(),
                                     moduleNeeded.getInformationMsg(), moduleNeeded.isRequired(), moduleNeeded.getInstallURL(),
-                                    moduleNeeded.getRequiredIf(), moduleNeeded.getMavenUrl());
+                                    moduleNeeded.getRequiredIf(), moduleNeeded.getMavenUri());
                             componentImportNeeds.setModuleLocaion(moduleNeeded.getModuleLocaion());
                             componentImportNeedsList.add(componentImportNeeds);
                         }

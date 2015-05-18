@@ -313,7 +313,7 @@ public class LoginDialog extends TrayDialog {
                 }
 
                 if (!isExchangeLogon || !isUserPassRight) {
-                    if (count % 4 == 0) {
+                    if ((count + 1) % 4 == 0) {
                         // if (Platform.getOS().equals(Platform.OS_LINUX)) {
                         // TalendForgeDialog tfDialog = new TalendForgeDialog(this.getShell(), project);
                         // tfDialog.open();

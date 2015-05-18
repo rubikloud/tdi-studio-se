@@ -377,16 +377,16 @@ public class DefaultRunProcessService implements IRunProcessService {
                 String log4jStr = getTemplateStrFromPreferenceStore(Log4jPrefsConstants.LOG4J_CONTENT_NODE);
                 if (log4jStr != null) {
                     File ljFile = new File(log4jFile.getLocation().toOSString());
-                    if (!ljFile.exists()) {
-                        FileOutputStream ljFileOutputStream = null;
-                        try {
-                            ljFileOutputStream = new FileOutputStream(ljFile);
-                            ljFileOutputStream.write(log4jStr.getBytes());
-                        } finally {
-                            ljFileOutputStream.close();
-                        }
-                        resFolder.refreshLocal(IResource.DEPTH_ONE, null);
+                    // if (!ljFile.exists()) {
+                    FileOutputStream ljFileOutputStream = null;
+                    try {
+                        ljFileOutputStream = new FileOutputStream(ljFile);
+                        ljFileOutputStream.write(log4jStr.getBytes());
+                    } finally {
+                        ljFileOutputStream.close();
                     }
+                    resFolder.refreshLocal(IResource.DEPTH_ONE, null);
+                    // }
                 }
             }
         } catch (Exception e) {

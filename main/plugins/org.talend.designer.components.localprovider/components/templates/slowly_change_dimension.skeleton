@@ -14,6 +14,7 @@ public class CLASS {
     public static final String SYBASE = "SYBASE";
     public static final String INFORMIX = "INFORMIX";
     public static final String VERTICA = "VERTICA";
+    public static final String TERADATA = "TERADATA";
 	private static Map<String, SCDManager> managerMap = new HashMap<String, SCDManager>();
     public class Column {
         private String labelName;
@@ -1625,6 +1626,204 @@ public class CLASS {
             }            
         }        
     }
+    
+    public class TeradataSCDManager extends SCDManager {
+        public TeradataSCDManager(String cid) {
+            super(cid);
+        }
+        protected String getDBMSId() {
+            return "teradata_id";
+        }        
+        protected String getLProtectedChar() {
+            return "\\\"";
+        }
+        protected String getRProtectedChar() {
+            return "\\\"";
+        }
+        protected String getSequence(String surrogateKeySequence) {
+            return "";
+        }
+        protected String getIncrement() {
+            return " GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1 MINVALUE 1 MAXVALUE 999999999 NO CYCLE) ";
+        }        
+        protected String getDate(String endDateValue) {
+            return "'\" + " + endDateValue + " + \"-01-01'";
+        }        
+        protected String getYear(String endDateField) {
+            return "EXTRACT(YEAR FROM " + getLProtectedChar() + endDateField + getRProtectedChar() + ")";
+        }
+        protected String getActiveFieldTrueValue(JavaType activeFieldType) {
+            if(activeFieldType == JavaTypesManager.STRING) {
+                return "'true'";
+            } else if(activeFieldType == JavaTypesManager.BOOLEAN) {
+                return "'1'";
+            } else {
+                return "1";
+            }            
+        }
+        protected String getActiveFieldFalseValue(JavaType activeFieldType) {
+            if(activeFieldType == JavaTypesManager.STRING) {
+                return "'false'";
+            } else if(activeFieldType == JavaTypesManager.BOOLEAN) {
+                return "'0'";
+            } else {
+                return "0";
+            }            
+        }        
+       
+        public String genSetStatement(String pstmt, String variable, int paramIndex, String generatedType ,boolean isSourceKeyEnableNull) {
+
+            StringBuilder setStatement = new StringBuilder();
+            boolean isObject = false;
+            if(generatedType.equals("Character")) {
+                isObject = true;
+                if(!variable.equals("null")) {
+                    setStatement.append("if(" + variable + " == null) {\r\n");
+                }
+                setStatement.append(pstmt + ".setNull(" + paramIndex + ", java.sql.Types.CHAR);\r\n");
+                if(isSourceKeyEnableNull){
+                    setStatement.append(pstmt + ".setNull(" + (paramIndex+1) + ", java.sql.Types.CHAR);\r\n");
+                }
+            } else if(generatedType.equals("java.util.Date")) {
+                isObject = true;
+                if(!variable.equals("null")) {
+                    setStatement.append("if(" + variable + " == null) {\r\n");
+                }
+                setStatement.append(pstmt + ".setNull(" + paramIndex + ", java.sql.Types.DATE);\r\n");
+                if(isSourceKeyEnableNull){
+                    setStatement.append(pstmt + ".setNull(" + (paramIndex+1) + ", java.sql.Types.DATE);\r\n");
+                }
+            } else if(generatedType.equals("byte[]")) {
+                isObject = true;
+                if(!variable.equals("null")) {
+                    setStatement.append("if(" + variable + " == null) {\r\n");
+                }
+                setStatement.append(pstmt + ".setNull(" + paramIndex + ", java.sql.Types.ARRAY);\r\n");
+                if(isSourceKeyEnableNull){
+                    setStatement.append(pstmt + ".setNull(" + (paramIndex+1) + ", java.sql.Types.ARRAY);\r\n");
+                }
+            } else if(generatedType.equals("Long") || generatedType.equals("Byte") || generatedType.equals("Integer") || generatedType.equals("Short")) {
+                isObject = true;
+                if(!variable.equals("null")) {
+                    setStatement.append("if(" + variable + " == null) {\r\n");
+                }
+                setStatement.append(pstmt + ".setNull(" + paramIndex + ", java.sql.Types.INTEGER);\r\n");
+                if(isSourceKeyEnableNull){
+                    setStatement.append(pstmt + ".setNull(" + (paramIndex+1) + ", java.sql.Types.INTEGER);\r\n");
+                }
+            } else if(generatedType.equals("String")) {
+                isObject = true;
+                if(!variable.equals("null")) {
+                    setStatement.append("if(" + variable + " == null) {\r\n");
+                }
+                setStatement.append(pstmt + ".setNull(" + paramIndex + ", java.sql.Types.VARCHAR);\r\n");
+                if(isSourceKeyEnableNull){
+                    setStatement.append(pstmt + ".setNull(" + (paramIndex+1) + ", java.sql.Types.VARCHAR);\r\n");
+                }
+            } else if(generatedType.equals("Object")) {
+                isObject = true;
+                if(!variable.equals("null")) {
+                    setStatement.append("if(" + variable + " == null) {\r\n");
+                }
+                setStatement.append(pstmt + ".setNull(" + paramIndex + ", java.sql.Types.OTHER);\r\n");
+                if(isSourceKeyEnableNull){
+                    setStatement.append(pstmt + ".setNull(" + (paramIndex+1) + ", java.sql.Types.OTHER);\r\n");
+                }
+            } else if(generatedType.equals("Boolean")) {
+                isObject = true;
+                if(!variable.equals("null")) {
+                    setStatement.append("if(" + variable + " == null) {\r\n");
+                }
+                setStatement.append(pstmt + ".setNull(" + paramIndex + ", java.sql.Types.BOOLEAN);\r\n");
+                if(isSourceKeyEnableNull){
+                    setStatement.append(pstmt + ".setNull(" + (paramIndex+1) + ", java.sql.Types.BOOLEAN);\r\n");
+                }
+            } else if(generatedType.equals("Double")) {
+                isObject = true;
+                if(!variable.equals("null")) {
+                    setStatement.append("if(" + variable + " == null) {\r\n");
+                }
+                setStatement.append(pstmt + ".setNull(" + paramIndex + ", java.sql.Types.DOUBLE);\r\n");
+                if(isSourceKeyEnableNull){
+                    setStatement.append(pstmt + ".setNull(" + (paramIndex+1) + ", java.sql.Types.DOUBLE);\r\n");
+                }
+            } else if(generatedType.equals("Float")) {
+                isObject = true;
+                if(!variable.equals("null")) {
+                    setStatement.append("if(" + variable + " == null) {\r\n");
+                }
+                setStatement.append(pstmt + ".setNull(" + paramIndex + ", java.sql.Types.FLOAT);\r\n");
+                if(isSourceKeyEnableNull){
+                    setStatement.append(pstmt + ".setNull(" + (paramIndex+1) + ", java.sql.Types.FLOAT);\r\n");
+                }
+            }
+            if(!variable.equals("null")) {
+                if(isObject) {
+                    setStatement.append("} else {\r\n");
+                }
+                if(generatedType.equals("byte[]")) {
+                    generatedType = "Bytes";
+                } else if(generatedType.equals("java.util.Date")) {
+                    generatedType = "Date";
+                } else if(generatedType.equals("Integer")) {
+                    generatedType = "Int";
+                } else {
+                    if(generatedType.length() >= 1) {
+                        generatedType = generatedType.substring(0, 1).toUpperCase() + generatedType.substring(1);
+                    }
+                }
+                if(generatedType.equals("Char") || generatedType.equals("Character")) {
+                    if(isObject) {
+                        setStatement.append("if(" + variable + " == null) {\r\n");
+                    } else {
+                        setStatement.append("if(String.valueOf(" + variable + ").toLowerCase().equals(\"null\")) {\r\n");
+                    }
+                    setStatement.append(pstmt + ".setNull(" + paramIndex + ", java.sql.Types.CHAR);\r\n");
+                    setStatement.append("} else if(" + variable + " == '\\0') {\r\n");
+                    setStatement.append(pstmt + ".setString(" + paramIndex + ", \"\");\r\n");
+                    if(isSourceKeyEnableNull){
+                        setStatement.append(pstmt + ".setString(" + paramIndex + ", \"\");\r\n");
+                    }
+                    setStatement.append("} else {\r\n");
+                    setStatement.append(pstmt + ".setString(" + paramIndex + ", String.valueOf(" + variable + "));\r\n");
+                    if(isSourceKeyEnableNull){
+                        setStatement.append(pstmt + ".setString(" + paramIndex + ", String.valueOf(" + variable + "));\r\n");
+                    }
+                    setStatement.append("}\r\n");
+                } else if(generatedType.equals("Date")) {
+                    setStatement.append("if(" + variable + " != null) {\r\n");
+                    setStatement.append("date_" + cid + " = " + variable + ".getTime();\r\n");
+                    setStatement.append("if(date_" + cid + " < year1_" + cid + " || date_" + cid + " >= year10000_" + cid + ") {\r\n");
+                    setStatement.append(pstmt + ".setString(" + paramIndex + ", \"0000-00-00 00:00:00\");\r\n");
+                    if(isSourceKeyEnableNull){
+                        setStatement.append(pstmt + ".setString(" + (paramIndex+1) + ", \"0000-00-00 00:00:00\");\r\n");
+                    }
+                    setStatement.append("} else {\r\n");
+                    setStatement.append(pstmt + ".setTimestamp(" + paramIndex + ", new java.sql.Timestamp(date_" + cid + "));\r\n");
+                    if(isSourceKeyEnableNull){
+                        setStatement.append(pstmt + ".setTimestamp(" + (paramIndex+1) + ", new java.sql.Timestamp(date_" + cid + "));\r\n");
+                    }
+                    setStatement.append("}\r\n");
+                    setStatement.append("} else {\r\n");
+                    setStatement.append(pstmt + ".setNull(" + paramIndex + ", java.sql.Types.DATE);\r\n");
+                    if(isSourceKeyEnableNull){
+                        setStatement.append(pstmt + ".setNull(" + (paramIndex+1) + ", java.sql.Types.DATE);\r\n");
+                    }
+                    setStatement.append("}\r\n");
+                } else {
+                    setStatement.append(pstmt + ".set" + generatedType + "(" + paramIndex + ", " + variable + ");\r\n");
+                    if(isSourceKeyEnableNull){
+                        setStatement.append(pstmt + ".set" + generatedType + "(" + (paramIndex+1) + ", " + variable + ");\r\n");
+                    }
+                }
+                if(isObject) {
+                    setStatement.append("}\r\n");
+                }
+            }
+            return setStatement.toString();
+        }
+    }
+    
     public class MysqlSCDManager extends SCDManager {
         public MysqlSCDManager(String cid) {
             super(cid);
@@ -2438,6 +2637,8 @@ public class CLASS {
                 manager = new NetezzaSCDManager(cid);
             } else if (dbType.equals(VERTICA)) {
                 manager = new VerticaSCDManager(cid);
+            } else if (dbType.equals(TERADATA)) {
+                manager = new TeradataSCDManager(cid);
             }
             managerMap.put(cid, manager);
         }

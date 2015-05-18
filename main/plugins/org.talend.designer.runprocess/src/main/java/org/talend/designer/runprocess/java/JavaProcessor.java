@@ -345,7 +345,8 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
         this.compiledCodePath = jobClassFolder.getProjectRelativePath().append(jobName);
 
         if (isTestJob) {
-            this.dataFilePath = new Path(jobClassPackageFolder).append(JavaUtils.JAVA_DATAS_DIRECTORY);
+            IPath dataPath = new Path(jobClassPackageFolder).append(JavaUtils.JAVA_DATAS_DIRECTORY);
+            this.dataFilePath = resourcesFolder.getFile(dataPath).getProjectRelativePath();
         }
 
         /*

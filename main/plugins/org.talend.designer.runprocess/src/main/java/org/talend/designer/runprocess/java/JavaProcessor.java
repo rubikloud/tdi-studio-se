@@ -344,6 +344,11 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
         // or target/test-classes/test/testjob_0_1/testjunitjob_0_1/TestjunitJob
         this.compiledCodePath = jobClassFolder.getProjectRelativePath().append(jobName);
 
+        if (isTestJob) {
+            IPath dataPath = new Path(jobClassPackageFolder).append(JavaUtils.JAVA_DATAS_DIRECTORY);
+            this.dataFilePath = resourcesFolder.getFile(dataPath).getProjectRelativePath();
+        }
+
         /*
          * for context.
          */
@@ -693,6 +698,16 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
     /*
      * (non-Javadoc)
      * 
+     * @see org.talend.designer.runprocess.IProcessor#getDataSetPath()
+     */
+    @Override
+    public IPath getDataSetPath() {
+        return this.states.getDataSetPath();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.talend.designer.runprocess.IProcessor#getCodeProject()
      */
     @Override
@@ -888,6 +903,15 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
      */
     public IPath getSrcContextPath() {
         return this.contextPath;
+    }
+
+    /**
+     * Getter for SrcDataSetPath.
+     * 
+     * @return the SrcDataSetPath
+     */
+    public IPath getSrcDataSetPath() {
+        return this.dataFilePath;
     }
 
     @Override

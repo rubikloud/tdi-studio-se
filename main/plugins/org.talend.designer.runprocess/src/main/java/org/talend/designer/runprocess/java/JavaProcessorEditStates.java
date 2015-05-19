@@ -40,6 +40,7 @@ public class JavaProcessorEditStates implements IJavaProcessorStates {
      * 
      * @see org.talend.designer.runprocess.java.IJavaStatus#getCodePath()
      */
+    @Override
     public IPath getCodePath() {
         return this.javaProcessor.getSrcCodePath();
     }
@@ -49,8 +50,18 @@ public class JavaProcessorEditStates implements IJavaProcessorStates {
      * 
      * @see org.talend.designer.runprocess.java.IJavaStatus#getContextPath()
      */
+    @Override
     public IPath getContextPath() {
         return this.javaProcessor.getSrcContextPath();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.designer.runprocess.java.IJavaStatus#getDataSetPath()
+     */
+    public IPath getDataSetPath() {
+        return this.javaProcessor.getSrcDataSetPath();
     }
 
 }

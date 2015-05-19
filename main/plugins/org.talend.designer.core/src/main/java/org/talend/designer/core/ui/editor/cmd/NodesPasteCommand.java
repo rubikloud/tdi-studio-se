@@ -396,7 +396,7 @@ public class NodesPasteCommand extends Command {
             if (nodeMap != null) {
                 nodeMap.put(copiedNode, pastedNode);
             }
-            if (isJobletRefactor()) { // keep original for joblet refactor.
+            if (isJobletRefactor() || isJunitCreate()) { // keep original for joblet refactor.
                 process.removeUniqueNodeName(pastedNode.getUniqueName());
                 pastedNode.setPropertyValue(EParameterName.UNIQUE_NAME.getName(), copiedNode.getUniqueName());
                 process.addUniqueNodeName(copiedNode.getUniqueName());

@@ -38,6 +38,7 @@ public class JavaProcessorRuntimeStates implements IJavaProcessorStates {
      * 
      * @see org.talend.designer.runprocess.java.IJavaStatus#getCodePath()
      */
+    @Override
     public IPath getCodePath() {
         return this.javaProcessor.getCompiledCodePath();
 
@@ -48,9 +49,20 @@ public class JavaProcessorRuntimeStates implements IJavaProcessorStates {
      * 
      * @see org.talend.designer.runprocess.java.IJavaStatus#getContextPath()
      */
+    @Override
     public IPath getContextPath() {
         return this.javaProcessor.getCompiledContextPath();
         // return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.core.model.runprocess.IJavaProcessorStates#getDataSetPath()
+     */
+    @Override
+    public IPath getDataSetPath() {
+        return this.javaProcessor.getSrcDataSetPath();
     }
 
 }

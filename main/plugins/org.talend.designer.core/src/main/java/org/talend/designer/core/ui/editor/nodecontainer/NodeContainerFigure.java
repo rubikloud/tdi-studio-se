@@ -332,26 +332,32 @@ public class NodeContainerFigure extends Figure {
             return;
         }
 
-        boolean visible = false;
-        IElementParameter windowDuration = nodeContainer.getNode().getElementParameter(EParameterName.WINDOW_DURATION.getName());
-        IElementParameter defineSlideDuration = nodeContainer.getNode().getElementParameter(
-                EParameterName.DEFINE_SLIDE_DURATION.getName());
-        boolean defSlideDuration = false;
-        if (defineSlideDuration != null) {
-            defSlideDuration = (Boolean) defineSlideDuration.getValue();
-        }
-
-        if (windowDuration != null) {
-            visible = true;
-            String slideDuration = ""; //$NON-NLS-1$
-            if (defSlideDuration) {
-                slideDuration = "\nEvery: " //$NON-NLS-1$
-                        + NodeContainerUtils.formatTime((String) nodeContainer.getNode()
-                                .getElementParameter("SLIDE_DURATION").getValue()); //$NON-NLS-1$
+        if ((status & Process.WINDOW_STATUS) != 0) {
+            boolean visible = false;
+            IElementParameter windowDuration = nodeContainer.getNode().getElementParameter(
+                    EParameterName.WINDOW_DURATION.getName());
+            IElementParameter defineSlideDuration = nodeContainer.getNode().getElementParameter(
+                    EParameterName.DEFINE_SLIDE_DURATION.getName());
+            boolean defSlideDuration = false;
+            if (defineSlideDuration != null) {
+                defSlideDuration = (Boolean) defineSlideDuration.getValue();
             }
 
-            windowFigure.setText("Length: " + NodeContainerUtils.formatTime((String) windowDuration.getValue()) + slideDuration); //$NON-NLS-1$ 
-            windowFigure.setVisible(visible);
+            if (windowDuration != null) {
+                visible = true;
+                String slideDuration = ""; //$NON-NLS-1$
+                if (defSlideDuration) {
+                    slideDuration = "\nEvery: " //$NON-NLS-1$
+                            + NodeContainerUtils.formatTime((String) nodeContainer.getNode()
+                                    .getElementParameter("SLIDE_DURATION").getValue()); //$NON-NLS-1$
+                }
+
+                windowFigure
+                        .setText("Length: " + NodeContainerUtils.formatTime((String) windowDuration.getValue()) + slideDuration); //$NON-NLS-1$ 
+                windowFigure.setVisible(visible);
+            }
+        } else {
+            windowFigure.setVisible(false);
         }
     }
 

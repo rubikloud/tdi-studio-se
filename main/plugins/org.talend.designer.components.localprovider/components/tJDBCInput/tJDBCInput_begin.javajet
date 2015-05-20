@@ -31,7 +31,6 @@ imports="
 			String cursorSize= ElementParameterParser.getValue(node, "__CURSOR_SIZE__");
 		   String useExistingConn = ElementParameterParser.getValue(node,"__USE_EXISTING_CONNECTION__");
 			String driverName = null;
-			boolean isMysqlDriver = false;
 		   if(("true").equals(useExistingConn)) {
 		      String connection = ElementParameterParser.getValue(node,"__CONNECTION__");
 		      String conn = "conn_" + connection;
@@ -40,11 +39,8 @@ imports="
          } else {
 				driverName = ElementParameterParser.getValue(node, "__DRIVER_CLASS__");
 			}
-			if(null != driverName && driverName.indexOf("mysql") != -1){
-				isMysqlDriver = true;
-			}
          if(("true").equals(useCursor)) {
-				if(isMysqlDriver){
+				if(null != driverName && driverName.indexOf("mysql") != -1){
 				   super.createMinValueStatement(node);
 %>
 					((com.mysql.jdbc.Statement)stmt_<%=cid %>).enableStreamingResults();
@@ -55,7 +51,8 @@ imports="
                stmt_<%=cid %>.setFetchSize(<%=cursorSize %>);
 <%
 				}
-
+			} else{
+				super.createStatement(node);
 			}             
 		}
 		

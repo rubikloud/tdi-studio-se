@@ -26,6 +26,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -74,6 +75,8 @@ public class MavenJavaProcessor extends JavaProcessor {
             generatePom();
             // removeGeneratedJobs(null);
         }
+
+        updateProjectPom(null);
     }
 
     @Override
@@ -167,16 +170,24 @@ public class MavenJavaProcessor extends JavaProcessor {
      * .Java/pom_TestJob.xml
      */
     protected IFile getPomFile() {
-        String pomFileName = PomUtil.getPomFileName(this.getProperty().getLabel());
-        return this.getTalendJavaProject().getProject().getFile(pomFileName);
+        if (isStandardJob()) {
+            String pomFileName = PomUtil.getPomFileName(this.getProperty().getLabel());
+            return this.getTalendJavaProject().getProject().getFile(pomFileName);
+        } else { // not standard job, won't have pom file.
+            return null;
+        }
     }
 
     /**
      * .Java/src/main/assemblies/assembly_TestJob.xml
      */
     protected IFile getAssemblyFile() {
-        String assemblyFileName = PomUtil.getAssemblyFileName(this.getProperty().getLabel());
-        return this.getTalendJavaProject().getAssembliesFolder().getFile(assemblyFileName);
+        if (isStandardJob()) {
+            String assemblyFileName = PomUtil.getAssemblyFileName(this.getProperty().getLabel());
+            return this.getTalendJavaProject().getAssembliesFolder().getFile(assemblyFileName);
+        } else { // not standard job, won't have assembly file.
+            return null;
+        }
     }
 
     /**
@@ -224,22 +235,34 @@ public class MavenJavaProcessor extends JavaProcessor {
 
     }
 
-    protected void updateProjectPom(IProgressMonitor progressMonitor) throws ProcessorException {
-        JavaProcessorUtilities.checkJavaProjectLib(getNeededLibraries());
-
-        ProjectPomManager pomManager = new ProjectPomManager(getTalendJavaProject().getProject());
-
-        List<String> modulesList = new ArrayList<String>();
-        for (JobInfo childJob : getBuildChildrenJobs()) {
-            modulesList.add(PomUtil.getPomFileName(childJob.getJobName()));
-        }
-        modulesList.add(PomUtil.getPomFileName(getProperty().getLabel()));
-
-        pomManager.updateProjectPom(progressMonitor, modulesList, this.getPomFile());
-
+    /**
+     * update the project pom, and make sure the standard or fake(Preview/Data view) job can be compiled still.
+     */
+    protected void updateProjectPom(IProgressMonitor monitor) {
         try {
-            getCodeProject().refreshLocal(IResource.DEPTH_ONE, progressMonitor);
-        } catch (CoreException e) {
+            if (monitor == null) {
+                monitor = new NullProgressMonitor();
+            }
+            JavaProcessorUtilities.checkJavaProjectLib(getNeededLibraries());
+
+            ProjectPomManager pomManager = new ProjectPomManager(getTalendJavaProject().getProject()) {
+
+                @Override
+                protected boolean isStandardJob() {
+                    return MavenJavaProcessor.this.isStandardJob();
+                }
+
+                @Override
+                protected IFile getBasePomFile() {
+                    return MavenJavaProcessor.this.getPomFile();
+                }
+
+            };
+
+            pomManager.setUpdateModules(isStandardJob()); // won't update module for fake job.
+
+            pomManager.update(monitor, this);
+        } catch (Exception e) {
             ExceptionHandler.process(e);
         }
     }
@@ -279,14 +302,6 @@ public class MavenJavaProcessor extends JavaProcessor {
     @Override
     public void build() {
         final ITalendProcessJavaProject talendJavaProject = getTalendJavaProject();
-        if (isStandardJob()) {
-            try {
-                updateProjectPom(null);
-            } catch (ProcessorException e) {
-                ExceptionHandler.process(e);
-            }
-        }
-
         talendJavaProject.buildModules(getGoals(), null);
         // try {
         //

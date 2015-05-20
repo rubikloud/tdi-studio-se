@@ -228,7 +228,7 @@ java.sql.Connection conn_<%=cid%> = null;
 				}else{
 					insertColName.append(colStmt.getName()+suffix);
 					insertValueStmt.append(colStmt.getValue()+suffix);
-					updateSetStmt.append(colStmt.getName()+"=\"+selectQueryColumnsName.split(\",\")[ "+ counterOuter + "]+\"" +suffix);
+					updateSetStmt.append(colStmt.getName()+"=\"+selectQueryColumnsName.split(\",(?![^(]*?\\\\))\")[ "+ counterOuter + "]+\"" +suffix);
 				}
 			}
 			counterOuter ++;

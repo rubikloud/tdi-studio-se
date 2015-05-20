@@ -252,7 +252,7 @@ for(Column colStmt:stmtStructure){
 			insertColName.append(colStmt.getName()+suffix);
 			insertValueStmt.append(colStmt.getValue()+suffix);
 			if(!colStmt.getColumn().isKey()){
-				updateSetStmt.append(colStmt.getName()+"=\"+selectQueryColumnsName.split(\",\")[ "+ counterOuter + "]+\"" +suffix);
+				updateSetStmt.append(colStmt.getName()+"=\"+selectQueryColumnsName.split(\",(?![^(]*?\\\\))\")[ "+ counterOuter + "]+\"" +suffix);
 			}
 		}
 	}

@@ -267,7 +267,7 @@ for(Column colStmt:stmtStructure){
 		}else{
 			insertColName.append(colStmt.getName()+suffix);
 			insertValueStmt.append(colStmt.getValue()+suffix);
-			updateSetStmt.append(colStmt.getName()+"=(\"+select_query.replaceFirst(selectQueryColumnsName,selectQueryColumnsName.split(\",\")[ "+ counterOuter + "])+\")" +suffix);
+			updateSetStmt.append(colStmt.getName()+"=(\"+select_query.replaceFirst(java.util.regex.Pattern.quote(selectQueryColumnsName),selectQueryColumnsName.split(\",(?![^(]*?\\\\))\")[ "+ counterOuter + "])+\")" +suffix);
 		}
 	}
 	counterOuter ++;

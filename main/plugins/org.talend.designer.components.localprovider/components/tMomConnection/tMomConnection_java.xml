@@ -73,7 +73,7 @@
       </ITEMS>
     </PARAMETER>
 	    
-	<PARAMETER NAME="SERVERADDRESS" FIELD="TEXT" NUM_ROW="20"
+	<PARAMETER NAME="SERVERADDRESS" FIELD="TEXT" NUM_ROW="22"
         SHOW_IF="((FAILOVER == 'false') AND (STATIC == 'false'))">
       <DEFAULT>"localhost"</DEFAULT>
     </PARAMETER>
@@ -125,7 +125,7 @@
     </PARAMETER>
     
     <PARAMETER NAME="ADDITIONAL_OPTIONS" FIELD="TABLE" NB_LINES="5" NUM_ROW="20"
-        SHOW_IF="(USE_CONNECTION == 'false') AND (SERVER == 'ACTIVEMQ') AND (FAILOVER == 'true' OR STATIC == 'true')">
+        SHOW_IF="(SERVER == 'ACTIVEMQ') AND (FAILOVER == 'true' OR STATIC == 'true')">
       <ITEMS>
         <ITEM NAME="OPTION_NAME" FIELD="String"/>
         <ITEM NAME="OPTION_VALUE" FIELD="String"/>

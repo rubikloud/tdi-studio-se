@@ -50,7 +50,7 @@
         SHOW_IF="(SERVER == 'ACTIVEMQ') and (USE_CONNECTION == 'false') and (STATIC == 'false')">
       <DEFAULT >false</DEFAULT>
     </PARAMETER>
-	 <PARAMETER NAME="STATIC" FIELD="CHECK" NUM_ROW="17"
+	 <PARAMETER NAME="STATIC" FIELD="CHECK" NUM_ROW="16"
         SHOW_IF="(SERVER == 'ACTIVEMQ') and (USE_CONNECTION == 'false') and (FAILOVER == 'false')">
       <DEFAULT >false</DEFAULT>
     </PARAMETER>
@@ -59,7 +59,7 @@
 		SHOW_IF="(USE_CONNECTION == 'false') and (SERVER == 'ACTIVEMQ') and (FAILOVER == 'true')" >
       <DEFAULT >"?transport.randomize=false"</DEFAULT>
     </PARAMETER>
-	<PARAMETER NAME="CONNECTION_PARAM_STATIC" FIELD="TEXT" NUM_ROW="18"
+	<PARAMETER NAME="CONNECTION_PARAM_STATIC" FIELD="TEXT" NUM_ROW="17"
 		SHOW_IF="(USE_CONNECTION == 'false') and (SERVER == 'ACTIVEMQ') and (STATIC == 'true')" >
       <DEFAULT >"?transport.maxReconnectDelay=5000&amp;transport.useExponentialBackOff=false"</DEFAULT>
     </PARAMETER>
@@ -183,7 +183,7 @@
   <ADVANCED_PARAMETERS>
   
   	<PARAMETER NAME="ADDITIONAL_OPTIONS" FIELD="TABLE" NB_LINES="5" NUM_ROW="3"
-        SHOW_IF="(USE_CONNECTION == 'false') and (SERVER == 'ACTIVEMQ') and (FAILOVER == 'true')">
+        SHOW_IF="(USE_CONNECTION == 'false') and (SERVER == 'ACTIVEMQ') and (FAILOVER == 'true' OR STATIC == 'true')">
       <ITEMS>
         <ITEM NAME="OPTION_NAME" FIELD="String"/>
         <ITEM NAME="OPTION_VALUE" FIELD="String"/>

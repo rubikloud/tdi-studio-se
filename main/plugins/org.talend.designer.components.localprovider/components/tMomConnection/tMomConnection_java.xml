@@ -53,7 +53,7 @@
     <PARAMETER NAME="FAILOVER" FIELD="CHECK" NUM_ROW="15" SHOW_IF="(SERVER == 'ACTIVEMQ') AND (STATIC == 'false')">
       <DEFAULT >false</DEFAULT>
     </PARAMETER>
-	<PARAMETER NAME="STATIC" FIELD="CHECK" NUM_ROW="16" SHOW_IF="FAILOVER == 'false'">
+	<PARAMETER NAME="STATIC" FIELD="CHECK" NUM_ROW="15" SHOW_IF="(SERVER == 'ACTIVEMQ') AND (FAILOVER == 'false')">
       <DEFAULT >false</DEFAULT>
     </PARAMETER>
 	
@@ -61,7 +61,7 @@
 		SHOW_IF="FAILOVER == 'true'" >
       <DEFAULT >"?transport.randomize=false"</DEFAULT>
     </PARAMETER>
-	<PARAMETER NAME="CONNECTION_PARAM_STATIC" FIELD="TEXT" NUM_ROW="17"
+	<PARAMETER NAME="CONNECTION_PARAM_STATIC" FIELD="TEXT" NUM_ROW="16"
 		SHOW_IF="STATIC == 'true'" >
       <DEFAULT >"?transport.maxReconnectDelay=5000&amp;transport.useExponentialBackOff=false"</DEFAULT>
     </PARAMETER>
@@ -77,9 +77,11 @@
         SHOW_IF="((FAILOVER == 'false') AND (STATIC == 'false'))">
       <DEFAULT>"localhost"</DEFAULT>
     </PARAMETER>
-    <PARAMETER NAME="SERVERPORT" FIELD="TEXT" NUM_ROW="20"
-        SHOW_IF="((FAILOVER == 'false') AND (STATIC == 'false'))">
-      <DEFAULT>61616</DEFAULT>
+    
+    <PARAMETER NAME="SERVERPORT" FIELD="TEXT" NUM_ROW="22"
+     SHOW_IF="((SERVER == 'ACTIVEMQ' AND FAILOVER == 'false' AND STATIC == 'false') OR (SERVER == 'WEBSPHERE'))">
+   		<DEFAULT IF="(SERVER == 'WEBSPHERE')">"1414"</DEFAULT>
+   		<DEFAULT IF="(SERVER == 'ACTIVEMQ')">"61616"</DEFAULT>
     </PARAMETER>
   <!--npruss end: changes for static discovery and custom connection parameters-->
 
@@ -123,7 +125,7 @@
     </PARAMETER>
     
     <PARAMETER NAME="ADDITIONAL_OPTIONS" FIELD="TABLE" NB_LINES="5" NUM_ROW="20"
-        SHOW_IF="(SERVER == 'ACTIVEMQ') AND (FAILOVER == 'true')">
+        SHOW_IF="(USE_CONNECTION == 'false') AND (SERVER == 'ACTIVEMQ') AND (FAILOVER == 'true' OR STATIC == 'true')">
       <ITEMS>
         <ITEM NAME="OPTION_NAME" FIELD="String"/>
         <ITEM NAME="OPTION_VALUE" FIELD="String"/>

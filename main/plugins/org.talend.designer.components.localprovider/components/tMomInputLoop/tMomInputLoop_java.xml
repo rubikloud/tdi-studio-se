@@ -66,7 +66,7 @@
       <DEFAULT >false</DEFAULT>
     </PARAMETER>
 
-    <PARAMETER NAME="FAILOVER" FIELD="CHECK" NUM_ROW="15"
+    <PARAMETER NAME="FAILOVER" FIELD="CHECK" NUM_ROW="16"
         SHOW_IF="(USE_CONNECTION == 'false') and (SERVER == 'ACTIVEMQ') and (STATIC == 'false')">
       <DEFAULT>false</DEFAULT>
     </PARAMETER>
@@ -75,7 +75,7 @@
       <DEFAULT>false</DEFAULT>
     </PARAMETER>
 	
-	<PARAMETER NAME="CONNECTION_PARAM_FAILOVER" FIELD="TEXT" NUM_ROW="16"
+	<PARAMETER NAME="CONNECTION_PARAM_FAILOVER" FIELD="TEXT" NUM_ROW="17"
 		SHOW_IF="(USE_CONNECTION == 'false') and (SERVER == 'ACTIVEMQ') and (FAILOVER == 'true')" >
       <DEFAULT >"?transport.randomize=false"</DEFAULT>
     </PARAMETER>
@@ -90,7 +90,7 @@
     </PARAMETER>
 	<!--npruss end: changes for static discovery and custom connection parameters and timeout in max message operation-->
 
-    <PARAMETER NAME="MAXMSG" FIELD="TEXT" NUM_ROW="17"
+    <PARAMETER NAME="MAXMSG" FIELD="TEXT" NUM_ROW="18"
         SHOW_IF="((SERVER == 'ACTIVEMQ' or (USE_CONNECTION == 'true')) and KEEPLISTENING == 'false' and USEMAX == 'true')">
       <DEFAULT>1000</DEFAULT>
     </PARAMETER>
@@ -231,7 +231,7 @@
   <ADVANCED_PARAMETERS>
   
   	<PARAMETER NAME="ADDITIONAL_OPTIONS" FIELD="TABLE" NB_LINES="5" NUM_ROW="5"
-        SHOW_IF="(USE_CONNECTION == 'false') and (SERVER == 'ACTIVEMQ') and (FAILOVER == 'true')">
+        SHOW_IF="(USE_CONNECTION == 'false') AND (SERVER == 'ACTIVEMQ') AND (FAILOVER == 'true' OR STATIC == 'true')">
       <ITEMS>
         <ITEM NAME="OPTION_NAME" FIELD="String"/>
         <ITEM NAME="OPTION_VALUE" FIELD="String"/>

@@ -33,11 +33,9 @@ class="MomConnection"
 		boolean transacted = "true".equals(ElementParameterParser.getValue(node, "__IS_TRANSACTED__"));
 		String acknowledgmentMode = ElementParameterParser.getValue(node, "__ACKNOWLEDGMENT_MODE__");
 		
-		/*npruss start: changes for static discovery and custom connection parameters*/
-		 boolean staticdiscovery =  ("true").equals(ElementParameterParser.getValue(node, "__STATIC__"));
-		 String connectParamFailover = ElementParameterParser.getValue(node, "__CONNECTION_PARAM_FAILOVER__");
-		 String connectParamStatic = ElementParameterParser.getValue(node, "__CONNECTION_PARAM_STATIC__");
-		/*npruss end: changes for static discovery and custom connection parameters*/
+		boolean staticdiscovery =  ("true").equals(ElementParameterParser.getValue(node, "__STATIC__"));
+		String connectParamFailover = ElementParameterParser.getValue(node, "__CONNECTION_PARAM_FAILOVER__");
+		String connectParamStatic = ElementParameterParser.getValue(node, "__CONNECTION_PARAM_STATIC__");
 		
 		boolean failover =  ("true").equals(ElementParameterParser.getValue(node, "__FAILOVER__"));
 		List<Map<String,String>> servers = (List<Map<String,String>>)ElementParameterParser.getObjectValue(node, "__SERVERS__");
@@ -50,14 +48,14 @@ class="MomConnection"
 		/*---------------------------------------1.initial jms connection factry---------------------------------*/ 
 	
 		String url_<%=cid %> ="";
-		String endParam="";
+		String endParam_<%=cid %> = "";
 		<%if(failover || staticdiscovery){
 		 	if(failover){%>
 				url_<%=cid %> = "failover:(";
-				endParam=<%=connectParamFailover%>;
+				endParam_<%=cid %>=<%=connectParamFailover%>;
 			<%}else if(staticdiscovery){%>
 				url_<%=cid %> = "discovery://static:(";
-				endParam=<%=connectParamStatic%>;
+				endParam_<%=cid %>=<%=connectParamStatic%>;
 			<%}
 			int i=0;
 			for(Map<String, String> serversMap : servers) {
@@ -78,7 +76,7 @@ class="MomConnection"
 				i++;
 			}
 			%>
-			url_<%=cid %> = url_<%=cid %> +")"+endParam;
+			url_<%=cid %> = url_<%=cid %> +")"+endParam_<%=cid %>;
 			<%
 			for(Map<String, String> optrion : additionalOpts) {
 			%>

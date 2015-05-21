@@ -58,11 +58,11 @@
     </PARAMETER>
 	
 	<PARAMETER NAME="CONNECTION_PARAM_FAILOVER" FIELD="TEXT" NUM_ROW="16"
-		SHOW_IF="FAILOVER == 'true'" >
+		SHOW_IF="(SERVER == 'ACTIVEMQ') and (FAILOVER == 'true')" >
       <DEFAULT >"?transport.randomize=false"</DEFAULT>
     </PARAMETER>
 	<PARAMETER NAME="CONNECTION_PARAM_STATIC" FIELD="TEXT" NUM_ROW="16"
-		SHOW_IF="STATIC == 'true'" >
+		SHOW_IF="(SERVER == 'ACTIVEMQ') and (STATIC == 'true')" >
       <DEFAULT >"?transport.maxReconnectDelay=5000&amp;transport.useExponentialBackOff=false"</DEFAULT>
     </PARAMETER>
     <PARAMETER NAME="SERVERS" FIELD="TABLE" NB_LINES="5" NUM_ROW="23"

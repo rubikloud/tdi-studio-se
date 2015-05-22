@@ -12,13 +12,22 @@
 // ============================================================================
 package org.talend.designer.publish.core.models;
 
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class FeaturesModel extends BaseModel {
 
@@ -32,7 +41,7 @@ public class FeaturesModel extends BaseModel {
 
 	private String configName;
 
-	private Collection<String> subFeatures = new HashSet<String>();
+	private Collection<FeatureModel> subFeatures = new HashSet<FeatureModel>();
 
 	private Collection<BundleModel> subBundles = new HashSet<BundleModel>();
 
@@ -49,17 +58,7 @@ public class FeaturesModel extends BaseModel {
 	}
 
 	public void addFeature(FeatureModel feature) {
-		StringBuilder sb = new StringBuilder();
-        sb.append("<feature");
-        if (null != feature.getVersion() && !feature.getVersion().isEmpty()) {
-            sb.append(" version='");
-            sb.append(feature.getVersion());
-            sb.append('\'');
-        }
-        sb.append(">");
-		sb.append(feature.getArtifactId());
-		sb.append("</feature>");
-		subFeatures.add(sb.toString());
+		subFeatures.add(feature);
 	}
 
 	public boolean addBundle(BundleModel model) {
@@ -92,87 +91,102 @@ public class FeaturesModel extends BaseModel {
 	}
 
 	private static String toBundleString(BundleModel model) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<bundle>mvn:");
+		StringBuilder sb = new StringBuilder("mvn:");
 		sb.append(model.getGroupId());
 		sb.append('/');
 		sb.append(model.getArtifactId());
 		sb.append('/');
 		sb.append(model.getVersion());
-		sb.append("</bundle>");
 		return sb.toString();
 	}
 
-	public String getContent() {
-		StringBuilder sb = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		sb.append("<features name=\"").append(getArtifactId()).append("\" xmlns=\"http://karaf.apache.org/xmlns/features/v1.0.0\">\n");
-		sb.append("\t<feature name=\"");
-		sb.append(getArtifactId());
-		sb.append("\" version=\"");
-		sb.append(getVersion());
-		sb.append("\">\n");
-		// add sub features
-		for (String s : subFeatures) {
-			sb.append("\t\t");
-			sb.append(s);
-			sb.append("\n");
-		}
+    public String getContent() {
+        try {
+            return internalGetContent();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-		// add sub bundles
-		for (BundleModel s : subBundles) {
-			sb.append("\t\t");
-			sb.append(toBundleString(s));
-			sb.append("\n");
-		}
+    private String internalGetContent() throws Exception {
+        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 
-		if (null == contexts || contexts.isEmpty()) {
-			// add config
-			sb.append("\t\t<config name=\"");
-			sb.append(configName);
-			sb.append("\">\n");
-			sb.append("\t\t\ttalendcontext=\"");
-			for (int i = 0; i < contextList.length; i++) {
-				if (i != 0) {
-					sb.append(',');
-				}
-				sb.append(StringEscapeUtils.escapeXml(contextList[i]));
-			}
-			sb.append("\"\n");
-			sb.append("\t\t</config>\n");
-		} else {
-			// add contexts config
-			for (Map.Entry<String, Map<String, String>> context : contexts.entrySet()) {
-				sb.append("\t\t<config name=\"");
-				sb.append(name).append(".talendcontext.").append(StringEscapeUtils.escapeXml(context.getKey()));
-				sb.append("\">\n");
-				for (Map.Entry<String, String> property : context.getValue().entrySet()) {
-					sb.append("\t\t\t");
-					sb.append(StringEscapeUtils.escapeXml(property.getKey()));
-					sb.append('=');
-					sb.append(StringEscapeUtils.escapeXml(property.getValue()));
-					sb.append("\n");
-				}
-				sb.append("\t\t</config>\n");
-			}
-		}
-		
-		sb.append("\t</feature>\n");
-		sb.append("</features>");
+        Element features = document.createElement("features");
+        features.setAttribute("xmlns", "http://karaf.apache.org/xmlns/features/v1.0.0");
+        features.setAttribute("name", getArtifactId());
+        document.appendChild(features);
 
-		return sb.toString();
+        Element feature = document.createElement("feature");
+        feature.setAttribute("name", getArtifactId());
+        feature.setAttribute("version", getVersion());
+        features.appendChild(feature);
+
+        // add sub features
+        for (FeatureModel fm : subFeatures) {
+            Element subFeature = document.createElement("feature");
+            if (null != fm.getVersion() && !fm.getVersion().isEmpty()) {
+                subFeature.setAttribute("version", fm.getVersion());
+            }
+            subFeature.appendChild(document.createTextNode(fm.getArtifactId()));
+            feature.appendChild(subFeature);
+        }
+
+        // add sub bundles
+        for (BundleModel bm : subBundles) {
+            Element bundle = document.createElement("bundle");
+            bundle.appendChild(document.createTextNode(toBundleString(bm)));
+            feature.appendChild(bundle);
+        }
+
+        if (null == contexts || contexts.isEmpty()) {
+            // add config
+            Element config = document.createElement("config");
+            config.setAttribute("name", configName);
+            StringBuilder sb = new StringBuilder("talendcontext=\"");
+            for (int i = 0; i < contextList.length; i++) {
+                if (i != 0) {
+                    sb.append(',');
+                }
+                sb.append(contextList[i]);
+            }
+            sb.append('"');
+            config.appendChild(document.createTextNode(sb.toString()));
+            feature.appendChild(config);
+        } else {
+            // add contexts config
+            for (Map.Entry<String, Map<String, String>> context : contexts.entrySet()) {
+                Element config = document.createElement("config");
+                config.setAttribute("name", name +".talendcontext."+ context.getKey());
+                StringBuilder sb = new StringBuilder();
+                for (Map.Entry<String, String> property : context.getValue().entrySet()) {
+                    sb.append(property.getKey());
+                    sb.append('=');
+                    sb.append(property.getValue());
+                    sb.append("\n");
+                }
+                config.appendChild(document.createTextNode(sb.toString()));
+                feature.appendChild(config);
+            }
+        }
+
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        DOMSource source = new DOMSource(document);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.transform(source, result);
+        return writer.toString();
 	}
 
-//	public static void main(String[] args) {
-//		FeaturesModel featureModel = new FeaturesModel("aaa",
-//				"CustomService", "1.0.0");
-//		featureModel.addBundle(new BundleModel("talend", "job-control-bundle", "1.0"));
-//		featureModel.addBundle(new BundleModel("talend", "ProviderJob", "1.0"));
-//		featureModel.addBundle(new BundleModel("talend", "ESBProvider2", "1.0"));
-//		featureModel.addFeature(new FeatureModel("custom-feature", "2.0"));
-//		featureModel.setConfigName("aa.bb");
-//		featureModel
-//				.setContextList(new String[] { "Default", "Product", "Dev" });
-//		System.out.println(featureModel.getContent());
-//	}
+//    public static void main(String[] args) {
+//        FeaturesModel featureModel = new FeaturesModel("aaa", "CustomService", "1.0.0");
+//        featureModel.addBundle(new BundleModel("talend", "job-control-bundle", "1.0"));
+//        featureModel.addBundle(new BundleModel("talend", "ProviderJob", "1.0"));
+//        featureModel.addBundle(new BundleModel("talend", "ESBProvider2", "1.0"));
+//        featureModel.addFeature(new FeatureModel("custom-feature", "2.0"));
+//        featureModel.setConfigName("aa.bb");
+//        featureModel.setContextList(new String[] { "Default", "Product", "Dev" });
+//        System.out.println(featureModel.getContent());
+//    }
 
 }

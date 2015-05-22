@@ -27,6 +27,7 @@ imports="
 		}
 		
 		public void createStatement(INode node) {
+			super.createStatement(node);
 			String useCursor= ElementParameterParser.getValue(node, "__USE_CURSOR__");
 			String cursorSize= ElementParameterParser.getValue(node, "__CURSOR_SIZE__");
 		   String useExistingConn = ElementParameterParser.getValue(node,"__USE_EXISTING_CONNECTION__");
@@ -39,21 +40,19 @@ imports="
          } else {
 				driverName = ElementParameterParser.getValue(node, "__DRIVER_CLASS__");
 			}
-         if(("true").equals(useCursor)) {
-				if(null != driverName && driverName.indexOf("mysql") != -1){
-				   super.createMinValueStatement(node);
+			if(null != driverName && driverName.indexOf("mysql") != -1){
 %>
-					((com.mysql.jdbc.Statement)stmt_<%=cid %>).enableStreamingResults();
+				stmt_<%=cid %> = conn_<%=cid%>.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
+																					java.sql.ResultSet.CONCUR_READ_ONLY);
+				((com.mysql.jdbc.Statement)stmt_<%=cid %>).enableStreamingResults();
 <%
-				}else{
-					super.createStatement(node);
+			}else{
+            if(("true").equals(useCursor)) {
 %>
-               stmt_<%=cid %>.setFetchSize(<%=cursorSize %>);
+                stmt_<%=cid %>.setFetchSize(<%=cursorSize %>);
 <%
-				}
-			} else{
-				super.createStatement(node);
-			}             
+			   }
+		   }            
 		}
 		
 		public void createConnection(INode node) {

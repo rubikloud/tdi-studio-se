@@ -33,12 +33,14 @@ public final class DesignerColorUtils {
 
     public static final RGB JOBLET_COLOR = new RGB(130, 240, 100);
 
-    public static final RGB MR_COLOR = new RGB(130, 240, 100);
+    public static final RGB MR_COLOR = new RGB(186, 203, 219);
 
     public static final String SUBJOB_TITLE_COLOR_NAME = "subjobTitleColor"; //$NON-NLS-1$
 
     public static final String SUBJOB_COLOR_NAME = "subjobColor"; //$NON-NLS-1$
 
+    public static final String JOBLET_COLOR_NAME = "jobletColor"; //$NON-NLS-1$
+    
     public static final String MRGROUP_COLOR_NAME = "mrgroupColor"; //$NON-NLS-1$
 
     public static final String JOBDESIGNER_EGITOR_BACKGROUND_COLOR_NAME = "jobDesignerBackgroundColor"; //$NON-NLS-1$
@@ -85,6 +87,8 @@ public final class DesignerColorUtils {
         store.setDefault(DesignerColorUtils.SUBJOB_COLOR_NAME, StringConverter.asString(DesignerColorUtils.SUBJOB_COLOR));
         store.setDefault(DesignerColorUtils.SUBJOB_TITLE_COLOR_NAME,
                 StringConverter.asString(DesignerColorUtils.SUBJOB_TITLE_COLOR));
+        // mr
+        store.setDefault(DesignerColorUtils.JOBLET_COLOR_NAME, StringConverter.asString(DesignerColorUtils.JOBLET_COLOR));
         // mr
         store.setDefault(DesignerColorUtils.MRGROUP_COLOR_NAME, StringConverter.asString(DesignerColorUtils.MR_COLOR));
         // connection

@@ -63,6 +63,10 @@ public class DesignerColorsPreferencePage extends FieldEditorPreferencePage impl
 
         createEditorFieldEditors(parent);
         createSubjobFieldEditors(parent);
+        boolean loadJoblet = PluginChecker.isPluginLoaded("org.talend.designer.joblet");//$NON-NLS-1$
+        if (loadJoblet) {
+            createJobletGroupFieldEditors(parent);
+        }
         boolean loadMR = PluginChecker.isPluginLoaded("org.talend.designer.mapreduce");//$NON-NLS-1$
         if (loadMR) {
             createMRGroupFieldEditors(parent);
@@ -83,6 +87,19 @@ public class DesignerColorsPreferencePage extends FieldEditorPreferencePage impl
         GridLayout layout = new GridLayout(2, false);
         layout.marginLeft = 10;
         subjobGroup.setLayout(layout);
+    }
+
+    private void createJobletGroupFieldEditors(Composite parent) {
+        Group jobletGroup = new Group(parent, SWT.NULL);
+        jobletGroup.setText(Messages.getString("DesignerPreferencePage.JobletColorGroup")); //$NON-NLS-1$
+        jobletGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        addField(new ColorFieldEditor(DesignerColorUtils.JOBLET_COLOR_NAME,
+                Messages.getString("DesignerPreferencePage.JobletGroupColorLabel"), jobletGroup)); //$NON-NLS-1$
+
+        GridLayout layout = new GridLayout(2, false);
+        layout.marginLeft = 10;
+        jobletGroup.setLayout(layout);
     }
 
     private void createMRGroupFieldEditors(Composite parent) {
@@ -189,6 +206,8 @@ public class DesignerColorsPreferencePage extends FieldEditorPreferencePage impl
                         JobletContainer jCon = (JobletContainer) ((JobletContainerPart) child).getModel();
                         jCon.setPropertyValue(JobletContainer.UPDATE_JOBLET_DISPLAY, DesignerColorUtils.getPreferenceMRGroupRGB(
                                 DesignerColorUtils.MRGROUP_COLOR_NAME, DesignerColorUtils.MR_COLOR));
+                        jCon.setPropertyValue(JobletContainer.UPDATE_JOBLET_DISPLAY, DesignerColorUtils.getPreferenceMRGroupRGB(
+                                DesignerColorUtils.JOBLET_COLOR_NAME, DesignerColorUtils.JOBLET_COLOR));
                     }
                 }
             }

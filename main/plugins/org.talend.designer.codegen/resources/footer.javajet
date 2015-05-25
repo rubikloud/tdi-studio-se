@@ -201,27 +201,26 @@
         for (IContext context : contexts)
         {
         %>
-            @Test
-            public void test<%=context.getName()%>() {
-                final <%=className %> <%=className %>Class = new <%=className %>();
-                StringBuilder strBuffer_<%=context.getName()%> = new StringBuilder();
-             <%
-             for(IContextParameter contextPara:context.getContextParameterList()){
-                if(contextPara.getSource().equals("testContainer_dataset")){    
-                    String path =  ProcessUtils.getTestDataValue(process, context, contextPara);
-                    if(path!=null&&path.length()>0){
-              %>
-                java.net.URL url_<%=contextPara.getName()%> = getClass().getResource("<%=path%>");
-                String context_<%=contextPara.getName()%>="--context_param <%=contextPara.getName()%> = " + url_<%=contextPara.getName()%>.getPath();
-                strBuffer_<%=context.getName()%>.append(",");
-                strBuffer_<%=context.getName()%>.append(context_<%=contextPara.getName()%>);
-              <%
-                   }
-                }
-             }
-             %>   
-                <%=className %>Class.runJobInTOS(new String[] { "--context=<%=context.getName()%>"+strBuffer_<%=context.getName()%>.toString()});
-            }
+      @Test
+        public void test<%=context.getName()%>() {
+            final <%=className %> <%=className %>Class = new <%=className %>();
+            StringBuilder strBuffer_<%=context.getName()%> = new StringBuilder();
+            <%
+        for(IContextParameter contextPara:context.getContextParameterList()){
+            String path =  ProcessUtils.getTestDataValue(process, context, contextPara);
+            if(path!=null&&path.length()>0){
+            %>
+            java.net.URL url_<%=contextPara.getName()%> = getClass().getResource("<%=path%>");
+            String context_<%=contextPara.getName()%>="--context_param <%=contextPara.getName()%> = " + url_<%=contextPara.getName()%>.getPath();
+            strBuffer_<%=context.getName()%>.append(",");
+            strBuffer_<%=context.getName()%>.append(context_<%=contextPara.getName()%>);
+        <%
+         }
+               
+        }
+        %>   
+        <%=className %>Class.runJobInTOS(new String[] { "--context=<%=context.getName()%>"+strBuffer_<%=context.getName()%>.toString()});
+        }
         <%
         }
     }

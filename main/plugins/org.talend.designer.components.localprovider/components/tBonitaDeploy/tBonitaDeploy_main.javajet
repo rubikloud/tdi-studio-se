@@ -22,6 +22,92 @@ imports="
 	String loginModule = ElementParameterParser.getValue(node, "__LOGIN_MODULE__");
 	String dbVersion = ElementParameterParser.getValue(node, "__DB_VERSION__");
 	String bonitaHome = ElementParameterParser.getValue(node, "__BONITA_HOME__");
+	
+	String clientMode = ElementParameterParser.getValue(node, "__CLIENT_MODE__");
+	if("BONITA_652".equals(dbVersion)) {
+		String passwordFieldName = "__PASSWORD__";
+%>
+		<%@ include file="@{org.talend.designer.components.localprovider}/components/templates/password.javajet"%>
+<%
+		if("HTTP_CLIENT".equals(clientMode)) {
+			String url = ElementParameterParser.getValue(node, "__BONITA_URL__");
+%>
+			org.talend.bonita.RestClient client_<%=cid%> = null;
+			String processId_<%=cid%> = null;
+			try {
+				client_<%=cid%> = new org.talend.bonita.RestClient(<%=url%>);
+			
+				client_<%=cid%>.loginAs(<%=userName%>, decryptedPassword_<%=cid%>);
+				
+				processId_<%=cid%> = client_<%=cid%>.deployProcess(<%=businessArchive%>);
+				
+				System.out.println("**** Process "+ processId_<%=cid%> + " deploy successful ****");
+			
+			} catch(java.lang.Exception e_<%=cid%>) {
+<%
+			if (dieOnError) {
+%>
+				throw e_<%=cid%>;		
+<%
+			} else {
+%>
+				System.err.println(e_<%=cid%>.getMessage());
+<%
+			}
+%>
+			} finally {
+				if(client_<%=cid%>!=null) {
+					try {
+						client_<%=cid%>.logout();
+						client_<%=cid%>.close();
+					} catch(java.lang.Exception e_<%=cid%>) {
+						//do nothing,keep quiet
+					}
+				}
+			}
+		
+			globalMap.put("<%=cid %>_ProcessDefinitionUUID", processId_<%=cid%>); 
+<%
+			
+		} else if("JAVA_CLIENT".equals(clientMode)) {
+%>
+			org.talend.bonita.Client client_<%=cid%> = null;
+			String processId_<%=cid%> = null;
+			try {
+				client_<%=cid%> = new org.talend.bonita.Client(<%=bonitaHome%>);
+		        client_<%=cid%>.login(<%=userName%>, decryptedPassword_<%=cid%>);
+		        processId_<%=cid%> = client_<%=cid%>.deployProcess(<%=businessArchive%>);
+		        
+		        System.out.println("**** Process "+ processId_<%=cid%> + " deploy successful ****");
+	        } catch(java.lang.Exception e_<%=cid%>) {
+<%
+			if (dieOnError) {
+%>
+				throw e_<%=cid%>;		
+<%
+			} else {
+%>
+				System.err.println(e_<%=cid%>.getMessage());
+<%
+			}
+%>
+			} finally {
+				if(client_<%=cid%>!=null) {
+					try {
+						client_<%=cid%>.logout();
+					} catch(java.lang.Exception e_<%=cid%>) {
+						//do nothing,keep quiet
+					}
+				}
+			}
+			
+			globalMap.put("<%=cid %>_ProcessDefinitionUUID", processId_<%=cid%>);
+<%
+		}
+		
+		return stringBuffer.toString();
+	}
+	
 	if("BONITA_561".equals(dbVersion) || "BONITA_5101".equals(dbVersion)){
 %>
 	System.setProperty("BONITA_HOME", <%=bonitaHome%>);

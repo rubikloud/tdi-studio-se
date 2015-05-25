@@ -12,20 +12,38 @@ imports="
 	String cid = node.getUniqueName();
 
 	String clientMode = ElementParameterParser.getValue(node, "__CLIENT_MODE__");
-%>
-<%
+	
+	String dbVersion = ElementParameterParser.getValue(node, "__DB_VERSION__");
+	
 	if ("HTTP_CLIENT".equals(clientMode)) {
+		if("BONITA_652".equals(dbVersion)) {
 %>
-	if (httpConn_<%=cid %> != null) {
-		httpConn_<%=cid %>.disconnect();
-	}
+		if (client_<%=cid %> != null) {
+			client_<%=cid%>.logout();
+			client_<%=cid%>.close();
+		}
 <%
+		} else {
+%>
+		if (httpConn_<%=cid %> != null) {
+			httpConn_<%=cid %>.disconnect();
+		}
+<%
+		}
 	} else {
+		if("BONITA_652".equals(dbVersion)) {
 %>
-	if (loginContext_<%=cid%> != null) {
-		loginContext_<%=cid%>.logout();
-	}
+		if (client_<%=cid %> != null) {
+			client_<%=cid%>.logout();
+		}
 <%
+		} else {
+%>
+		if (loginContext_<%=cid%> != null) {
+			loginContext_<%=cid%>.logout();
+		}
+<%
+		}
 	}
 %>
 resourceMap.put("finish_<%=cid%>", true); 

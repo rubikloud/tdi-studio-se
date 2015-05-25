@@ -21,7 +21,9 @@ imports="
 	String processID = ElementParameterParser.getValue(node, "__PROCESS_ID__");
 	String clientMode = ElementParameterParser.getValue(node, "__CLIENT_MODE__");
 	boolean dieOnError = ("true").equals(ElementParameterParser.getValue(node, "__DIE_ON_ERROR__"));
-
+	
+	String dbVersion = ElementParameterParser.getValue(node, "__DB_VERSION__");
+	
 	List< ? extends IConnection> conns = node.getIncomingConnections();
 	if(conns != null && conns.size() > 0 && conns.get(0) != null) {
     	IConnection conn = conns.get(0);
@@ -34,8 +36,41 @@ imports="
 					if (metadata!=null) {
 						List<IMetadataColumn> columns = metadata.getListColumns();
 						int sizeColumns = columns.size();
+						
 						for (int i = 0; i < sizeColumns; i++) {
 							if ("HTTP_CLIENT".equals(clientMode)) {
+								if("BONITA_652".equals(dbVersion)) {
+									if(!JavaTypesManager.isJavaPrimitiveType(columns.get(i).getTalendType(), columns.get(i).isNullable())) {
+									%>
+										if(<%=conn.getName()%>.<%=(columns.get(i)).getLabel()%> != null) {//}
+									<%
+									}
+									
+									JavaType javaType = JavaTypesManager.getJavaTypeFromId(columns.get(i).getTalendType());
+									String pattern = columns.get(i).getPattern() == null || columns.get(i).getPattern().trim().length() == 0 ? null : columns.get(i).getPattern();
+									if(javaType == JavaTypesManager.DATE){
+									%>
+										vars_<%=cid%>.put("<%=columns.get(i).getLabel()%>",routines.system.FormatterUtils.format_Date(<%=conn.getName()%>.<%=columns.get(i).getLabel()%>, <%= pattern %>));
+									<%
+									} else {
+									%>
+										
+										vars_<%=cid%>.put("<%=columns.get(i).getLabel()%>",java.net.URLEncoder.encode(java.net.URLEncoder.encode(String.valueOf(<%=conn.getName()%>.<%=(columns.get(i)).getLabel()%>), utf8Charset),utf8Charset));
+									<%
+									}
+									
+									if(!JavaTypesManager.isJavaPrimitiveType(columns.get(i).getTalendType(), columns.get(i).isNullable())) {
+									%>
+										//{
+										} else {
+											vars_<%=cid%>.put("<%=columns.get(i).getLabel()%>","");
+										}
+									<%
+									}
+									
+									continue;
+								}
+								
 								if (i==0) {
 								%>
 									parameters_<%=cid%>.append("&variables=<map>");
@@ -88,35 +123,56 @@ imports="
 	try{
 		<%
 		if ("HTTP_CLIENT".equals(clientMode)) {
+			if("BONITA_652".equals(dbVersion)) {
 		%>
-			java.io.DataOutputStream output_<%=cid%> = new java.io.DataOutputStream(httpConn_<%=cid %>.getOutputStream());
-			output_<%=cid%>.writeBytes(parameters_<%=cid%>.toString());
-			output_<%=cid%>.flush();
-			if (output_<%=cid%> != null) {
-				output_<%=cid%>.close();
-				output_<%=cid%> = null;
+				processInstanceUUID_<%=cid%> = client_<%=cid%>.startProcess(processID_<%=cid%>,vars_<%=cid%>);
+		<%
+			} else {
+		%>
+				java.io.DataOutputStream output_<%=cid%> = new java.io.DataOutputStream(httpConn_<%=cid %>.getOutputStream());
+				output_<%=cid%>.writeBytes(parameters_<%=cid%>.toString());
+				output_<%=cid%>.flush();
+				if (output_<%=cid%> != null) {
+					output_<%=cid%>.close();
+					output_<%=cid%> = null;
+				}
+			    int responseCode_<%=cid%> = httpConn_<%=cid %>.getResponseCode();
+			    
+			    if(responseCode_<%=cid %> != java.net.HttpURLConnection.HTTP_OK){
+			    	System.out.println("----------\nRequest failled: " + responseCode_<%=cid%>+ "----------");
+			      	throw new java.lang.Exception("Request the url:" + url_<%=cid%> + " failed: " + responseCode_<%=cid%>);
+			    } else {
+			      	java.io.InputStream is_<%=cid%> = httpConn_<%=cid %>.getInputStream();
+			      	javax.xml.xpath.XPath xPath_<%=cid%> = javax.xml.xpath.XPathFactory.newInstance().newXPath();
+			      	org.xml.sax.InputSource inputSource_<%=cid %> = new org.xml.sax.InputSource(is_<%=cid %>);
+			      	processInstanceUUID_<%=cid%> = (String) xPath_<%=cid%>.evaluate("/ProcessInstanceUUID/value/text()", inputSource_<%=cid %>, javax.xml.xpath.XPathConstants.STRING);
+			      	if (is_<%=cid%> != null) {
+			      		is_<%=cid%>.close();
+			      		is_<%=cid%> = null;
+			      	}
+			    }
+		<%
 			}
-		    int responseCode_<%=cid%> = httpConn_<%=cid %>.getResponseCode();
-		    
-		    if(responseCode_<%=cid %> != java.net.HttpURLConnection.HTTP_OK){
-		    	System.out.println("----------\nRequest failled: " + responseCode_<%=cid%>+ "----------");
-		      	throw new java.lang.Exception("Request the url:" + url_<%=cid%> + " failed: " + responseCode_<%=cid%>);
-		    } else {
-		      	java.io.InputStream is_<%=cid%> = httpConn_<%=cid %>.getInputStream();
-		      	javax.xml.xpath.XPath xPath_<%=cid%> = javax.xml.xpath.XPathFactory.newInstance().newXPath();
-		      	org.xml.sax.InputSource inputSource_<%=cid %> = new org.xml.sax.InputSource(is_<%=cid %>);
-		      	processInstanceUUID_<%=cid%> = (String) xPath_<%=cid%>.evaluate("/ProcessInstanceUUID/value/text()", inputSource_<%=cid %>, javax.xml.xpath.XPathConstants.STRING);
-		      	if (is_<%=cid%> != null) {
-		      		is_<%=cid%>.close();
-		      		is_<%=cid%> = null;
-		      	}
-		    }
-		<%
 		} else { // Java Client
+			if("BONITA_652".equals(dbVersion)) {
+				boolean use_process_id = "true".equals(ElementParameterParser.getValue(node, "__USE_PROCESS_ID__"));
+				if(use_process_id) {
 		%>
-			org.ow2.bonita.facade.uuid.ProcessInstanceUUID instanceUUID_<%=cid%> = runtimeAPI_<%=cid%>.instantiateProcess(processID_<%=cid%>, parameters_<%=cid%>);
-			processInstanceUUID_<%=cid%> = instanceUUID_<%=cid%>.getValue();
+					processInstanceUUID_<%=cid%> = client_<%=cid%>.startProcess(<%=processID%>,parameters_<%=cid%>);
 		<%
+				} else {
+					String process_name = ElementParameterParser.getValue(node, "__PROCESS_NAME__");
+					String process_version = ElementParameterParser.getValue(node, "__PROCESS_VERSION__");
+		%>
+					processInstanceUUID_<%=cid%> = client_<%=cid%>.startProcess(<%=process_name%>,<%=process_version%>,parameters_<%=cid%>);
+		<%
+				}
+			} else {
+		%>
+				org.ow2.bonita.facade.uuid.ProcessInstanceUUID instanceUUID_<%=cid%> = runtimeAPI_<%=cid%>.instantiateProcess(processID_<%=cid%>, parameters_<%=cid%>);
+				processInstanceUUID_<%=cid%> = instanceUUID_<%=cid%>.getValue();
+		<%
+			}
 		}
 		%>
 	} catch (java.lang.Exception lee_<%=cid%>) {

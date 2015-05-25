@@ -18,7 +18,39 @@ imports="
 		String process_name = ElementParameterParser.getValue(node, "__PROCESS_NAME__");
 		String process_version = ElementParameterParser.getValue(node, "__PROCESS_VERSION__");
 		String userName = ElementParameterParser.getValue(node, "__USERNAME__");
-		%>
+		
+		String dbVersion = ElementParameterParser.getValue(node, "__DB_VERSION__");
+		
+		if("BONITA_652".equals(dbVersion)) {
+%>
+			String processInstanceUUID_<%=cid%> = null;
+			java.util.Map<String,String> vars_<%=cid%> = new java.util.HashMap<String,String>();
+			
+			org.talend.bonita.RestClient client_<%=cid%> = new org.talend.bonita.RestClient(<%=url%>);
+			
+			resourceMap.put("client_<%=cid%>", client_<%=cid%>); 
+<%
+			String passwordFieldName = "__PASSWORD__";
+%>
+			<%@ include file="@{org.talend.designer.components.localprovider}/components/templates/password.javajet"%>
+		
+			client_<%=cid%>.loginAs(<%=userName%>, decryptedPassword_<%=cid%>);
+<%
+			boolean use_process_id = "true".equals(ElementParameterParser.getValue(node, "__USE_PROCESS_ID__"));
+			if(use_process_id) {
+				String processID = ElementParameterParser.getValue(node, "__PROCESS_ID__");
+%>
+				String processID_<%=cid%> = <%=processID%>;
+<%
+			} else {
+%>
+				String processID_<%=cid%> = client_<%=cid%>.getProcessID(<%=process_name%>,<%=process_version%>);
+<%
+			}
+			
+			return stringBuffer.toString();
+		}
+%>
 		String processInstanceUUID_<%=cid%> = null;
 		StringBuilder parameters_<%=cid%> = new StringBuilder("options=user:");
 		parameters_<%=cid%>.append(<%=userName%>);
@@ -60,7 +92,24 @@ imports="
 		String loginModule = ElementParameterParser.getValue(node, "__LOGIN_MODULE__");
 		String dbVersion = ElementParameterParser.getValue(node, "__DB_VERSION__");
 		String bonitaHome = ElementParameterParser.getValue(node, "__BONITA_HOME__");
-	
+		
+		if("BONITA_652".equals(dbVersion)) {
+%>
+			String processInstanceUUID_<%=cid%> = null;
+			java.util.Map<String, Object> parameters_<%=cid%>=new java.util.HashMap<String, Object>();
+			
+			org.talend.bonita.Client client_<%=cid%> = new org.talend.bonita.Client(<%=bonitaHome%>);
+			resourceMap.put("client_<%=cid%>", client_<%=cid%>); 
+<%
+			String passwordFieldName = "__PASSWORD__";
+%>
+			<%@ include file="@{org.talend.designer.components.localprovider}/components/templates/password.javajet"%>
+		
+			client_<%=cid%>.login(<%=userName%>, decryptedPassword_<%=cid%>);
+<%
+			return stringBuffer.toString();
+		}
+		
 		if("BONITA_561".equals(dbVersion) || "BONITA_5101".equals(dbVersion)){
 		%>
 			System.setProperty("BONITA_HOME", <%=bonitaHome%>);

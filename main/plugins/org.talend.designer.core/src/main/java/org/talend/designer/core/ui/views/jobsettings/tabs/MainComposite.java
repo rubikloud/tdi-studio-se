@@ -34,6 +34,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.tabbed.AbstractPropertySection;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -46,6 +47,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.User;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.ui.actions.DeleteActionCache;
 import org.talend.core.repository.utils.ConvertJobsUtil;
@@ -53,6 +55,8 @@ import org.talend.core.repository.utils.ConvertJobsUtil.JobType;
 import org.talend.core.repository.utils.ConvertJobsUtil.Status;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.branding.IBrandingService;
+import org.talend.core.ui.editor.IJobEditorHandler;
+import org.talend.core.ui.editor.JobEditorHandlerManager;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -460,8 +464,8 @@ public class MainComposite extends AbstractTabComposite {
                         property.setDescription(descriptionText.getText());
                     }
                     // Convert
-                    ConvertJobsUtil.createOperation(nameText.getText(), jobTypeCCombo.getText(), jobFrameworkCCombo.getText(),
-                            repositoryObject);
+                    Item newItem = ConvertJobsUtil.createOperation(nameText.getText(), jobTypeCCombo.getText(),
+                            jobFrameworkCCombo.getText(), repositoryObject);
                     final IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance()
                             .getProxyRepositoryFactory();
 
@@ -493,6 +497,10 @@ public class MainComposite extends AbstractTabComposite {
                     } catch (CoreException e1) {
                         MessageBoxExceptionHandler.process(e1.getCause());
                     }
+
+                    if (newItem != null) {
+                        openEditorOperation(newItem);
+                    }
                 }
             });
         }
@@ -517,6 +525,21 @@ public class MainComposite extends AbstractTabComposite {
             btnConfirm.setEnabled(true);
         } else if (!descriptionText.getText().equals(StringUtils.trimToEmpty(repositoryObject.getDescription()))) {
             btnConfirm.setEnabled(true);
+        }
+    }
+
+    public void openEditorOperation(Item item) {
+        if (item != null) {
+            try {
+                ERepositoryObjectType repObjType = ERepositoryObjectType.getItemType(item);
+                IJobEditorHandler editorInputFactory = JobEditorHandlerManager.getInstance().extractEditorInputFactory(
+                        repObjType.getType());
+                editorInputFactory.openJobEditor(editorInputFactory.createJobEditorInput(item, true));
+            } catch (PartInitException e) {
+                e.printStackTrace();
+            } catch (PersistenceException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

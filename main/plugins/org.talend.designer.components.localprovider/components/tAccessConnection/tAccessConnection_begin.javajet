@@ -11,34 +11,13 @@ imports="
 	
 		public void createURL(INode node) {
 			super.createURL(node);
-			String dbversion = ElementParameterParser.getValue(node, "__DB_VERSION__");
-			String odbcJdbc = ElementParameterParser.getValue(node, "__JDBC_ODBC__");
-			
-			if ("JDBC".equals(odbcJdbc)) {
 %>
 				String url_<%=cid %> = "jdbc:ucanaccess://" + <%=dbname%>;
-<%			} else {
-				if ("Access_2003".equalsIgnoreCase(dbversion)){
-%>
-	            String url_<%=cid %> = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=" + <%=dbname%>;
-<%
-            	}else if ("Access_2007".equalsIgnoreCase(dbversion)){
-%>
-	            String url_<%=cid %> = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" + <%=dbname%>;            
-<%
-            	}
-            }
-%>
 <%
 		}
 		
 		public String getDirverClassName(INode node){
-			String odbcJdbc = ElementParameterParser.getValue(node, "__JDBC_ODBC__");
-			if ("JDBC".equals(odbcJdbc)) {
-				return "net.ucanaccess.jdbc.UcanaccessDriver";
-			} else {
-				return "sun.jdbc.odbc.JdbcOdbcDriver";
-			}
+			return "net.ucanaccess.jdbc.UcanaccessDriver";
 		}
 		
 		public void createConnection(INode node) {

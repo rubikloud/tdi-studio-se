@@ -16,22 +16,9 @@ imports="
 	    }
 	    
 		public void setURL(INode node) {
-    		String odbcJdbc = ElementParameterParser.getValue(node, "__JDBC_ODBC__");
-			String dbversion = ElementParameterParser.getValue(node, "__DB_VERSION__");
-			if ("JDBC".equals(odbcJdbc)) {
 %>
-				String url_<%=cid %> = "jdbc:ucanaccess://" + <%=dbname%>;
-<%			} else {
-				if ("Access_2003".equalsIgnoreCase(dbversion)){
-%>
-	            String url_<%=cid %> = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=" + <%=dbname%>;
+		String url_<%=cid %> = "jdbc:ucanaccess://" + <%=dbname%>;           
 <%
-            	}else if ("Access_2007".equalsIgnoreCase(dbversion)){
-%>
-	            String url_<%=cid %> = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" + <%=dbname%>;            
-<%
-            	}
-            }
 		}
 		
 		public void createConnection(INode node) {
@@ -44,13 +31,7 @@ imports="
 			<%
 				super.afterUseExistConnection(node);
 			} else {
-				String odbcJdbc = ElementParameterParser.getValue(node, "__JDBC_ODBC__");
-				String driverClass = "";
-				if ("JDBC".equals(odbcJdbc)) {
-					driverClass = "net.ucanaccess.jdbc.UcanaccessDriver";
-				} else {
-					driverClass = "sun.jdbc.odbc.JdbcOdbcDriver";
-				}
+				String driverClass = "net.ucanaccess.jdbc.UcanaccessDriver";
 		    %>
 				String driverClass_<%=cid%> = "<%=driverClass %>";
 				java.lang.Class.forName(driverClass_<%=cid%>);

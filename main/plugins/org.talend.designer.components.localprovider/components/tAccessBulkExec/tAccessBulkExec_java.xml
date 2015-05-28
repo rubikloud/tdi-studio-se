@@ -10,6 +10,7 @@
     AUTHOR="Talend"
     RELEASE_DATE="20100401A"
     STARTABLE="true"
+    VISIBLE="false"
     LOG4J_ENABLED="true"
   >
     <SIGNATURE/>

@@ -11,6 +11,7 @@
     STARTABLE="false"
     DATA_AUTO_PROPAGATE="false"
     HAS_CONDITIONAL_OUTPUTS="true"
+    VISIBLE="false"
     PARALLELIZE="true"
 	PARTITIONING="AUTO"
   LOG4J_ENABLED="true"

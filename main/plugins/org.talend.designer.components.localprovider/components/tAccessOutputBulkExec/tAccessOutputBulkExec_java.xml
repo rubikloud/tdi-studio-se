@@ -9,6 +9,7 @@
     AUTHOR="Talend"
     RELEASE_DATE="20100401A"
     STARTABLE="false"
+    VISIBLE="false"
 	PARTITIONING="NONE"
   >
     <SIGNATURE/>

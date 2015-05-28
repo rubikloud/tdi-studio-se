@@ -42,9 +42,6 @@ skeleton="../templates/db_output_bulk.skeleton"
 	
 	boolean isEnableDebug = ("true").equals(ElementParameterParser.getValue(node,"__ENABLE_DEBUG_MODE__"));
 	
-	String dbversion = ElementParameterParser.getValue(node, "__DB_VERSION__");
-	String odbcJdbc = ElementParameterParser.getValue(node, "__JDBC_ODBC__");
-	
 	String dbproperties = ElementParameterParser.getValue(node, "__PROPERTIES__");
 	
 	boolean isParallelize ="true".equalsIgnoreCase(ElementParameterParser.getValue(node, "__PARALLELIZE__"));
@@ -117,28 +114,10 @@ if(useExistingConnection) {
 	<%dbLog.conn().useExistConn("conn_"+cid+".getMetaData().getURL()", "conn_"+cid+".getMetaData().getUserName()");%>
 	<%
 } else {
-	if ("JDBC".equals(odbcJdbc)) {
 %>
 java.lang.Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
 <%dbLog.conn().logJDBCDriver(dbLog.str("sun.jdbc.odbc.JdbcOdbcDriver"));%>
 String url_<%=cid %> = "jdbc:ucanaccess://" + <%=dbname%>;
-<%
-	} else {
-    %>	
-java.lang.Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-<%dbLog.conn().logJDBCDriver(dbLog.str("sun.jdbc.odbc.JdbcOdbcDriver"));%>
-<%
-		if ("Access_2003".equalsIgnoreCase(dbversion)){
-%>
-	String url_<%=cid %> = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=" + <%=dbname%>;
-<%
-		}else if ("Access_2007".equalsIgnoreCase(dbversion)) {
-%>
-	String url_<%=cid %> = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" + <%=dbname%>;
-<%
-		}
-	}
-%>
 
 String dbUser_<%=cid %> = <%=username%>;
 <%

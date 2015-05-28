@@ -20,32 +20,13 @@ imports="
 		String odbcJdbc = "";
 	    
 		public void setURL(INode node) {
-			
-			String dbversion = ElementParameterParser.getValue(node, "__DB_VERSION__");
-			if ("JDBC".equals(odbcJdbc)) {
 %>
-				String url_<%=cid %> = "jdbc:ucanaccess://" + <%=dbname%>;
-<%			} else {
-				if ("Access_2003".equalsIgnoreCase(dbversion)){
-%>
-	            String url_<%=cid %> = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=" + <%=dbname%>;
-<%
-            	}else if ("Access_2007".equalsIgnoreCase(dbversion)){
-%>
-	            String url_<%=cid %> = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" + <%=dbname%>;            
-<%
-            	}
-            }
-%>
+			String url_<%=cid %> = "jdbc:ucanaccess://" + <%=dbname%>;
 <%
 		}
 		
 		public String getDirverClassName(INode node){
-			if ("JDBC".equals(odbcJdbc)) {
-				return "net.ucanaccess.jdbc.UcanaccessDriver";
-			} else {
-				return "sun.jdbc.odbc.JdbcOdbcDriver";
-			}
+			return "net.ucanaccess.jdbc.UcanaccessDriver";
 		}
 		
 		public void createConnection(INode node) {
@@ -55,7 +36,6 @@ imports="
 	    	dbport = ElementParameterParser.getValue(node, "__PORT__");
 	    	dbname = ElementParameterParser.getValue(node, "__DBNAME__");
 	    	dbuser = ElementParameterParser.getValue(node, "__USER__");
-	    	odbcJdbc = ElementParameterParser.getValue(node, "__JDBC_ODBC__");
 %>
 			String driverClass_<%=cid%> = "<%=this.getDirverClassName(node) %>";
 			java.lang.Class.forName(driverClass_<%=cid%>);
@@ -104,44 +84,6 @@ imports="
 <%
 	    }  
 	    
-	   	public void generateOthersResultSet(String firstConnName, IMetadataColumn column, int currentColNo, String typeToGenerate) {
-	   		if ("JDBC".equals(odbcJdbc)) {
-	   			super.generateOthersResultSet(firstConnName, column, currentColNo, typeToGenerate);
-	   		} else {
-%>
-	        Object value = rs_<%=cid %>.getObject(<%if(isDynamic){%>column_index_<%=cid%><%}else{%><%=currentColNo%><%}%>);
-	        if(value != null) {
-<%
-	            String javaType = JavaTypesManager.getTypeToGenerate(column.getTalendType(), true);
-	   		 			if(("Integer").equals(javaType)) {
-%>
-	   		 				value = new <%=javaType%>(<%=javaType%>.parse<%=javaType.substring(0,3)%>(value.toString()));
-<%
-	   		 			} else if(("Byte").equals(javaType) || ("Short").equals(javaType) || ("Long").equals(javaType) || 
-	   		 			        ("Float").equals(javaType) || ("Double").equals(javaType)) {
-%>
-	   		 				value = new <%=javaType%>(<%=javaType%>.parse<%=javaType%>(value.toString()));
-<%
-	   		 			}
-%>
-	 	   		 		<%=firstConnName%>.<%=column.getLabel()%> = (<%=javaType%>)value;
-	                } else {
-<%
-	            if(column.isNullable()) {
-%>
-	                <%=firstConnName%>.<%=column.getLabel()%> = null;
-<%
-	            } else {
-%>    
-	                throw new RuntimeException("Null value in non-Nullable column");
-<%    
-	            }
-%>
-	        }
-<%
-			}
-	    }
-	    //---------end according schema type to generate ResultSet
 	}//end class
 	
 	dbInputBeginUtil = new DBInputBeginUtil();

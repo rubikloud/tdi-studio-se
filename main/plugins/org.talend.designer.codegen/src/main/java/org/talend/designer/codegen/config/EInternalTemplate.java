@@ -74,7 +74,9 @@ public enum EInternalTemplate {
     SPARKSTREAMING_HEADER("sparkstreaming_header", "0.0.1"), //$NON-NLS-1$ //$NON-NLS-2$
     SPARKSTREAMING_FOOTER("sparkstreaming_footer", "0.0.1"), //$NON-NLS-1$ //$NON-NLS-2$
     SPARKSTREAMING_SUBPROCESS_HEADER("sparkstreaming_subprocess_header", "0.0.1"), //$NON-NLS-1$ //$NON-NLS-2$
+    SPARKSTREAMING_CHECKPOINT_SUBPROCESS_HEADER("sparkstreaming_checkpoint_subprocess_header", "0.0.1"), //$NON-NLS-1$ //$NON-NLS-2$
     SPARKSTREAMING_SUBPROCESS_FOOTER("sparkstreaming_subprocess_footer", "0.0.1"), //$NON-NLS-1$ //$NON-NLS-2$
+    SPARKSTREAMING_CHECKPOINT_SUBPROCESS_FOOTER("sparkstreaming_checkpoint_subprocess_footer", "0.0.1"), //$NON-NLS-1$ //$NON-NLS-2$
     SPARK_COMPONENT_SPARKCONFIG_HEADER("spark_component_sparkconfig_header", "0.0.1"), //$NON-NLS-1$ //$NON-NLS-2$
     SPARK_COMPONENT_SPARKCONFIG_FOOTER("spark_component_sparkconfig_footer", "0.0.1"); //$NON-NLS-1$ //$NON-NLS-2$
 

@@ -145,24 +145,23 @@ skeleton="../templates/db_output_bulk.skeleton"
 	                StringBuilder extendInsertValueStmt_<%=cid%> = new StringBuilder();
 	                for(int i=0;i < <%=numPerInsert%>;i++){
 <%
-		            if(isDynamic) {
-		                 List< ? extends IConnection> conns_dynamic = node.getIncomingConnections();
-		                 if(conns_dynamic!=null && conns_dynamic.size()>0){
-		                    IConnection conn = conns_dynamic.get(0);
+	                List< ? extends IConnection> conns_dynamic = node.getIncomingConnections();
+	                if(conns_dynamic!=null && conns_dynamic.size()>0){
+                    	IConnection conn = conns_dynamic.get(0);
+                    	if(!("".equals(insertColName.toString()))) {
 %>
-                    		extendInsertValueStmt_<%=cid%>.append("(<%=insertValueStmt.toString()%>,"+DynamicUtils.getInsertIntoStmtValuesList(<%=conn.getName()%>.<%=getDynamicColumn()%>)+")");
+                		extendInsertValueStmt_<%=cid%>.append("(<%=insertValueStmt.toString()%>,"+DynamicUtils.getInsertIntoStmtValuesList(<%=conn.getName()%>.<%=getDynamicColumn()%>)+")");
 <%
-               		 	}
-            		} else {
+						} else {
 %>
-                    	extendInsertValueStmt_<%=cid%>.append("(<%=insertValueStmt.toString()%>)");
+                		extendInsertValueStmt_<%=cid%>.append("("+DynamicUtils.getInsertIntoStmtValuesList(<%=conn.getName()%>.<%=getDynamicColumn()%>)+")");
 <%
-       			 	}
+						}
+   		 			}
 %>
                 		if (i!=<%=numPerInsert%>-1) extendInsertValueStmt_<%=cid%>.append(",");
                 	}
 <%
-	                List< ? extends IConnection> conns_dynamic = node.getIncomingConnections();
 	                if(conns_dynamic!=null && conns_dynamic.size()>0){
 	                    IConnection conn = conns_dynamic.get(0);
 	                    if(!("".equals(insertColName.toString()))) {
@@ -176,17 +175,6 @@ skeleton="../templates/db_output_bulk.skeleton"
 %>
                     	pstmt_<%=cid %> =  conn_<%=cid%>.prepareStatement(insert_<%=cid%>);
 <%
-                    	if(!("".equals(insertColName.toString()))) {
-%>
-	                    insertColName<%=cid%> = "<%=insertColName.toString()%>, "+DynamicUtils.getInsertIntoStmtColumnsList(<%=conn.getName()%>.<%=getDynamicColumn()%>, "<%=dbmsId %>");
-	                    insertColValue<%=cid%> =  "<%=insertValueStmt.toString()%>, "+DynamicUtils.getInsertIntoStmtValuesList(<%=conn.getName()%>.<%=getDynamicColumn()%>);
-<%
-                    	} else {
-%>
-	                    insertColName<%=cid%> = DynamicUtils.getInsertIntoStmtColumnsList(<%=conn.getName()%>.<%=getDynamicColumn()%>, "<%=dbmsId %>");
-	                    insertColValue<%=cid%> =  DynamicUtils.getInsertIntoStmtValuesList(<%=conn.getName()%>.<%=getDynamicColumn()%>);
-<%
-                    	}
                 	}
 %>
                 	rowCount<%=cid%> = 0;
@@ -510,13 +498,20 @@ skeleton="../templates/db_output_bulk.skeleton"
 						insertableCount++;
 					}
 				}
-				
-				if(!isDynamic) {
 %>
-				int counter<%=cid%> = rowCount<%=cid%> * <%=insertableCount%> + 1;
+				int counter<%=cid%> = rowCount<%=cid%> * 
+					(<%=insertableCount%>
 <%
-				}
-				
+					if(isDynamic) {
+						Column dynamicColumn = getColumn(getDynamicColumn());
+%>
+						+ <%=incomingConnName%>.<%=dynamicColumn.getName()%>.getColumnCount()
+<%
+					}
+%> 
+					)
+				+ 1;
+<%
 				for(Column column : colStruct) {
 					if(column.isInsertable()) {
 						String typeToGenerate = JavaTypesManager.getTypeToGenerate(column.getColumn().getTalendType(), column.getColumn().isNullable());
@@ -560,7 +555,7 @@ skeleton="../templates/db_output_bulk.skeleton"
 		                String typeToGenerate = JavaTypesManager.getTypeToGenerate(dynamicColumn.getColumn().getTalendType(), dynamicColumn.getColumn().isNullable());
 		                if("Dynamic".equals(typeToGenerate)) {
 		                %>
-                    	, <%=incomingConnName%>.<%=dynamicColumn.getName()%>
+                    	<%if(count>0){%>,<%}%> <%=incomingConnName%>.<%=dynamicColumn.getName()%>.clone()
 	                	<%
 	                	}
            	 		}

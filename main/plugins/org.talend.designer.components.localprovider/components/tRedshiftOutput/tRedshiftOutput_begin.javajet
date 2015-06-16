@@ -378,7 +378,7 @@ if(isDynamic) {
 			String typeToGenerate = JavaTypesManager.getTypeToGenerate(dynamicColumn.getColumn().getTalendType(), dynamicColumn.getColumn().isNullable());
 			if("Dynamic".equals(typeToGenerate)) {
 			%>
-				, routines.system.Dynamic <%=dynamicColumn.getName()%>
+				<%if(count>0){%>,<%}%> routines.system.Dynamic <%=dynamicColumn.getName()%>
 			<%
 			}
 		}

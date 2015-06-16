@@ -38,7 +38,14 @@ skeleton="../templates/db_output_bulk.skeleton"
 
     List<Map<String, String>> fieldOptions = (List<Map<String,String>>)ElementParameterParser.getObjectValue(node, "__FIELD_OPTIONS__");
 
-	List<IMetadataColumn> columnList = getColumnList(node);
+	String incomingConnName = null;
+    List<IMetadataColumn> columnList = getColumnList(node);
+    
+    List< ? extends IConnection> conns = node.getIncomingConnections();
+    if(conns!=null && conns.size()>0){
+        IConnection conn = conns.get(0);
+        incomingConnName = conn.getName();
+    }
 
 	String dbmsId = ElementParameterParser.getValue(node,"__MAPPING__");
 

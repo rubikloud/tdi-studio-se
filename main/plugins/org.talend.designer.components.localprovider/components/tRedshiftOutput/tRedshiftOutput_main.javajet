@@ -24,7 +24,10 @@ skeleton="../templates/db_output_bulk.skeleton"
     String cid = node.getUniqueName();
     String dataAction = ElementParameterParser.getValue(node,"__DATA_ACTION__");
     String dieOnError = ElementParameterParser.getValue(node, "__DIE_ON_ERROR__");
+    
+	String table = ElementParameterParser.getValue(node,"__TABLE__");//work for sub script. TODO : move it
     String tableName = ElementParameterParser.getValue(node,"__TABLE__");
+    
     String dbmsId = ElementParameterParser.getValue(node,"__MAPPING__");
     List<Map<String, String>> addCols =
             (List<Map<String,String>>)ElementParameterParser.getObjectValue(node,"__ADD_COLS__");
@@ -40,7 +43,11 @@ skeleton="../templates/db_output_bulk.skeleton"
 	boolean isEnableDebug = false;//not support.("true").equals(ElementParameterParser.getValue(node,"__ENABLE_DEBUG_MODE__"));
 
 	boolean extendedInsert = ("true").equals(ElementParameterParser.getValue(node, "__EXTENDINSERT__"));
-
+	
+	String tableAction = ElementParameterParser.getValue(node,"__TABLE_ACTION__");
+	
+	String numPerInsert = ElementParameterParser.getValue(node, "__NB_ROWS_PER_INSERT__");
+	
     //feature:2880
     getManager(dbmsId, cid, node);
     boolean whereSupportNull = ElementParameterParser.getValue(node, "__SUPPORT_NULL_WHERE__").equals("true");
@@ -160,10 +167,10 @@ skeleton="../templates/db_output_bulk.skeleton"
 	                    IConnection conn = conns_dynamic.get(0);
 	                    if(!("".equals(insertColName.toString()))) {
 %>
-                        insert_<%=cid%> = "INSERT INTO \"" + <%=table%> + "\" (<%=insertColName.toString()%>, "+DynamicUtils.getInsertIntoStmtColumnsList(<%=conn.getName()%>.<%=getDynamicColumn()%>, "<%=dbmsId %>")+") VALUES " + extendInsertValueStmt_<%=cid%>.toString();
+                        insert_<%=cid%> = "INSERT INTO \"" + <%=tableName%> + "\" (<%=insertColName.toString()%>, "+DynamicUtils.getInsertIntoStmtColumnsList(<%=conn.getName()%>.<%=getDynamicColumn()%>, "<%=dbmsId %>")+") VALUES " + extendInsertValueStmt_<%=cid%>.toString();
 <%                 		} else {
 %>
-                        insert_<%=cid%> = "INSERT INTO \"" + <%=table%> + "\" ("+DynamicUtils.getInsertIntoStmtColumnsList(<%=conn.getName()%>.<%=getDynamicColumn()%>, "<%=dbmsId %>")+") VALUES " + extendInsertValueStmt_<%=cid%>.toString();
+                        insert_<%=cid%> = "INSERT INTO \"" + <%=tableName%> + "\" ("+DynamicUtils.getInsertIntoStmtColumnsList(<%=conn.getName()%>.<%=getDynamicColumn()%>, "<%=dbmsId %>")+") VALUES " + extendInsertValueStmt_<%=cid%>.toString();
 <%
                     	}
 %>
@@ -358,7 +365,6 @@ skeleton="../templates/db_output_bulk.skeleton"
 				}
 <%
 			} else { //extended insert
-				String numPerInsert = ElementParameterParser.getValue(node, "__NB_ROWS_PER_INSERT__");
 			    class ExtendInsertOperation{
 					public String generateType(String typeToGenerate){
 						if(("byte[]").equals(typeToGenerate)){

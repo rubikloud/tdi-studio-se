@@ -40,6 +40,7 @@ skeleton="../templates/db_output_bulk.skeleton"
 
 	String dbuser= ElementParameterParser.getValue(node, "__USER__");
 
+	String table = ElementParameterParser.getValue(node,"__TABLE__");//work for sub script. TODO : move it
 	String tableName = ElementParameterParser.getValue(node,"__TABLE__");
 
 	String dbmsId = ElementParameterParser.getValue(node,"__MAPPING__");
@@ -51,8 +52,7 @@ skeleton="../templates/db_output_bulk.skeleton"
 	String commitEvery = ElementParameterParser.getValue(node, "__COMMIT_EVERY__");
 
 	String useExistingConn = ElementParameterParser.getValue(node,"__USE_EXISTING_CONNECTION__");
-	boolean isParallelize ="true".equalsIgnoreCase(ElementParameterParser.getValue(node, "__PARALLELIZE__"));
-
+	
     boolean useBatch = "true".equals(ElementParameterParser.getValue(node, "__USE_BATCH__"));
     String batchSize = ElementParameterParser.getValue(node, "__BATCH_SIZE__");
 
@@ -96,6 +96,8 @@ if(columnList != null && columnList.size() > 0) {
     stmtStructure = getManager(dbmsId, cid).createColumnList(columnList, useFieldOptions, fieldOptions, addCols);
     isDynamic = isDynamic && !getManager(dbmsId, cid).isDynamicColumnReplaced();
 }
+
+Manager manager = null;
 %>
 
 String dbschema_<%=cid%> = null;
@@ -222,7 +224,6 @@ if(!("true").equals(useExistingConn)) {
 	}
 }
 
-<%
 if(!isDynamic) {
 %>
 int count_<%=cid%>=0;

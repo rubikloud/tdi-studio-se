@@ -223,7 +223,11 @@ if(!("true").equals(useExistingConn)) {
 }
 
 <%
-if(!isDynamic && columnList != null && columnList.size()>0) {
+if(!isDynamic) {
+%>
+int count_<%=cid%>=0;
+<%
+if(columnList != null && columnList.size()>0) {
 	if("CLEAR".equals(tableAction)) {//truncate in fact
 		tableAction = "TRUNCATE";
 	}
@@ -323,6 +327,7 @@ if(!isDynamic && columnList != null && columnList.size()>0) {
 	    <%
 	}
 }
+}//end !isDynamic
 
 if(isDynamic) {
 	if(extendedInsert) {

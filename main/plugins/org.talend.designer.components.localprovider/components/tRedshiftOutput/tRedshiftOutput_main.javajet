@@ -621,7 +621,7 @@ skeleton="../templates/db_output_bulk.skeleton"
                		}
                  	//#############
                     %>
-                    <%=getManager(dbmsId, cid).generateSetStmt(typeToGenerate, column, counterCol, incomingConnName, cid, NORMAL_TYPE)%>
+                    <%=getManager(dbmsId, cid).generateSetStmt(typeToGenerate, column, counterCol, incomingConnName, cid, NORMAL_TYPE, " + count_")%>
                     <%
                     counterCol++;
                 }
@@ -750,7 +750,7 @@ skeleton="../templates/db_output_bulk.skeleton"
               	 		}
                  		//#############
 	                    %>
-                        <%=getManager(dbmsId, cid).generateSetStmt(typeToGenerate, column, counterCol, incomingConnName, cid, UPDATE_TYPE)%>
+                        <%=getManager(dbmsId, cid).generateSetStmt(typeToGenerate, column, counterCol, incomingConnName, cid, UPDATE_TYPE, " + count_")%>
                         <%
                         counterCol++;
                     }
@@ -903,7 +903,7 @@ skeleton="../templates/db_output_bulk.skeleton"
            			}
                  	//#############
                     %>
-                    <%=getManager(dbmsId, cid).generateSetStmt(typeToGenerate, columnUpdate, counterColUpdate, incomingConnName, cid, UPDATE_TYPE)%>
+                    <%=getManager(dbmsId, cid).generateSetStmt(typeToGenerate, columnUpdate, counterColUpdate, incomingConnName, cid, UPDATE_TYPE, " + count_")%>
                     <%
                     counterColUpdate++;
                 }

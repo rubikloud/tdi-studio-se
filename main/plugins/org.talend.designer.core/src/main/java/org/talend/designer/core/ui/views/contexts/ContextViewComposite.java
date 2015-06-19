@@ -69,8 +69,13 @@ public class ContextViewComposite extends ContextComposite {
 
     @Override
     public CommandStack getCommandStack() {
-        return part == null ? null : (CommandStack) (((AbstractMultiPageTalendEditor) part).getTalendEditor()
-                .getAdapter(CommandStack.class));
+        if (part == null) {
+            return null;
+        }
+        if (((AbstractMultiPageTalendEditor) part).getTalendEditor() == null) {
+            return null;
+        }
+        return (CommandStack) (((AbstractMultiPageTalendEditor) part).getTalendEditor().getAdapter(CommandStack.class));
     }
 
     @Override
@@ -80,7 +85,13 @@ public class ContextViewComposite extends ContextComposite {
 
     @Override
     public IProcess2 getProcess() {
-        return part == null ? null : ((AbstractMultiPageTalendEditor) part).getTalendEditor().getProcess();
+        if (part == null) {
+            return null;
+        }
+        if (((AbstractMultiPageTalendEditor) part).getTalendEditor() == null) {
+            return null;
+        }
+        return ((AbstractMultiPageTalendEditor) part).getTalendEditor().getProcess();
     }
 
     private Process getJob() {

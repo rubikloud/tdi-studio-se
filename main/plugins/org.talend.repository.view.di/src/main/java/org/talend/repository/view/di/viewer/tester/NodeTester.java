@@ -69,7 +69,7 @@ public class NodeTester extends AbstractNodeTester {
      * @return
      */
     public boolean isJobBranch(RepositoryNode repositoryNode) {
-        return isTypeNode(repositoryNode, ERepositoryObjectType.PROCESS);
+        return isTypeNode(repositoryNode);
     }
 
 }

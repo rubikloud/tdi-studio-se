@@ -78,7 +78,8 @@ public class JvmAttachHandler implements IJvmAttachHandler, IPropertyChangeListe
                 try {
                     updatesActiveJvms();
                 } catch (Throwable t) {
-                    Activator.log(IStatus.ERROR, Messages.updateTimerCanceledMsg, t);
+                	// for bug TDI-32970 
+                    Activator.log(IStatus.WARNING, Messages.updateTimerCanceledMsg, t);
                     timer.cancel();
                 }
             }

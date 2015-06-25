@@ -94,11 +94,39 @@ imports="
 
 	int nb_line_<%=cid%> = 0;
 	javax.jms.Connection connection_<%=cid %> = null;
+	
+<%
+	if("ActiveMQ".equals(serverType) || "JBoss".equals(serverType)){
+%>
+		javax.jms.Session session_<%=cid %> = null;
+		javax.jms.MessageConsumer consumer_<%=cid %> = null;
+<%
+	} else {//websphere
+%>
+		com.ibm.mq.MQQueueManager qMgr_<%=cid%>=null;
+		com.ibm.mq.MQQueue remoteQ_<%=cid%>=null;
+<%
+		boolean isRollback = ("true").equals(ElementParameterParser.getValue(node, "__ROLLBACK__"));
+		boolean isAutoBackout = ("true").equals(ElementParameterParser.getValue(node, "__AUTO_BACKOUT__"));
+		
+		boolean isCommit = ("true").equals(ElementParameterParser.getValue(node, "__COMMIT__"));
+		boolean isBrowse = ("true").equals(ElementParameterParser.getValue(node,"__BROWSE__"));
+		
+		isCommit = isCommit && !isBrowse;
+		isBrowse = isBrowse && !isRollback && !isCommit;
+		isAutoBackout = isAutoBackout && !isBrowse && !isRollback && !isCommit && (!("true").equals(kListen));
+		
+		if(isAutoBackout){
+%>
+		com.ibm.mq.MQQueue  backoutQueue_<%=cid%> = null;
+<%
+		}
+	}
+%>
+	
 	try {
 
         <% if (isUseExistConnection && ("ActiveMQ").equals(serverType)) { %>
-		    connection_<%=cid %> = null;
-		    javax.jms.Session session_<%=cid %> = null;
             try {
 	            <%
 				if(isLog4jEnabled){
@@ -150,7 +178,7 @@ imports="
 
 			javax.jms.MessageProducer replyProducer_<%=cid %> = session_<%=cid %>.createProducer(null);
 			replyProducer_<%=cid %>.setDeliveryMode(javax.jms.DeliveryMode.NON_PERSISTENT);
-			javax.jms.MessageConsumer consumer_<%=cid %> = session_<%=cid %>.createConsumer(des_<%=cid %>);
+			consumer_<%=cid %> = session_<%=cid %>.createConsumer(des_<%=cid %>);
 	
 			globalMap.put("session_<%=cid %>",session_<%=cid %>);
 			globalMap.put("connection_<%=cid %>",connection_<%=cid %>);
@@ -370,7 +398,7 @@ imports="
 			<%
 			}
 			%>
-			javax.jms.Session session_<%=cid %> = connection_<%=cid %>.createSession(<%=transacted%>, javax.jms.Session.<%=acknowledgmentMode%>);
+			session_<%=cid %> = connection_<%=cid %>.createSession(<%=transacted%>, javax.jms.Session.<%=acknowledgmentMode%>);
 			<%
 			if(isLog4jEnabled){
 			%>	
@@ -396,7 +424,7 @@ imports="
 			javax.jms.MessageProducer replyProducer_<%=cid %> = session_<%=cid %>.createProducer(null);
 			replyProducer_<%=cid %>.setDeliveryMode(javax.jms.DeliveryMode.NON_PERSISTENT);
 				
-			javax.jms.MessageConsumer consumer_<%=cid %> = session_<%=cid %>.createConsumer(des_<%=cid %>);
+			consumer_<%=cid %> = session_<%=cid %>.createConsumer(des_<%=cid %>);
 			
 			<%	//put session to global map
 			if( ("ActiveMQ").equals(serverType)) {
@@ -525,9 +553,6 @@ imports="
 		
 		<%
 		} else if(("WebSphere").equals(serverType)){ //server judgement   /***WebSphere MQ*****/
-		%>
-			com.ibm.mq.MQQueueManager qMgr_<%=cid%>=null;	
-			<%
 			if(isUseExistConnection){
 				String connection = ElementParameterParser.getValue(node, "__CONNECTION__");
 				%>
@@ -580,14 +605,6 @@ imports="
 			isBrowse = isBrowse && !isRollback && !isCommit;
 			isAutoBackout = isAutoBackout && !isBrowse && !isRollback && !isCommit && (!("true").equals(kListen));
 			
-			if(isAutoBackout){
-			%>
-				com.ibm.mq.MQQueue  backoutQueue_<%=cid%> = null;
-			<%
-			}
-			%>
-			com.ibm.mq.MQQueue remoteQ_<%=cid%>=null;
-			<%
 			if(("true").equals(useMsgId)){
 			%>
 				String msgId_<%=cid%> = <%=msgId%>;

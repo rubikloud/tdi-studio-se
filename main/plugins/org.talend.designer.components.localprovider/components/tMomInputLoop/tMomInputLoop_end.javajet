@@ -150,17 +150,38 @@
 		isRollback = isRollback && ("false".equals(kListen)) && !isCommit && !isBrowse;
 		boolean isAutoBackout = ("true").equals(ElementParameterParser.getValue(node, "__AUTO_BACKOUT__"));
 		isAutoBackout = isAutoBackout && !isBrowse && !isRollback && !isCommit && (!("true").equals(kListen));
-		%>
 		
+		if(isAutoBackout){
+		%>
+			if (backoutQueue_<%=cid%>!=null && threshold_<%=cid%> > 0 && inMessage<%=cid%>.backoutCount >= threshold_<%=cid%>-1) {
+				<%
+				if(isLog4jEnabled){
+				%>	
+					log.info("<%=cid%> - Moving backout message to backout queue...");
+				<%
+				}
+				%>
+				backoutQueue_<%=cid%>.put(inMessage<%=cid%>);
+				qMgr_<%=cid%>.commit();
+				<%
+				if(isLog4jEnabled){
+				%>	
+					log.info("<%=cid%> - Moved successfully.");
+				<%
+				}
+				%>
 			}
-			
-			<%
-			if(isRollback || isAutoBackout){
-			%>
+		<%
+		}
+		
+		if(isRollback || isAutoBackout){
+		%>
 				qMgr_<%=cid%>.backout();
-			<%
+		<%
+		}
+		%>
+			
 			}
-			%>
 			
 		}catch(com.ibm.mq.MQException ex){
 			System.out.println("A WebSphere MQ error occurred : Completion code " + ex.completionCode + " Reason code " + ex.reasonCode);

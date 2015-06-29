@@ -101,7 +101,7 @@ imports="
 			}
 			%>
 			qMgr_<%=cid%>.commit();
-			globalMap.put("currentMessageIsConsumed_<%=connectionCid%>","yes");//if current message has been commited,no need to backout it to the backout queue.
+			globalMap.put("currentMessageIsConsumed_<%=connectionCid%>",true);//if current message has been commited,no need to backout it to the backout queue.
 			
 			<%  
 			if (isLog4jEnabled) {

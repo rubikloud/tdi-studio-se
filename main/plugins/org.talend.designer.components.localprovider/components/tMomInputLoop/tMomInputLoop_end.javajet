@@ -153,29 +153,30 @@
 		
 		if(isAutoBackout){
 		%>
-			if (backoutQueue_<%=cid%>!=null && threshold_<%=cid%> > 0 && inMessage<%=cid%>.backoutCount >= threshold_<%=cid%>-1
-				&& "no".equals(globalMap.get("currentMessageIsConsumed_<%=cid%>"))) {
-				<%
-				if(isLog4jEnabled){
-				%>	
-					log.info("<%=cid%> - Moving backout message to backout queue...");
-				<%
+			if(!(Boolean)globalMap.get("currentMessageIsConsumed_<%=cid%>")) {
+				if (backoutQueue_<%=cid%>!=null && threshold_<%=cid%> > 0 && inMessage<%=cid%>.backoutCount >= threshold_<%=cid%>-1) {
+					<%
+					if(isLog4jEnabled){
+					%>	
+						log.info("<%=cid%> - Moving backout message to backout queue...");
+					<%
+					}
+					%>
+					backoutQueue_<%=cid%>.put(inMessage<%=cid%>);
+					qMgr_<%=cid%>.commit();
+					<%
+					if(isLog4jEnabled){
+					%>	
+						log.info("<%=cid%> - Moved successfully.");
+					<%
+					}
+					%>
 				}
-				%>
-				backoutQueue_<%=cid%>.put(inMessage<%=cid%>);
-				qMgr_<%=cid%>.commit();
-				<%
-				if(isLog4jEnabled){
-				%>	
-					log.info("<%=cid%> - Moved successfully.");
-				<%
-				}
-				%>
+				
+				qMgr_<%=cid%>.backout();
 			}
 		<%
-		}
-		
-		if(isRollback || isAutoBackout){
+		} else if(isRollback) {
 		%>
 				qMgr_<%=cid%>.backout();
 		<%

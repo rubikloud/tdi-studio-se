@@ -715,7 +715,7 @@ imports="
 			<%
 			if(isAutoBackout){
 			%>
-				globalMap.put("currentMessageIsConsumed_<%=cid%>","no");//if current message has been commited,no need to backout it to the backout queue.
+				globalMap.put("currentMessageIsConsumed_<%=cid%>",false);//if current message has been commited,no need to backout it to the backout queue.
 			<%
 			}
 			

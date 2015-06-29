@@ -713,6 +713,12 @@ imports="
 				System.out.println("Waiting...");	
 				while(flag<%=cid%>){
 			<%
+			if(isAutoBackout){
+			%>
+				globalMap.put("currentMessageIsConsumed_<%=cid%>","no");//if current message has been commited,no need to backout it to the backout queue.
+			<%
+			}
+			
 			if(("false").equals(kListen)){
 			%>
 				if(Integer.valueOf(remoteQ_<%=cid%>.getCurrentDepth()).equals(1))

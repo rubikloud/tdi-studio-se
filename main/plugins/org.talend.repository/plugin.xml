@@ -2381,6 +2381,15 @@
                 name="MigrateEncoding4tSalesforceWave"
                 version="5.6.3">
           </projecttask>
+          <projecttask
+                beforeLogon="true"
+                breaks="5.5.2"
+                class="org.talend.repository.model.migration.ChangeComponentSettingNameMigrationTask"
+                description="ChangeComponentSettingNameMigrationTask"
+                id="org.talend.repository.model.migration.ChangeComponentSettingNameMigrationTask"
+                name="ChangeComponentSettingNameMigrationTask"
+                version="5.6.2">
+          </projecttask>
    </extension>
 
    <extension

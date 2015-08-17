@@ -87,10 +87,11 @@ public class ImportProjectsUtilities {
             throws CoreException {
     	IProjectDescription description = ResourcesPlugin.getWorkspace().loadProjectDescription(new Path(path+File.separator+".project"));
     	IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(description.getName());
-    	project.create(description, null);
-    	project.open(null);
-    	project.refreshLocal(IResource.DEPTH_INFINITE, null);
-
+    	if(!project.isOpen() && !project.isLinked())	{
+    		project.create(description, null);
+    		project.open(null);
+    		project.refreshLocal(IResource.DEPTH_INFINITE, null);
+    	}
     }
     
     /**

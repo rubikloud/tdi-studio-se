@@ -1,0 +1,109 @@
+<COMPONENT>
+    <HEADER
+        AUTHOR="Talend"
+        COMPATIBILITY="ALL"
+        PLATEFORM="ALL"
+        RELEASE_DATE="20150930A"
+        SERIAL=""
+        STARTABLE="true"
+        STATUS="ALPHA"
+        VERSION="0.1">
+        <SIGNATURE/>
+    </HEADER>
+
+    <FAMILIES>
+        <FAMILY>Databases/MarkLogic</FAMILY>
+    </FAMILIES>
+
+    <DOCUMENTATION>
+        <URL/>
+    </DOCUMENTATION>
+
+    <CONNECTORS>
+        <CONNECTOR CTYPE="SUBJOB_OK" MAX_INPUT="1"/>
+        <CONNECTOR CTYPE="SUBJOB_ERROR" MAX_INPUT="1"/>
+        <CONNECTOR CTYPE="COMPONENT_OK" MAX_OUTPUT="1"/>
+        <CONNECTOR CTYPE="COMPONENT_ERROR" MAX_OUTPUT="1"/>
+        <CONNECTOR CTYPE="RUN_IF" MAX_OUTPUT="1"/>
+    </CONNECTORS>
+
+    <PARAMETERS>
+        <PARAMETER
+            NAME="PROPERTY"
+            FIELD="PROPERTY_TYPE"
+            SHOW="true"
+            NUM_ROW="2"
+            REPOSITORY_VALUE="DATABASE:MARKLOGIC"
+        />
+
+        <PARAMETER
+            NAME="HOST"
+            FIELD="TEXT"
+            NUM_ROW="5"
+            REQUIRED="true"
+            REPOSITORY_VALUE="SERVER_NAME"
+        >
+            <DEFAULT>"127.0.0.1"</DEFAULT>
+        </PARAMETER>
+
+        <PARAMETER
+            NAME="PORT"
+            FIELD="TEXT"
+            NUM_ROW="5"
+            REQUIRED="true"
+            REPOSITORY_VALUE="PORT"
+        >
+            <DEFAULT>"8000"</DEFAULT>
+        </PARAMETER>
+
+        <PARAMETER
+            NAME="DATABASE"
+            FIELD="TEXT"
+            NUM_ROW="5"
+        >
+            <DEFAULT>"Document"</DEFAULT>
+        </PARAMETER>
+
+        <PARAMETER
+            NAME="USER_NAME"
+            FIELD="TEXT"
+            NUM_ROW="10"
+            REPOSITORY_VALUE="USERNAME"
+            REQUIRED="true"
+        >
+          <DEFAULT>""</DEFAULT>
+        </PARAMETER>
+
+        <PARAMETER
+            NAME="PASSWORD"
+            FIELD="PASSWORD"
+            NUM_ROW="10"
+            REPOSITORY_VALUE="PASSWORD"
+            REQUIRED="true"
+        >
+          <DEFAULT>""</DEFAULT>
+        </PARAMETER>
+
+        <PARAMETER
+            NAME="LOAD_FOLDER"
+            FIELD="DIRECTORY"
+            NUM_ROW="20"
+            REQUIRED="true"
+        >
+            <DEFAULT>"__COMP_DEFAULT_FILE_DIR__"</DEFAULT>
+        </PARAMETER>
+    </PARAMETERS>
+
+    <ADVANCED_PARAMETERS>
+    </ADVANCED_PARAMETERS>
+
+    <CODEGENERATION>
+        <IMPORTS>
+        </IMPORTS>
+    </CODEGENERATION>
+
+    <RETURNS>
+        <RETURN NAME="NB_LINE" TYPE="id_Integer" AVAILABILITY="AFTER"/>
+    </RETURNS>
+
+</COMPONENT>

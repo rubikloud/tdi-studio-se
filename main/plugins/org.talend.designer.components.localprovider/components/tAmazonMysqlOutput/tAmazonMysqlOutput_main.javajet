@@ -1839,7 +1839,8 @@ if(columnList != null && columnList.size() > 0) {
         	    commitCounter_<%=cid%>++;
                 if(commitEvery_<%=cid%> <= commitCounter_<%=cid%>) {
                 <%
-                if (useBatch) {
+                boolean extendedInsertByBatch = extendedInsert && "MYSQL_5".equals(dbVersion) && "INSERT".equals(dataAction);
+                if (useBatch || extendedInsertByBatch) {
                 %>
                 if ((batchSize_<%=cid%> > 0) && (batchSizeCounter_<%=cid%> > 0)) {
                 try {

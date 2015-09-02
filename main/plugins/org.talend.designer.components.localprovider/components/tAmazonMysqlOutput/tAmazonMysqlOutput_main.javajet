@@ -1497,7 +1497,7 @@ if(columnList != null && columnList.size() > 0) {
 
                         <%
                     } else {
-                    	dbLog.logPrintedException("e.getMessage()");
+                    	dbLog.logPrintedException("e_"+cid+".getMessage()");
                         %>
                         System.err.print(e.getMessage());
                 <%

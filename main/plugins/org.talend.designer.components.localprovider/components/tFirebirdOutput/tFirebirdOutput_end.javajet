@@ -143,7 +143,7 @@ imports="
             <%
             if(!("").equals(commitEvery) && !("0").equals(commitEvery)) {
                 %>
-            if (commitCounter_<%=cid%> > 0) {
+            if (commitCounter_<%=cid%> > 0 || batchSizeCounter_<%=cid%> > 0) {
 				<%dbLog.commit().commitTry(null, dbLog.var("commitCounter"));%>
                 conn_<%=cid%>.commit();
                 <%dbLog.commit().commitDone(null);%>

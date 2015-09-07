@@ -48,6 +48,7 @@ import org.talend.commons.utils.system.EnvironmentUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ConnectionBean;
 import org.talend.core.model.general.Project;
+import org.talend.core.ui.branding.IBrandingConfiguration;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.registration.license.LicenseManagement;
 import org.talend.repository.i18n.Messages;
@@ -288,6 +289,15 @@ public class LoginDialogV2 extends TrayDialog {
 
     protected AbstractLoginActionPage getFirstTimeStartupPageIfNeeded() {
         AbstractLoginActionPage loginPage = null;
+
+        IBrandingService service = (IBrandingService) GlobalServiceRegister.getDefault().getService(IBrandingService.class);
+        if (service != null) {
+            IBrandingConfiguration brandingConfiguration = service.getBrandingConfiguration();
+            if (brandingConfiguration != null && brandingConfiguration.isOnlyRemoteConnection()) {
+                return null;
+            }
+        }
+
         // try to find if there are projects in workspace
         Project[] projects = LoginHelper.getInstance().getProjects(LoginHelper.createDefaultLocalConnection());
         if (projects == null || projects.length == 0) {

@@ -158,7 +158,7 @@ imports="
                 if (!(listSchema_<%=cid%>.contains(rsmd_<%=cid%>.getColumnLabel(i).toUpperCase()) )) {
                 	routines.system.DynamicMetadata dcm_<%=cid%>=new routines.system.DynamicMetadata();
                 	dcm_<%=cid%>.setName(rsmd_<%=cid%>.getColumnLabel(i));
-                	dcm_<%=cid%>.setDbName(rsmd_<%=cid%>.getColumnLabel(i));
+                	dcm_<%=cid%>.setDbName(rsmd_<%=cid%>.getColumnName(i));
                 	dcm_<%=cid%>.setType(routines.system.Dynamic.getTalendTypeFromDBType("<%=dbms %>", rsmd_<%=cid%>.getColumnTypeName(i).toUpperCase(), rsmd_<%=cid%>.getPrecision(i), rsmd_<%=cid%>.getScale(i)));
                 	dcm_<%=cid%>.setDbType(rsmd_<%=cid%>.getColumnTypeName(i));
                 	dcm_<%=cid%>.setDbTypeId(rsmd_<%=cid%>.getColumnType(i));

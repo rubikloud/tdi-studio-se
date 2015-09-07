@@ -3,15 +3,26 @@
 <%
 class PrepareTez{
 	public void invoke(INode node, String cid){
-        boolean isCustom = "CUSTOM".equals(ElementParameterParser.getValue(node, "__DISTRIBUTION__"));
-        boolean changePathSeparator = !"MICROSOFT_HD_INSIGHT".equals(ElementParameterParser.getValue(node, "__DISTRIBUTION__"));
+        String hiveDistribution = ElementParameterParser.getValue(node, "__DISTRIBUTION__");
         String hiveVersion = ElementParameterParser.getValue(node, "__HIVE_VERSION__");
+
+        org.talend.core.hadoop.api.components.HiveComponent hiveDistrib = null;
+        try {
+            hiveDistrib = (org.talend.core.hadoop.api.components.HiveComponent) org.talend.core.hadoop.api.DistributionFactory.buildDistribution(hiveDistribution, hiveVersion);
+        } catch (java.lang.Exception e) {
+            e.printStackTrace();
+        }
+
+        boolean isCustom = hiveDistrib instanceof org.talend.core.hadoop.api.distribution.CustomDistribution;
+
+        boolean changePathSeparator = !hiveDistrib.isExecutedThroughWebHCat();
+
         String connectionMode = ElementParameterParser.getValue(node, "__CONNECTION_MODE__");
         List<Map<String, String>> advProps = (List<Map<String,String>>)ElementParameterParser.getObjectValue(node, "__ADVANCED_PROPERTIES__");
         String dbuser = ElementParameterParser.getValue(node, "__USER__");
         
         boolean useTez = "tez".equals(ElementParameterParser.getValue(node, "__EXECUTION_ENGINE__"));
-    	boolean supportTez = (isCustom || "HDP_2_2".equals(hiveVersion) || "HDP_2_1".equals(hiveVersion) || "MAPR401".equals(hiveVersion) || "MAPR410".equals(hiveVersion)) && "EMBEDDED".equals(connectionMode);
+    	boolean supportTez = (isCustom || hiveDistrib.doSupportTezForHive()) && "EMBEDDED".equals(connectionMode);
     	if(supportTez && useTez){
     	%>
     		init_<%=cid%>.execute("SET hive.execution.engine=tez");
@@ -84,7 +95,18 @@ class PrepareTez{
             }
             //define the location of tez lib    
             %>
-			init_<%=cid%>.execute("SET tez.lib.uris=" + <%=ElementParameterParser.getValue(node, "__FS_DEFAULT_NAME__")%> + "/" + tezLibPath_<%=cid%>);
+			StringBuilder script_<%=cid%> = new StringBuilder();
+			String[] tezLibPaths_<%=cid%> = tezLibPath_<%=cid%>.split(",");
+			script_<%=cid%>.append("SET tez.lib.uris=");
+			int tezLibPathCount_<%=cid%> = 1;
+			for(String tezLibPathKey_<%=cid%> : tezLibPaths_<%=cid%>){
+				 script_<%=cid%>.append(<%=ElementParameterParser.getValue(node, "__FS_DEFAULT_NAME__")%> + "/" + tezLibPathKey_<%=cid%>);
+				 if(tezLibPathCount_<%=cid%> < tezLibPaths_<%=cid%>.length){
+				 	script_<%=cid%>.append(",");
+				 }
+				 tezLibPathCount_<%=cid%>++;
+			}
+			init_<%=cid%>.execute(script_<%=cid%>.toString());
 		<%
     	}
     }

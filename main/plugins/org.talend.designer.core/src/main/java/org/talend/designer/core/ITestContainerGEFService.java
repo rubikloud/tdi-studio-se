@@ -20,6 +20,7 @@ import org.eclipse.gef.EditPart;
 import org.talend.core.IService;
 import org.talend.core.model.process.Element;
 import org.talend.core.model.process.IProcess2;
+import org.talend.core.model.properties.Item;
 import org.talend.core.ui.process.IGraphicalNode;
 import org.talend.designer.core.ui.editor.nodecontainer.NodeContainer;
 import org.talend.designer.core.ui.editor.nodes.Node;
@@ -46,5 +47,7 @@ public interface ITestContainerGEFService extends IService {
     public boolean isTestContainer(IProcess2 process);
 
     public Map<SubjobContainer, List<Node>> caculateJunitGroup(List<NodePart> nodeParts);
+
+    public IProcess2 getTestContainerProcess(Item item);
 
 }

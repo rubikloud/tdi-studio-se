@@ -29,18 +29,29 @@ boolean usePrepareStatement = "true".equals(ElementParameterParser.getValue(node
 String dbquery= ElementParameterParser.getValue(node, "__QUERY__");
 dbquery = org.talend.core.model.utils.NodeUtil.replaceCRLFInMEMO_SQL(dbquery);
 
-boolean isExecutedThroughWebHCat = "MICROSOFT_HD_INSIGHT".equals(ElementParameterParser.getValue(node, "__DISTRIBUTION__"));
+String theDistribution = ElementParameterParser.getValue(node, "__DISTRIBUTION__");
+String theVersion = ElementParameterParser.getValue(node, "__HIVE_VERSION__");
+
 if("true".equals(ElementParameterParser.getValue(node,"__USE_EXISTING_CONNECTION__"))) {
-	isExecutedThroughWebHCat = false;
-	String connection = ElementParameterParser.getValue(node, "__CONNECTION__");
-	for (INode pNode : node.getProcess().getNodesOfType("tHiveConnection")) {
-		if(connection!=null && connection.equals(pNode.getUniqueName())) {
-			isExecutedThroughWebHCat = "MICROSOFT_HD_INSIGHT".equals(ElementParameterParser.getValue(pNode, "__DISTRIBUTION__"));
-		}
-	}
+    String connection = ElementParameterParser.getValue(node, "__CONNECTION__");
+    for (INode pNode : node.getProcess().getNodesOfType("tHiveConnection")) {
+        if(connection!=null && connection.equals(pNode.getUniqueName())) {
+            theDistribution = ElementParameterParser.getValue(pNode, "__DISTRIBUTION__");
+            theVersion = ElementParameterParser.getValue(pNode, "__HIVE_VERSION__");
+        }
+    }
 }
 
-if(isExecutedThroughWebHCat) {
+org.talend.core.hadoop.api.components.HiveComponent hiveDistrib = null;
+try {
+    hiveDistrib = (org.talend.core.hadoop.api.components.HiveComponent) org.talend.core.hadoop.api.DistributionFactory.buildDistribution(theDistribution, theVersion);
+} catch (java.lang.Exception e) {
+    e.printStackTrace();
+    return "";
+}
+boolean isCustom = hiveDistrib instanceof org.talend.core.hadoop.api.distribution.CustomDistribution;
+
+if(hiveDistrib.isExecutedThroughWebHCat()) {
 %>
 	query_<%=cid %> = <%=dbquery%>;
 	bw_<%=cid%>.write(query_<%=cid %> + ";");
@@ -51,8 +62,7 @@ if(isExecutedThroughWebHCat) {
 	if(libjars_<%=cid%>.length() > 0) {
 		instance_<%=cid%>.setLibJars(libjars_<%=cid%>.toString().substring(0, libjars_<%=cid%>.length()-1));
 	}
-	instance_<%=cid%>.sendFiles();
-	instance_<%=cid%>.callWS(null, true);
+	instance_<%=cid%>.callWS(instance_<%=cid%>.sendFiles());
 	int exitCode_<%=cid%> = instance_<%=cid%>.execute();
 	if(exitCode_<%=cid%> > 0) {
 		
@@ -67,7 +77,7 @@ if(isExecutedThroughWebHCat) {
 <%
 			if(isLog4jEnabled) {
 %>
-				log.error("<%=cid%> - " + e.getMessage());
+				log.error("<%=cid%> - The Hive job failed. Please read the logs for more details");
 <%
 			}
 		}

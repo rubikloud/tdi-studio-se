@@ -68,10 +68,12 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.SystemException;
+import org.talend.commons.ui.runtime.exception.ExceptionMessageDialog;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.utils.system.EclipseCommandLine;
+import org.talend.commons.utils.system.EnvironmentUtils;
 import org.talend.core.CorePlugin;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
@@ -236,11 +238,12 @@ public class LoginProjectPage extends AbstractLoginActionPage {
         // Existing Project Area
         selectExistingProject = new Button(projectOperationArea, SWT.RADIO);
         selectExistingProject.setFont(LoginDialogV2.fixedFont);
+        selectExistingProject.setBackground(backgroundColor);
         selectExistingProject.setText(Messages.getString("LoginProjectPage.selectProject")); //$NON-NLS-1$
         projectListArea = new Composite(projectOperationArea, SWT.NONE);
         projectViewer = new ListViewer(projectListArea, SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
         projectViewer.getControl().setFont(LoginDialogV2.fixedFont);
-        projectViewer.setContentProvider(new ArrayContentProvider());
+        projectViewer.setContentProvider(ArrayContentProvider.getInstance());
         projectViewer.setLabelProvider(new ProjectLabelProvider());
         projectViewer.setSorter(new ViewerSorter());
         // Branch Area
@@ -250,7 +253,7 @@ public class LoginProjectPage extends AbstractLoginActionPage {
         branchLabel.setText(Messages.getString("LoginProjectPage.svnBranch")); //$NON-NLS-1$
         branchesViewer = new ComboViewer(branchArea, SWT.READ_ONLY);
         branchesViewer.getControl().setFont(LoginDialogV2.fixedFont);
-        branchesViewer.setContentProvider(new ArrayContentProvider());
+        branchesViewer.setContentProvider(ArrayContentProvider.getInstance());
         branchesViewer.setLabelProvider(new LabelProvider());
         refreshProjectButton = new Button(branchArea, SWT.NONE);
         refreshProjectButton.setFont(LoginDialogV2.fixedFont);
@@ -259,9 +262,11 @@ public class LoginProjectPage extends AbstractLoginActionPage {
         // Create New Project
         createNewProject = new Button(projectOperationArea, SWT.RADIO);
         createNewProject.setFont(LoginDialogV2.fixedFont);
+        createNewProject.setBackground(backgroundColor);
         createNewProject.setText(Messages.getString("LoginProjectPage.createNewProject")); //$NON-NLS-1$
         newProjectName = new Text(projectOperationArea, SWT.BORDER);
         newProjectName.setFont(LoginDialogV2.fixedFont);
+        newProjectName.setBackground(backgroundColor);
         executeCreateNewProject = new Button(projectOperationArea, SWT.NONE);
         executeCreateNewProject.setFont(LoginDialogV2.fixedFont);
         executeCreateNewProject.setText(Messages.getString("LoginProjectPage.create")); //$NON-NLS-1$
@@ -269,6 +274,7 @@ public class LoginProjectPage extends AbstractLoginActionPage {
         // Import Demo Project
         importDemoProject = new Button(projectOperationArea, SWT.RADIO);
         importDemoProject.setFont(LoginDialogV2.fixedFont);
+        importDemoProject.setBackground(backgroundColor);
         importDemoProject.setText(Messages.getString("LoginProjectPage.importDemoProject")); //$NON-NLS-1$
         executeImportDemoProject = new Button(projectOperationArea, SWT.NONE);
         executeImportDemoProject.setFont(LoginDialogV2.fixedFont);
@@ -278,6 +284,7 @@ public class LoginProjectPage extends AbstractLoginActionPage {
         // Import Local Project
         importLocalProject = new Button(projectOperationArea, SWT.RADIO);
         importLocalProject.setFont(LoginDialogV2.fixedFont);
+        importLocalProject.setBackground(backgroundColor);
         importLocalProject.setText(Messages.getString("LoginProjectPage.importLocalProject")); //$NON-NLS-1$
         executeImportLocalProject = new Button(projectOperationArea, SWT.NONE);
         executeImportLocalProject.setFont(LoginDialogV2.fixedFont);
@@ -287,6 +294,7 @@ public class LoginProjectPage extends AbstractLoginActionPage {
         // Create SandBox Project
         createSandBoxProject = new Button(projectOperationArea, SWT.RADIO);
         createSandBoxProject.setFont(LoginDialogV2.fixedFont);
+        createSandBoxProject.setBackground(backgroundColor);
         createSandBoxProject.setText(Messages.getString("LoginProjectPage.createSandBoxProject.title")); //$NON-NLS-1$
         executeCreateSandBoxProject = new Button(projectOperationArea, SWT.NONE);
         executeCreateSandBoxProject.setFont(LoginDialogV2.fixedFont);
@@ -347,7 +355,7 @@ public class LoginProjectPage extends AbstractLoginActionPage {
         // connectionsViewer.getControl().setLayoutData(formData);
         gridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
         connectionsViewer.getControl().setLayoutData(gridData);
-        connectionsViewer.setContentProvider(new ArrayContentProvider());
+        connectionsViewer.setContentProvider(ArrayContentProvider.getInstance());
         connectionsViewer.setLabelProvider(new ConnectionLabelProvider());
 
         /**
@@ -462,8 +470,13 @@ public class LoginProjectPage extends AbstractLoginActionPage {
 
         formData = new FormData();
         formData.right = new FormAttachment(100, 0);
-        formData.top = new FormAttachment(svnBranchComboControl, 0, SWT.CENTER);
-        formData.bottom = new FormAttachment(svnBranchComboControl, 0, SWT.CENTER);
+        if (EnvironmentUtils.isWindowsSystem()) {
+            formData.top = new FormAttachment(svnBranchComboControl, -1, SWT.TOP);
+            formData.bottom = new FormAttachment(svnBranchComboControl, 1, SWT.BOTTOM);
+        } else {
+            formData.top = new FormAttachment(svnBranchComboControl, 0, SWT.CENTER);
+            formData.bottom = new FormAttachment(svnBranchComboControl, 0, SWT.CENTER);
+        }
         refreshProjectButton.setLayoutData(formData);
 
         formData = new FormData();
@@ -517,7 +530,7 @@ public class LoginProjectPage extends AbstractLoginActionPage {
     protected void fillUIContents() {
         boolean isOnlyRemoteConnection = brandingService.getBrandingConfiguration().isOnlyRemoteConnection();
         List<ConnectionBean> storedConnections = loginHelper.getStoredConnections();
-        storedConnections = LoginHelper.filterUsableConnections(storedConnections);
+        storedConnections = loginHelper.filterUsableConnections(storedConnections);
         for (ConnectionBean connectionBean : storedConnections) {
             String user2 = connectionBean.getUser();
             String repositoryId2 = connectionBean.getRepositoryId();
@@ -1002,8 +1015,10 @@ public class LoginProjectPage extends AbstractLoginActionPage {
                         MessageDialog.WARNING, buttons, 0);
                 archivaDialog.open();
             }
-        } catch (Exception e1) {
+        } catch (Throwable e1) {
             CommonExceptionHandler.process(e1);
+            ExceptionMessageDialog.openError(getShell(), Messages.getString("LoginProjectPage.update.error.title"), //$NON-NLS-1$
+                    Messages.getString("LoginProjectPage.update.error.message"), e1); //$NON-NLS-1$
         }
     }
 
@@ -1304,7 +1319,7 @@ public class LoginProjectPage extends AbstractLoginActionPage {
                     errorManager.clearAllMessages();
                 } else {
                     if (LoginHelper.isRemoteConnection(getConnection())) {
-                        errorManager.setErrMessage(Messages.getString("LoginProjectPage.project_need.remote")); //$NON-NLS-1$
+                        errorManager.setErrMessage(Messages.getString("LoginProjectPage.project_need.remote.v1")); //$NON-NLS-1$
                     } else {
                         errorManager.setErrMessage(Messages.getString("LoginComposite.PROJECT_NEED")); //$NON-NLS-1$
                     }

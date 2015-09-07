@@ -206,6 +206,7 @@ public abstract class JobScriptsManager {
         needLog4jLevel,
         log4jLevel,
         addStatistics, // for feature 11031
+        addTracs,
         doNotCompileCode,
         needDependencies,
         needParameterValues,
@@ -216,7 +217,8 @@ public abstract class JobScriptsManager {
         esbQueueMessageName,
         esbServiceName,
         esbCategory,
-        esbExportType
+        esbExportType,
+        properties
     }
 
     /**
@@ -593,24 +595,10 @@ public abstract class JobScriptsManager {
      */
     protected IProcess generateJobFiles(ProcessItem process, String contextName, String version, boolean statistics,
             boolean trace, boolean applyContextToChildren, IProgressMonitor monitor) throws ProcessorException {
-        return generateJobFiles(process, contextName, version, statistics, trace, applyContextToChildren, false, monitor);
-    }
-
-    protected IProcess generateJobFiles(ProcessItem process, String contextName, String version, boolean statistics,
-            boolean trace, boolean applyContextToChildren, boolean isExportAsOSGI, IProgressMonitor monitor)
-            throws ProcessorException {
         LastGenerationInfo.getInstance().getUseDynamicMap().clear();
-        ProcessorUtilities.setExportAsOSGI(isExportAsOSGI);
-        IProcessor processor = null;
-        try {
-            processor = ProcessorUtilities.generateCode(process, contextName, version, statistics, trace, applyContextToChildren,
+        IProcessor processor = ProcessorUtilities.generateCode(process, contextName, version, statistics, trace, applyContextToChildren,
                     isOptionChoosed(ExportChoice.needContext), monitor);
-            return processor.getProcess();
-        } catch (ProcessorException e) {
-            throw e;
-        } finally {
-            ProcessorUtilities.setExportAsOSGI(false);
-        }
+        return processor.getProcess();
     }
 
     protected IResource[] sourceResouces = null;

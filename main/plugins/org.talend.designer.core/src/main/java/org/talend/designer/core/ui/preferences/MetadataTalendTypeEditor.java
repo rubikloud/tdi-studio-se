@@ -413,7 +413,7 @@ public class MetadataTalendTypeEditor extends FieldEditor {
     }
 
     protected IStructuredContentProvider createContentProvider() {
-        return new ArrayContentProvider();
+        return ArrayContentProvider.getInstance();
     }
 
     protected ITableLabelProvider createLabelProvider() {

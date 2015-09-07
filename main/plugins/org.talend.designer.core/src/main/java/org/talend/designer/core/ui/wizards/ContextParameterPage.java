@@ -144,7 +144,7 @@ public class ContextParameterPage extends WizardPage {
         typeLabel.setText(Messages.getString("ContextParameterPage.type")); //$NON-NLS-1$
 
         typeViewer = new ComboViewer(container, SWT.BORDER | SWT.READ_ONLY);
-        typeViewer.setContentProvider(new ArrayContentProvider());
+        typeViewer.setContentProvider(ArrayContentProvider.getInstance());
         typeViewer.setLabelProvider(new LabelProvider());
         typeViewer.setInput(MetadataTalendType.getCxtParameterTalendTypesLabels());
         typeViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

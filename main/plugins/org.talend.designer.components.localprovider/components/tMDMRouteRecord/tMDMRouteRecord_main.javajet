@@ -28,13 +28,21 @@ imports="
 %>       
 int nb_line_<%=cid %> = 0;
 <%if(!useExistingConn){%>
-	org.talend.mdm.webservice.TMDMService_ServiceLocator tmdmService_<%=cid %> = new org.talend.mdm.webservice.TMDMService_ServiceLocator();
-	tmdmService_<%=cid %>.setTMDMPortEndpointAddress(<%=mdmUrl %>);
-	org.talend.mdm.webservice.TMDMService_PortType tmdmWS_<%=cid %> = tmdmService_<%=cid %>.getTMDMPort();    
-	org.talend.mdm.webservice.TMDMServiceSoapBindingStub stub_<%=cid %> = (org.talend.mdm.webservice.TMDMServiceSoapBindingStub)tmdmWS_<%=cid %>;
-	
-	// Authentification
-	stub_<%=cid %>.setUsername(<%=username %>);
+	 java.net.URL url = null;
+    try {
+        url = new java.net.URL(<%=mdmUrl %>);
+    }catch(Exception e){
+        log.error(e.getMessage(),e);
+        throw e;
+    }
+    
+    org.talend.mdm.webservice.TMDMService_Service service_service_<%=cid %> = new org.talend.mdm.webservice.TMDMService_Service(url);
+    org.talend.mdm.webservice.TMDMService service_<%=cid %> = service_service_<%=cid %>.getTMDMPort();
+    javax.xml.ws.BindingProvider stub_<%=cid %> = (javax.xml.ws.BindingProvider) service_<%=cid %>;
+    stub_<%=cid %>.getRequestContext().put(javax.xml.ws.BindingProvider.SESSION_MAINTAIN_PROPERTY, false);
+    
+    java.util.Map<String, Object> context_<%=cid %> = stub_<%=cid %>.getRequestContext();
+    context_<%=cid %>.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, <%=username %>);
 	
     <%
     String passwordFieldName = "__PASSWORD__";
@@ -42,27 +50,27 @@ int nb_line_<%=cid %> = 0;
     
     <%@ include file="@{org.talend.designer.components.localprovider}/components/templates/password.javajet"%>
 	
-	stub_<%=cid %>.setPassword(decryptedPassword_<%=cid%>);
+	context_<%=cid %>.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, decryptedPassword_<%=cid%>);
 <%}else{%>
-	org.talend.mdm.webservice.TMDMService_PortType tmdmWS_<%=cid %> = (org.talend.mdm.webservice.TMDMService_PortType)globalMap.get("<%=conn%>");
+	org.talend.mdm.webservice.TMDMService service_<%=cid %> = (org.talend.mdm.webservice.TMDMService)globalMap.get("<%=conn%>");
 <%}%>
 
 org.talend.mdm.webservice.WSDataClusterPK dataCluster_<%=cid %> = new org.talend.mdm.webservice.WSDataClusterPK(<%=dataCluster %> + "<%=isStaging?"#STAGING":""%>");
 
 org.talend.mdm.webservice.WSRouteItemV2 wsRouteItem_<%=cid %> = new org.talend.mdm.webservice.WSRouteItemV2();
-org.talend.mdm.webservice.WSItemPK wsItemPK_<%=cid %> = new org.talend.mdm.webservice.WSItemPK();
-wsItemPK_<%=cid %>.setConceptName(<%=entity %>);
-wsItemPK_<%=cid %>.setWsDataClusterPK(dataCluster_<%=cid %>);
-wsItemPK_<%=cid %>.setIds(new String[]{
+
+List<String> pkIds = new java.util.ArrayList<String>();
 <%
-boolean isfirst = true;
 for(Map<String, String> map:ids){
 %>
-<%=isfirst?"":","%><%=map.get("ID")%>
+pkIds.add(<%=map.get("ID")%>);
 <%
-	isfirst =false;
 }
 %>
-});
+org.talend.mdm.webservice.WSItemPK wsItemPK_<%=cid %> = new org.talend.mdm.webservice.WSItemPK(<%=entity %>,pkIds,dataCluster_<%=cid %>);
+
 wsRouteItem_<%=cid %>.setWsItemPK(wsItemPK_<%=cid %>);
-org.talend.mdm.webservice.WSRoutingRulePK[] wsRoutingRulePKArray_<%=cid %> = tmdmWS_<%=cid %>.routeItemV2(wsRouteItem_<%=cid %>);
+
+//
+service_<%=cid %>.routeItemV2(wsRouteItem_<%=cid %>);
+

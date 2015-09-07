@@ -139,7 +139,7 @@ public class ImportRulesFromRepository implements SelectionListener {
             GridData data = new GridData(SWT.FILL, SWT.FILL, true, true, 0, 0);
             table.setLayoutData(data);
 
-            rulesTable.setContentProvider(new ArrayContentProvider());
+            rulesTable.setContentProvider(ArrayContentProvider.getInstance());
             rulesTable.setLabelProvider(new RulesTableLabelProvider());
         }
 

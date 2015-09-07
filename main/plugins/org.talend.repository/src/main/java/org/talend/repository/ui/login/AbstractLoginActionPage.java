@@ -126,6 +126,7 @@ public abstract class AbstractLoginActionPage extends AbstractActionPage {
         navigatorSeperatorLine = new Label(navigateArea, SWT.SEPARATOR | SWT.HORIZONTAL);
         alwaysAsk = new Button(navigateArea, SWT.CHECK);
         alwaysAsk.setFont(LoginDialogV2.fixedFont);
+        alwaysAsk.setBackground(backgroundColor);
         alwaysAsk.setText(Messages.getString("LoginProjectPage.alwaysAskMe")); //$NON-NLS-1$
         alwaysAsk.setToolTipText(Messages.getString("LoginProjectPage.alwaysAskMe.toolTip")); //$NON-NLS-1$
         previousButton = new Button(navigateArea, SWT.NONE);

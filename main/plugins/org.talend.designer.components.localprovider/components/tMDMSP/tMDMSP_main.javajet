@@ -15,7 +15,6 @@ imports="
 	CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
 	INode node = (INode)codeGenArgument.getArgument();
 	String cid = node.getUniqueName();
-
 	String spName = ElementParameterParser.getValue(node, "__SPNAME__");
 	
 	List<Map<String, String>> spArgs = (List<Map<String,String>>)ElementParameterParser.getObjectValue(node, "__SP_ARGS__");
@@ -34,47 +33,51 @@ imports="
 		}
 	}
 
+%>
+
+List<String> params = new java.util.ArrayList<String>();
+<%
 	List<? extends IConnection> outgoingConns = node.getOutgoingSortedConnections();
-	if(inConnection!=null){
-		if(spArgs.size()>0){
+	if(inConnection!=null){// if 1
+		if(spArgs.size()>0){ //if 2
+			for(int i=0;i<spArgs.size();i++){// for 3
+				Map<String, String> map = spArgs.get(i);
+				String clmName = map.get("COLUMN");
+				for(IMetadataColumn column:metadata.getListColumns()){ // for 4
+					if(column.getLabel().equals(clmName)){ //if 5
 %>
-			wsExeProc_<%=cid %>.setParameters(new String[]{
+
+params.add(<%=inConnection.getName()%>.<%=column.getLabel() %>);
 <%
-		}
-		for(int i=0;i<spArgs.size();i++){
-			Map<String, String> map = spArgs.get(i);
-			String clmName = map.get("COLUMN");
-			for(IMetadataColumn column:metadata.getListColumns()){
-				if(column.getLabel().equals(clmName)){
+    				}//5
+    			}//4
+    		}//3
+		}//2
+	}//1
 %>
-					<%=i==0?"":","%><%=inConnection.getName()%>.<%=column.getLabel() %>
+org.talend.mdm.webservice.WSExecuteStoredProcedure wsExeProc_<%=cid %> = new org.talend.mdm.webservice.WSExecuteStoredProcedure(params,dataCluster_<%=cid %>,wsStoredProcPK_<%=cid %>);
+
 <%
-    				}
-    			}
-    		}
-    		if(spArgs.size()>0){
-%>
-			});
-<%
-		}
-	}
 	// if output columns are defined
 	if (outgoingConns != null && outgoingConns.size() > 0){
 		IConnection outgoingConn = outgoingConns.get(0);
 		String outputCol = null;
 		if(outgoingConn.getLineStyle().hasConnectionCategory(IConnectionCategory.DATA)) { // start 1
 %>
-			for(String xmlField_<%=cid %> : tmdmWS_<%=cid %>.executeStoredProcedure(wsExeProc_<%=cid %>)){
+		List<String> xmlFields = service_<%=cid %>.executeStoredProcedure(wsExeProc_<%=cid %>).getStrings();
+		
+			for(String xmlField_<%=cid %> : xmlFields){
 				<%=outgoingConn.getName()%>.xmlField = xmlField_<%=cid %>;
 <%
-		} else {
+			} else {
 %>
-			tmdmWS_<%=cid %>.executeStoredProcedure(wsExeProc_<%=cid %>);
+				service_<%=cid %>.executeStoredProcedure(wsExeProc_<%=cid %>);
 <%
-		}
+			}
+			
 	} else {
 %>
-		tmdmWS_<%=cid %>.executeStoredProcedure(wsExeProc_<%=cid %>);
+		service_<%=cid %>.executeStoredProcedure(wsExeProc_<%=cid %>);
 <%
 	}
 %>

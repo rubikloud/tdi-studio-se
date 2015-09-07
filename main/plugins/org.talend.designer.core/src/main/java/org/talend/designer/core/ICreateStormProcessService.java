@@ -12,13 +12,19 @@
 // ============================================================================
 package org.talend.designer.core;
 
+import org.talend.commons.exception.PersistenceException;
+import org.talend.core.IService;
+import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
+import org.talend.designer.core.ui.editor.ProcessEditorInput;
 import org.talend.designer.core.ui.editor.process.Process;
 
 /**
  * DOC zwzhao class global comment. Detailled comment
  */
-public interface ICreateStormProcessService {
+public interface ICreateStormProcessService extends IService {
 
     public Process createStormProcess(Property property);
+
+    public ProcessEditorInput getStromProcessEditorInput(ProcessItem processItem, boolean load) throws PersistenceException;
 }

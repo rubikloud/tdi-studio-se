@@ -6,7 +6,7 @@ imports="
        	org.talend.core.model.process.IConnection    
 		org.talend.core.model.process.IConnectionCategory
     	org.talend.core.model.process.EConnectionType
-		org.talend.core.model.utils.NodeUtil    	
+		org.talend.core.model.utils.NodeUtil	
 		"
 %>
 <%
@@ -109,7 +109,7 @@ org.talend.mdm.webservice.WSDataModelPK dataModel_<%=cid %> = new org.talend.mdm
 
 String input_<%=cid %>;
 
-org.talend.mdm.webservice.WSItemPK[] wspks_<%=cid %>;
+java.util.List<org.talend.mdm.webservice.WSItemPK> wspks_<%=cid %>;
 org.talend.mdm.webservice.WSItemPK wspk_<%=cid %>;
 
 <%

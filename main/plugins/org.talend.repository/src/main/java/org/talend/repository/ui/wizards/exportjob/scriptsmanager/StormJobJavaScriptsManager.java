@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.repository.ResourceModelUtils;
@@ -86,12 +85,10 @@ public class StormJobJavaScriptsManager extends JobJavaScriptsManager {
             jarbuilder.setExcludeDir(null);
 
             jarbuilder.setLibPath(getLibPath(false));
-            jarbuilder.setStorm(true);
+            jarbuilder.setFatJar(true);
             jarbuilder.buildJar();
             list.add(jarFile.toURI().toURL());
         } catch (IOException e) {
-            CommonExceptionHandler.process(e);
-        } catch (CoreException e) {
             CommonExceptionHandler.process(e);
         }
 

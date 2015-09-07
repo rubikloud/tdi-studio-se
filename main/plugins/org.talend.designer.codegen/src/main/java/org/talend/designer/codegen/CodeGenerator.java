@@ -98,8 +98,6 @@ public class CodeGenerator implements ICodeGenerator {
 
     private NodesTree processTree;
 
-    private String exportAsOSGI = "false";
-
     private static final long INIT_TIMEOUT = 15 * 60 * 1000; // 15s
 
     private static final long INIT_PAUSE = 1000; // 1s
@@ -113,7 +111,6 @@ public class CodeGenerator implements ICodeGenerator {
      * @param language
      */
     public CodeGenerator(IProcess process, boolean statistics, boolean trace, String... options) {
-        IBrandingService service = (IBrandingService) GlobalServiceRegister.getDefault().getService(IBrandingService.class);
         if (process == null) {
             throw new NullPointerException();
         } else {
@@ -129,13 +126,7 @@ public class CodeGenerator implements ICodeGenerator {
             this.contextName = process.getContextManager().getDefaultContext().getName();
             this.checkingSyntax = false;
 
-            if ((options != null) && (options.length == 5)) {
-                this.interpreterPath = options[0];
-                this.libPath = options[1];
-                this.runtimeFilePath = options[2];
-                this.currentProjectName = options[3];
-                this.exportAsOSGI = options[4];
-            } else if ((options != null) && (options.length == 4)) {
+            if ((options != null) && (options.length == 4)) {
                 this.interpreterPath = options[0];
                 this.libPath = options[1];
                 this.runtimeFilePath = options[2];
@@ -233,7 +224,6 @@ public class CodeGenerator implements ICodeGenerator {
             headerArgument.add(process);
 
             headerArgument.add(VersionUtils.getVersion());
-            headerArgument.add(exportAsOSGI);
             boolean isCamel = false;
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
                 ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault()
@@ -479,23 +469,6 @@ public class CodeGenerator implements ICodeGenerator {
             }
         }
         return ""; //$NON-NLS-1$
-    }
-
-    /*
-     * ADDED for TESB-7887 By GangLiu(non-Javadoc)
-     * 
-     * @see org.talend.designer.codegen.ICodeGenerator#generateSpringContent()
-     */
-    @Override
-    public String generateSpringContent() throws CodeGeneratorException {
-        if (process == null || !(process instanceof IProcess2)) {
-            return null;
-        }
-        IProcess2 process2 = (IProcess2) process;
-        if (!process2.needsSpring() || process2.getSpringContent() == null) {
-            return null;
-        }
-        return process2.getSpringContent();
     }
 
     /**

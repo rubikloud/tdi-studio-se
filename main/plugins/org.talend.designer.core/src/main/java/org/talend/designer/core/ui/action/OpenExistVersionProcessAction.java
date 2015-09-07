@@ -16,14 +16,11 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
@@ -43,6 +40,7 @@ import org.talend.core.ui.editor.JobEditorInput;
 import org.talend.designer.core.i18n.Messages;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.ui.wizards.OpenExistVersionProcessWizard;
+import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.ui.actions.EditPropertiesAction;
@@ -74,7 +72,7 @@ public class OpenExistVersionProcessAction extends EditPropertiesAction {
         RepositoryObject repositoryObj = new RepositoryObject(node.getObject().getProperty());
         repositoryObj.setRepositoryNode(node.getObject().getRepositoryNode());
         OpenExistVersionProcessWizard wizard = new OpenExistVersionProcessWizard(repositoryObj);
-        PropertyManagerWizardDialog dialog = new PropertyManagerWizardDialog(Display.getCurrent().getActiveShell(), wizard);
+        WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
         dialog.setPageSize(300, 250);
         dialog.setTitle(Messages.getString("OpenExistVersionProcess.open.dialog")); //$NON-NLS-1$
         if (dialog.open() == Dialog.OK) {
@@ -96,28 +94,14 @@ public class OpenExistVersionProcessAction extends EditPropertiesAction {
             return;
         }
         super.init(viewer, selection);
-    }
-
-    public class PropertyManagerWizardDialog extends WizardDialog {
-
-        /**
-         * DOC xye PropertyManagerWizardDialog constructor comment.
-         * 
-         * @param parentShell
-         * @param newWizard
-         */
-        public PropertyManagerWizardDialog(Shell parentShell, IWizard newWizard) {
-            super(parentShell, newWizard);
+        // Camel Route have own action
+        if (isEnabled() && isInstanceofCamelRoutes(((IRepositoryNode) selection.getFirstElement()).getObjectType())) {
+            setEnabled(false);
         }
-
-        public Button getFinishButton() {
-            return getButton(IDialogConstants.FINISH_ID);
-        }
-
     }
 
     @Override
-    protected IEditorPart getCorrespondingEditor(RepositoryNode node) {
+    protected IEditorPart getCorrespondingEditor(IRepositoryNode node) {
         IEditorReference[] eidtors = getActivePage().getEditorReferences();
 
         for (IEditorReference eidtor : eidtors) {

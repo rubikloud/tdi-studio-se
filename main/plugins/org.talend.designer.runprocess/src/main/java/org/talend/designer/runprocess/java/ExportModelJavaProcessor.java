@@ -31,6 +31,7 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.PropertiesPackage;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.service.IMRProcessService;
 import org.talend.core.service.IStormProcessService;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
@@ -46,8 +47,6 @@ import org.talend.repository.ui.utils.ZipToFile;
  * Created by wchen on Mar 5, 2013.
  */
 public class ExportModelJavaProcessor extends MavenJavaProcessor {
-
-    private String unzipFolder;
 
     /**
      * DOC wchen ExportModelJavaProcessor constructor comment.
@@ -72,8 +71,9 @@ public class ExportModelJavaProcessor extends MavenJavaProcessor {
         ExportProcessorHelper helper = new ExportProcessorHelper();
 
         // export job
-        String archive = helper.exportJob(this, statisticsPort, tracePort,
-                ArrayUtils.contains(optionsParam, "--watch") ? "--watch" : null, monitor);
+        String watchParam = ArrayUtils.contains(optionsParam, TalendProcessArgumentConstant.CMD_ARG_WATCH) ? TalendProcessArgumentConstant.CMD_ARG_WATCH
+                : null;
+        archive = helper.exportJob(this, statisticsPort, tracePort, watchParam, monitor);
         unzipFolder = unzipAndDeploy(process, archive);
 
         Process process = super.execFrom(unzipFolder + File.separatorChar + this.process.getName(), Level.INFO, statisticsPort,

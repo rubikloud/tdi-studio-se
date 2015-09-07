@@ -41,6 +41,10 @@
 		<talend.job.sh.addition>@JobShAddition@</talend.job.sh.addition>
 
 		<talend.job.finalName>@JobFinalName@</talend.job.finalName>
+
+		<!-- for global properties -->
+		<current.resources.dir>${basedir}/src/main/resources</current.resources.dir>
+		<output.resources.dir>${talend.job.name}/src/main/resources</output.resources.dir>
 	</properties>
 
 	<dependencies>
@@ -95,7 +99,7 @@
 							<outputDirectory>${project.build.outputDirectory}/${talend.job.path}</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${basedir}/src/main/resources/${talend.job.path}</directory>
+									<directory>${current.resources.dir}/${talend.job.path}</directory>
 									<includes>
 										<include>contexts/*.properties</include>
 									</includes>
@@ -163,7 +167,7 @@
 			<id>include-java-sources</id>
 			<properties>
 				<sourcecodes.dir>${project.build.sourceDirectory}</sourcecodes.dir>
-				<resources.dir>${basedir}/src/main/resources/</resources.dir>
+				<resources.dir>${current.resources.dir}/</resources.dir>
 			</properties>
 		</profile>
 		<profile>
@@ -209,9 +213,35 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>include-xmlMappings</id>
+			<properties>
+				<xmlMappings.resources.dir>${current.resources.dir}/xmlMappings/</xmlMappings.resources.dir>
+			</properties>
+		</profile>
+		<profile>
+			<id>include-running-xmlMappings</id>
+			<properties>
+				<xmlMappings.running.dir>
+					${current.resources.dir}/xmlMappings/
+				</xmlMappings.running.dir>
+			</properties>
+		</profile>
+		<profile>
+			<id>include-rules</id>
+			<properties>
+				<rules.resources.dir>${current.resources.dir}/rules/</rules.resources.dir>
+			</properties>
+		</profile>
+		<profile>
 			<id>include-log4j</id>
 			<properties>
-				<log4j.running.dir>${basedir}/src/main/resources/</log4j.running.dir>
+				<log4j.resources.dir>${current.resources.dir}/</log4j.resources.dir>
+			</properties>
+		</profile>
+		<profile>
+			<id>include-running-log4j</id>
+			<properties>
+				<log4j.running.dir>${current.resources.dir}/</log4j.running.dir>
 			</properties>
 		</profile>
 		<profile>
@@ -220,7 +250,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<contexts.running.dir>${basedir}/src/main/resources/</contexts.running.dir>
+				<contexts.running.dir>${current.resources.dir}/</contexts.running.dir>
 			</properties>
 		</profile>
 		<profile>

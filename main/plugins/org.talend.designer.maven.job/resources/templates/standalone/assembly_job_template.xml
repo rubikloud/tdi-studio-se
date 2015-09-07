@@ -41,15 +41,43 @@
 				<include>**</include>
 			</includes>
 		</fileSet>
-		<fileSet><!-- some resources -->
-			<directory>${resources.dir}</directory>
-			<outputDirectory>${talend.job.name}/src/main/resources/
+		<fileSet><!-- log4j resources -->
+			<directory>${log4j.resources.dir}</directory>
+			<outputDirectory>${output.resources.dir}/
 			</outputDirectory>
 			<includes>
-				<include>xmlMappings/**</include>
-				<include>sqltemplates/**</include>
-				<include>rules/**</include>
 				<include>log4j.xml</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- log4j.xml for running -->
+			<directory>${log4j.running.dir}</directory>
+			<outputDirectory>${talend.job.name}</outputDirectory>
+			<includes>
+				<include>log4j.xml</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- xmlMappings resources -->
+			<directory>${xmlMappings.resources.dir}</directory>
+			<outputDirectory>${output.resources.dir}/xmlMappings/
+			</outputDirectory>
+			<includes>
+				<include>**/*.*</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- xmlMappings for running -->
+			<directory>${xmlMappings.running.dir}</directory>
+			<outputDirectory>${talend.job.name}/xmlMappings/
+			</outputDirectory>
+			<includes>
+				<include>**/*.*</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- rules resources -->
+			<directory>${rules.resources.dir}</directory>
+			<outputDirectory>${output.resources.dir}/rules/
+			</outputDirectory>
+			<includes>
+				<include>**/*.*</include>
 			</includes>
 		</fileSet>
 		<fileSet><!-- assembly.xml -->
@@ -86,7 +114,7 @@
 		</fileSet>
 		<fileSet><!-- add context resources -->
 			<directory>${resources.dir}</directory>
-			<outputDirectory>${talend.job.name}/src/main/resources/
+			<outputDirectory>${output.resources.dir}/
 			</outputDirectory>
 			<includes>
 				<include>${talend.job.path}/**</include>
@@ -119,13 +147,6 @@
 			<outputDirectory>${talend.job.name}</outputDirectory>
 			<includes>
 				<include>${talend.job.path}/**</include>
-			</includes>
-		</fileSet>
-		<fileSet><!-- add the log4j.xml for running --> 
-			<directory>${log4j.running.dir}</directory>
-			<outputDirectory>${talend.job.name}</outputDirectory>
-			<includes>
-				<include>log4j.xml</include>
 			</includes>
 		</fileSet>
 		<!-- If have children jobs, will add here -->
@@ -162,7 +183,7 @@
 			</includes>
 			<binaries>
 				<outputDirectory>${talend.job.name}</outputDirectory>
-				<includeDependencies>true</includeDependencies>
+				<includeDependencies>false</includeDependencies>
 				<unpack>false</unpack>
 				<includes>
 					<include>${project.groupId}:*</include>

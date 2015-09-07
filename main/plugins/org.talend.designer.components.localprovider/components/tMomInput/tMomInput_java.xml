@@ -54,7 +54,7 @@
 
    	<!--npruss start: changes for static discovery and custom connection parameters and timeout in max message operation-->
 	<PARAMETER NAME="USEMAX_WITH_TIMEOUT" FIELD="CHECK" NUM_ROW="15"
-        SHOW_IF="((USE_CONNECTION == 'true') or (SERVER == 'ACTIVEMQ')) AND (KEEPLISTENING == 'false') AND (USEMAX == 'true')">
+        SHOW_IF="(isShow[USEMAX]) AND (USEMAX == 'true')">
       <DEFAULT >false</DEFAULT>
     </PARAMETER>
 

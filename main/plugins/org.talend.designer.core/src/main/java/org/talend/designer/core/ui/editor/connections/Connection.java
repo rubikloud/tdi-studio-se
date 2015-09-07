@@ -1536,8 +1536,8 @@ public class Connection extends Element implements IConnection, IPerformance {
             if (target.getIncomingConnections().size() < newId) {
                 throw new IllegalArgumentException(Messages.getString("Connection.inputInvalid")); //$NON-NLS-1$
             }
-            if (target.getIncomingConnections().get(newId).equals(this)) {
-                return; // id is already set
+            if (newId < 0 || target.getIncomingConnections().get(newId).equals(this)) {
+                return; // if id is already set or can not found
             }
             for (int i = 0; i < target.getIncomingConnections().size(); i++) {
                 if (target.getIncomingConnections().get(i).equals(this)) {

@@ -258,6 +258,7 @@ public class TalendProcessJavaProject implements ITalendProcessJavaProject {
                 mavenBuildCodeProjectPom(goals, TalendMavenConstants.CURRENT_PATH, argumentsMap, monitor);
             } else { // JDT build
                 buildWholeCodeProject();
+                buildWholeCodeProject();
             }
         } else if (childrenModules.length > 0) {
             for (String module : childrenModules) {
@@ -301,6 +302,7 @@ public class TalendProcessJavaProject implements ITalendProcessJavaProject {
                 mavenLauncher.setArgumentsMap(argumentsMap);
                 mavenLauncher.execute(monitor);
             }
+            buildWholeCodeProject();
             buildWholeCodeProject();
         } else {
             throw new RuntimeException("The pom.xml is not existed. Can't build the job: " + module); //$NON-NLS-1$

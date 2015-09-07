@@ -93,7 +93,7 @@ public class StatusConfirmSettingDialog extends Dialog {
         column.setText(Messages.getString("StatusManagementDialog.NewStatus")); //$NON-NLS-1$
         column.setWidth(90);
 
-        viewer.setContentProvider(new ArrayContentProvider());
+        viewer.setContentProvider(ArrayContentProvider.getInstance());
         viewer.setLabelProvider(new ITableLabelProvider() {
 
             public Image getColumnImage(Object element, int columnIndex) {

@@ -32,6 +32,10 @@ String msgType = ElementParameterParser.getValue(node, "__MSGTYPE__");
 
 List<Map<String, String>> advProps = (List<Map<String,String>>)ElementParameterParser.getObjectValue(node, "__ADVANCED_PROPERTIES__");
 
+boolean enableSubscription = "Topic".equals(msgType) && "true".equalsIgnoreCase(ElementParameterParser.getValue(node, "__ENABLE_SUB__"));
+String clientID = ElementParameterParser.getValue(node, "__CLIENT_ID__");
+String subscriberName = ElementParameterParser.getValue(node, "__SUBSCRIBER_NAME__");
+
 IMetadataTable metadata=null;
 List<IMetadataTable> metadatas = node.getMetadataList();
 if ((metadatas!=null)&&(metadatas.size()>0)) {
@@ -63,10 +67,30 @@ if(advProps.size() > 0){
     <%@ include file="@{org.talend.designer.components.localprovider}/components/templates/password.javajet"%>
 
 	javax.jms.Connection connection_<%=cid%> = factory_<%=cid%>.createConnection(<%if("true".equals(userIdentity)){%><%=user %>, decryptedPassword_<%=cid%><%}%>);
+	
+	<%
+	if(enableSubscription){
+	%>
+	((javax.jms.TopicConnection)connection_<%=cid%>).setClientID(<%=clientID%>);
+	<%
+	}
+	%>
+	
 	javax.jms.Session session_<%=cid%> = connection_<%=cid%>.createSession(false, javax.jms.Session.CLIENT_ACKNOWLEDGE);
 	javax.jms.Destination dest_<%=cid%> = session_<%=cid%>.create<%=msgType%>(<%=from %>);
-	javax.jms.MessageConsumer consumer_<%=cid%>	= session_<%=cid%>.createConsumer(dest_<%=cid%>, <%=messageSelector%>);
 
+	<%
+	if(enableSubscription){
+	%>
+	javax.jms.MessageConsumer consumer_<%=cid%> = ((javax.jms.TopicSession) session_<%=cid%>).createDurableSubscriber((javax.jms.Topic)dest_<%=cid%>,<%=subscriberName%>,<%=messageSelector%>,false);
+	<%
+	} else {
+	%>
+	javax.jms.MessageConsumer consumer_<%=cid%>	= session_<%=cid%>.createConsumer(dest_<%=cid%>, <%=messageSelector%>);
+	<%
+	}
+	%>
+	
 	connection_<%=cid%>.start();
 
 	System.out.println("Ready to receive message");

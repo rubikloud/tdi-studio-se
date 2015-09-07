@@ -544,7 +544,7 @@ public class LoginComposite extends Composite {
         repositoryLabel.setVisible(false);
 
         connectionsViewer = new ComboViewer(repositoryComposite, SWT.BORDER | SWT.READ_ONLY);
-        connectionsViewer.setContentProvider(new ArrayContentProvider());
+        connectionsViewer.setContentProvider(ArrayContentProvider.getInstance());
         connectionsViewer.setLabelProvider(new ConnectionLabelProvider());
         formData2 = new FormData();
         formData2.top = new FormAttachment(0, HORIZONTAL_THREE_SPACE);
@@ -663,7 +663,7 @@ public class LoginComposite extends Composite {
         manageProjectsButton.setText(Messages.getString("LoginComposite.manageProjectsButton")); //$NON-NLS-1$
 
         manageViewer = new ComboViewer(tosActionComposite, SWT.BORDER | SWT.READ_ONLY);
-        manageViewer.setContentProvider(new ArrayContentProvider());
+        manageViewer.setContentProvider(ArrayContentProvider.getInstance());
         manageViewer.setInput(getManageElements());
 
         data = new FormData();
@@ -711,7 +711,7 @@ public class LoginComposite extends Composite {
         manageProjectsButton.setVisible(false);
 
         manageViewer = new ComboViewer(tosActionComposite, SWT.BORDER | SWT.READ_ONLY);
-        manageViewer.setContentProvider(new ArrayContentProvider());
+        manageViewer.setContentProvider(ArrayContentProvider.getInstance());
         manageViewer.setInput(getManageElements());
         manageViewer.getCombo().setVisible(false);
 
@@ -776,7 +776,7 @@ public class LoginComposite extends Composite {
         Point btPoint = manageProjectsButtonTemp.computeSize(SWT.DEFAULT, SWT.DEFAULT);
         data.right = new FormAttachment(100, -HORIZONTAL_THREE_SPACE - btPoint.x - 50);
         importCombo.getCombo().setLayoutData(data);
-        importCombo.setContentProvider(new ArrayContentProvider());
+        importCombo.setContentProvider(ArrayContentProvider.getInstance());
         List<DemoProjectBean> demoProjectList = ImportProjectsUtilities.getAllDemoProjects();
         for (int i = 0; i < demoProjectList.size(); i++) {
             DemoProjectBean bean = demoProjectList.get(i);
@@ -856,7 +856,7 @@ public class LoginComposite extends Composite {
 
         svnBranchLabel = toolkit.createLabel(tosProjectComposite, null);
         branchesViewer = new ComboViewer(tosProjectComposite, SWT.BORDER | SWT.READ_ONLY);
-        branchesViewer.setContentProvider(new ArrayContentProvider());
+        branchesViewer.setContentProvider(ArrayContentProvider.getInstance());
         branchesViewer.setLabelProvider(new LabelProvider());
         branchesViewer.getControl().setVisible(false);
 
@@ -869,7 +869,7 @@ public class LoginComposite extends Composite {
         openProjectBtn.setImage(image);
 
         projectViewer = new ComboViewer(tosProjectComposite, SWT.BORDER | SWT.READ_ONLY);
-        projectViewer.setContentProvider(new ArrayContentProvider());
+        projectViewer.setContentProvider(ArrayContentProvider.getInstance());
         projectViewer.setLabelProvider(new ProjectLabelProvider());
 
         FormData data = new FormData();
@@ -1135,7 +1135,7 @@ public class LoginComposite extends Composite {
         connectionLabel.setLayoutData(formData);
 
         connectionsViewer = new ComboViewer(group, SWT.BORDER | SWT.READ_ONLY);
-        connectionsViewer.setContentProvider(new ArrayContentProvider());
+        connectionsViewer.setContentProvider(ArrayContentProvider.getInstance());
         connectionsViewer.setLabelProvider(new ConnectionLabelProvider());
         formData = new FormData();
         formData.top = new FormAttachment(connectionLabel, 0, SWT.CENTER);

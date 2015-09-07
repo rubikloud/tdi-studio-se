@@ -71,7 +71,7 @@ if(!usePartialUpdate){
 %> 
 	if(miList_<%=cid %>.size() > 0){
 	    org.talend.mdm.webservice.WSPutItemWithReportArray putItemWithReportArray = new org.talend.mdm.webservice.WSPutItemWithReportArray(miList_<%=cid %>);
-		wspks_<%=cid %> = service_<%=cid %>.putItemWithReportArray(putItemWithReportArray);
+		wspks_<%=cid %> = service_<%=cid %>.putItemWithReportArray(putItemWithReportArray).getWsItemPK();
 		miList_<%=cid %>.clear();
 		miList_<%=cid %> = null;
 		<%if(addTaskID){%>
@@ -90,7 +90,7 @@ if(!usePartialUpdate){
 		}else{%>
 	if(miList_<%=cid %>.size() > 0){
 	    org.talend.mdm.webservice.WSPutItemArray putItemArray = new org.talend.mdm.webservice.WSPutItemArray(miList_<%=cid %>);
-		wspks_<%=cid %> = service_<%=cid %>.putItemArray(putItemArray);
+		wspks_<%=cid %> = service_<%=cid %>.putItemArray(putItemArray).getWsItemPK();
 		miList_<%=cid %>.clear();
 		miList_<%=cid %> = null;
 		<%if(addTaskID){%>

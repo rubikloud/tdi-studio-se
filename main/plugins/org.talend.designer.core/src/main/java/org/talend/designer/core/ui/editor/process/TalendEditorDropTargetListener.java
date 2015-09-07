@@ -197,7 +197,7 @@ import orgomg.cwm.objectmodel.core.ModelElement;
 /**
  * Performs a native Drop for the talendEditor. see feature
  *
- * $Id: TalendEditorDropTargetListener.java 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
+ * $Id: TalendEditorDropTargetListener.java 1 2006-09-29 17:06:40 +0000 (Г¦В�ВџГ¦ВњВџГ¤ВєВ”, 29 Г¤В№ВќГ¦ВњВ€ 2006) nrousseau $
  *
  */
 public class TalendEditorDropTargetListener extends TemplateTransferDropTargetListener {
@@ -971,7 +971,7 @@ public class TalendEditorDropTargetListener extends TemplateTransferDropTargetLi
     /**
      * Used to store data temporarily. <br/>
      *
-     * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
+     * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (Г¦В�ВџГ¦ВњВџГ¤ВєВ”, 29 Г¤В№ВќГ¦ВњВ€ 2006) nrousseau $
      *
      */
     class TempStore {
@@ -2195,7 +2195,7 @@ class ComponentChooseDialog extends ListDialog {
         setTitle(Messages.getString("TalendEditorDropTargetListener.title")); //$NON-NLS-1$
         setMessage(Messages.getString("TalendEditorDropTargetListener.chooseComponent")); //$NON-NLS-1$
         setInput(input);
-        setContentProvider(new ArrayContentProvider());
+        setContentProvider(ArrayContentProvider.getInstance());
         setLabelProvider(new LabelProvider() {
 
             @Override

@@ -66,7 +66,7 @@
       <DEFAULT >"?transport.maxReconnectDelay=5000&amp;transport.useExponentialBackOff=false"</DEFAULT>
     </PARAMETER>
     <PARAMETER NAME="SERVERS" FIELD="TABLE" NB_LINES="5" NUM_ROW="23"
-        SHOW_IF="((FAILOVER == 'true') OR (STATIC == 'true'))">
+        SHOW_IF="(SERVER == 'ACTIVEMQ') AND ((FAILOVER == 'true') OR (STATIC == 'true'))">
       <ITEMS>
         <ITEM NAME="SERVERS_HOST" FIELD="String" />
         <ITEM NAME="SERVERS_PORT" FIELD="String" />
@@ -74,7 +74,7 @@
     </PARAMETER>
 	    
 	<PARAMETER NAME="SERVERADDRESS" FIELD="TEXT" NUM_ROW="22"
-        SHOW_IF="((FAILOVER == 'false') AND (STATIC == 'false'))">
+        SHOW_IF="((SERVER == 'ACTIVEMQ' AND FAILOVER == 'false' AND STATIC == 'false') OR (SERVER == 'WEBSPHERE'))">
       <DEFAULT>"localhost"</DEFAULT>
     </PARAMETER>
     

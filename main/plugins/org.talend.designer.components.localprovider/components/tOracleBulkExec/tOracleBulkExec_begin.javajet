@@ -1,19 +1,19 @@
-<%@ jet 
+<%@ jet
 imports="
-    org.talend.core.model.process.INode 
-    org.talend.core.model.process.ElementParameterParser 
+    org.talend.core.model.process.INode
+    org.talend.core.model.process.ElementParameterParser
     org.talend.core.model.metadata.IMetadataTable
-    org.talend.core.model.metadata.MetadataTalendType    
-    org.talend.core.model.metadata.MappingTypeRetriever    
+    org.talend.core.model.metadata.MetadataTalendType
+    org.talend.core.model.metadata.MappingTypeRetriever
     org.talend.designer.codegen.config.CodeGeneratorArgument
     org.talend.core.model.metadata.types.JavaTypesManager
     org.talend.core.model.metadata.types.JavaType
     java.util.List
-    java.util.ArrayList    
+    java.util.ArrayList
     java.lang.StringBuilder
     java.util.Map
     java.util.HashMap
-" 
+"
 skeleton="../templates/db_output_bulk.skeleton"
 %>
 
@@ -25,7 +25,7 @@ String cid = node.getUniqueName();
 String host = ElementParameterParser.getValue(node, "__HOST__");
 String port = ElementParameterParser.getValue(node, "__PORT__");
 String dbname = ElementParameterParser.getValue(node, "__DBNAME__");
-String localServiceName = ElementParameterParser.getValue(node, "__LOCAL_SERVICE_NAME__"); 
+String localServiceName = ElementParameterParser.getValue(node, "__LOCAL_SERVICE_NAME__");
 String dbschema = ElementParameterParser.getValue(node, "__SCHEMA_DB__");
 String dbuser = ElementParameterParser.getValue(node, "__USER__");
 
@@ -45,9 +45,9 @@ boolean flagHasLob=false;
 String advancedSeparatorStr = ElementParameterParser.getValue(node, "__ADVANCED_SEPARATOR__");
 boolean advancedSeparator = (advancedSeparatorStr!=null&&!("").equals(advancedSeparatorStr))?("true").equals(advancedSeparatorStr):false;
 String thousandsSeparator = ElementParameterParser.getValue(node, "__THOUSANDS_SEPARATOR__");
-String decimalSeparator = ElementParameterParser.getValue(node, "__DECIMAL_SEPARATOR__"); 
+String decimalSeparator = ElementParameterParser.getValue(node, "__DECIMAL_SEPARATOR__");
 decimalSeparator = decimalSeparator.trim();
-String dbVersion =  ElementParameterParser.getValue(node, "__DB_VERSION__"); 
+String dbVersion =  ElementParameterParser.getValue(node, "__DB_VERSION__");
 if(decimalSeparator.length() > 2){
     decimalSeparator = String.valueOf(decimalSeparator.charAt(1));
 }else{
@@ -76,7 +76,7 @@ if(("UPDATE").equals(data_action)) {
         %>
         int keyCount_<%=cid%> = <%=keyCount%>;
         if(keyCount_<%=cid%> == 0) {
-            throw new RuntimeException("For bulk update, Schema must have a key at least."); 
+            throw new RuntimeException("For bulk update, Schema must have a key at least.");
         }
         <%
     }
@@ -94,7 +94,7 @@ String port_<%=cid%> = null;
 String connectionType_<%=cid%>=null;
 String url_<%=cid%> = null;
 int deletedCount_<%=cid%>=0;
-<%       
+<%
 boolean useExistingConnection = "true".equalsIgnoreCase(ElementParameterParser.getValue(node,"__USE_EXISTING_CONNECTION__"));
 if(useExistingConnection) {
     String connection = ElementParameterParser.getValue(node,"__CONNECTION__");
@@ -105,7 +105,7 @@ if(useExistingConnection) {
     String existDbSchema = "dbschema_" + connection;
     String existUsername = "username_" + connection;
     String existPassword = "password_" + connection;
-    String existConnectonType= "connectionType_" + connection;       
+    String existConnectonType= "connectionType_" + connection;
     String racUrl = "rac_url_"+connection;
     %>
     host_<%=cid%> = (String)globalMap.get("<%=existHost%>");
@@ -117,14 +117,14 @@ if(useExistingConnection) {
     connectionType_<%=cid%> = (String)globalMap.get("<%=existConnectonType%>");
     url_<%=cid%> = (String)globalMap.get("<%=racUrl%>");
     if ("ORACLE_RAC".equals(connectionType_<%=cid%>)) {
-        serviceUrl_<%=cid%> = url_<%=cid%>.substring(url_<%=cid%>.indexOf("@")+1);        
+        serviceUrl_<%=cid%> = url_<%=cid%>.substring(url_<%=cid%>.indexOf("@")+1);
     } else if("ORACLE_SID".equals(connectionType_<%=cid%>)) {
-        serviceUrl_<%=cid%> = "(description=(address=(protocol=tcp)(host=" + host_<%=cid%> + ")(port=" + port_<%=cid%> + "))(connect_data=(SID=" + dbname_<%=cid%> + ")))";    
+        serviceUrl_<%=cid%> = "(description=(address=(protocol=tcp)(host=" + host_<%=cid%> + ")(port=" + port_<%=cid%> + "))(connect_data=(SID=" + dbname_<%=cid%> + ")))";
     }else {
         serviceUrl_<%=cid%> = "(description=(address=(protocol=tcp)(host=" + host_<%=cid%> + ")(port=" + port_<%=cid%> + "))(connect_data=(service_name=" + dbname_<%=cid%> + ")))";
     }
-    
-    
+
+
     conn_<%=cid%> = (java.sql.Connection)globalMap.get("<%=conn%>");
     <%
     log4jCodeGenerateUtil.useExistConnection(node);
@@ -139,21 +139,21 @@ if(useExistingConnection) {
     }
     %>
     dbUser_<%=cid%> = <%=dbuser%>;
-            
+
     <%
     String passwordFieldName = "__PASS__";
     %>
-    
+
     <%@ include file="@{org.talend.designer.components.localprovider}/components/templates/password.javajet"%>
-    
+
     dbPwd_<%=cid %> = decryptedPassword_<%=cid%>;
-                
+
     <%
     String rac_url = ElementParameterParser.getValue(node, "__RAC_URL__");
     if("ORACLE_RAC".equals(connectionType)) {
         %>
-        url_<%=cid %> = <%=rac_url%>;        
-        serviceUrl_<%=cid%> = url_<%=cid%>.substring(url_<%=cid%>.indexOf("@")+1); 
+        url_<%=cid %> = <%=rac_url%>;
+        serviceUrl_<%=cid%> = url_<%=cid%>.substring(url_<%=cid%>.indexOf("@")+1);
         <%
     } else if(("ORACLE_SID").equals(connectionType)) {
         %>
@@ -168,28 +168,28 @@ if(useExistingConnection) {
     } else if(("ORACLE_OCI").equals(connectionType)) {
         %>
         serviceUrl_<%=cid%> = <%=localServiceName%>;
-        url_<%=cid%> = "jdbc:oracle:oci8:@" + <%=localServiceName%>; 
+        url_<%=cid%> = "jdbc:oracle:oci8:@" + <%=localServiceName%>;
         <%
     }
     %>
     <%if("ORACLE_11".equals(dbVersion) || "ORACLE_11-6".equals(dbVersion) || "ORACLE_12".equals(dbVersion) ){%>
-        String driverClass_<%=cid%> = "oracle.jdbc.OracleDriver";   
+        String driverClass_<%=cid%> = "oracle.jdbc.OracleDriver";
     <%}else {%>
         String driverClass_<%=cid%> = "oracle.jdbc.driver.OracleDriver";
     <%}%>
-    java.lang.Class.forName(driverClass_<%=cid%>);  
+    java.lang.Class.forName(driverClass_<%=cid%>);
 <%
     log4jCodeGenerateUtil.debugConnectionParams(node);
     if(dbproperties == null || ("\"\"").equals(dbproperties) || ("").equals(dbproperties)) {
         log4jCodeGenerateUtil.connect(node);
     } else {
 %>
-    String atnParams_<%=cid%> = <%=dbproperties%>;
-    atnParams_<%=cid%> = atnParams_<%=cid%>.replaceAll("&", "\n");
     java.util.Properties atnParamsPrope_<%=cid%> = new java.util.Properties();
     atnParamsPrope_<%=cid%>.put("user",dbUser_<%=cid %>);
     atnParamsPrope_<%=cid%>.put("password",dbPwd_<%=cid%>);
-    atnParamsPrope_<%=cid%>.load(new java.io.ByteArrayInputStream(atnParams_<%=cid%>.getBytes()));
+    if(<%= dbproperties %> != null && !"\"\"".equals(<%= dbproperties %>) && !"".equals(<%= dbproperties %>)){
+        atnParamsPrope_<%=cid%>.load(new java.io.ByteArrayInputStream(<%=dbproperties%>.replace("&", "\n").getBytes()));
+    }
     <%
     log4jCodeGenerateUtil.connect_begin();
     %>
@@ -198,7 +198,7 @@ if(useExistingConnection) {
     log4jCodeGenerateUtil.connect_end();
     }
 %>
-    
+
 <%
 }
 
@@ -215,7 +215,7 @@ if("ORACLE_RAC".equals("<%=connectionType%>")||dbschema_<%=cid%> == null || dbsc
 if(("UPDATE").equals(data_action)) {
     %>
     String tmpTableName_<%=cid%> = tableName_<%=cid%>;
-    
+
     String uniqueTableName_<%=cid%> = "t" + java.util.UUID.randomUUID().toString().replace("-","").substring(0,28);
     tableName_<%=cid%> = uniqueTableName_<%=cid%>;
     <%
@@ -235,41 +235,41 @@ if(columnList != null && columnList.size() > 0) {
     if(("false").equals(use_existing_ctl_file) && ("false").equals(inputIntoTableClause)){
         columns = "(";
         boolean flag = false;
-        
+
         for(IMetadataColumn column:columnList){
             String dataType = null;
             JavaType javaType = JavaTypesManager.getJavaTypeFromId(column.getTalendType());
-            
-            
+
+
             if(column.getType() == null || column.getType().trim().length() == 0) {
                 dataType = mappingType.getDefaultSelectedDbType(column.getTalendType());
             } else {
                 dataType = column.getType().toUpperCase();
             }
             Integer length = column.getLength() == null ? 0 : column.getLength();
-            
+
             if(flag){
                 columns += ", \\n";
             }else{
                 flag = true;
             }
-            
-            
+
+
             columns += "\\\"" + ((convertToUppercase)? column.getOriginalDbColumnName().toUpperCase():column.getOriginalDbColumnName()) + "\\\"";
-            
-            
+
+
             if(("DATE").equals(column.getType()) && ("true").equals(useDatePattern)){//date
                 String pattn = column.getPattern();
                 if(pattn != null && pattn.length() > 2){
-                
+
                     String tmp_Pattn = pattn.substring(1, pattn.length() - 1);
                     if (tmp_Pattn.indexOf("mm")!= -1) {
                         tmp_Pattn = tmp_Pattn.replace("mm", "mi");
-                    } 
+                    }
                     if (tmp_Pattn.indexOf("HH")!= -1 && tmp_Pattn.indexOf("HH24") == -1) {
                         tmp_Pattn = tmp_Pattn.replace("HH", "HH24");
-                    } 
-                
+                    }
+
                     columns += (" DATE '" + tmp_Pattn + "'");
                 }
             }else if(("CHAR").equals(dataType) || ("NCHAR").equals(dataType) || ("NVARCHAR2").equals(dataType) || ("VARCHAR").equals(dataType) || ("VARCHAR2").equals(dataType)){//long text
@@ -295,9 +295,9 @@ if(columnList != null && columnList.size() > 0) {
             column.setColumnName(column.getColumnName().toUpperCase());
         }
     }
-%>  
-    <%@ include file="../templates/_tableActionForBulk.javajet"%>   
-<%  
+%>
+    <%@ include file="../templates/_tableActionForBulk.javajet"%>
+<%
 }
 %>
 <%
@@ -314,7 +314,7 @@ if(("true").equals(use_existing_ctl_file)) {
     //options clause begin
     List<Map<String, String>> options = (List<Map<String,String>>)ElementParameterParser.getObjectValue(node, "__OPTIONS__");
     java.util.Map<String, String> parametersMap = new java.util.HashMap<String, String>();
-    
+
     for(java.util.Map<String, String> option : options) {
         String key = option.get("KEY");
         String value = option.get("VALUE");
@@ -326,7 +326,7 @@ if(("true").equals(use_existing_ctl_file)) {
         }
         parametersMap.put(key, value);
     }
-    
+
     java.util.Set<String> keySet = parametersMap.keySet();
     boolean flag = false;
     String tempvalue=null;
@@ -343,9 +343,9 @@ if(("true").equals(use_existing_ctl_file)) {
             flag = true;
         }
         tempvalue=parametersMap.get(key);
-        
+
         if("SILENT".equals(key)) {
-            if("HEADER,FEEDBACK,ERRORS,DISCARDS,PARTITIONS,ALL".contains(tempvalue.split(",")[0])) { // check whether the input value is exist 
+            if("HEADER,FEEDBACK,ERRORS,DISCARDS,PARTITIONS,ALL".contains(tempvalue.split(",")[0])) { // check whether the input value is exist
                 if(tempvalue.split(",").length>1){//if the length of the input array is bigger than 1 and "( )"
                     %>
                     optionClause_<%=cid %>.append("<%=key%>=(<%=tempvalue%>)");
@@ -369,7 +369,7 @@ if(("true").equals(use_existing_ctl_file)) {
                 %>
                 optionClause_<%=cid %>.append("<%=key%>=<%=tempvalue%>");
                 <%
-            } else { 
+            } else {
                 %>
                 optionClause_<%=cid %>.append("<%=key%>='"+<%=tempvalue%>+"'");
                 <%
@@ -379,7 +379,7 @@ if(("true").equals(use_existing_ctl_file)) {
                 %>
                 optionClause_<%=cid %>.append("<%=key%>=<%=tempvalue%>");
                 <%
-            } else { 
+            } else {
                 %>
                 optionClause_<%=cid %>.append("<%=key%>="+<%=tempvalue%>);
                 <%
@@ -392,43 +392,43 @@ if(("true").equals(use_existing_ctl_file)) {
     //options clause end
     //encoding begin
     String encoding  = ElementParameterParser.getValue(node, "__ENCODING__");
-    //encoding end    
+    //encoding end
     String dataFile = ElementParameterParser.getValue(node, "__DATA__");
     %>
     String dataf_<%=cid %> = <%=dataFile %> + Thread.currentThread().getId();
-    
+
     String ctlf_<%=cid %> = dataf_<%=cid %> + ".ctl";
-    
+
     String badf_<%=cid %> = dataf_<%=cid %> + ".bad";
-    
+
     String dscf_<%=cid %> = dataf_<%=cid %> + ".dsc";
-    
+
     String logf_<%=cid %> = dataf_<%=cid %> + ".log";
-    
+
     dataf_<%=cid %> = <%=dataFile %>;
-    
+
     java.io.File badFile_<%=cid %> = new java.io.File(badf_<%=cid %>);
-    
+
     if(badFile_<%=cid %>.exists()){
-        
+
         badFile_<%=cid %>.delete();
-        
+
     }
     java.io.BufferedWriter bw_<%=cid %> = new java.io.BufferedWriter(new java.io.FileWriter(ctlf_<%=cid %>));
     java.io.PrintWriter pw_<%=cid%> = new java.io.PrintWriter(bw_<%=cid%> ,false) ;
-    
+
     pw_<%=cid%>.println(optionClause_<%=cid %>.toString());
-  
+
     pw_<%=cid%>.println("LOAD DATA");
     pw_<%=cid%>.println("CHARACTERSET '"+<%=encoding %>+"'") ;
     bw_<%=cid %>.write("INFILE '" + dataf_<%=cid %> + "'");
-        
+
     <%if (flagHasLob) {%>
         bw_<%=cid %>.write(" \"str '|'\" ");
     <%}%>
-    
-    
-    
+
+
+
     <%
     //record format begin
     String recordFormat = ElementParameterParser.getValue(node, "__RECORD_FORMAT__");
@@ -460,8 +460,8 @@ if(("true").equals(use_existing_ctl_file)) {
         pw_<%=cid%>.println("PRESERVE BLANKS");
         <%
     }
-    
-    
+
+
     if(("true").equals(inputIntoTableClause)) {
         String intoTableClause = ElementParameterParser.getValue(node, "__INTO_TABLE_CLAUSE__");
         %>
@@ -489,7 +489,7 @@ if(("true").equals(use_existing_ctl_file)) {
                 <%
             }
         }
-        
+
         //field terminator
         String fieldsTerminator = ElementParameterParser.getValue(node, "__FIELDS_TERMINATOR__");
         boolean hasFieldsTerminator = false;
@@ -505,7 +505,7 @@ if(("true").equals(use_existing_ctl_file)) {
             bw_<%=cid %>.write("FIELDS TERMINATED BY \""+ <%=terminatorValue %> + "\"");
             <%
         }
-        
+
         //field enclusure
         String useFieldEnclosure = ElementParameterParser.getValue(node, "__USE_FIELDS_ENCLOSURE__");
         if(("true").equals(useFieldEnclosure)){
@@ -536,7 +536,7 @@ if(("true").equals(use_existing_ctl_file)) {
             pw_<%=cid%>.println("");
             <%
         }
-        
+
         //trailing nullcols
         String trailingNullcols = ElementParameterParser.getValue(node, "__TRAILING_NULLCOLS__");
         if(("true").equals(trailingNullcols)){
@@ -627,7 +627,7 @@ if(("UPDATE").equals(data_action)) {
     final Process process_<%=cid %> = Runtime.getRuntime().exec(command_<%=cid %>,envParam_<%=cid%>.toArray(new String[0]));
     <%
 }
-%> 
+%>
 
 //System.out.println(command_<%=cid %>);
 
@@ -669,7 +669,7 @@ Thread error_<%=cid %> = new Thread() {
            String line = "";
            try {
                while((line = reader.readLine()) != null) {
-                  globalMap.put("<%=cid%>_SQLLOAD_ERROR", "true");  
+                  globalMap.put("<%=cid%>_SQLLOAD_ERROR", "true");
                    <%
                    if (("OUTPUT_TO_CONSOLE").equals(outputAction)) {
                        %>
@@ -705,7 +705,7 @@ error_<%=cid %>.interrupt();
 
 if ("true".equals((String)globalMap.get("<%=cid%>_SQLLOAD_ERROR"))) {
     throw new TalendException(new java.lang.Exception() , "<%=cid%>" , globalMap);
-} 
+}
 <%
 if(isLog4jEnabled){
 %>
@@ -713,15 +713,15 @@ if(isLog4jEnabled){
     log.info("<%=cid%> - Retrieving information from oracle log file: '" + logf_<%=cid %> + "'.");
 <%
 }
-%>  
+%>
 java.io.BufferedReader lr_<%=cid %> = new java.io.BufferedReader(new java.io.FileReader(logf_<%=cid %>));
 int nb_line_data_<%=cid %> = 0;
 int nb_line_bad_<%=cid %> = 0;
 int nb_line_inserted_<%=cid %> = 0;
 int nb_line_discarded_<%=cid %> = 0;
 
-/*  1.get log file all lines count  
-    2.get "Total logical records read" line number from file end.   
+/*  1.get log file all lines count
+    2.get "Total logical records read" line number from file end.
     3.get "Total logical records read" and "Total logical records rejected" count. */
 String tempLine_<%=cid %> = "";
 int countLines_<%=cid %> =0;//log file lines count
@@ -766,7 +766,7 @@ for (int i_<%=cid %>=lastTableLine_<%=cid%>+2; i_<%=cid %><= countLines_<%=cid %
         }
         isFirstEmptyLine_<%=cid%> = false;
         continue;//skip rows now empty
-    }else if (!isFirstEmptyLine_<%=cid%>){//skip empty rows 
+    }else if (!isFirstEmptyLine_<%=cid%>){//skip empty rows
         isFirstEmptyLine_<%=cid%> = true;
         emptyLineNum_<%=cid%>++;
     }

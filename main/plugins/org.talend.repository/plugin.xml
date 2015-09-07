@@ -2553,13 +2553,22 @@
               version="6.0.1">
         </projecttask>
         <projecttask
-              beforeLogon="true"
+              beforeLogon="false"
               breaks="6.0.0"
               class="org.talend.repository.model.migration.DisableUseBatchWhenRejectLineExists"
               description="Disable use batch when reject line exists"
               id="org.talend.repository.model.migration.DisableUseBatchWhenRejectLineExists"
               name="DisableUseBatchWhenRejectLineExists"
               version="6.0.1">
+        </projecttask>
+        <projecttask
+              beforeLogon="false"
+              breaks="6.0.0"
+              class="org.talend.repository.model.migration.ChangeDefaultValue4tLogRow"
+              description="Change the default value of PRINT_CONTENT_WITH_LOG4J"
+              id="org.talend.repository.model.migration.ChangeDefaultValue4tLogRow"
+              name="ChangeDefaultValue4tLogRow"
+              version="6.1.0">
         </projecttask>
    </extension>
 

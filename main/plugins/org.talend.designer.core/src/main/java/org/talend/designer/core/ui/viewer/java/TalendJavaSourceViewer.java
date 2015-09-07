@@ -554,7 +554,11 @@ public class TalendJavaSourceViewer extends ReconcilerViewer {
                 initializeModel();
             } else {
                 // only happen sometimes with a "fast click" (file don't exist yet).
-                file.setContents(codeStream, true, false, null);
+                if (getViewerRegion().getLength() == 0) {
+                    return;
+                } else {
+                    file.setContents(codeStream, true, false, null);
+                }
             }
         } catch (CoreException e) {
             // don't display any error.

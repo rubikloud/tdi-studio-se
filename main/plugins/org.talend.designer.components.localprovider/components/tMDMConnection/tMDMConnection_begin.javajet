@@ -58,7 +58,7 @@ if(useClientTranId){
 <%
 }else{
 %>
-	mdmTransaction_<%=cid%> = com.talend.mdm.transaction.client.MDMTransactionClient.newTransaction(turl_<%=cid%>,stub_<%=cid %>.getUsername(),stub_<%=cid %>.getPassword());
+	mdmTransaction_<%=cid%> = com.talend.mdm.transaction.client.MDMTransactionClient.newTransaction(turl_<%=cid%>,<%=username %>,decryptedPassword_<%=cid%>);
 <%
 }
 %>

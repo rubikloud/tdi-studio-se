@@ -1030,11 +1030,13 @@ public final class TalendEditorPaletteFactory {
         String regex = "\\b.*" + nameFilter.replaceAll("\\*", ".*") + ".*\\b"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         regex = regex.replaceAll(" ", ".*"); //$NON-NLS-1$ //$NON-NLS-2$
         regex = regex.replaceAll("\\?", ".?"); //$NON-NLS-1$ //$NON-NLS-2$
+        regex = regex.replaceAll("[\\{\\}\\[\\]]", "\\."); //$NON-NLS-1$ //$NON-NLS-2$
 
         try {
             Pattern.compile(regex);
         } catch (Throwable e) {
-            regex = nameFilter;
+            regex = ".*"; //$NON-NLS-1$
+            CommonExceptionHandler.process(e, Priority.WARN);
         }
         return regex;
     }

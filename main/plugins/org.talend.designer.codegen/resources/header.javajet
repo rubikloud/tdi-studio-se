@@ -30,7 +30,6 @@
 	Vector v = (Vector) codeGenArgument.getArgument();
 	IProcess process = (IProcess)v.get(0);
 	String version = (String)v.get(1);
-	String exportAsOSGI = (String)v.get(2);
 
 	List< ? extends INode> processNodes = (List< ? extends INode>)process.getGeneratingNodes();
 	boolean stats = codeGenArgument.isStatistics();
@@ -348,8 +347,6 @@ private RunTrace runTrace = new RunTrace();
 <%
 	}
 %>
-
-public boolean isExportedAsOSGI = <%=exportAsOSGI%>;
 
 	// OSGi DataSource
 	private final static String KEY_DB_DATASOURCES = "KEY_DB_DATASOURCES";

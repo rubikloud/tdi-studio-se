@@ -47,6 +47,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -132,9 +134,12 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
 
     public MemoryRuntimeComposite(ProcessView viewPart, Composite parent, RunProcessContext processContext, int style) {
         super(parent, style);
+        this.setMinSize(new Point(500, 450));
         this.viewPart = viewPart;
         this.processContext = processContext;
-        getRemoteStatus();
+        if (this.processContext != null) {
+            getRemoteStatus();
+        }
         this.processManager = ProcessManager.getInstance();
         this.messageManager = ReportMessageManager.getInstance();
         init(parent);
@@ -200,19 +205,15 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
         	setRuntimeButtonByStatus(true);
         }
         runtimeButton.setEnabled(true);
-        FormData runButtonData = new FormData();
+        GridData runButtonData = new GridData();
         Point execSize = null;
-        runButtonData.left = new FormAttachment(0, 10);
-
         execSize = computeSize(runtimeButton.getText());
-        runButtonData.right = new FormAttachment(0, execSize.x + 70);
-        runButtonData.height = 30;
+        runButtonData.widthHint = execSize.x + 70;
         runtimeButton.setLayoutData(runButtonData);
 
         gcCheckButton = new Button(topGroup,SWT.CHECK);
-        FormData gcCheckButtonData = new FormData();
-        gcCheckButtonData.left = new FormAttachment(runtimeButton,15,SWT.RIGHT);
-        gcCheckButtonData.height = 30;
+        GridData gcCheckButtonData = new GridData();
+        gcCheckButtonData.grabExcessHorizontalSpace = false;
         gcCheckButton.setLayoutData(gcCheckButtonData);
         gcCheckButton.setEnabled(true);
         gcCheckButton.setSelection(isGCSelected);
@@ -220,18 +221,20 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
         Label periodLabel = new Label(topGroup, SWT.NULL);
         periodLabel.setText(Messages.getString("ProcessView.moniorPeriod")); //$NON-NLS-1$
         periodLabel.setBackground(getBackground());
-        FormData periodLabelData = new FormData();
-        periodLabelData.left = new FormAttachment(gcCheckButton, 0, SWT.RIGHT);
-        periodLabelData.top = new FormAttachment(0, 7);
-        periodLabelData.bottom = new FormAttachment(100, 0);
-        periodLabelData.height = 30;
+        GridData periodLabelData = new GridData();
+        execSize = computeSize(periodLabel.getText());
+        periodLabelData.widthHint = execSize.x;
+        periodLabelData.grabExcessHorizontalSpace = false;
+        periodLabelData.horizontalAlignment = GridData.BEGINNING;
         periodLabel.setLayoutData(periodLabelData);
 
         periodCombo = new Combo(topGroup, SWT.READ_ONLY);
-        FormData periodData = new FormData();
-        periodData.left = new FormAttachment(periodLabel, 2, SWT.RIGHT);
-        periodData.top = new FormAttachment(0,3);
-        periodData.height = 25;
+        GridData periodData = new GridData();
+        execSize = computeSize("Select");
+        periodData.widthHint = execSize.x;
+        periodData.grabExcessHorizontalSpace = false;
+        periodData.horizontalAlignment = GridData.BEGINNING;
+        periodData.minimumWidth = execSize.x;
         periodCombo.setLayoutData(periodData);
 		periodCombo.setItems(new String[] {
 				"Select", "30 sec", "60 sec", "120 sec" });	//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -245,12 +248,13 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
         
         contextCombo = new ComboViewer(topGroup, SWT.BORDER | SWT.READ_ONLY);
         contextCombo.getCombo().setLayout(new FormLayout());
-        FormData contextComboData = new FormData();
-        contextComboData.right = new FormAttachment(100,-5);
-        contextComboData.top = new FormAttachment(0,3);
-        contextComboData.height = 25;
+        GridData contextComboData = new GridData();
+        contextComboData.grabExcessHorizontalSpace = true;
+        contextComboData.horizontalAlignment = GridData.END;
+        execSize = computeSize("Default"); //$NON-NLS-N$
+        contextComboData.minimumWidth = execSize.x;
         contextCombo.getCombo().setLayoutData(contextComboData);
-        contextCombo.setContentProvider(new ArrayContentProvider());
+        contextCombo.setContentProvider(ArrayContentProvider.getInstance());
         contextCombo.setLabelProvider(new ContextNameLabelProvider());
         initContextInput();
 
@@ -311,10 +315,7 @@ public class MemoryRuntimeComposite extends ScrolledComposite implements IDynami
 
         Group topGroup = new Group(topComposite, SWT.NULL);
         topGroup.setText("Monitor Control"); //$NON-NLS-1$
-        FormLayout groupLayout = new FormLayout();
-        groupLayout.marginHeight = 2;
-        groupLayout.marginWidth = 2;
-        groupLayout.spacing = 7;
+        GridLayout groupLayout = new GridLayout(5,false);
         FormData groupData = new FormData();
         groupData.left = new FormAttachment(0, 0);
         groupData.right = new FormAttachment(100, 0);

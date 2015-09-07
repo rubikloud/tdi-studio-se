@@ -176,8 +176,6 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
 
     protected Property property;
 
-    private String exportAsOSGI;
-
     protected Set<JobInfo> buildChildrenJobs;
 
     private final ITalendProcessJavaProject talendJavaProject;
@@ -279,6 +277,7 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
         initCodePath(initContext);
     }
 
+    @Override
     protected boolean isStandardJob() {
         return property != null && property.getItem() != null && process instanceof IProcess2;
     }
@@ -426,6 +425,7 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
         this.doClean = doClean;
     }
 
+    @Override
     public void cleanBeforeGenerate(int options) throws ProcessorException {
         setDoClean(false);
         if (this.getProcess().isNeedRegenerateCode() || this.getProcess() instanceof IProcess2
@@ -438,7 +438,29 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
         // clean the generated java source codes.
         if (BitwiseOptionUtils.containOption(options, CLEAN_JAVA_CODES)) {
             IFolder javaCodeFolder = getCodeProject().getFolder(this.getSrcCodePath().removeLastSegments(1));
-            cleanFolder(javaCodeFolder);
+            // cleanFolder(javaCodeFolder);
+            try {
+                if (javaCodeFolder != null) {
+                    String processSourceFileName = null;
+                    if (process != null) {
+                        processSourceFileName = process.getName() + ".java"; //$NON-NLS-1$
+                    }
+                    for (IResource resource : javaCodeFolder.members()) {
+                        if ("java".equals(resource.getFileExtension())) {//$NON-NLS-1$
+                            if (processSourceFileName != null && processSourceFileName.equals(resource.getName())) {
+                                ((IFile) resource).setContents(new ByteArrayInputStream(new byte[0]), IResource.KEEP_HISTORY,
+                                        null);
+                            } else {
+                                FilesUtils.deleteFile(resource.getLocation().toFile(), true);
+                            }
+                        } else {
+                            FilesUtils.deleteFile(resource.getLocation().toFile(), true);
+                        }
+                    }
+                }
+            } catch (CoreException e) {
+                // do nothing
+            }
 
             IFolder classCodeFolder = getCodeProject().getFolder(this.getCompiledCodePath().removeLastSegments(1));
             cleanFolder(classCodeFolder);
@@ -474,20 +496,6 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
      * will be created.
      * 
      * @see org.talend.designer.runprocess.IProcessor#generateCode(org.talend.core .model.process.IContext, boolean,
-     * boolean, boolean, boolean)
-     */
-    @Override
-    public void generateCode(boolean statistics, boolean trace, boolean javaProperties, boolean exportAsOSGI)
-            throws ProcessorException {
-        this.exportAsOSGI = exportAsOSGI ? Boolean.TRUE.toString() : Boolean.FALSE.toString();
-        generateCode(statistics, trace, javaProperties);
-    }
-
-    /*
-     * Append the generated java code form context into java file wihtin the project. If the file not existed new one
-     * will be created.
-     * 
-     * @see org.talend.designer.runprocess.IProcessor#generateCode(org.talend.core .model.process.IContext, boolean,
      * boolean, boolean)
      */
     @Override
@@ -505,7 +513,7 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
                 String javaContext = getContextPath().toPortableString();
 
                 codeGen = service.createCodeGenerator(process, statistics, trace, javaInterpreter, javaLib, javaContext,
-                        currentJavaProject, exportAsOSGI);
+                        currentJavaProject);
             } else {
                 codeGen = service.createCodeGenerator(process, statistics, trace);
             }
@@ -523,8 +531,7 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
             }
             String processCode = ""; //$NON-NLS-1$
             try {
-                processCode = codeGen.generateProcessCode();
-
+                // must before codegen for job to set the rule flag.
                 if (PluginChecker.isRulesPluginLoaded()) {
                     IRulesProviderService rulesService = (IRulesProviderService) GlobalServiceRegister.getDefault().getService(
                             IRulesProviderService.class);
@@ -544,9 +551,12 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
                         }
                         if (useGenerateRuleFiles && rulesService != null && currentJavaProject != null) {
                             rulesService.generateFinalRuleFiles(currentJavaProject, this.process);
+                            LastGenerationInfo.getInstance().setUseRules(this.process.getId(), this.process.getVersion(), true);
                         }
                     }
                 }
+
+                processCode = codeGen.generateProcessCode();
 
             } catch (SystemException e) {
                 throw new ProcessorException(Messages.getString("Processor.generationFailed"), e); //$NON-NLS-1$
@@ -613,7 +623,9 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
                 codeFile.create(codeStream, true, null);
             } else {
                 codeFile.setContents(codeStream, true, false, null);
+
             }
+            // codeFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
 
             processCode = null;
 
@@ -1064,6 +1076,7 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
         }
     }
 
+    @Override
     public List<String> extractAheadCommandSegments() {
         List<String> aheadSegments = new ArrayList<String>();
         if (isExportConfig()) {
@@ -1093,6 +1106,7 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
         return new Path(command).toPortableString();
     }
 
+    @Override
     protected String getRootWorkingDir(boolean withSep) {
         if (!isWinTargetPlatform() && (isExportConfig() || isRunAsExport())) {
             // "$ROOT_PATH/";
@@ -1121,7 +1135,10 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
                 libsStr += classPathSeparator + libFolder;
             }
         }
-
+        // no classPathSeparator in the end.
+        if (libsStr.lastIndexOf(classPathSeparator) != libsStr.length() - 1) {
+            libsStr += classPathSeparator;
+        }
         return libsStr;
     }
 
@@ -1166,6 +1183,16 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
                     }
                 }
                 basePath.append(outputPath);
+            }
+
+            // FIXME for old build (JobJavaScriptsManager) temp, when "ProcessorUtilities.setExportConfig(dir,true)"
+            String codeLocation = getCodeLocation();
+            if (codeLocation != null && codeLocation.contains(JavaUtils.SYSTEM_ROUTINE_JAR)
+                    && codeLocation.contains(JavaUtils.USER_ROUTINE_JAR)
+                    && !basePath.toString().contains(JavaUtils.SYSTEM_ROUTINE_JAR)) {
+                basePath.append(classPathSeparator);
+                codeLocation = codeLocation.replace(ProcessorUtilities.TEMP_JAVA_CLASSPATH_SEPARATOR, classPathSeparator);
+                basePath.append(codeLocation);
             }
         } else {
             ITalendProcessJavaProject tProcessJvaProject = this.getTalendJavaProject();
@@ -1277,7 +1304,7 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
     }
 
     protected String[] addVMArguments(String[] strings) {
-        String[] vmargs = getJVMArgs(); //$NON-NLS-1$
+        String[] vmargs = getJVMArgs();
 
         RunProcessContext runProcessContext = RunProcessPlugin.getDefault().getRunProcessContextManager().getActiveContext();
         if (runProcessContext != null) {
@@ -1307,6 +1334,7 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
         return strings; // old
     }
 
+    @Override
     public String[] getJVMArgs() {
         String[] vmargs = getSettingsJVMArguments();
         /* check parameter won't happened on exportingJob */
@@ -1661,61 +1689,6 @@ public class JavaProcessor extends AbstractJavaProcessor implements IJavaBreakpo
                     .getLog()
                     .log(new Status(IStatus.WARNING, RunProcessPlugin.getDefault().getBundle().getSymbolicName(),
                             "cannot find configuration file - " + esbConfig.toURI())); //$NON-NLS-1$
-        }
-    }
-
-    /*
-     * (non-Javadoc) generate spring file for RouteBuilder ADDED for TESB-7887 by GangLiu
-     */
-    @Override
-    public void generateSpringContent() throws ProcessorException {
-        try {
-            ICodeGeneratorService service = RunProcessPlugin.getDefault().getCodeGeneratorService();
-            ICodeGenerator codeGen = service.createCodeGenerator(process, false, false);
-
-            if (codeGen == null) {
-                return;
-            }
-            String content = codeGen.generateSpringContent();
-            if (content == null) {
-                return;
-            }
-            IProject processorProject = getCodeProject();
-            ITalendProcessJavaProject tProcessJvaProject = getTalendJavaProject();
-            if (processorProject == null && tProcessJvaProject != null) {
-                processorProject = tProcessJvaProject.getProject();
-            }
-            if (processorProject == null || tProcessJvaProject == null) {
-                return;
-            }
-            processorProject.refreshLocal(IResource.DEPTH_INFINITE, null);
-            IFolder srcFolder = tProcessJvaProject.getSrcFolder();
-            if (!srcFolder.exists()) {
-                srcFolder.create(true, true, null);
-            }
-            IFolder metainfFolder = srcFolder.getFolder("META-INF"); //$NON-NLS-1$
-            if (!metainfFolder.exists()) {
-                metainfFolder.create(true, true, null);
-            }
-            IFolder springFolder = metainfFolder.getFolder("spring"); //$NON-NLS-1$
-            if (!springFolder.exists()) {
-                springFolder.create(true, true, null);
-            }
-            IFile springFile = springFolder.getFile(process.getName().toLowerCase() + ".xml"); //$NON-NLS-1$
-            InputStream is = new ByteArrayInputStream(content.getBytes());
-
-            if (!springFile.exists()) {
-                springFile.create(is, true, null);
-            } else {
-                springFile.setContents(is, true, false, null);
-            }
-            is.close();
-        } catch (SystemException e) {
-            throw new ProcessorException(Messages.getString("Processor.generationFailed"), e); //$NON-NLS-1$
-        } catch (CoreException e1) {
-            throw new ProcessorException(Messages.getString("Processor.tempFailed"), e1); //$NON-NLS-1$
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

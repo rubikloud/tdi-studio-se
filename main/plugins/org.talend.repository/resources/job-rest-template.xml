@@ -92,7 +92,7 @@
 ]]#
 #end
 		</jaxrs:properties>
-#if ($endpoint.useAuthorization)
+#if ($endpoint.useAuthorization && $endpoint.authenticationType == "SAML")
 		<jaxrs:inInterceptors>
 			<ref component-id="XACMLInterceptor"/>
 		</jaxrs:inInterceptors>
@@ -140,9 +140,9 @@
 		</service-properties>
 	</service>
 
-#if ($endpoint.useAuthorization)
+#if ($endpoint.useAuthorization && $endpoint.authenticationType == "SAML")
 #[[
-	<bean id="XACMLInterceptor" class="org.talend.esb.authorization.xacml.rt.pep.CXFXACMLAuthorizingInterceptor">
+	<bean id="XACMLInterceptor" class="org.talend.esb.authorization.xacml.rt.pep.CXF403XACMLAuthorizingInterceptor">
 		<property name="pdpAddress" value="$pep{tesb.pdp.address}"/>
 	</bean>
 ]]#

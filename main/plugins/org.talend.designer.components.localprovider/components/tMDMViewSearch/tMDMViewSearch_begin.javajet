@@ -64,13 +64,22 @@ if ((metadatas != null) && (metadatas.size() > 0)) {
 				%>       
 				int nb_line_<%=cid %> = 0;
 				<%if(!useExistingConn){%>
-					org.talend.mdm.webservice.TMDMService_ServiceLocator tmdmService_<%=cid %> = new org.talend.mdm.webservice.TMDMService_ServiceLocator();
-					tmdmService_<%=cid %>.setTMDMPortEndpointAddress(<%=mdmUrl %>);
-					org.talend.mdm.webservice.TMDMService_PortType tmdmWS_<%=cid %> = tmdmService_<%=cid %>.getTMDMPort();    
-					org.talend.mdm.webservice.TMDMServiceSoapBindingStub stub_<%=cid %> = (org.talend.mdm.webservice.TMDMServiceSoapBindingStub)tmdmWS_<%=cid %>;
-	
-					// Authentification
-					stub_<%=cid %>.setUsername(<%=username %>);
+					java.net.URL url = null;
+                    try {
+                        url = new java.net.URL(<%=mdmUrl %>);
+                    }catch(Exception e){
+                        log.error(e.getMessage(),e);
+                        throw e;
+                    }
+                    
+                    org.talend.mdm.webservice.TMDMService_Service service_service_<%=cid %> = new org.talend.mdm.webservice.TMDMService_Service(url);
+                    org.talend.mdm.webservice.TMDMService service_<%=cid %> = service_service_<%=cid %>.getTMDMPort();
+                    javax.xml.ws.BindingProvider stub_<%=cid %> = (javax.xml.ws.BindingProvider) service_<%=cid %>;
+                    stub_<%=cid %>.getRequestContext().put(javax.xml.ws.BindingProvider.SESSION_MAINTAIN_PROPERTY, false);
+
+                    java.util.Map<String, Object> context_<%=cid %> = stub_<%=cid %>.getRequestContext();
+
+                    context_<%=cid %>.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, <%=username %>);
 					
                     <%
                     String passwordFieldName = "__PASSWORD__";
@@ -78,9 +87,9 @@ if ((metadatas != null) && (metadatas.size() > 0)) {
                     
                     <%@ include file="@{org.talend.designer.components.localprovider}/components/templates/password.javajet"%>					
 					
-					stub_<%=cid %>.setPassword(decryptedPassword_<%=cid%>);
+					context_<%=cid %>.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, decryptedPassword_<%=cid%>);
 				<%}else{%>
-					org.talend.mdm.webservice.TMDMService_PortType tmdmWS_<%=cid %> = (org.talend.mdm.webservice.TMDMService_PortType)globalMap.get("<%=conn%>");
+					org.talend.mdm.webservice.TMDMService service_<%=cid %> = (org.talend.mdm.webservice.TMDMService)globalMap.get("<%=conn%>");
 				<%}%>
 				
 				org.talend.mdm.webservice.WSDataClusterPK dataCluster_<%=cid %> = new org.talend.mdm.webservice.WSDataClusterPK(<%=dataCluster %> + "<%=isStaging?"#STAGING":""%>");
@@ -110,11 +119,13 @@ if ((metadatas != null) && (metadatas.size() > 0)) {
 				<%
 				if(!isOnlyOrPredicate){
 				%>
-					wsItem_<%=cid %> =new org.talend.mdm.webservice.WSWhereItem(null,conditions_<%=cid %>.toArray(new org.talend.mdm.webservice.WSWhereItem[conditions_<%=cid %>.size()]),null);
+				    org.talend.mdm.webservice.WSWhereAnd whereAnd_<%=cid %> = new org.talend.mdm.webservice.WSWhereAnd(conditions_<%=cid %>);
+					wsItem_<%=cid %> =new org.talend.mdm.webservice.WSWhereItem(whereAnd_<%=cid %>,null,null);
 				<%
 				}else{
 				%>
-					wsItem_<%=cid %> =new org.talend.mdm.webservice.WSWhereItem(null,null,conditions_<%=cid %>.toArray(new org.talend.mdm.webservice.WSWhereItem[conditions_<%=cid %>.size()]));
+				    org.talend.mdm.webservice.WSWhereOr whereOr_<%=cid %> = new org.talend.mdm.webservice.WSWhereOr(conditions_<%=cid %>); 
+					wsItem_<%=cid %> =new org.talend.mdm.webservice.WSWhereItem(null,null,whereOr_<%=cid %>);
 				<%
 				}
 				%>
@@ -139,8 +150,6 @@ if ((metadatas != null) && (metadatas.size() > 0)) {
        			int readRecordsSize_<%=cid%> = limit_<%=cid%> == -1 ? recordsPerPage_<%=cid%> : (recordsPerPage_<%=cid%> == -1 ? limit_<%=cid%> : (recordsPerPage_<%=cid%> > limit_<%=cid%> ? limit_<%=cid%>
                 : recordsPerPage_<%=cid%>));
 
-				org.talend.mdm.webservice.WSGetItems getitems_<%=cid %>=null;
-				
         		boolean continueFlag_<%=cid%> = true;
 				int totalCount_<%=cid%> = -1;<%//For TDI-26039%>
         		while (continueFlag_<%=cid%>) {
@@ -164,7 +173,7 @@ if ((metadatas != null) && (metadatas.size() > 0)) {
 					%>
 					wsViewSearch_<%=cid%>.setWhereItem(wsItem_<%=cid%>); // OPTIONAL
 					
-					String[] items_<%=cid%> = tmdmWS_<%=cid%>.viewSearch(wsViewSearch_<%=cid%>);
+					String[] items_<%=cid%> = service_<%=cid %>.viewSearch(wsViewSearch_<%=cid%>).getStrings().toArray(new String[0]);
 					if(totalCount_<%=cid%> < 0){
 						totalCount_<%=cid%> = Integer.valueOf(items_<%=cid%>[0].replaceAll("<totalCount>", "").replaceAll("</totalCount>", ""));
 					}

@@ -16,8 +16,8 @@ imports="
 %>
 
 	<%String conn = "TMDMService_" + connection;%>
-	org.talend.mdm.webservice.TMDMService_PortType tmdmWS_<%=cid %> = (org.talend.mdm.webservice.TMDMService_PortType)globalMap.get("<%=conn%>");
-	if(tmdmWS_<%=cid %> != null)
+	org.talend.mdm.webservice.TMDMService service_<%=cid %> = (org.talend.mdm.webservice.TMDMService)globalMap.get("<%=conn%>");
+	if(service_<%=cid %> != null)
 	{
-		tmdmWS_<%=cid %>.logout(new org.talend.mdm.webservice.WSLogout());
+		service_<%=cid %>.logout(new org.talend.mdm.webservice.WSLogout());
 	}

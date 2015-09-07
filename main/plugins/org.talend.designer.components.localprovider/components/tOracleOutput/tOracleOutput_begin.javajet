@@ -307,12 +307,12 @@ skeleton="../templates/db_output_bulk.skeleton"
                 <%
                 } else {
                 %>
-                    String atnParams_<%=cid%> = <%=dbproperties%>;
-                    atnParams_<%=cid%> = atnParams_<%=cid%>.replaceAll("&", "\n");
                     java.util.Properties atnParamsPrope_<%=cid%> = new java.util.Properties();
                     atnParamsPrope_<%=cid%>.put("user",dbUser_<%=cid%>);
                     atnParamsPrope_<%=cid%>.put("password",dbPwd_<%=cid%>);
-                    atnParamsPrope_<%=cid%>.load(new java.io.ByteArrayInputStream(atnParams_<%=cid%>.getBytes()));
+                    if(<%= dbproperties %> != null && !"\"\"".equals(<%= dbproperties %>) && !"".equals(<%= dbproperties %>)){
+                        atnParamsPrope_<%=cid%>.load(new java.io.ByteArrayInputStream(<%=dbproperties%>.replace("&", "\n").getBytes()));
+                    }
                     conn_<%=cid%> = java.sql.DriverManager.getConnection(url_<%=cid%>, atnParamsPrope_<%=cid%>);
                 <%
                 }
@@ -406,7 +406,7 @@ skeleton="../templates/db_output_bulk.skeleton"
         if(dbschema_<%=cid%> == null || dbschema_<%=cid%>.trim().length() == 0) {
             tableName_<%=cid%> = (<%=table%>)<%=convertToUppercase ? ".toUpperCase()" : ""%>;
         } else {
-            tableName_<%=cid%> = dbschema_<%=cid%> + "." + (<%=table%>)<%=convertToUppercase ? ".toUpperCase()" : ""%>;    
+            tableName_<%=cid%> = dbschema_<%=cid%> + "." + (<%=table%>)<%=convertToUppercase ? ".toUpperCase()" : ""%>;
         }
         <%@ include file="../templates/_hintTableName.javajet" %>
         <%
@@ -536,7 +536,7 @@ skeleton="../templates/db_output_bulk.skeleton"
         ClobTypeUtil_<%=cid%> clobTypeUtil_<%=cid%>=new ClobTypeUtil_<%=cid%>();
     <%
     }
-    
+
     if(blobTypeExist) {
     %>
 
@@ -545,7 +545,7 @@ skeleton="../templates/db_output_bulk.skeleton"
                 if(!(data instanceof java.sql.Blob) || (data instanceof oracle.sql.BLOB)) {
                 	return data;
                 }
-                    
+
                 oracle.sql.BLOB blob = null;
                 java.io.InputStream in = null;
                 java.io.OutputStream out = null;
@@ -553,19 +553,19 @@ skeleton="../templates/db_output_bulk.skeleton"
                 	//in
                 	java.sql.Blob blobData = (java.sql.Blob) data;
                 	in = blobData.getBinaryStream();
-                	
+
                 	//out
                 	blob = oracle.sql.BLOB.createTemporary(conn, true, oracle.sql.BLOB.DURATION_SESSION);
                     blob.open(oracle.sql.BLOB.MODE_READWRITE);
                     //blob = conn.createBlob(); oracle jdbc don't support it
                 	out = blob.setBinaryStream(1);
-                	
+
                     byte[] cache = new byte[8192];
                     int len = 0;
                     while ((len = in.read(cache)) != -1) {
                         out.write(cache, 0, len);
                     }
-                    
+
                     return blob;
                 } catch(java.sql.SQLException sqlexp){
                 <%dbLog.logPrintedException("sqlexp.getMessage()");%>
@@ -596,7 +596,7 @@ skeleton="../templates/db_output_bulk.skeleton"
                     		//keep quiet
                     	}
                     }
-            	 	
+
             	 	if(in!=null) {
                 		try {
                     		in.close();
@@ -604,7 +604,7 @@ skeleton="../templates/db_output_bulk.skeleton"
                     		//keep quiet
                     	}
                     }
-                    
+
                     if(blob!=null) {
                 		try {
                     		blob.close();
@@ -613,16 +613,16 @@ skeleton="../templates/db_output_bulk.skeleton"
                     	}
                     }
                 }
-                
+
                 return null;
-               
+
             }
-            
+
         }
         BlobTypeUtil_<%=cid%> blobTypeUtil_<%=cid%>=new BlobTypeUtil_<%=cid%>();
     <%
     }
-    
+
     if(isDynamic) {
     %>
         java.sql.PreparedStatement pstmt_<%=cid %> =null;

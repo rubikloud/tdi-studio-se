@@ -109,8 +109,6 @@ public class RunProcessContext {
 
     public static final String BREAKPOINT_BAR = "RunProcessContext.breakPoint"; //$NON-NLS-1$
 
-    private static final String WATCH_PARAM = "--watch"; //$NON-NLS-1$
-
     private static final String LOG4J_DEFAULT_LEVEL = "info"; //$NON-NLS-1$
 
     public static final String NEXTBREAKPOINT = "RunProcessContext.NextBreakpoint"; //$NON-NLS-1$
@@ -554,7 +552,8 @@ public class RunProcessContext {
                                 new Thread(traceMonitor, "TraceMonitor_" + process.getLabel()).start(); //$NON-NLS-1$
                             }
 
-                            final String watchParam = RunProcessContext.this.isWatchAllowed() ? WATCH_PARAM : null;
+                            final String watchParam = RunProcessContext.this.isWatchAllowed() ? TalendProcessArgumentConstant.CMD_ARG_WATCH
+                                    : null;
                             final String log4jRuntimeLevel = getLog4jRuntimeLevel();
                             processor.setContext(context);
                             ((IEclipseProcessor) processor).setTargetExecutionConfig(getSelectedTargetExecutionConfig());

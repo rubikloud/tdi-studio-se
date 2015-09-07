@@ -14,12 +14,14 @@ package org.talend.designer.codegen;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.PatternMatcherInput;
@@ -41,7 +43,6 @@ import org.talend.core.CorePlugin;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.model.general.ILibrariesService;
-import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.PigudfItem;
 import org.talend.core.model.properties.ProcessItem;
@@ -97,9 +98,8 @@ public class JavaRoutineSynchronizer extends AbstractRoutineSynchronizer {
         syncRoutineItems(getAllPigudf(), true);
     }
 
-    private void syncRoutineItems(List<IRepositoryViewObject> routineObjects, boolean forceUpdate) throws SystemException {
-        for (IRepositoryViewObject routine : routineObjects) {
-            RoutineItem routineItem = (RoutineItem) routine.getProperty().getItem();
+    private void syncRoutineItems(Collection<RoutineItem> routineObjects, boolean forceUpdate) throws SystemException {
+        for (RoutineItem routineItem : routineObjects) {
             syncRoutine(routineItem, true, forceUpdate);
         }
 
@@ -120,14 +120,9 @@ public class JavaRoutineSynchronizer extends AbstractRoutineSynchronizer {
                 }
             }
         } catch (IOException e) {
-            // e.printStackTrace();
-            ExceptionHandler.process(e);
+            throw new SystemException(e);
         }
 
-    }
-
-    @Override
-    public void syncAllBeans() throws SystemException {
     }
 
     /*
@@ -189,58 +184,11 @@ public class JavaRoutineSynchronizer extends AbstractRoutineSynchronizer {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.codegen.IRoutineSynchronizer#syncRoutine(org.talend .core.model.properties.RoutineItem)
-     */
-    @Override
-    protected void doSyncBean(Item beanItem, boolean copyToTemp) throws SystemException {
-
-    }
-
-    private IFile getRoutineFile(RoutineItem routineItem) throws SystemException {
-        IRunProcessService service = CodeGeneratorActivator.getDefault().getRunProcessService();
-        ITalendProcessJavaProject talendProcessJavaProject = service.getTalendProcessJavaProject();
-        if (talendProcessJavaProject == null) {
-            return null;
-        }
-        IFolder routineFolder = talendProcessJavaProject.getSrcSubFolder(null, routineItem.getPackageType());
-        IFile file = routineFolder.getFile(routineItem.getProperty().getLabel() + JavaUtils.JAVA_EXTENSION);
-        return file;
-    }
-
-    @Override
-    public IFile getProcessFile(JobInfo jobInfo) throws SystemException {
-        String projectFolderName = jobInfo.getProjectFolderName();
-        String jobName = jobInfo.getJobName();
-        String folderName = JavaResourcesHelper.getJobFolderName(jobName, jobInfo.getJobVersion());
-        return getProcessFile(projectFolderName, folderName, jobName);
-    }
-
-    private IFile getProcessFile(ProcessItem item) throws SystemException {
-        String projectFolderName = JavaResourcesHelper.getProjectFolderName(item);
-        String jobName = item.getProperty().getLabel();
-        String folderName = JavaResourcesHelper.getJobFolderName(jobName, item.getProperty().getVersion());
-        return getProcessFile(projectFolderName, folderName, jobName);
-    }
-
     private IFile getTestContainerFile(ProcessItem item) throws SystemException {
         String projectFolderName = JavaResourcesHelper.getProjectFolderName(item);
         String jobName = item.getProperty().getLabel();
         String folderName = JavaResourcesHelper.getJobFolderName(jobName, item.getProperty().getVersion());
         return getTestContainerFile(item, projectFolderName, folderName, jobName);
-    }
-
-    private IFile getProcessFile(String projectFolderName, String folderName, String jobName) {
-        IRunProcessService service = CodeGeneratorActivator.getDefault().getRunProcessService();
-        ITalendProcessJavaProject talendProcessJavaProject = service.getTalendProcessJavaProject();
-        if (talendProcessJavaProject == null) {
-            return null;
-        }
-        IFolder srcFolder = talendProcessJavaProject.getSrcFolder();
-        IFile file = srcFolder.getFile(projectFolderName + '/' + folderName + '/' + jobName + JavaUtils.JAVA_EXTENSION);
-        return file;
     }
 
     private IFile getTestContainerFile(ProcessItem item, String projectFolderName, String folderName, String jobName) {
@@ -255,55 +203,49 @@ public class JavaRoutineSynchronizer extends AbstractRoutineSynchronizer {
         return file;
     }
 
-    public void copyFile(File in, IFile out) throws Exception {
-        if (out.exists()) {
-            out.delete(true, null);
-        }
-        FileInputStream fis = new FileInputStream(in);
-        if (!out.exists()) {
-            out.create(fis, true, null);
-        }
-        fis.close();
-    }
-
     /*
      * (non-Javadoc)
      * 
      * @see org.talend.designer.codegen.IRoutineSynchronizer#syncRoutine(org.talend .core.model.properties.RoutineItem)
      */
-    public IFile syncModule(File[] modules) throws SystemException {
-        return syncModules(modules, "");
+    private static void syncModule(File[] modules) throws SystemException {
+        IRunProcessService service = CodeGeneratorActivator.getDefault().getRunProcessService();
+        ITalendProcessJavaProject talendProcessJavaProject = service.getTalendProcessJavaProject();
+        if (talendProcessJavaProject == null) {
+            return;
+        }
+        final IFolder systemFolder = talendProcessJavaProject.getSrcSubFolder(null, JavaUtils.JAVA_ROUTINES_DIRECTORY + '/'
+                + JavaUtils.JAVA_SYSTEM_DIRECTORY);
+        syncModules(modules, systemFolder);
     }
 
-    private IFile syncModules(File[] modules, String directory) throws SystemException {
+    private static void syncModules(File[] modules, IFolder directory) throws SystemException {
         try {
-            IRunProcessService service = CodeGeneratorActivator.getDefault().getRunProcessService();
-            ITalendProcessJavaProject talendProcessJavaProject = service.getTalendProcessJavaProject();
-            if (talendProcessJavaProject == null) {
-                return null;
+            if (!directory.exists()) {
+                directory.create(true, true, null);
             }
-            IFolder systemFolder = talendProcessJavaProject.getSrcSubFolder(null, JavaUtils.JAVA_ROUTINES_DIRECTORY + '/'
-                    + JavaUtils.JAVA_SYSTEM_DIRECTORY + '/' + directory);
-
             for (File module : modules) {
                 if (!module.isDirectory()) {
-                    IFile file = systemFolder.getFile(module.getName());
-
-                    copyFile(module, file);
+                    copyFile(module, directory.getFile(module.getName()));
                 } else if (!module.getName().startsWith(".") && !FilesUtils.isSVNFolder(module.getName())) {
-                    syncModules(module.listFiles(), directory + module.getName() + '/');
+                    syncModules(module.listFiles(), directory.getFolder(module.getName()));
                 }
             }
         } catch (CoreException e) {
             throw new SystemException(e);
-        } catch (FileNotFoundException e) {
-            throw new SystemException(e);
         } catch (IOException e) {
             throw new SystemException(e);
-        } catch (Exception e) {
-            throw new SystemException(e);
         }
-        return null;
+    }
+
+    private static void copyFile(File in, IFile out) throws CoreException, IOException {
+        final FileInputStream fis = new FileInputStream(in);
+        if (out.exists()) {
+            out.setContents(fis, true, false, null);
+        } else {
+            out.create(fis, true, null);
+        }
+        fis.close();
     }
 
     /*
@@ -323,12 +265,8 @@ public class JavaRoutineSynchronizer extends AbstractRoutineSynchronizer {
         }
         if (isTestContainer) {
             return getTestContainerFile((ProcessItem) item);
-        } else if (item instanceof RoutineItem) {
-            return getRoutineFile((RoutineItem) item);
-        } else if (item instanceof ProcessItem) {
-            return getProcessFile((ProcessItem) item);
         }
-        return null;
+        return super.getFile(item);
     }
 
     /*
@@ -349,6 +287,11 @@ public class JavaRoutineSynchronizer extends AbstractRoutineSynchronizer {
         //
         String regexp = "public(\\s)+class(\\s)+\\w+(\\s)+\\{";//$NON-NLS-1$
         routineContent = routineContent.replaceFirst(regexp, "public class " + label + " {");//$NON-NLS-1$//$NON-NLS-2$
+        // constructor
+        Matcher matcher = Pattern.compile("(.*public\\s+)(\\w+)(\\s*\\(.*)", Pattern.DOTALL).matcher(routineContent); //$NON-NLS-1$
+        if (matcher.find()) { 
+            routineContent = matcher.group(1) + label + matcher.group(3);
+        }
         routineItem.getContent().setInnerContent(routineContent.getBytes());
     }
 
@@ -401,19 +344,6 @@ public class JavaRoutineSynchronizer extends AbstractRoutineSynchronizer {
         }
 
         pigudfItem.getContent().setInnerContent(routineContent.getBytes());
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * qli modified to fix the bug 5400 and 6185.
-     * 
-     * @seeorg.talend.designer.codegen.AbstractRoutineSynchronizer#renameRoutineClass(org.talend.core.model.properties.
-     * RoutineItem, java.lang.String)
-     */
-    @Override
-    public void renameBeanClass(Item beanItem) {
 
     }
 

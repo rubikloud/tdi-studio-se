@@ -19,10 +19,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -35,11 +37,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
-import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.core.GlobalServiceRegister;
@@ -60,7 +59,6 @@ import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.runprocess.ProcessorUtilities;
 import org.talend.model.bridge.ReponsitoryContextBridge;
-import org.talend.repository.RepositoryPlugin;
 import org.talend.repository.documentation.ExportFileResource;
 import org.talend.repository.local.ExportItemUtil;
 import org.talend.repository.model.RepositoryConstants;
@@ -92,15 +90,24 @@ public class BuildJobHandler extends AbstractBuildJobHandler {
     @Override
     public void generateJobFiles(IProgressMonitor monitor) throws Exception {
         LastGenerationInfo.getInstance().getUseDynamicMap().clear();
+        LastGenerationInfo.getInstance().getUseRulesMap().clear();
 
         final Map<String, Object> argumentsMap = new HashMap<String, Object>();
 
         argumentsMap.put(TalendProcessArgumentConstant.ARG_ENABLE_APPLY_CONTEXT_TO_CHILDREN,
                 isOptionChoosed(ExportChoice.applyToChildren));
         //
-        argumentsMap.put(TalendProcessArgumentConstant.ARG_ENABLE_STATISTICS, isOptionChoosed(ExportChoice.addStatistics));
-        argumentsMap.put(TalendProcessArgumentConstant.ARG_ENABLE_TRAC, false); // disable trac
-
+        argumentsMap.put(TalendProcessArgumentConstant.ARG_ENABLE_STATS, isOptionChoosed(ExportChoice.addStatistics));
+        argumentsMap.put(TalendProcessArgumentConstant.ARG_ENABLE_TRACS, isOptionChoosed(ExportChoice.addTracs));
+        Properties prop = (Properties) exportChoice.get(ExportChoice.properties);
+        if (prop != null) { // add all properties for arugment map.
+            Enumeration<Object> keys = prop.keys();
+            while (keys.hasMoreElements()) {
+                String key = keys.nextElement().toString();
+                String value = prop.getProperty(key);
+                argumentsMap.put(key, value);
+            }
+        }
         // context
         boolean needContext = isOptionChoosed(ExportChoice.needContext);
         if (needContext) {
@@ -117,11 +124,21 @@ public class BuildJobHandler extends AbstractBuildJobHandler {
                     this.exportChoice.get(ExportChoice.parameterValuesList));
         }
         // log4j
-        boolean needLog4jLevel = isOptionChoosed(ExportChoice.needLog4jLevel);
-        if (needLog4jLevel) {
-            argumentsMap.put(TalendProcessArgumentConstant.ARG_NEED_LOG4J_LEVEL, needLog4jLevel);
-            argumentsMap.put(TalendProcessArgumentConstant.ARG_LOG4J_LEVEL, this.exportChoice.get(ExportChoice.log4jLevel));
+        boolean log4jEnable = isLog4jEnable();
+        argumentsMap.put(TalendProcessArgumentConstant.ARG_ENABLE_LOG4J, log4jEnable);
+        if (log4jEnable) {
+            boolean needLog4jLevel = isOptionChoosed(ExportChoice.needLog4jLevel);
+            if (needLog4jLevel) {
+                argumentsMap.put(TalendProcessArgumentConstant.ARG_NEED_LOG4J_LEVEL, needLog4jLevel);
+                argumentsMap.put(TalendProcessArgumentConstant.ARG_LOG4J_LEVEL, this.exportChoice.get(ExportChoice.log4jLevel));
+            }
         }
+        /*
+         * FIXME. Shouldn't set it here, because it not init yet. will set it before code gen in ProcessorUtilities
+         */
+        // argumentsMap.put(TalendProcessArgumentConstant.ARG_NEED_XMLMAPPINGS, needXmlMappings());
+        // argumentsMap.put(TalendProcessArgumentConstant.ARG_NEED_RULES, needRules());
+
         // generation option
         int generationOption = (isOptionChoosed(ExportChoice.includeTestSource) || isOptionChoosed(ExportChoice.executeTests)) ? ProcessorUtilities.GENERATE_ALL_CHILDS
                 | ProcessorUtilities.GENERATE_TESTS
@@ -327,11 +344,7 @@ public class BuildJobHandler extends AbstractBuildJobHandler {
                 try {
                     buildDelegate(monitor);
                 } catch (Exception e) {
-                    if (CommonsPlugin.isHeadless()) {
-                        throw new CoreException(new Status(IStatus.ERROR, RepositoryPlugin.PLUGIN_ID, e.getMessage()));
-                    } else {
-                        ExceptionHandler.process(e);
-                    }
+                    ExceptionHandler.process(e);
                 }
             }
         };

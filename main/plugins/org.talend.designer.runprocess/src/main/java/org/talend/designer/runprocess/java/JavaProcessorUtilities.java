@@ -152,97 +152,6 @@ public class JavaProcessorUtilities {
         return libNames;
     }
 
-    /**
-     * DOC ycbai Comment method "getNeededLibrariesForProcess".
-     * 
-     * @return
-     */
-    public static Set<String> getNeededLibrariesForProcess(IProcess process) {
-        Set<String> neededLibraries = new HashSet<String>();
-        Set<ModuleNeeded> neededModules = LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(process.getId(),
-                process.getVersion());
-        for (ModuleNeeded module : neededModules) {
-            neededLibraries.add(module.getModuleName());
-        }
-
-        // Added by Marvin Wang on Nov. 8, 2012 just for extract the jar name without directory.
-        neededLibraries = ModuleNameExtractor.extractFileName(neededLibraries);
-
-        if (process == null || !(process instanceof IProcess2)) {
-            if (neededLibraries.isEmpty() && process != null) {
-                neededLibraries = process.getNeededLibraries(true);
-                if (neededLibraries == null) {
-                    neededLibraries = new HashSet<String>();
-                    // for (ModuleNeeded moduleNeeded : ModulesNeededProvider.getModulesNeeded()) {
-                    // neededLibraries.add(moduleNeeded.getModuleName());
-                    // }
-                }
-            } else {
-                for (ModuleNeeded moduleNeeded : ModulesNeededProvider.getRunningModules()) {
-                    neededLibraries.add(moduleNeeded.getModuleName());
-                }
-            }
-            return neededLibraries;
-        }
-        Property property = ((IProcess2) process).getProperty();
-        if (neededLibraries.isEmpty()) {
-            neededLibraries = process.getNeededLibraries(true);
-            if (neededLibraries == null) {
-                neededLibraries = new HashSet<String>();
-                for (ModuleNeeded moduleNeeded : ModulesNeededProvider.getModulesNeeded()) {
-                    neededLibraries.add(moduleNeeded.getModuleName());
-                }
-            }
-        } else {
-            if (property != null && property.getItem() instanceof ProcessItem) {
-                List<ModuleNeeded> modulesNeededs = ModulesNeededProvider.getModulesNeededForRoutines(
-                        (ProcessItem) property.getItem(), ERepositoryObjectType.ROUTINES);
-                for (ModuleNeeded moduleNeeded : modulesNeededs) {
-                    neededLibraries.add(moduleNeeded.getModuleName());
-                }
-                List<ModuleNeeded> modulesForPigudf = ModulesNeededProvider.getModulesNeededForRoutines(
-                        (ProcessItem) property.getItem(), ERepositoryObjectType.PIG_UDF);
-                for (ModuleNeeded moduleNeeded : modulesForPigudf) {
-                    neededLibraries.add(moduleNeeded.getModuleName());
-                }
-
-            } else {
-                for (ModuleNeeded moduleNeeded : ModulesNeededProvider.getRunningModules()) {
-                    neededLibraries.add(moduleNeeded.getModuleName());
-                }
-            }
-        }
-        if (property != null && GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
-            ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault().getService(
-                    ICamelDesignerCoreService.class);
-            if (camelService.isInstanceofCamel(property.getItem())) {
-                ERepositoryObjectType beansType = camelService.getBeansType();
-                List<IRepositoryViewObject> collectedBeans = new ArrayList<IRepositoryViewObject>();
-                try {
-                    collectedBeans = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory().getAll(beansType);
-                    for (IRepositoryViewObject object : collectedBeans) {
-                        Item item = object.getProperty().getItem();
-                        if (item instanceof RoutineItem) {
-                            RoutineItem routine = (RoutineItem) item;
-                            EList<?> imports = routine.getImports();
-                            for (Object o : imports) {
-                                IMPORTType type = (IMPORTType) o;
-                                neededLibraries.add(type.getMODULE());
-                            }
-                        }
-                    }
-                } catch (PersistenceException e) {
-                    ExceptionHandler.process(e);
-                }
-            }
-
-            // http://jira.talendforge.org/browse/TESB-5887 LiXiaopeng 2012-6-19
-            // Synchronize Route resources
-            camelService.synchronizeRouteResource(property.getItem());
-        }
-        return neededLibraries;
-    }
-
     public static Set<ModuleNeeded> getNeededModulesForProcess(IProcess process) {
         Set<ModuleNeeded> neededLibraries = new HashSet<ModuleNeeded>();
         Set<ModuleNeeded> neededModules = LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(process.getId(),
@@ -297,16 +206,18 @@ public class JavaProcessorUtilities {
             ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault().getService(
                     ICamelDesignerCoreService.class);
             if (camelService.isInstanceofCamel(property.getItem())) {
+                // http://jira.talendforge.org/browse/TESB-5887 LiXiaopeng 2012-6-19
+                // Synchronize Route resources
+                camelService.synchronizeRouteResource(property.getItem());
+
                 ERepositoryObjectType beansType = camelService.getBeansType();
-                List<IRepositoryViewObject> collectedBeans = new ArrayList<IRepositoryViewObject>();
                 try {
-                    collectedBeans = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory().getAll(beansType);
-                    for (IRepositoryViewObject object : collectedBeans) {
+                    for (IRepositoryViewObject object :
+                        CoreRuntimePlugin.getInstance().getProxyRepositoryFactory().getAll(beansType)) {
                         Item item = object.getProperty().getItem();
                         if (item instanceof RoutineItem) {
                             RoutineItem routine = (RoutineItem) item;
-                            EList<?> imports = routine.getImports();
-                            for (Object o : imports) {
+                            for (Object o : routine.getImports()) {
                                 IMPORTType type = (IMPORTType) o;
                                 ModuleNeeded neededModule = new ModuleNeeded("camel bean dependencies", type.getMODULE(),
                                         "camel bean dependencies", true);
@@ -318,10 +229,6 @@ public class JavaProcessorUtilities {
                     ExceptionHandler.process(e);
                 }
             }
-
-            // http://jira.talendforge.org/browse/TESB-5887 LiXiaopeng 2012-6-19
-            // Synchronize Route resources
-            camelService.synchronizeRouteResource(property.getItem());
         }
         return neededLibraries;
     }

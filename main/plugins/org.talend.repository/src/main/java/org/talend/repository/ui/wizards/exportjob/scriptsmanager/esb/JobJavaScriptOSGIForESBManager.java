@@ -38,7 +38,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.EMap;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.io.FilesUtils;
+import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IOsgiDependenciesService;
 import org.talend.core.PluginChecker;
@@ -74,6 +76,7 @@ import org.talend.designer.runprocess.ProcessorUtilities;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryPlugin;
 import org.talend.repository.documentation.ExportFileResource;
+import org.talend.repository.ui.wizards.exportjob.scriptsmanager.JarBuilder;
 import org.talend.repository.ui.wizards.exportjob.scriptsmanager.JobJavaScriptsManager;
 import org.talend.repository.utils.EmfModelUtils;
 import org.talend.repository.utils.TemplateProcessor;
@@ -135,8 +138,8 @@ public class JobJavaScriptOSGIForESBManager extends JobJavaScriptsManager {
                 if (!isMultiNodes() && getSelectedJobVersion() != null) {
                     jobVersion = getSelectedJobVersion();
                 }
-                ERepositoryObjectType type = ERepositoryObjectType.getItemType(processItem);
-                if (type.equals(ERepositoryObjectType.PROCESS) || "MR".equals(type.getAlias())) {
+                final ERepositoryObjectType type = process.getNode().getObjectType();
+                if (ERepositoryObjectType.PROCESS == type || ERepositoryObjectType.PROCESS_MR == type) {
                     itemType = JOB;
                 } else {
                     itemType = ROUTE;
@@ -148,7 +151,7 @@ public class JobJavaScriptOSGIForESBManager extends JobJavaScriptsManager {
 
                 IProcess iProcess = generateJobFiles(processItem, contextName, jobVersion,
                         statisticPort != IProcessor.NO_STATISTICS, tracePort != IProcessor.NO_TRACES,
-                        isOptionChoosed(ExportChoice.applyToChildren), true /* isExportAsOSGI */, progressMonitor);
+                        isOptionChoosed(ExportChoice.applyToChildren), progressMonitor);
                 analysisModules(processId, jobVersion);
 
                 analysisMavenModule(processItem);
@@ -164,7 +167,9 @@ public class JobJavaScriptOSGIForESBManager extends JobJavaScriptsManager {
                     osgiResource.addResource(FileConstants.BLUEPRINT_FOLDER_NAME,
                             generateRestJobBlueprintConfig(processItem, iProcess));
                 } else {
-                    osgiResource.addResource(FileConstants.BLUEPRINT_FOLDER_NAME, generateBlueprintConfig(processItem, iProcess));
+                    osgiResource.addResource(
+                        JOB.equals(itemType) ? FileConstants.BLUEPRINT_FOLDER_NAME :FileConstants.META_INF_FOLDER_NAME + "/spring",
+                        generateBlueprintConfig(processItem, iProcess));
                 }
 
                 // Add Route Resource http://jira.talendforge.org/browse/TESB-6227
@@ -226,14 +231,51 @@ public class JobJavaScriptOSGIForESBManager extends JobJavaScriptsManager {
 
     @Override
     protected void addRoutinesResources(ExportFileResource[] processes, ExportFileResource libResource) {
-        // Gets system routines
-        List<URL> systemRoutineList = getSystemRoutine(processes);
-        libResource.addResources(systemRoutineList);
-        // Gets user routines
-        List<URL> userRoutineList = getUserRoutine(processes);
-        libResource.addResources(userRoutineList);
-        // pigudf
-        // libResource.addResource(getPigudf(processes))
+//        // Gets system routines
+//        List<URL> systemRoutineList = getSystemRoutine(processes);
+//        libResource.addResources(systemRoutineList);
+//        // Gets user routines
+//        List<URL> userRoutineList = getUserRoutine(processes);
+//        libResource.addResources(userRoutineList);
+//        // pigudf
+//        // libResource.addResource(getPigudf(processes))
+        boolean useBeans = false;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
+            ICamelDesignerCoreService service = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault().getService(
+                    ICamelDesignerCoreService.class);
+            if (service.isInstanceofCamel(processes[0].getItem())) {
+                useBeans = true;
+            }
+        }
+        Collection<String> include = new ArrayList<String>();
+        final String includePath;
+        if (useBeans) {
+            includePath = USER_BEANS_PATH;
+            include.add(SYSTEM_ROUTINES_PATH);
+        } else {
+            includePath = USER_ROUTINES_PATH;
+        }
+        include.add(includePath);
+
+        File jarFile = new File(getTmpFolder() + File.separatorChar + JavaUtils.ROUTINE_JAR_NAME + FileExtensions.JAR_FILE_SUFFIX);
+
+        // make a jar file of system routine classes
+        File classRootFileLocation = getClassRootFileLocation();
+        if (classRootFileLocation == null) {
+            return;
+        }
+        try {
+            JarBuilder jarbuilder = new JarBuilder(classRootFileLocation, jarFile);
+            jarbuilder.setIncludeDir(include);
+            Collection<File> includeRoutines = new ArrayList<File>(getRoutineDependince(processes, true, USER_ROUTINES_PATH));
+            includeRoutines.addAll(getRoutineDependince(processes, false, includePath));
+            jarbuilder.setIncludeRoutines(includeRoutines);
+            jarbuilder.buildJar();
+
+            libResource.addResources(Collections.singletonList(jarFile.toURI().toURL()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected ExportFileResource getProvidedLibExportFileResource(ExportFileResource[] processes) {
@@ -320,7 +362,7 @@ public class JobJavaScriptOSGIForESBManager extends JobJavaScriptsManager {
                     IRunProcessService.class);
             ITalendProcessJavaProject talendProcessJavaProject = processService.getTalendProcessJavaProject();
             if (talendProcessJavaProject != null) {
-                srcFolder = talendProcessJavaProject.getSrcFolder();
+                srcFolder = talendProcessJavaProject.getResourcesFolder();
             }
         }
         if (srcFolder == null) {
@@ -333,8 +375,7 @@ public class JobJavaScriptOSGIForESBManager extends JobJavaScriptsManager {
         ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault().getService(
                 ICamelDesignerCoreService.class);
         if (camelService != null) {
-            List<IPath> paths = camelService.synchronizeRouteResource(processItem);
-            for (IPath path : paths) {
+            for (IPath path : camelService.synchronizeRouteResource(processItem)) {
                 osgiResource.addResource(path.removeLastSegments(1).makeRelativeTo(srcPath).toString(), path.toFile().toURI()
                         .toURL());
             }
@@ -453,7 +494,7 @@ public class JobJavaScriptOSGIForESBManager extends JobJavaScriptsManager {
         // job OSGi DataSources
         jobInfo.put("dataSources", DataSourceConfig.getAliases(process)); //$NON-NLS-1$
 
-        jobInfo.put("hasDestroyMethod", !"MR".equals(ERepositoryObjectType.getItemType(processItem).getAlias()));
+        jobInfo.put("hasDestroyMethod", ERepositoryObjectType.PROCESS_MR != ERepositoryObjectType.getItemType(processItem));
 
         return jobInfo;
     }
@@ -787,7 +828,7 @@ public class JobJavaScriptOSGIForESBManager extends JobJavaScriptsManager {
                     requireBundle = "tesb-xacml-rt"; //$NON-NLS-1$
                 }
             }
-            if ("MR".equals(ERepositoryObjectType.getItemType(processItem).getAlias())) {
+            if (ERepositoryObjectType.PROCESS_MR == ERepositoryObjectType.getItemType(processItem)) {
                 importPackages.add("org.talend.cloud"); //$NON-NLS-1$
             }
         }

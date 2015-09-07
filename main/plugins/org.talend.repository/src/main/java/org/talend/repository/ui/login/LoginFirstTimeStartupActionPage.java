@@ -97,7 +97,7 @@ public class LoginFirstTimeStartupActionPage extends AbstractLoginActionPage {
         if (storedConnections == null) {
             storedConnections = new ArrayList<ConnectionBean>();
         } else {
-            storedConnections = LoginHelper.filterUsableConnections(storedConnections);
+            storedConnections = loginHelper.filterUsableConnections(storedConnections);
         }
         if (storedConnections.size() == 0) {
             defaultConnectionBean = LoginHelper.createDefaultLocalConnection();
@@ -141,17 +141,21 @@ public class LoginFirstTimeStartupActionPage extends AbstractLoginActionPage {
         title.setText(Messages.getString("LoginFirstTimeStartupActionPage.title")); //$NON-NLS-1$
         createNewProject = new Button(container, SWT.RADIO);
         createNewProject.setFont(LoginDialogV2.fixedFont);
+        createNewProject.setBackground(backgroundColor);
         createNewProject.setText(Messages.getString("LoginFirstTimeStartupActionPage.createNewProject")); //$NON-NLS-1$
         newProjectName = new Text(container, SWT.BORDER);
         newProjectName.setFont(LoginDialogV2.fixedFont);
         importDemoProject = new Button(container, SWT.RADIO);
         importDemoProject.setFont(LoginDialogV2.fixedFont);
+        importDemoProject.setBackground(backgroundColor);
         importDemoProject.setText(Messages.getString("LoginFirstTimeStartupActionPage.importDemoProject")); //$NON-NLS-1$
         importExistingProject = new Button(container, SWT.RADIO);
         importExistingProject.setFont(LoginDialogV2.fixedFont);
+        importExistingProject.setBackground(backgroundColor);
         importExistingProject.setText(Messages.getString("LoginFirstTimeStartupActionPage.importExsitingProject")); //$NON-NLS-1$
         manageConnections = new Button(container, SWT.NONE);
         manageConnections.setFont(LoginDialogV2.fixedFont);
+        manageConnections.setBackground(backgroundColor);
         manageConnections.setText(Messages.getString("LoginFirstTimeStartupActionPage.manageConnections")); //$NON-NLS-1$
 
         super.instantiateControl(container);

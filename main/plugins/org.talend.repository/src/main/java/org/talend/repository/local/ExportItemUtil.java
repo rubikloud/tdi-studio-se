@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -56,6 +57,7 @@ import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.URIHelper;
 import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.core.service.ITransformService;
+import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.ui.export.IFileExporterFullPath;
 import org.talend.core.ui.export.TarFileExporterFullPath;
 import org.talend.core.ui.export.ZipFileExporterFullPath;
@@ -323,6 +325,22 @@ public class ExportItemUtil {
                     copyAndAddResource(toExport, sourcePath, targetPath, outputRelativeItemPath);
                     if (uri.lastSegment() != null && uri.lastSegment().endsWith(FileConstants.PROPERTIES_FILE_SUFFIX)) {
                         propertyPath = targetPath;
+                    }
+                }
+
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+                    ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
+                            .getDefault().getService(ITestContainerProviderService.class);
+                    if (testContainerService != null) {
+                        List<IResource> dataFileList = testContainerService.getDataFiles(item);
+                        for (IResource dataFile : dataFileList) {
+                            IPath relativeItemPath = dataFile.getFullPath();
+                            IPath sourcePath = workspacePath.append(relativeItemPath);
+                            // replace the project segment
+                            IPath outputRelativeItemPath = getProjectOutputPath().append(relativeItemPath.removeFirstSegments(1));
+                            IPath targetPath = new Path(destinationDirectory.getAbsolutePath()).append(outputRelativeItemPath);
+                            copyAndAddResource(toExport, sourcePath, targetPath, outputRelativeItemPath);
+                        }
                     }
                 }
 

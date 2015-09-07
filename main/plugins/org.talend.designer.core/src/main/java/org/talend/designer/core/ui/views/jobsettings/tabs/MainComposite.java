@@ -41,7 +41,11 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.AbstractPropertySection;
@@ -60,6 +64,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.User;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.IRepositoryEditorInput;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.repository.ui.actions.DeleteActionCache;
@@ -536,6 +541,9 @@ public class MainComposite extends AbstractTabComposite {
                         String originalPurpose = purposeText.getText();
                         String originalStatus = statusText.getText();
                         String originalDescription = descriptionText.getText();
+
+                        saveJobEditor(repositoryObject);
+
                         if (repositoryObject instanceof IProcess2) {
                             IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
 
@@ -695,6 +703,28 @@ public class MainComposite extends AbstractTabComposite {
         }
     }
 
+    private void saveJobEditor(IRepositoryViewObject objToSave) {
+        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        if (page != null) {
+            for (IEditorReference editors : page.getEditorReferences()) {
+                IEditorPart editor = editors.getEditor(false);
+                if (editor != null && editor.isDirty()) {
+                    IEditorInput editorInput = editor.getEditorInput();
+                    if (editorInput != null && editorInput instanceof IRepositoryEditorInput) {
+                        Item item = ((IRepositoryEditorInput) editorInput).getItem();
+                        if (item != null) {
+                            String id = item.getProperty().getId();
+                            if (objToSave.getId() != null && objToSave.getId().equals(id)) {
+                                page.saveEditor(editor, false);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     protected Map<String, String> getStatusMap() {
         statusHelper = new StatusHelper(CoreRuntimePlugin.getInstance().getProxyRepositoryFactory());
         Map<String, String> statusMap = new HashMap();
@@ -812,6 +842,8 @@ public class MainComposite extends AbstractTabComposite {
         } else if (!btnConfirm.isDisposed()
                 && !descriptionText.getText().equals(StringUtils.trimToEmpty(repositoryObject.getDescription()))) {
             btnConfirm.setEnabled(true);
+        } else if (nameText.getText().equals(repositoryObject.getLabel())) {
+            btnConfirm.setEnabled(false);
         }
     }
 

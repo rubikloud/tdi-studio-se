@@ -63,9 +63,9 @@ public abstract class Processor implements IProcessor, IEclipseProcessor, Talend
 
     public static final String CTX_ARG = TalendProcessArgumentConstant.CMD_ARG_CONTEXT_NAME;
 
-    private static final String STAT_PORT_ARG = "--stat_port="; //$NON-NLS-1$
+    private static final String STAT_PORT_ARG = TalendProcessArgumentConstant.CMD_ARG_STATS_PORT;
 
-    private static final String TRACE_PORT_ARG = "--trace_port="; //$NON-NLS-1$
+    private static final String TRACE_PORT_ARG = TalendProcessArgumentConstant.CMD_ARG_TRACE_PORT;
 
     private static boolean externalUse = false;
 
@@ -491,32 +491,6 @@ public abstract class Processor implements IProcessor, IEclipseProcessor, Talend
      */
     @Override
     public void generateCode(boolean statistics, boolean trace, boolean properties) throws ProcessorException {
-        if (context == null) {
-            throw new IllegalStateException("Context is empty, context must be set before call"); //$NON-NLS-1$
-        }
-        // Remove the synchronization of the routines when generate the code.
-        // This shouldn't be needed anymore.
-
-        // try {
-        // DesignerPlugin.getDefault().getCodeGeneratorService().
-        // createRoutineSynchronizer().syncAllRoutines();
-        // } catch (SystemException e) {
-        // throw new ProcessorException(e);
-        // }
-
-        codeGenerated = true; // set the flag to true to tell the code has been
-        // generated at least once.
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.runprocess.IProcessor#generateCode(org.talend.core .model.process.IContext, boolean,
-     * boolean, boolean)
-     */
-    @Override
-    public void generateCode(boolean statistics, boolean trace, boolean javaProperties, boolean exportAsOSGI)
-            throws ProcessorException {
         if (context == null) {
             throw new IllegalStateException("Context is empty, context must be set before call"); //$NON-NLS-1$
         }

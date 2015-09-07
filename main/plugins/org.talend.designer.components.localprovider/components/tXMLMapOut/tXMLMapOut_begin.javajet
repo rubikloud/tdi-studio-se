@@ -739,10 +739,9 @@ if(valueMap.get("<%=currEleName%>")!=null) {//open if 8080
 		if(node.isMain() && (node.isGroup() || node.isLoop())) {
 			if(index>0 && hasParent(node)){
 %>
-				if (<%=parentName%>.getNamespaceForPrefix("<%=node.getName().substring(0,index)%>") == null) {
-		            <%=currEleName%> = org.dom4j.DocumentHelper.createElement("<%=node.getName().substring(index+1)%>");
-		        } else {
-		        	<%=currEleName%> = org.dom4j.DocumentHelper.createElement("<%=node.getName()%>");
+		        <%=currEleName%> = org.dom4j.DocumentHelper.createElement("<%=node.getName().substring(index+1)%>");
+				if (<%=parentName%>.getNamespaceForPrefix("<%=node.getName().substring(0,index)%>") != null) {
+		        	<%=currEleName %>.setQName(org.dom4j.DocumentHelper.createQName("<%=node.getName().substring(index+1)%>", <%=parentName%>.getNamespaceForPrefix("<%=node.getName().substring(0,index)%>")));
 		        }
 <%
 			} else {

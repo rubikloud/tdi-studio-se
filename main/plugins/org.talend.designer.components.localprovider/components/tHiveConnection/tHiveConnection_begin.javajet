@@ -10,8 +10,19 @@ imports="
 <%
 	CodeGeneratorArgument theCodeGenArgument = (CodeGeneratorArgument) argument;
 	INode theNode = (INode)theCodeGenArgument.getArgument();
+	String theDistribution = ElementParameterParser.getValue(theNode, "__DISTRIBUTION__");
+	String theVersion = ElementParameterParser.getValue(theNode, "__HIVE_VERSION__");
+
+	org.talend.core.hadoop.api.components.HiveComponent hiveDistrib = null;
+	try {
+		hiveDistrib = (org.talend.core.hadoop.api.components.HiveComponent) org.talend.core.hadoop.api.DistributionFactory.buildDistribution(theDistribution, theVersion);
+	} catch (java.lang.Exception e) {
+		e.printStackTrace();
+		return "";
+	}
+	boolean isCustom = hiveDistrib instanceof org.talend.core.hadoop.api.distribution.CustomDistribution;	
 	
-	if("MICROSOFT_HD_INSIGHT".equals(ElementParameterParser.getValue(theNode, "__DISTRIBUTION__"))) { // Execution through WebHCat
+	if(hiveDistrib.isExecutedThroughWebHCat()) { // Execution through WebHCat
 %>
 		<%@ include file="@{org.talend.designer.components.localprovider}/components/tHiveConnection/tHiveConnection_azure.javajet"%>
 <%

@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.repository.ui.dialog;
 
+import java.util.List;
+
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -30,8 +32,8 @@ public class OpenJobSelectionDialog extends RepositoryReviewDialog {
 
     private static final int SELECTINREPOSITORY = 99;
 
-    public OpenJobSelectionDialog(Shell parentShell) {
-        super(parentShell, ERepositoryObjectType.PROCESS, null);
+    public OpenJobSelectionDialog(Shell parentShell, List<ERepositoryObjectType> repObjectTypes) {
+        super(parentShell, repObjectTypes, null);
     }
 
     /*
@@ -89,6 +91,7 @@ public class OpenJobSelectionDialog extends RepositoryReviewDialog {
         Control control = super.createDialogArea(parent);
         getRepositoryTreeViewer().addSelectionChangedListener(new ISelectionChangedListener() {
 
+            @Override
             public void selectionChanged(SelectionChangedEvent event) {
                 boolean highlightOKButton = isSelectionValid(event);
                 getButton(SELECTINREPOSITORY).setEnabled(highlightOKButton);

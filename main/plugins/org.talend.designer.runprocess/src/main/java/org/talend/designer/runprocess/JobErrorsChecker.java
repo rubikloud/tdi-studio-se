@@ -228,6 +228,9 @@ public class JobErrorsChecker {
         String errorMessage = null;
         try {
             for (JobInfo jobInfo : LastGenerationInfo.getInstance().getLastGeneratedjobs()) {
+                if (jobInfo.isTestContainer()) {
+                    continue;
+                }
                 item = null;
                 List<IRepositoryViewObject> allVersions = proxyRepositoryFactory.getAllVersion(jobInfo.getJobId());
                 for (IRepositoryViewObject repositoryObject2 : allVersions) {

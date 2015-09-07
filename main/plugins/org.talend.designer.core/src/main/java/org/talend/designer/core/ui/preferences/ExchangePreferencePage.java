@@ -81,7 +81,7 @@ public class ExchangePreferencePage extends FieldEditorPreferencePage implements
         userAccountLink.setText(userAccount != null ? "<a> " + userAccount + " </a>" : "<a> " + "< None >" + " </a>");
 
         logonButton = new Button(eGroup, SWT.PUSH);
-        logonButton.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+        logonButton.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, true, false));
         logonButton.setText(userAccount != null ? Messages.getString("ExchangePreferencePage.signOutExchangeTitle") : Messages
                 .getString("ExchangePreferencePage.signInExchangeTitle"));
 

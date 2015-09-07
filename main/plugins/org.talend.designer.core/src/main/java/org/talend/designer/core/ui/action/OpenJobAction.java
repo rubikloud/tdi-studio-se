@@ -12,6 +12,9 @@
 // ============================================================================
 package org.talend.designer.core.ui.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -20,6 +23,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.IActionDelegate2;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.talend.core.PluginChecker;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.core.i18n.Messages;
 import org.talend.repository.ui.dialog.OpenJobSelectionDialog;
 import org.talend.repository.ui.dialog.RepositoryReviewDialog;
@@ -34,8 +39,17 @@ public class OpenJobAction extends Action implements IWorkbenchWindowActionDeleg
         setToolTipText(Messages.getString("OpenJobAction.tipText")); //$NON-NLS-1$
     }
 
+    @Override
     public void run() {
-        final OpenJobSelectionDialog dialog = new OpenJobSelectionDialog(window.getShell());
+        List<ERepositoryObjectType> repObjectTypes = new ArrayList<ERepositoryObjectType>();
+        repObjectTypes.add(ERepositoryObjectType.PROCESS);
+        if (PluginChecker.isStormPluginLoader()) {
+            repObjectTypes.add(ERepositoryObjectType.PROCESS_STORM);
+        }
+        if (PluginChecker.isMapReducePluginLoader()) {
+            repObjectTypes.add(ERepositoryObjectType.PROCESS_MR);
+        }
+        final OpenJobSelectionDialog dialog = new OpenJobSelectionDialog(window.getShell(), repObjectTypes);
 
         if (dialog.open() == RepositoryReviewDialog.OK) {
             EditProcess editProcess = new EditProcess() {
@@ -55,18 +69,22 @@ public class OpenJobAction extends Action implements IWorkbenchWindowActionDeleg
         }
     }
 
+    @Override
     public void run(IAction action) {
         run();
     }
 
+    @Override
     public void dispose() {
         // do nothing.
     }
 
+    @Override
     public void init(IWorkbenchWindow window) {
         this.window = window;
     }
 
+    @Override
     public void selectionChanged(IAction action, ISelection selection) {
         // do nothing. Action doesn't depend on selection.
     }
@@ -74,10 +92,12 @@ public class OpenJobAction extends Action implements IWorkbenchWindowActionDeleg
     // ---- IActionDelegate2
     // ------------------------------------------------
 
+    @Override
     public void runWithEvent(IAction action, Event event) {
         runWithEvent(event);
     }
 
+    @Override
     public void init(IAction action) {
         // do nothing.
     }

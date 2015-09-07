@@ -129,7 +129,7 @@ public class FilterColumnDialog extends Dialog {
 
         tab.setHeaderVisible(true);
         tab.setLinesVisible(true);
-        tabView.setContentProvider(new ArrayContentProvider());
+        tabView.setContentProvider(ArrayContentProvider.getInstance());
         tabView.setLabelProvider(new TableLabelProvider());
         tabView.setInput(conn.getMetadataTable().clone());
 

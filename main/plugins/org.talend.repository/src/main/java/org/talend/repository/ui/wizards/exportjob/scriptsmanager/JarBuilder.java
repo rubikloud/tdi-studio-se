@@ -70,7 +70,7 @@ public class JarBuilder {
 
     private List<File> libPath;
 
-    private boolean isStorm = false;
+    private boolean isFatJar = false;
 
     /**
      * Constructure.
@@ -231,7 +231,7 @@ public class JarBuilder {
             if (libPath != null && libPath.size() > 0) {
                 File tempLib = new File(tempFolderPath + File.separatorChar + JavaUtils.JAVA_LIB_DIRECTORY);
                 for (File file : libPath) {
-                    if (isStorm) {
+                    if (isFatJar) {
                         // unzip the jar file
                         unZipFile(file.getAbsolutePath(), new File(tempFolderPath).getAbsolutePath());
                     } else {
@@ -392,8 +392,8 @@ public class JarBuilder {
      * 
      * @return the isStorm
      */
-    public boolean isStorm() {
-        return this.isStorm;
+    public boolean isFatJar() {
+        return this.isFatJar;
     }
 
     /**
@@ -401,7 +401,7 @@ public class JarBuilder {
      * 
      * @param isStorm the isStorm to set
      */
-    public void setStorm(boolean isStorm) {
-        this.isStorm = isStorm;
+    public void setFatJar(boolean isFatJar) {
+        this.isFatJar = isFatJar;
     }
 }

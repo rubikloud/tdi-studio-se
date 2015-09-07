@@ -1,4 +1,4 @@
-<%@ jet 
+<%@ jet
 imports="
     org.talend.core.model.process.INode
     org.talend.core.model.process.ElementParameterParser
@@ -9,7 +9,7 @@ imports="
     org.talend.core.model.metadata.types.JavaTypesManager
     org.talend.core.model.metadata.types.JavaType
     org.talend.core.model.metadata.MetadataTalendType
-    org.talend.core.model.metadata.MappingTypeRetriever    
+    org.talend.core.model.metadata.MappingTypeRetriever
     java.util.ArrayList
     java.util.Map
     java.util.HashMap
@@ -66,7 +66,7 @@ if(inputSchema != null && inputSchema.size() > 0 && outputSchema != null && outp
 	((OracleSCDManager)scdManager).setDbVersion(dbVersion);
     %>
     <%
-    if(!isEnableSaveMemMode) {    
+    if(!isEnableSaveMemMode) {
         %>
         <%=genSourceKeyClass(scdConfiger, cid)%>
         <%
@@ -83,20 +83,20 @@ if(inputSchema != null && inputSchema.size() > 0 && outputSchema != null && outp
         %>
         String schema_<%=cid%> = (String) globalMap.get("dbschema_<%=connection%>");
         java.sql.Connection connection_<%=cid%> = (java.sql.Connection) globalMap.get("<%=connectionName%>");
-        <%        
+        <%
     } else {
         %>
 		<%if("ORACLE_11".equals(dbVersion) || "ORACLE_11-6".equals(dbVersion) || "ORACLE_12".equals(dbVersion) ){%>
-        	java.lang.Class.forName("oracle.jdbc.OracleDriver");	
+        	java.lang.Class.forName("oracle.jdbc.OracleDriver");
         <%}else {%>
-    		java.lang.Class.forName("oracle.jdbc.driver.OracleDriver");	
+    		java.lang.Class.forName("oracle.jdbc.driver.OracleDriver");
     	<%}%>
         <%
         String connectionType = ElementParameterParser.getValue(node, "__CONNECTION_TYPE__");
 		String rac_url = ElementParameterParser.getValue(node, "__RAC_URL__");
         if("ORACLE_RAC".equals(connectionType)) {
 			%>
-			String connectionString_<%=cid%> = <%=rac_url%>;        
+			String connectionString_<%=cid%> = <%=rac_url%>;
 			<%
 		} else if (("ORACLE_SID").equals(connectionType)) {
             %>
@@ -113,13 +113,13 @@ if(inputSchema != null && inputSchema.size() > 0 && outputSchema != null && outp
         }
         %>
         String schema_<%=cid%> = <%=ElementParameterParser.getValue(node, "__SCHEMA_DB__")%>;
-        
+
 		<%
 		String passwordFieldName = "__PASS__";
 		%>
-		
+
 		<%@ include file="@{org.talend.designer.components.localprovider}/components/templates/password.javajet"%>
-		        
+
 <%
 		if(dbproperties == null || ("\"\"").equals(dbproperties) || ("").equals(dbproperties)) {
 %>
@@ -127,18 +127,18 @@ if(inputSchema != null && inputSchema.size() > 0 && outputSchema != null && outp
 <%
 		} else {
 %>
-		String atnParams_<%=cid%> = <%=dbproperties%>;
-		atnParams_<%=cid%> = atnParams_<%=cid%>.replaceAll("&", "\n");
 		java.util.Properties atnParamsPrope_<%=cid%> = new java.util.Properties();
 		atnParamsPrope_<%=cid%>.put("user",<%=dbuser%>);
 		atnParamsPrope_<%=cid%>.put("password",decryptedPassword_<%=cid%>);
-		atnParamsPrope_<%=cid%>.load(new java.io.ByteArrayInputStream(atnParams_<%=cid%>.getBytes()));
+        if(<%= dbproperties %> != null && !"\"\"".equals(<%= dbproperties %>) && !"".equals(<%= dbproperties %>)){
+              atnParamsPrope_<%=cid%>.load(new java.io.ByteArrayInputStream(<%=dbproperties%>.replace("&", "\n").getBytes()));
+          }
 		java.sql.Connection connection_<%=cid%> = java.sql.DriverManager.getConnection(connectionString_<%=cid%>, atnParamsPrope_<%=cid%>);
 <%
 		}
 %>
-        
-<%        
+
+<%
     }
     %>
     String tableName_<%=cid%> = null;
@@ -147,11 +147,11 @@ if(inputSchema != null && inputSchema.size() > 0 && outputSchema != null && outp
     } else {
         tableName_<%=cid%> = schema_<%=cid%> + "." + <%=dbtable%>;
     }
-    
+
     <%@ include file="../templates/_tableActionForSCD.javajet"%>
-    
+
     java.sql.Timestamp timestamp_<%=cid%> = null;
-    String tmpValue_<%=cid%> = null;    
+    String tmpValue_<%=cid%> = null;
     <%
     if(isEnableSaveMemMode) {
         %>
@@ -261,7 +261,7 @@ if(inputSchema != null && inputSchema.size() > 0 && outputSchema != null && outp
             %>
             System.out.println("[<%=cid%>] comparison cache loaded");
             <%
-        }        
+        }
     }
     if(("TABLE_MAX").equals(scdConfiger.getSurrogateKeyValueType())) {
         %>
@@ -277,7 +277,7 @@ if(inputSchema != null && inputSchema.size() > 0 && outputSchema != null && outp
         java.sql.Statement tmpStmt_<%=cid%> = connection_<%=cid%>.createStatement();
         java.sql.ResultSet tmpRS_<%=cid%> = tmpStmt_<%=cid%>.executeQuery(tmpQuery_<%=cid%>);
         <%
-        String tmpType = null;        
+        String tmpType = null;
         if(("Integer").equals(scdConfiger.getSurrogateKeyFieldType())) {
             tmpType = "Int";
         } else {
@@ -292,7 +292,7 @@ if(inputSchema != null && inputSchema.size() > 0 && outputSchema != null && outp
         <%
         if(!isEnableSaveMemMode) {
             %>
-            }            
+            }
             <%
         }
     }
@@ -307,7 +307,7 @@ if(inputSchema != null && inputSchema.size() > 0 && outputSchema != null && outp
             paramIndex = insertionColumnList.size() - scdConfiger.getDimensionType3Configer().getDimensionAttributes().size() - 1;
         } else {
             paramIndex = insertionColumnList.size() - 1;
-        }       
+        }
         if(("JOB_START_TIME").equals(scdConfiger.getDimensionType2Configer().getStartDateValueType())) {
             %>
             insertionStatement_<%=cid%>.setTimestamp(<%=paramIndex%>, new java.sql.Timestamp(start_Hash.get("<%=cid%>")));
@@ -333,7 +333,7 @@ if(inputSchema != null && inputSchema.size() > 0 && outputSchema != null && outp
     if(scdConfiger.isEnableType1()) {
         %>
         String updateSQLForType1_<%=cid%> = "<%=scdManager.createUpdateSQLForType1(scdConfiger,isSourceKeyIncNull)%>";
-        java.sql.PreparedStatement updateForType1_<%=cid%> = connection_<%=cid%>.prepareStatement(updateSQLForType1_<%=cid%>);        
+        java.sql.PreparedStatement updateForType1_<%=cid%> = connection_<%=cid%>.prepareStatement(updateSQLForType1_<%=cid%>);
         <%
     }
     if(scdConfiger.isEnableType2()) {
@@ -354,11 +354,11 @@ if(inputSchema != null && inputSchema.size() > 0 && outputSchema != null && outp
         <%
     }
     %>
-    
+
     <%
     if(!isEnableSaveMemMode) {
         %>
-        SCDSK_<%=cid%> lookUpKey_<%=cid%> = null;        
+        SCDSK_<%=cid%> lookUpKey_<%=cid%> = null;
         <%
     }
     %>

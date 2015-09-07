@@ -12,16 +12,23 @@ imports="
 
     String cid = node.getUniqueName();
 
-    String connection = ElementParameterParser.getValue(node,"__CONNECTION__");
-	 boolean isExecutedThroughWebHCat = false;
-	 for (INode pNode : node.getProcess().getNodesOfType("tHiveConnection")) {
-	 	if(connection!=null && connection.equals(pNode.getUniqueName())) {
-			isExecutedThroughWebHCat = "MICROSOFT_HD_INSIGHT".equals(ElementParameterParser.getValue(pNode, "__DISTRIBUTION__"));
+	org.talend.core.hadoop.api.components.HiveComponent hiveDistrib = null;
+	String connection = ElementParameterParser.getValue(node,"__CONNECTION__");
+	for (INode pNode : node.getProcess().getNodesOfType("tHiveConnection")) {
+		if(connection!=null && connection.equals(pNode.getUniqueName())) {
+			String distribution = ElementParameterParser.getValue(pNode, "__DISTRIBUTION__");
+			String hiveVersion = ElementParameterParser.getValue(pNode, "__HIVE_VERSION__");
+			try {
+				hiveDistrib = (org.talend.core.hadoop.api.components.HiveComponent) org.talend.core.hadoop.api.DistributionFactory.buildDistribution(distribution, hiveVersion);
+			} catch (java.lang.Exception e) {
+				e.printStackTrace();
+				return "";
+			}
 		}
-	 }
+	}
 
-    String conn = "conn_" + connection;
-	if(!isExecutedThroughWebHCat) {
+	String conn = "conn_" + connection;
+	if(hiveDistrib != null && !hiveDistrib.isExecutedThroughWebHCat()) {
 %>
 		java.sql.Connection conn_<%=cid%> = (java.sql.Connection)globalMap.get("<%=conn%>");
 		if(conn_<%=cid%> != null && !conn_<%=cid%>.isClosed())

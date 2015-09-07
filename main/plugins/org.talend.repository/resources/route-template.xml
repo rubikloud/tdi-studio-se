@@ -1,36 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
-    xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.3.0">
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:osgi="http://www.springframework.org/schema/osgi"
+       xmlns:osgix="http://www.springframework.org/schema/osgi-compendium"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+           http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+           http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+           http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
 
-	<!-- Talend Route OSGi blueprint descriptor -->
+    <osgix:cm-properties id="${name}.properties" persistent-id="${name}" />
+
 #if ($hasCXFSamlProvider)
 #[[
-	<cm:property-placeholder persistent-id="org.talend.esb.job.service" placeholder-prefix="$service{" />
+    <osgix:cm-properties id="org.talend.esb.job.service" persistent-id="org.talend.esb.job.service" />
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="properties" ref="org.talend.esb.job.service" />
+        <property name="placeholderPrefix" value="$service{" />
+    </bean>
 ]]#
 #end
 #if ($hasCXFRSSamlProviderAuthz)
 #[[
-	<cm:property-placeholder persistent-id="org.talend.esb.authorization.pep" placeholder-prefix="$pep{" />
+    <osgix:cm-properties id="org.talend.esb.authorization.pep" persistent-id="org.talend.esb.authorization.pep" />
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="properties" ref="org.talend.esb.authorization.pep" />
+        <property name="placeholderPrefix" value="$pep{" />
+    </bean>
 ]]#
 #end
 #if ($hasCXFSamlConsumer)
 #[[
-	<cm:property-placeholder persistent-id="org.talend.esb.job.client" placeholder-prefix="$client{" />
+    <osgix:cm-properties id="org.talend.esb.job.client" persistent-id="org.talend.esb.job.client" />
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="properties" ref="org.talend.esb.job.client" />
+        <property name="placeholderPrefix" value="$client{" />
+    </bean>
 ]]#
 #end
 
 	<bean id="route" class="${className}">
-		<property name="bundleContext" ref="blueprintBundleContext" />
+        <!--osgix:managed-properties persistent-id="${name}" update-strategy="bean-managed" update-method="setArguments" /-->
+		<property name="bundleContext" ref="bundleContext" />
+		<property name="arguments" ref="${name}.properties" />
 		<!-- ESB Features For CXF -->
 #if ($useSAM)
 		<property name="eventFeature">
-			<reference interface="org.talend.esb.sam.agent.feature.EventFeature" />
+			<osgi:reference interface="org.talend.esb.sam.agent.feature.EventFeature" />
 		</property>
 #end
 #if ($hasCXFComponent && ($hasCXFUsernameToken || $hasCXFSamlConsumer || $hasCXFSamlProvider))
 #[[
         <property name="policyProvider">
-            <reference interface="org.talend.esb.security.policy.PolicyProvider" />
+            <osgi:reference interface="org.talend.esb.security.policy.PolicyProvider" />
         </property>
 ]]#
 #end
@@ -71,7 +96,7 @@
 			<map>
 #foreach ($alias in $dataSources)
 				<entry key="${alias}">
-					<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=${alias})" />
+					<osgi:reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=${alias})" />
 				</entry>
 #end ## end data sources aliases loop
 			</map>
@@ -79,15 +104,8 @@
 #end
 	</bean>
 
-	<service ref="route">
-		<interfaces>
-			<value>routines.system.api.TalendJob</value>
-			<value>routines.system.api.TalendESBRoute</value>
-		</interfaces>
-		<service-properties>
-			<entry key="name" value="${name}" />
-			<entry key="type" value="route" />
-		</service-properties>
-	</service>
+    <camel:camelContext id="${name}">
+        <camel:routeBuilder ref="route" />
+    </camel:camelContext>
 
-</blueprint>
+</beans>

@@ -124,15 +124,6 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 					    	}
 					    	dynamicMetadata_<%=cid%>.setDbName(dynamicMetadata_<%=cid%>.getName());
 					    	dynamicMetadata_<%=cid%>.setType("id_String");
-					    	<%
-							if(!version07){
-							%>
-							if(null != sheet_<%=cid%> && sheet_<%=cid%>.getCell(i,1).getType() == jxl.CellType.DATE){
-						    	dynamicMetadata_<%=cid%>.setType("id_date");
-						    }
-							<%
-							}
-							%>
 					    	dynamicMetadata_<%=cid%>.setDbType("VARCHAR");
 					    	dynamicMetadata_<%=cid%>.setLength(100);
 					    	dynamicMetadata_<%=cid%>.setPrecision(0);
@@ -426,16 +417,12 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
                                 temp_row_<%=cid%>[i] = df_<%=cid %>.format(doubleCell_<%=cid%>);
                             }
                         } else{
-							temp_row_<%= cid %>[i] = cell_<%=cid%>.getContents();
+                            temp_row_<%= cid %>[i] = cell_<%=cid%>.getContents();
                         }
 <%
                     }else{
-%>						
-						if(cell_<%=cid%>.getType().equals(jxl.CellType.NUMBER)){
-							temp_row_<%= cid %>[i] = (String.valueOf(df_<%=cid %>.format(((jxl.NumberCell) cell_<%=cid%>).getValue())));
-						}else{
-							temp_row_<%= cid %>[i] = cell_<%=cid%>.getContents();
-						}
+%>
+                        temp_row_<%= cid %>[i] = cell_<%=cid%>.getContents();
 <%
                     }
 %>
@@ -520,15 +507,7 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 						if(temp_row_<%= cid %>[<%=dynamic_index%>+i]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>.length() < 1){
 							emptyColumnCount_<%= cid %>++;
 						}
-						if(dynamic_<%=cid %>.metadatas.get(i).getType().equals("id_date")){
-							String recordDate = temp_row_<%= cid %>[i];
-							SimpleDateFormat baseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-							SimpleDateFormat dynamicDateFormat = new SimpleDateFormat(<%= datePattern %>);
-							String dynamicPatternDate = dynamicDateFormat.format(baseDateFormat.parse(recordDate));
-							dynamic_<%=cid %>.addColumnValue(dynamicPatternDate);
-						}else{
-							dynamic_<%=cid %>.addColumnValue(temp_row_<%= cid %>[<%=dynamic_index%>+i]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>);
-						}
+						dynamic_<%=cid %>.addColumnValue(temp_row_<%= cid %>[<%=dynamic_index%>+i]<%=(isTrimAll || (!trimSelects.isEmpty() && ("true").equals(trimSelects.get(i).get("TRIM"))))?".trim()":"" %>);
 					}
 					else{
 						dynamic_<%=cid %>.addColumnValue("");
@@ -1348,23 +1327,11 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 		<%
 		}
 		%>
-		String datePatternExp = "\\d{4}(-|/)\\d{1,2}(-|/)\\d{1,2}";
 		for(int i_<%=cid%>=0;i_<%=cid%> < tempRowLength_<%=cid%>;i_<%=cid%>++){
 			int current_<%=cid%> = i_<%=cid%> + start_column_<%= cid %>;
 			if(current_<%=cid%> <= actual_end_column_<%= cid %>){
 				if(current_<%=cid%> < row_<%=cid%>.size()){
 					String column_<%=cid%> = row_<%=cid%>.get(current_<%=cid%>);
-				<%
-				if(hasDynamic){
-				%>
-					if(column_<%=cid%>.matches(datePatternExp)){
-						SimpleDateFormat baseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-						SimpleDateFormat dateFormat = new SimpleDateFormat(<%= datePattern %>);
-						column_<%=cid%> = dateFormat.format(baseDateFormat.parse(column_<%=cid%>));
-					}
-				<%
-				}
-				%>
 					if(column_<%=cid%>!=null) {
 						temp_row_<%= cid %>[i_<%=cid%>] = column_<%=cid%>;
 					} else {

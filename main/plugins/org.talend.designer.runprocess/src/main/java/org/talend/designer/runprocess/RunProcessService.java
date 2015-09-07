@@ -340,4 +340,9 @@ public class RunProcessService implements IRunProcessService {
         return delegateService.getProjectPreferenceManager();
     }
 
+    @Override
+    public Set<String> getLibJarsForBD(IProcess process) {
+        return delegateService.getLibJarsForBD(process);
+    }
+
 }

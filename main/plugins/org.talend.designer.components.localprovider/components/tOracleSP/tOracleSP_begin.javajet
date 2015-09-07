@@ -1,11 +1,11 @@
-<%@ jet 
+<%@ jet
 imports="
 	org.talend.core.model.process.INode
 	org.talend.core.model.process.ElementParameterParser
 	org.talend.designer.codegen.config.CodeGeneratorArgument
 	java.util.List
 	java.util.Map
-" 
+"
 %>
 
 <%
@@ -40,15 +40,15 @@ if (useExistingConnection) {
 	for (INode processNode : node.getProcess().getGeneratingNodes()) {
 		if(connection.equals(processNode.getUniqueName())) {
 			connectionNode = processNode;
-			break; 
-		} 
-	} 
+			break;
+		}
+	}
 	boolean specify_alias = "true".equals(ElementParameterParser.getValue(connectionNode, "__SPECIFY_DATASOURCE_ALIAS__"));
 	if(specify_alias){
-		String alias = ElementParameterParser.getValue(connectionNode, "__DATASOURCE_ALIAS__"); 
-		%> 
+		String alias = ElementParameterParser.getValue(connectionNode, "__DATASOURCE_ALIAS__");
+		%>
 		if (null == connection_<%=cid %>) {
-			java.util.Map<String, routines.system.TalendDataSource> dataSources_<%=cid%> = (java.util.Map<String, routines.system.TalendDataSource>) globalMap.get(KEY_DB_DATASOURCES); 
+			java.util.Map<String, routines.system.TalendDataSource> dataSources_<%=cid%> = (java.util.Map<String, routines.system.TalendDataSource>) globalMap.get(KEY_DB_DATASOURCES);
 			connection_<%=cid %> = dataSources_<%=cid%>.get(<%=(null != alias && !("".equals(alias)))?alias:"\"\""%>).getConnection();
 		}
 	<%
@@ -66,16 +66,16 @@ if (useExistingConnection) {
 	}
 	%>
 	<%if("ORACLE_11".equals(dbVersion) || "ORACLE_11-6".equals(dbVersion) || "ORACLE_12".equals(dbVersion) ){%>
-    	java.lang.Class.forName("oracle.jdbc.OracleDriver");	
+    	java.lang.Class.forName("oracle.jdbc.OracleDriver");
     <%}else {%>
-		java.lang.Class.forName("oracle.jdbc.driver.OracleDriver");	
+		java.lang.Class.forName("oracle.jdbc.driver.OracleDriver");
 	<%}%>
 	<%
 	String connectionType = ElementParameterParser.getValue(node, "__CONNECTION_TYPE__");
 	String rac_url = ElementParameterParser.getValue(node, "__RAC_URL__");
 	if("ORACLE_RAC".equals(connectionType)) {
 		%>
-		String connectionString_<%=cid%> = <%=rac_url%>;        
+		String connectionString_<%=cid%> = <%=rac_url%>;
 		<%
 	} else if(("ORACLE_SID").equals(connectionType)) {
 		%>
@@ -91,13 +91,13 @@ if (useExistingConnection) {
 	    <%
 	}
 	%>
-		        
+
 	<%
 	String passwordFieldName = "__PASS__";
 	%>
-	
+
 	<%@ include file="@{org.talend.designer.components.localprovider}/components/templates/password.javajet"%>
-   	
+
 <%
 	if(dbproperties == null || ("\"\"").equals(dbproperties) || ("").equals(dbproperties)) {
 %>
@@ -105,12 +105,12 @@ if (useExistingConnection) {
 <%
 	} else {
 %>
-	String atnParams_<%=cid%> = <%=dbproperties%>;
-	atnParams_<%=cid%> = atnParams_<%=cid%>.replaceAll("&", "\n");
 	java.util.Properties atnParamsPrope_<%=cid%> = new java.util.Properties();
 	atnParamsPrope_<%=cid%>.put("user",<%=dbuser%>);
 	atnParamsPrope_<%=cid%>.put("password",decryptedPassword_<%=cid%>);
-	atnParamsPrope_<%=cid%>.load(new java.io.ByteArrayInputStream(atnParams_<%=cid%>.getBytes()));
+    if(<%= dbproperties %> != null && !"\"\"".equals(<%= dbproperties %>) && !"".equals(<%= dbproperties %>)){
+         atnParamsPrope_<%=cid%>.load(new java.io.ByteArrayInputStream(<%=dbproperties%>.replace("&", "\n").getBytes()));
+     }
 	connection_<%=cid%> = java.sql.DriverManager.getConnection(connectionString_<%=cid%>, atnParamsPrope_<%=cid%>);
 <%
 	}
@@ -122,18 +122,18 @@ if (useExistingConnection) {
 }
 
 %>
-<%	
+<%
 	if (!("NONE").equals(nlsLanguage) || !("NONE").equals(nlsTerritory) ) {
 %>
 	java.sql.Statement stmtNLS_<%=cid %> = connection_<%=cid%>.createStatement();
 <%
 		if(!("NONE").equals(nlsLanguage)){
-%>	
+%>
 		stmtNLS_<%=cid %>.execute("ALTER SESSION SET NLS_LANGUAGE=" +"<%=nlsLanguage%>" );
 <%
 		}
 		if(!("NONE").equals(nlsTerritory)){
-%>	
+%>
 		stmtNLS_<%=cid %>.execute("ALTER SESSION SET NLS_TERRITORY=" +"<%=nlsTerritory%>" );
 <%
 		}

@@ -60,10 +60,10 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.CommonsPlugin;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.emf.EmfHelper;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
-import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.image.ImageUtils;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.CorePlugin;
@@ -1776,19 +1776,11 @@ public class Process extends Element implements IProcess2, IGEFProcess, ILastVer
     }
 
     protected ProcessType getProcessType() {
-        ProcessType processType = null;
-        Item processItem = property.getItem();
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
-            ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault().getService(
-                    ICamelDesignerCoreService.class);
-            processType = camelService.getCamelProcessType(processItem);
-        }
+        final Item processItem = property.getItem();
         if (processItem instanceof ProcessItem) {
-            ProcessItem item = (ProcessItem) processItem;
-            processType = item.getProcess();
+            return ((ProcessItem) processItem).getProcess();
         }
-
-        return processType;
+        return null;
     }
 
     /**
@@ -4301,19 +4293,6 @@ public class Process extends Element implements IProcess2, IGEFProcess, ILastVer
     public boolean isModified() {
         return this.isProcessModified();
     }
-
-    // ADDED for TESB-7887 By GangLiu
-    @Override
-    public boolean needsSpring() {
-        return false;
-    }
-
-    @Override
-    public String getSpringContent() {
-        return null;
-    }
-
-    // END TESB-7887
 
     /**
      * Getter for componentsType.

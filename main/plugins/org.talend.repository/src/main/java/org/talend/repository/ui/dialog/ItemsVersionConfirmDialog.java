@@ -82,7 +82,7 @@ public class ItemsVersionConfirmDialog extends Dialog {
         column.setText(Messages.getString("VersionManagementDialog.NewVersion")); //$NON-NLS-1$
         column.setWidth(90);
 
-        viewer.setContentProvider(new ArrayContentProvider());
+        viewer.setContentProvider(ArrayContentProvider.getInstance());
         viewer.setLabelProvider(new ITableLabelProvider() {
 
             public Image getColumnImage(Object element, int columnIndex) {

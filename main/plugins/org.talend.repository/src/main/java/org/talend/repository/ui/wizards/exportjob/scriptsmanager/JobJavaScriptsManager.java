@@ -137,7 +137,7 @@ public class JobJavaScriptsManager extends JobScriptsManager {
 
     private static final String USER_PIGUDF_PATH = JavaUtils.JAVA_PIGUDF_DIRECTORY;
 
-    private static final String SYSTEM_ROUTINES_PATH = JavaUtils.JAVA_ROUTINES_DIRECTORY + PATH_SEPARATOR
+    protected static final String SYSTEM_ROUTINES_PATH = JavaUtils.JAVA_ROUTINES_DIRECTORY + PATH_SEPARATOR
             + JavaUtils.JAVA_SYSTEM_DIRECTORY;
 
     public static final String SYSTEMROUTINE_JAR = JavaUtils.SYSTEM_ROUTINE_JAR;
@@ -1508,7 +1508,7 @@ public class JobJavaScriptsManager extends JobScriptsManager {
         return classRootFileLocation.toURI().toURL().getPath();
     }
 
-    protected File getClassRootFileLocation() throws CoreException {
+    protected File getClassRootFileLocation() {
         ITalendProcessJavaProject talendProcessJavaProject = RepositoryPlugin.getDefault().getRunProcessService()
                 .getTalendProcessJavaProject();
         if (talendProcessJavaProject == null) {
@@ -1659,7 +1659,7 @@ public class JobJavaScriptsManager extends JobScriptsManager {
         return urlList;
     }
 
-    private Collection<File> getRoutineDependince(ExportFileResource[] process, boolean system, String type) {
+    protected Collection<File> getRoutineDependince(ExportFileResource[] process, boolean system, String type) {
         Collection<File> userRoutines = null;
         try {
             File classRootFileLocation = getClassRootFileLocation();

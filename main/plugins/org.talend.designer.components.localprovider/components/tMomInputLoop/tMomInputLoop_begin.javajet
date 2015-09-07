@@ -211,25 +211,16 @@ imports="
 				<%
 				}
 				%>
-				/*npruss start: changes for static discovery and custom connection parameters and timeout in max message operation*/
 			        	javax.jms.Message message_<%=cid%> = null;
 					<%if(useMaxTimeout){%>
 						message_<%=cid%> = consumer_<%=cid %>.receive(<%=receiveTimeOut%>*1000);
 						if(message_<%=cid%> == null){
 							break;
 						}else{
-							i_<%=cid %>++;
-						}
 					<%}else{%>
 						message_<%=cid%> = consumer_<%=cid %>.receive();
-						if(message_<%=cid%> != null) {
-							i_<%=cid %>++;
-						}
+						if (message_<%=cid%> != null) {
 					<%}%>
-				/*npruss end: changes for static discovery and custom connection parameters and timeout in max message operation*/
-				
-			        //javax.jms.Message message_<%=cid%> = consumer_<%=cid %>.receive();
-			        if (message_<%=cid%> != null) {
 		            	i_<%=cid %>++;
 			<%
 			}else {
@@ -498,16 +489,10 @@ imports="
 							if(message_<%=cid%> == null){
 								break;
 							}else{
-								i_<%=cid %>++;
-							}
 						<%}else{%>
 							message_<%=cid%> = consumer_<%=cid %>.receive();
-							if(message_<%=cid%> != null) {
-								i_<%=cid %>++;
-							}
+							if (message_<%=cid%> != null) {
 						<%}%>
-					
-				        if (message_<%=cid%> != null) {
 			            	i_<%=cid %>++;
 				<%
 				}else {

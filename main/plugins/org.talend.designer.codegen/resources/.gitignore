@@ -29,3 +29,4 @@ header_additional_thales.javajet
 #Spark
 header_additional_spark.javajet
 spark_*.javajet
+sparkstreaming_*.javajet

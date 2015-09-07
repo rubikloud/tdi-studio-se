@@ -128,7 +128,7 @@
 	<CODEGENERATION>
 		<IMPORTS>
 			<!-- MICROSOFT HD INSIGHT 3.1 -->
-            <IMPORT NAME="talend-webhcat-launcher-1.0.0" MODULE="talend-webhcat-launcher-1.0.0.jar" MVN="mvn:org.talend.libraries/talend-webhcat-launcher-1.0.0/6.0.0" 
+            <IMPORT NAME="talend-bigdata-launcher-1.0.0-20150903" MODULE="talend-bigdata-launcher-1.0.0-20150903.jar" MVN="mvn:org.talend.libraries/talend-bigdata-launcher-1.0.0-20150903/6.0.0" 
                 REQUIRED_IF="(USE_EXISTING_CONNECTION=='false') AND (DISTRIBUTION=='MICROSOFT_HD_INSIGHT')" />
             <IMPORT NAME="cxf-api-2.7.7" MODULE="cxf-api-2.7.7.jar" MVN="mvn:org.talend.libraries/cxf-api-2.7.7/6.0.0" 
                 UrlPath="platform:/plugin/org.talend.libraries.apache.cxf/lib/cxf-api-2.7.7.jar"

@@ -724,13 +724,10 @@ public class PropertiesTableEditorView<B> extends AbstractDataTableEditorView<B>
                                     }
                                 }
                                 Integer count = new Integer(index);
-                                if (count != null && count >= 0) {
+                                if (count >= 0) {
                                     return listItemsValue[count];
-                                } else if (count != null && count < 0) {
+                                } else if (count < 0) {
                                     return value;
-                                }
-                                if (value != null && ((Integer) value) >= 0) {
-                                    return listItemsValue[(Integer) value];
                                 }
                                 return value;
 

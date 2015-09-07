@@ -139,7 +139,7 @@ public class ConnectionFormComposite extends Composite {
         formDefaultFactory.copy().applyTo(repositoryLabel);
 
         repositoryCombo = new ComboViewer(formBody, SWT.BORDER | SWT.READ_ONLY);
-        repositoryCombo.setContentProvider(new ArrayContentProvider());
+        repositoryCombo.setContentProvider(ArrayContentProvider.getInstance());
         repositoryCombo.setLabelProvider(new RepositoryFactoryLabelProvider());
         formDefaultFactory.copy().grab(true, false).span(2, 1).applyTo(repositoryCombo.getControl());
 

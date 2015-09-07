@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
@@ -166,24 +167,27 @@ public class BuildJobManager {
         buildJobHandler.build(new SubProgressMonitor(pMonitor, scale));
         IFile jobTargetFile = buildJobHandler.getJobTargetFile();
         if (jobTargetFile != null && jobTargetFile.exists()) {
-            String zipPath = jobTargetFile.getLocation().toPortableString();
+            IPath jobZipLocation = jobTargetFile.getLocation();
+            File jobZipFile = jobZipLocation.toFile();
+            String jobZip = jobZipLocation.toString();
 
             if (needClasspathJar(exportChoiceMap)) {
                 ExportJobUtil.deleteTempFiles();
-                JavaJobExportReArchieveCreator creator = new JavaJobExportReArchieveCreator(zipPath, label);
-                FilesUtils.unzip(jobTargetFile.getLocation().toPortableString(), creator.getTmpFolder() + File.separator + label
-                        + "_" + version);
+                JavaJobExportReArchieveCreator creator = new JavaJobExportReArchieveCreator(jobZip, label);
+                FilesUtils.unzip(jobZip, creator.getTmpFolder() + File.separator + label + "_" + version);
                 creator.buildNewJar();
-                ZipToFile.zipFile(creator.getTmpFolder(), destinationPath);
+                ZipToFile.zipFile(creator.getTmpFolder(), jobZip);
                 creator.deleteTempFiles();
-            } else {
-                File jobFileSource = new File(jobTargetFile.getLocation().toFile().getAbsolutePath());
-                File jobFileTarget = new File(destinationPath);
-                if (jobFileTarget.isDirectory()) {
-                    jobFileTarget = new File(destinationPath, jobFileSource.getName());
-                }
-                FilesUtils.copyFile(jobFileSource, jobFileTarget);
             }
+            // TBD-2500
+            BDJobReArchieveCreator bdRecreator = new BDJobReArchieveCreator(processItem);
+            bdRecreator.create(jobZipFile);
+
+            File jobFileTarget = new File(destinationPath);
+            if (jobFileTarget.isDirectory()) {
+                jobFileTarget = new File(destinationPath, jobZipFile.getName());
+            }
+            FilesUtils.copyFile(jobZipFile, jobFileTarget);
         }
         pMonitor.worked(scale);
         pMonitor.done();
@@ -202,5 +206,4 @@ public class BuildJobManager {
         }
         return addClasspathJar;
     }
-
 }

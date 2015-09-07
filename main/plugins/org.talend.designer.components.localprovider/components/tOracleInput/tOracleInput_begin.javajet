@@ -1,8 +1,8 @@
-<%@ jet 
+<%@ jet
 imports="
-		org.talend.core.model.process.INode 
-		org.talend.core.model.process.ElementParameterParser 
-		org.talend.core.model.metadata.IMetadataTable 
+		org.talend.core.model.process.INode
+		org.talend.core.model.process.ElementParameterParser
+		org.talend.core.model.metadata.IMetadataTable
 		org.talend.core.model.metadata.IMetadataColumn
 		org.talend.designer.codegen.config.CodeGeneratorArgument
 		org.talend.core.model.process.IConnection
@@ -10,21 +10,21 @@ imports="
 		org.talend.core.model.metadata.types.JavaTypesManager
 		java.util.Map
 		java.util.List
-" 
+"
 %>
 	<%@ include file="../templates/DB/Input/HelpClass.javajet"%>
 <%
 	class DBInputBeginUtil extends DefaultDBInputUtil{
-	
+
 		private INode node = null;
-		
+
 		public void beforeComponentProcess(INode node){
 			super.beforeComponentProcess(node);
 			this.node = node;
 		}
-	
+
 		public void setURL(INode node) {
-			
+
 			String localServiceName = ElementParameterParser.getValue(node, "__LOCAL_SERVICE_NAME__");
 			String connectionType = ElementParameterParser.getValue(node, "__CONNECTION_TYPE__");
 			String jdbcURL = ElementParameterParser.getValue(node, "__JDBC_URL__");
@@ -57,16 +57,16 @@ imports="
 
 <%
 		}
-		
+
 		public String getDirverClassName(INode node){
-			String dbVersion =  ElementParameterParser.getValue(node, "__DB_VERSION__"); 
+			String dbVersion =  ElementParameterParser.getValue(node, "__DB_VERSION__");
 			if("ORACLE_11".equals(dbVersion) || "ORACLE_11-6".equals(dbVersion) || "ORACLE_12".equals(dbVersion) ){
-			    return "oracle.jdbc.OracleDriver";	
+			    return "oracle.jdbc.OracleDriver";
 			}else {
-				return "oracle.jdbc.driver.OracleDriver";	
+				return "oracle.jdbc.driver.OracleDriver";
 			}
 		}
-		
+
 		public void createConnection(INode node) {
 			cid = node.getUniqueName();
 			dbproperties = ElementParameterParser.getValue(node, "__PROPERTIES__");
@@ -76,7 +76,7 @@ imports="
 			dbuser = ElementParameterParser.getValue(node, "__USER__");
 
 			String connectionType = ElementParameterParser.getValue(node, "__CONNECTION_TYPE__");
-			String dbVersion =  ElementParameterParser.getValue(node, "__DB_VERSION__"); 
+			String dbVersion =  ElementParameterParser.getValue(node, "__DB_VERSION__");
 			boolean specify_alias = "true".equals(ElementParameterParser.getValue(node, "__SPECIFY_DATASOURCE_ALIAS__"));
 			if(specify_alias){
 				String alias = ElementParameterParser.getValue(node, "__DATASOURCE_ALIAS__");
@@ -102,7 +102,7 @@ imports="
 				String dbPwd_<%=cid %> = decryptedPassword_<%=cid%>;
 
 				<%
-					log4jCodeGenerateUtil.debugConnectionParams(node);	
+					log4jCodeGenerateUtil.debugConnectionParams(node);
 					log4jCodeGenerateUtil.connect_begin();
 				if(("ORACLE_WALLET").equals(connectionType)) {
 %>
@@ -114,12 +114,12 @@ imports="
 <%
 				} else {
 %>
-					String atnParams_<%=cid%> = <%=dbproperties%>;
-					atnParams_<%=cid%> = atnParams_<%=cid%>.replaceAll("&", "\n");
 					java.util.Properties atnParamsPrope_<%=cid%> = new java.util.Properties();
 					atnParamsPrope_<%=cid%>.put("user",dbUser_<%=cid%>);
 					atnParamsPrope_<%=cid%>.put("password",dbPwd_<%=cid%>);
-					atnParamsPrope_<%=cid%>.load(new java.io.ByteArrayInputStream(atnParams_<%=cid%>.getBytes()));
+                    if(<%= dbproperties %> != null && !"\"\"".equals(<%= dbproperties %>) && !"".equals(<%= dbproperties %>)){
+                        atnParamsPrope_<%=cid%>.load(new java.io.ByteArrayInputStream(<%=dbproperties%>.replace("&", "\n").getBytes()));
+                    }
 					conn_<%=cid%> = java.sql.DriverManager.getConnection(url_<%=cid%>, atnParamsPrope_<%=cid%>);
 <%
 				}
@@ -141,7 +141,7 @@ imports="
 <%
 			}
 		}
-		
+
 		public void afterUseExistConnection(INode node) {
 			String dbVersion =  ElementParameterParser.getValue(node, "__DB_VERSION__");
 			if(!"ORACLE_8".equals(dbVersion)){%>
@@ -157,9 +157,9 @@ imports="
 			<%
 			}
 	    }
-		
+
 		public void createStatement(INode node) {
-			
+
 			String useCursor= ElementParameterParser.getValue(node, "__USE_CURSOR__");
 			String cursorSize= ElementParameterParser.getValue(node, "__CURSOR_SIZE__");
 			if(!("true").equals(useCursor)) {
@@ -168,7 +168,7 @@ imports="
             	super.createMinValueStatement(node);
 %>
                 stmt_<%=cid %>.setFetchSize(<%=cursorSize %>);
-				
+
 <%
             }
 		}
@@ -180,7 +180,7 @@ imports="
 				java.io.Reader reader_<%=cid%> = rs_<%=cid %>.getCharacterStream(<%if(isDynamic){%>column_index_<%=cid%><%}else{%><%=currentColNo%><%}%>);
 				java.io.BufferedReader br_<%=cid%> = null;
 				if(reader_<%=cid%> != null) {
-					br_<%=cid%> = new java.io.BufferedReader(reader_<%=cid%>);                 	                        
+					br_<%=cid%> = new java.io.BufferedReader(reader_<%=cid%>);
  	                StringBuffer content_<%=cid%> = new StringBuffer();
  	                int c_<%=cid%> =0;
  	                while( (c_<%=cid%> = br_<%=cid%>.read()) != -1) {
@@ -190,7 +190,7 @@ imports="
 					<%=firstConnName%>.<%=column.getLabel()%> = content_<%=cid%>.toString();
 				} else {
 					<%=firstConnName%>.<%=column.getLabel()%> = null;
-				}                 	                    
+				}
 <%
 			} else {
 %>
@@ -199,11 +199,11 @@ imports="
 			            <%=firstConnName%>.<%=column.getLabel()%> = tmpContent_<%=cid%><%=trimMethod%>;
 			        } else {
 			            <%=firstConnName%>.<%=column.getLabel()%> = null;
-			        }                 	                    
+			        }
 <%
 			}
 	    }
-	    
+
 	   	public void generateBytesResultSet(String firstConnName, IMetadataColumn column, int currentColNo) {
 %>
 			byte [] tmpBytes_<%=cid%> = rs_<%=cid %>.getBytes(<%if(isDynamic){%>column_index_<%=cid%><%}else{%><%=currentColNo%><%}%>);
@@ -211,10 +211,10 @@ imports="
 				<%=firstConnName%>.<%=column.getLabel()%> = tmpBytes_<%=cid%>;
 			} else {
 				<%=firstConnName%>.<%=column.getLabel()%> = null;
-			}		
+			}
 <%
 	    }
-	    
+
 	    public void generateTimestampResultSet(String firstConnName, IMetadataColumn column, int currentColNo) {
 	    	boolean noNullValues = ("true").equals(ElementParameterParser.getValue(node, "__NO_NULL_VALUES__"));
 
@@ -224,7 +224,7 @@ imports="
                 return;
             }
 	    	boolean isTSWithTZ = dbType.matches("TIMESTAMP WITH TIME ZONE");
-	    	
+
 	    	String dbVersion = "";
 			String useExistingConn = ElementParameterParser.getValue(node,"__USE_EXISTING_CONNECTION__");
 		    if(("true").equals(useExistingConn)) {
@@ -262,7 +262,7 @@ imports="
 					    <%=firstConnName%>.<%=column.getLabel()%> = new java.util.Date(timestamp.getTime());
 					} else {
 					    <%=firstConnName%>.<%=column.getLabel()%> = null;
-					}			 
+					}
 				<%
 				}else{
 				//super.generateTimestampResultSet(firstConnName,column,currentColNo);
@@ -279,11 +279,11 @@ imports="
 
 	   	public void generateOthersResultSet(String firstConnName, IMetadataColumn column, int currentColNo, String typeToGenerate) {
 		   	boolean noNullValues = ("true").equals(ElementParameterParser.getValue(node, "__NO_NULL_VALUES__"));
-	   		boolean isConvert = ("true").equals(ElementParameterParser.getValue(node, "__IS_CONVERT_XMLTYPE__"));    
-			List<Map<String, String>> convertColumns = (List<Map<String,String>>)ElementParameterParser.getObjectValue(node, "__CONVERT_XMLTYPE__");  
-	   		
+	   		boolean isConvert = ("true").equals(ElementParameterParser.getValue(node, "__IS_CONVERT_XMLTYPE__"));
+			List<Map<String, String>> convertColumns = (List<Map<String,String>>)ElementParameterParser.getObjectValue(node, "__CONVERT_XMLTYPE__");
+
 			if(("Object").equals(typeToGenerate)){
-			
+
 				boolean needConvert = false;
 	   			String convertToJavaType = "";
 				if (isConvert && convertColumns.size() > 0) {
@@ -293,8 +293,8 @@ imports="
 							convertToJavaType = convertcolumn.get("CONVETTYPE");
 						}
 					}
-				} 
-				
+				}
+
 %>
 				Object tmpObj_<%=currentColNo%>_<%=cid %> = rs_<%=cid %>.getObject(<%if(isDynamic){%>column_index_<%=cid%><%}else{%><%=currentColNo%><%}%>);
 				if(tmpObj_<%=currentColNo%>_<%=cid %> != null) {
@@ -316,9 +316,9 @@ imports="
 						<%=firstConnName%>.<%=column.getLabel()%> = null;
 <%
 					} else {
-%>    
+%>
 						throw new RuntimeException("Null value in non-Nullable column");
-<%    
+<%
 					}
 %>
 				}
@@ -355,29 +355,29 @@ imports="
 				<%
 				}
 				%>
-<%		
+<%
 				if(column.isNullable()) {
 %>
 						<%=firstConnName%>.<%=column.getLabel()%> = null;
 <%
 				} else {
-%>    
+%>
  	                	throw new RuntimeException("Null value in non-Nullable column");
-<%    
+<%
 				}
 %>
 					}
 <%
 			}
-	    }	    
+	    }
 	    //---------end according schema type to generate ResultSet
 	}//end class
-	
+
 	dbInputBeginUtil = new DBInputBeginUtil();
 %>
 
-    
+
 	<%@ include file="../templates/DB/Input/AbstractDBInputBegin.javajet"%>
-	
-	
+
+
 

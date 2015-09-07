@@ -471,4 +471,9 @@ public class DefaultRunProcessService implements IRunProcessService {
         return RunProcessPlugin.getDefault().getProjectPreferenceManager();
     }
 
+    @Override
+    public Set<String> getLibJarsForBD(IProcess process) {
+        return JavaProcessorUtilities.extractLibNamesOnlyForMapperAndReducer(process);
+    }
+
 }

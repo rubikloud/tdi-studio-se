@@ -101,7 +101,7 @@ public class ProcessContextComposite extends Composite {
         contextGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
 
         contextComboViewer = new ComboViewer(contextGroup, SWT.BORDER | SWT.READ_ONLY);
-        contextComboViewer.setContentProvider(new ArrayContentProvider());
+        contextComboViewer.setContentProvider(ArrayContentProvider.getInstance());
         contextComboViewer.setLabelProvider(new ContextNameLabelProvider());
         contextComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         contextComboViewer.getControl().setEnabled(false);
@@ -118,7 +118,7 @@ public class ProcessContextComposite extends Composite {
         colValue.setWidth(COLUMN_WIDTH);
 
         contextTableViewer = new TableViewer(contextTable);
-        contextTableViewer.setContentProvider(new ArrayContentProvider());
+        contextTableViewer.setContentProvider(ArrayContentProvider.getInstance());
         contextTableViewer.setLabelProvider(new ContextParameterLabelProvider());
         GridData data = new GridData(GridData.FILL_BOTH);
         data.heightHint = HINT_HEIGHT;

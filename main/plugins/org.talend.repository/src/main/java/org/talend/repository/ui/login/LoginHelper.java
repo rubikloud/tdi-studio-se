@@ -63,6 +63,8 @@ import org.talend.core.repository.model.RepositoryFactoryProvider;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.services.ICoreTisService;
 import org.talend.core.services.ISVNProviderService;
+import org.talend.core.ui.branding.IBrandingConfiguration;
+import org.talend.core.ui.branding.IBrandingService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryPlugin;
 import org.talend.repository.i18n.Messages;
@@ -112,6 +114,9 @@ public class LoginHelper {
     protected PreferenceManipulator prefManipulator;
 
     public static boolean isRestart;
+
+    private IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault().getService(
+            IBrandingService.class);
 
     public static LoginHelper getInstance() {
         if (instance == null) {
@@ -567,7 +572,7 @@ public class LoginHelper {
                         brancesList.addAll(Arrays.asList(branchList));
                     }
 
-                }else if(!p.isLocal() && !svnProviderService.isSVNProject(p)) {
+                } else if (!p.isLocal() && !svnProviderService.isSVNProject(p)) {
                     brancesList.add(GITConstant.NAME_TRUNK);
                     String[] branchList = svnProviderService.getBranchList(p);
                     if (branchList != null) {
@@ -671,18 +676,30 @@ public class LoginHelper {
         return filePath;
     }
 
-    protected static List<ConnectionBean> filterUsableConnections(List<ConnectionBean> iStoredConnections) {
+    protected List<ConnectionBean> filterUsableConnections(List<ConnectionBean> iStoredConnections) {
         if (iStoredConnections == null) {
             return null;
         }
         List<ConnectionBean> filteredConnections = new ArrayList<ConnectionBean>(iStoredConnections);
-        if (PluginChecker.isSVNProviderPluginLoaded()) {
+        boolean isOnlyRemoteConnection = false;
+        IBrandingConfiguration brandingConfiguration = brandingService.getBrandingConfiguration();
+        if (brandingConfiguration != null) {
+            isOnlyRemoteConnection = brandingConfiguration.isOnlyRemoteConnection();
+        }
+        if (!isOnlyRemoteConnection && PluginChecker.isSVNProviderPluginLoaded()) {
             // if this plugin loaded, then means support remote connections, then no need to filter
             return filteredConnections;
         }
+
+        // can be two case: 1 only local connection, 2 only remote connection
         Iterator<ConnectionBean> connectionBeanIter = filteredConnections.iterator();
         while (connectionBeanIter.hasNext()) {
-            if (LoginHelper.isRemoteConnection(connectionBeanIter.next())) {
+            boolean isRemoteConnection = LoginHelper.isRemoteConnection(connectionBeanIter.next());
+            if (isOnlyRemoteConnection && !isRemoteConnection) {
+                // only remote connection, should remove local
+                connectionBeanIter.remove();
+            } else if (!isOnlyRemoteConnection && isRemoteConnection) {
+                // only local connection, should remove remote
                 connectionBeanIter.remove();
             }
         }

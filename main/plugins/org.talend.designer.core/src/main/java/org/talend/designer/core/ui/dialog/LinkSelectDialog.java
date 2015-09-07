@@ -32,7 +32,7 @@ public class LinkSelectDialog extends ListDialog {
         setTitle("Choose Link");
         setMessage("Target reference several links, please choose one to create.");
         setInput(input);
-        setContentProvider(new ArrayContentProvider());
+        setContentProvider(ArrayContentProvider.getInstance());
         setLabelProvider(new LabelProvider() {
 
             @Override

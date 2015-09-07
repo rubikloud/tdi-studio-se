@@ -13,13 +13,16 @@
 package org.talend.designer.xmlmap;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.process.IExternalNode;
 import org.talend.core.model.process.INode;
 import org.talend.core.service.IXmlMapService;
+import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.model.utils.emf.talendfile.AbstractExternalData;
 import org.talend.designer.xmlmap.model.emf.xmlmap.AbstractInOutTree;
 import org.talend.designer.xmlmap.model.emf.xmlmap.AbstractNode;
@@ -37,6 +40,8 @@ import org.talend.designer.xmlmap.model.emf.xmlmap.VarNode;
 import org.talend.designer.xmlmap.model.emf.xmlmap.VarTable;
 import org.talend.designer.xmlmap.model.emf.xmlmap.XmlMapData;
 import org.talend.designer.xmlmap.model.emf.xmlmap.XmlmapFactory;
+import org.talend.designer.xmlmap.ui.expressionutil.TableEntryLocation;
+import org.talend.designer.xmlmap.ui.expressionutil.XmlMapExpressionManager;
 import org.talend.designer.xmlmap.util.XmlMapConnectionBuilder;
 
 /**
@@ -68,18 +73,16 @@ public class XmlMapService implements IXmlMapService {
         AbstractExternalData oriExternalData = originalNode.getExternalNode().getExternalEmfData();
         AbstractExternalData testExternalData = testNode.getExternalNode().getExternalEmfData();
 
-        if (oriExternalData == null || testExternalData == null) {
-            if (oriExternalData != testExternalData) {
-                return true;
-            }
-        }
-
         if (oriExternalData == null && testExternalData == null) {
             return false;
+        }
+        if (oriExternalData == null || testExternalData == null) {
+            return true;
         }
         if (!(oriExternalData instanceof XmlMapData) || !(testExternalData instanceof XmlMapData)) {
             return false;
         }
+        Map<String, String> inputConnNameMap = getInputConnectionNameMap(testNode);
         XmlMapData oriXmlData = (XmlMapData) oriExternalData;
         XmlMapData testXmlData = (XmlMapData) testExternalData;
 
@@ -90,36 +93,6 @@ public class XmlMapService implements IXmlMapService {
         EList<InputXmlTree> testInputs = testXmlData.getInputTrees();
         EList<OutputXmlTree> testOutputs = testXmlData.getOutputTrees();
         EList<VarTable> testVars = testXmlData.getVarTables();
-
-        if (oriInputs == null || testInputs == null) {
-            if (oriInputs != testInputs) {
-                return true;
-            }
-        }
-
-        if (oriInputs == null && testInputs == null) {
-            return false;
-        }
-
-        if (oriOutputs == null || testOutputs == null) {
-            if (oriOutputs != testOutputs) {
-                return true;
-            }
-        }
-
-        if (oriOutputs == null && testOutputs == null) {
-            return false;
-        }
-
-        if (oriVars == null || testVars == null) {
-            if (oriVars != testVars) {
-                return true;
-            }
-        }
-
-        if (oriVars == null && testVars == null) {
-            return false;
-        }
 
         if (oriInputs.size() != testInputs.size()) {
             return true;
@@ -141,6 +114,9 @@ public class XmlMapService implements IXmlMapService {
                 }
             }
             if (testInput == null) {
+                testInput = getInputXmlTree(testNode, testInputs, oriName);
+            }
+            if (testInput == null) {
                 return true;
             }
             if (oriInput.isActivateExpressionFilter() != testInput.isActivateExpressionFilter()) {
@@ -157,19 +133,6 @@ public class XmlMapService implements IXmlMapService {
             }
             EList<TreeNode> oriEntrys = oriInput.getNodes();
             EList<TreeNode> testEntrys = testInput.getNodes();
-            if (oriEntrys == null && testEntrys != null) {
-                if (testEntrys.isEmpty()) {
-                    return true;
-                }
-            }
-            if (oriEntrys != null && testEntrys == null) {
-                if (oriEntrys.isEmpty()) {
-                    return true;
-                }
-            }
-            if (oriEntrys == null || testEntrys == null) {
-                continue;
-            }
             if (oriEntrys.size() != testEntrys.size()) {
                 return true;
             }
@@ -179,17 +142,10 @@ public class XmlMapService implements IXmlMapService {
                 for (TreeNode testEntry : testEntrys) {
                     if (oriEntryName.equals(testEntry.getName())) {
                         found = true;
-                        if (oriEntry.getExpression() == null || testEntry.getExpression() == null) {
-                            if (oriEntry.getExpression() != testEntry.getExpression()) {
-                                return true;
-                            }
-                        }
-                        if (oriEntry.getExpression() == null && testEntry.getExpression() == null) {
-                            continue;
-                        }
-                        if (!oriEntry.getExpression().equals(testEntry.getExpression())) {
+                        if (checkExpression(oriEntry.getExpression(), testEntry.getExpression(), inputConnNameMap)) {
                             return true;
                         }
+                        break;
                     }
                 }
                 if (!found) {
@@ -206,6 +162,9 @@ public class XmlMapService implements IXmlMapService {
                     testOutput = output;
                     break;
                 }
+            }
+            if (testOutput == null) {
+                testOutput = getOutputXmlTree(testNode, testOutputs, oriName);
             }
             if (testOutput == null) {
                 return true;
@@ -225,19 +184,6 @@ public class XmlMapService implements IXmlMapService {
 
             EList<OutputTreeNode> oriEntrys = oriOutput.getNodes();
             EList<OutputTreeNode> testEntrys = testOutput.getNodes();
-            if (oriEntrys == null && testEntrys != null) {
-                if (!testEntrys.isEmpty()) {
-                    return true;
-                }
-            }
-            if (oriEntrys != null && testEntrys == null) {
-                if (!oriEntrys.isEmpty()) {
-                    return true;
-                }
-            }
-            if (oriEntrys == null || testEntrys == null) {
-                continue;
-            }
             if (oriEntrys.size() != testEntrys.size()) {
                 return true;
             }
@@ -247,17 +193,12 @@ public class XmlMapService implements IXmlMapService {
                 for (OutputTreeNode testEntry : testEntrys) {
                     if (oriEntryName.equals(testEntry.getName())) {
                         found = true;
-                        if (oriEntry.getExpression() == null || testEntry.getExpression() == null) {
-                            if (oriEntry.getExpression() != testEntry.getExpression()) {
+                        if (found) {
+                            if (checkChildOutputTreeNode(oriEntry, testEntry, inputConnNameMap)) {
                                 return true;
                             }
                         }
-                        if (oriEntry.getExpression() == null && testEntry.getExpression() == null) {
-                            continue;
-                        }
-                        if (!oriEntry.getExpression().equals(testEntry.getExpression())) {
-                            return true;
-                        }
+                        break;
                     }
                 }
                 if (!found) {
@@ -283,19 +224,6 @@ public class XmlMapService implements IXmlMapService {
             }
             EList<VarNode> oriEntrys = oriVar.getNodes();
             EList<VarNode> testEntrys = testVar.getNodes();
-            if (oriEntrys == null && testEntrys != null) {
-                if (!testEntrys.isEmpty()) {
-                    return true;
-                }
-            }
-            if (oriEntrys != null && testEntrys == null) {
-                if (!oriEntrys.isEmpty()) {
-                    return true;
-                }
-            }
-            if (oriEntrys == null || testEntrys == null) {
-                continue;
-            }
             if (oriEntrys.size() != testEntrys.size()) {
                 return true;
             }
@@ -305,15 +233,7 @@ public class XmlMapService implements IXmlMapService {
                 for (VarNode testEntry : testEntrys) {
                     if (oriEntryName.equals(testEntry.getName())) {
                         found = true;
-                        if (oriEntry.getExpression() == null || testEntry.getExpression() == null) {
-                            if (oriEntry.getExpression() != testEntry.getExpression()) {
-                                return true;
-                            }
-                        }
-                        if (oriEntry.getExpression() == null && testEntry.getExpression() == null) {
-                            continue;
-                        }
-                        if (!oriEntry.getExpression().equals(testEntry.getExpression())) {
+                        if (checkExpression(oriEntry.getExpression(), testEntry.getExpression(), inputConnNameMap)) {
                             return true;
                         }
                     }
@@ -546,4 +466,133 @@ public class XmlMapService implements IXmlMapService {
         return null;
     }
 
+    private InputXmlTree getInputXmlTree(INode testNode, EList<InputXmlTree> testInputs, String oriName) {
+        ITestContainerProviderService testContainerService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+            testContainerService = (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
+                    ITestContainerProviderService.class);
+        }
+        for (org.talend.core.model.process.IConnection conn : testNode.getIncomingConnections()) {
+            INode source = conn.getSource();
+            if (testContainerService != null && testContainerService.isTestCaseComponent(source.getComponent())) {
+                if (!source.getIncomingConnections().isEmpty() && conn.getUniqueName().equals(oriName)) {
+                    for (InputXmlTree input : testInputs) {
+                        if (input.getName().equals(source.getIncomingConnections().get(0).getUniqueName())) {
+                            return input;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private OutputXmlTree getOutputXmlTree(INode testNode, EList<OutputXmlTree> testOutputs, String oriName) {
+        ITestContainerProviderService testContainerService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+            testContainerService = (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
+                    ITestContainerProviderService.class);
+        }
+        for (org.talend.core.model.process.IConnection conn : testNode.getOutgoingConnections()) {
+            INode target = conn.getTarget();
+            if (testContainerService != null && testContainerService.isTestCaseComponent(target.getComponent())) {
+                if (!target.getOutgoingConnections().isEmpty() && conn.getUniqueName().equals(oriName)) {
+                    for (OutputXmlTree output : testOutputs) {
+                        if (output.getName().equals(target.getOutgoingConnections().get(0).getUniqueName())) {
+                            return output;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean checkExpression(String oriExpression, String testExpression, Map<String, String> inputConnNameMap) {
+        if (oriExpression == null && testExpression == null) {
+            return false;
+        }
+        if (oriExpression == null || testExpression == null) {
+            return true;
+        }
+        if (oriExpression.equals(testExpression)) {
+            return false;
+        }
+        XmlMapExpressionManager expressionManager = new XmlMapExpressionManager();
+        List<TableEntryLocation> oriMatchedLocations = expressionManager.parseTableEntryLocation(oriExpression);
+        List<TableEntryLocation> testMatchedLocations = expressionManager.parseTableEntryLocation(testExpression);
+        if (oriMatchedLocations.size() != testMatchedLocations.size()) {
+            return true;
+        }
+        for (int i = 0; i < oriMatchedLocations.size(); i++) {
+            TableEntryLocation currentLocation = oriMatchedLocations.get(i);
+            TableEntryLocation testLocation = testMatchedLocations.get(i);
+            if (!currentLocation.getColumnValue().equals(testLocation.getColumnValue())) {
+                return true;
+            } else if (inputConnNameMap.get(currentLocation.getTableName()) == null) {
+                return true;
+            } else if (!inputConnNameMap.get(currentLocation.getTableName()).equals(testLocation.getTableName())) {
+                return true;
+            }
+        }
+        if (oriMatchedLocations.isEmpty() && testMatchedLocations.isEmpty()) {
+            if (!oriExpression.equals(testExpression)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkChildOutputTreeNode(TreeNode oriEntry, TreeNode testEntry, Map<String, String> inputConnNameMap) {
+        if (checkExpression(oriEntry.getExpression(), testEntry.getExpression(), inputConnNameMap)) {
+            return true;
+        }
+        EList<TreeNode> oriList = oriEntry.getChildren();
+        EList<TreeNode> testList = testEntry.getChildren();
+        if (oriList == null && testList == null) {
+            return false;
+        }
+        if (oriList == null || testList == null) {
+            return true;
+        }
+        if (oriList.size() != testList.size()) {
+            return true;
+        }
+        for (TreeNode oriNode : oriList) {
+            boolean found = false;
+            for (TreeNode testNode : testList) {
+                if (oriNode.getName().equals(testNode.getName())) {
+                    found = true;
+                    if (found) {
+                        if (checkChildOutputTreeNode(oriNode, testNode, inputConnNameMap)) {
+                            return true;
+                        }
+                    }
+                    break;
+                }
+            }
+            if (!found) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    private Map<String, String> getInputConnectionNameMap(INode testNode) {
+        Map<String, String> inputNameMap = new HashMap<String, String>();
+        ITestContainerProviderService testContainerService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+            testContainerService = (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
+                    ITestContainerProviderService.class);
+        }
+        for (org.talend.core.model.process.IConnection conn : testNode.getIncomingConnections()) {
+            if (testContainerService != null && testContainerService.isTestCaseComponent(conn.getSource().getComponent())) {
+                if (!conn.getSource().getIncomingConnections().isEmpty()) {
+                    inputNameMap.put(conn.getUniqueName(), conn.getSource().getIncomingConnections().get(0).getUniqueName());
+                }
+            }
+        }
+        return inputNameMap;
+    }
 }

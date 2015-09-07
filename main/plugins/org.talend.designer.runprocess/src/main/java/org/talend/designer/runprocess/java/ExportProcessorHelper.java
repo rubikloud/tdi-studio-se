@@ -17,28 +17,32 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.EnumMap;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.SubProgressMonitor;
 import org.talend.commons.utils.io.FilesUtils;
+import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.core.CorePlugin;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.prefs.ITalendCorePrefConstants;
-import org.talend.core.ui.export.ArchiveFileExportOperationFullPath;
+import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.runprocess.Processor;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.ProcessorException;
-import org.talend.designer.runprocess.ProcessorUtilities;
 import org.talend.repository.documentation.ExportFileResource;
 import org.talend.repository.ui.wizards.exportjob.JavaJobScriptsExportWSWizardPage.JobExportType;
+import org.talend.repository.ui.wizards.exportjob.scriptsmanager.BuildJobManager;
 import org.talend.repository.ui.wizards.exportjob.scriptsmanager.JobScriptsManager;
 import org.talend.repository.ui.wizards.exportjob.scriptsmanager.JobScriptsManager.ExportChoice;
 import org.talend.repository.ui.wizards.exportjob.scriptsmanager.JobScriptsManagerFactory;
@@ -51,17 +55,22 @@ public class ExportProcessorHelper {
 
     protected String processName = null;
 
+    protected File archiveFile = null;
+
     public String exportJob(Processor processor, int statisticsPort, int tracePort, String watchParam,
             final IProgressMonitor progressMonitor) throws ProcessorException {
-        Map<ExportChoice, Object> exportChoiceMap = JobScriptsManagerFactory.getDefaultExportChoiceMap();
         ProcessItem processItem = (ProcessItem) processor.getProperty().getItem();
         processName = processor.getProperty().getLabel();
-        ExportFileResource fileResource = new ExportFileResource(processItem, processName);
-        ExportFileResource[] exportFileResources = new ExportFileResource[] { fileResource };
 
-        if (progressMonitor.isCanceled()) {
-            throw new ProcessorException(new InterruptedException());
+        archiveFile = Path
+                .fromOSString(CorePlugin.getDefault().getPreferenceStore().getString(ITalendCorePrefConstants.FILE_PATH_TEMP))
+                .append("remote_run_export" + FileExtensions.ZIP_FILE_SUFFIX).toFile(); //$NON-NLS-1$
+
+        Properties prop = new Properties();
+        if (watchParam != null) {
+            prop.setProperty(TalendProcessArgumentConstant.ARG_ENABLE_WATCH, watchParam);
         }
+        // FIXME, maybe should try another way. it's not good, I think.
         // update directly the .item (without save it) in case of prompt
         // then the generation will be correct automatically in the .properties
         IContext context = processor.getContext();
@@ -86,40 +95,17 @@ public class ExportProcessorHelper {
                 }
             }
         }
-        JobScriptsManager jobScriptsManager = JobScriptsManagerFactory.createManagerInstance(exportChoiceMap, processor
-                .getContext().getName(), JobScriptsManager.ALL_ENVIRONMENTS, statisticsPort, tracePort, JobExportType.POJO);
-        List<ExportFileResource> exportResources = jobScriptsManager.getExportResources(exportFileResources, watchParam);
 
-        if (progressMonitor.isCanceled()) {
-            throw new ProcessorException(new InterruptedException());
+        export(progressMonitor, processItem, ERepositoryObjectType.getItemType(processItem), processor.getContext().getName(),
+                archiveFile.toString(), null, false, statisticsPort, tracePort, prop);
+
+        return archiveFile.toString();
+    }
+
+    public void cleanWorkingDirectory() {
+        if (archiveFile != null && archiveFile.exists() && archiveFile.isFile()) {
+            archiveFile.delete();
         }
-
-        String archiveFilePath = Path.fromOSString(CorePlugin.getDefault().getPreferenceStore()
-                .getString(ITalendCorePrefConstants.FILE_PATH_TEMP))
-                + "/export.zip"; //$NON-NLS-1$ 
-        final ArchiveFileExportOperationFullPath exporterOperation = new ArchiveFileExportOperationFullPath(exportResources,
-                archiveFilePath);
-        exporterOperation.setCreateLeadupStructure(true);
-        exporterOperation.setUseCompression(true);
-
-        final IProgressMonitor subProgressMonitor = new SubProgressMonitor(progressMonitor, 1);
-
-        if (progressMonitor.isCanceled()) {
-            throw new ProcessorException(new InterruptedException());
-        }
-
-        try {
-            exporterOperation.run(subProgressMonitor);
-        } catch (InvocationTargetException e) {
-            throw new ProcessorException(e);
-        } catch (InterruptedException e) {
-            throw new ProcessorException(e);
-        }
-
-        // path can like name/name
-        jobScriptsManager.deleteTempFiles();
-        ProcessorUtilities.resetExportConfig();
-        return archiveFilePath;
     }
 
     public void exportPigudf(IProcessor processor, Property property, int statisticsPort, int tracePort)
@@ -153,5 +139,81 @@ public class ExportProcessorHelper {
             throw new ProcessorException(e.getMessage());
         }
 
+    }
+
+    /**
+     * 
+     * DOC ggu Comment method "export".
+     *
+     * export for execute or deploy the job on job server.
+     */
+    public void export(IProgressMonitor monitor, ProcessItem item, ERepositoryObjectType type, String context,
+            String archiveFile, String log4jLevel, boolean applyContextToChildren, int statisticsPort, int tracePort,
+            Properties properties) throws ProcessorException {
+        if (item == null) {
+            throw new ProcessorException("Can't find the job");
+        }
+        if (monitor == null) {
+            monitor = new NullProgressMonitor();
+        }
+
+        // old way
+        // export(destDir, archiveFileName, context, log4jLevel, applyContextToChildren, statisticsPort, tracePort,
+        // statisticsPort > IProcessor.NO_STATISTICS, name, version, null, false, false, false);
+
+        // mostly, should same as BuildJobExecuteCommand
+        Map<ExportChoice, Object> exportChoiceMap = JobScriptsManagerFactory.getDefaultExportChoiceMap();
+        exportChoiceMap.put(ExportChoice.doNotCompileCode, false);
+        exportChoiceMap.put(ExportChoice.needDependencies, true);
+        exportChoiceMap.put(ExportChoice.addStatistics, (statisticsPort > IProcessor.NO_STATISTICS));
+        exportChoiceMap.put(ExportChoice.addTracs, (tracePort > IProcessor.NO_TRACES));
+        exportChoiceMap.put(ExportChoice.needAntScript, false);
+        exportChoiceMap.put(ExportChoice.needMavenScript, false);
+        exportChoiceMap.put(ExportChoice.applyToChildren, applyContextToChildren);
+        exportChoiceMap.put(ExportChoice.needContext, true);
+        exportChoiceMap.put(ExportChoice.binaries, true);
+        exportChoiceMap.put(ExportChoice.needSourceCode, false);
+        exportChoiceMap.put(ExportChoice.executeTests, false);
+        exportChoiceMap.put(ExportChoice.includeTestSource, false);
+        exportChoiceMap.put(ExportChoice.includeLibs, true);
+        exportChoiceMap.put(ExportChoice.needLog4jLevel, log4jLevel != null);
+        exportChoiceMap.put(ExportChoice.log4jLevel, log4jLevel);
+
+        // set like the method export(...) for buildJob
+        exportChoiceMap.put(ExportChoice.jobType, type);
+        if (context == null) {
+            context = ((ProcessItem) item).getProcess().getDefaultContext();
+        }
+        exportChoiceMap.put(ExportChoice.contextName, context);
+
+        // add some other addition arguments in "properties"
+        Properties prop = new Properties();
+        if (properties != null) { // add init properties.
+            Enumeration<Object> keys = properties.keys();
+            while (keys.hasMoreElements()) {
+                String key = keys.nextElement().toString();
+                String value = properties.getProperty(key);
+                prop.put(key, value);
+            }
+        }
+        prop.put(TalendProcessArgumentConstant.ARG_PORT_STATS, statisticsPort);
+        prop.put(TalendProcessArgumentConstant.ARG_PORT_TRACS, tracePort);
+        exportChoiceMap.put(ExportChoice.properties, prop);
+
+        if (monitor.isCanceled()) {
+            throw new ProcessorException(new InterruptedException());
+        }
+        try {
+            BuildJobManager.getInstance().buildJob(archiveFile, item, item.getProperty().getVersion(), context, exportChoiceMap,
+                    JobExportType.POJO, monitor);
+        } catch (InvocationTargetException e) {
+            if (e.getTargetException() != null) {
+                throw new ProcessorException(e.getTargetException());
+            } else {
+                throw new ProcessorException(e);
+            }
+        } catch (Exception e) {
+            throw new ProcessorException(e);
+        }
     }
 }

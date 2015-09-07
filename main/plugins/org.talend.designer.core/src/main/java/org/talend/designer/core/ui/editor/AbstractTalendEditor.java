@@ -142,6 +142,7 @@ import org.talend.core.model.components.IComponentsHandler;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.process.EConnectionType;
 import org.talend.core.model.process.Element;
+import org.talend.core.model.process.INode;
 import org.talend.core.model.process.INodeConnector;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
@@ -150,6 +151,7 @@ import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.process.node.MapperExternalNode;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.job.IJobResourceProtection;
 import org.talend.core.model.repository.job.JobResource;
@@ -208,6 +210,7 @@ import org.talend.designer.core.ui.editor.process.TalendEditorDropTargetListener
 import org.talend.designer.core.ui.editor.subjobcontainer.SubjobContainer;
 import org.talend.designer.core.ui.editor.subjobcontainer.SubjobContainerPart;
 import org.talend.designer.core.ui.views.jobsettings.JobSettings;
+import org.talend.designer.core.ui.views.problems.Problems;
 import org.talend.designer.core.ui.views.properties.ComponentSettingsView;
 import org.talend.designer.core.utils.ConnectionUtil;
 import org.talend.designer.runprocess.ProcessorUtilities;
@@ -1180,6 +1183,8 @@ public abstract class AbstractTalendEditor extends GraphicalEditorWithFlyoutPale
     public void commandStackChanged(final EventObject event) {
         if (isDirty()) {
             if (!this.savePreviouslyNeeded) {
+                // remove all error status at any change of the job .
+                removeErrorStatusIfDirty();
                 this.savePreviouslyNeeded = true;
                 firePropertyChange(IEditorPart.PROP_DIRTY);
             }
@@ -1188,6 +1193,30 @@ public abstract class AbstractTalendEditor extends GraphicalEditorWithFlyoutPale
             firePropertyChange(IEditorPart.PROP_DIRTY);
         }
         super.commandStackChanged(event);
+    }
+
+    protected void removeErrorStatusIfDirty() {
+        // remove all error status at any change of the job .
+        IProcess2 process = getProcess();
+        if (process != null) {
+            Property property = process.getProperty();
+            if (property != null && !property.getInformations().isEmpty()) {
+                property.getInformations().clear();
+                Problems.computePropertyMaxInformationLevel(property, false);
+                // remove error for all the nodes
+                for (INode psNode : getProcess().getGraphicalNodes()) {
+                    if (psNode instanceof Node) {
+                        Node node = (Node) psNode;
+                        node.setErrorFlag(false);
+                        node.setCompareFlag(false);
+                        node.setErrorInfo(null);
+                        node.getNodeError().updateState("UPDATE_STATUS", false); //$NON-NLS-1$     
+                        node.setErrorInfoChange("ERRORINFO", false); //$NON-NLS-1$     
+                    }
+                }
+                Problems.refreshProblemTreeView();
+            }
+        }
     }
 
     /**

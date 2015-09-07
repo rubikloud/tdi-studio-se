@@ -25,6 +25,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.runprocess.LastGenerationInfo;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.runtime.process.IBuildJobHandler;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
@@ -87,6 +88,27 @@ public abstract class AbstractBuildJobHandler implements IBuildJobHandler {
         return project;
     }
 
+    protected boolean isLog4jEnable() {
+        return Log4jPrefsSettingManager.getInstance().isLog4jEnable();
+    }
+
+    protected boolean needXmlMappings() {
+        // based on the generate codes(ProcessorUtilities.generateCode)
+        if (this.version == null) {
+            return LastGenerationInfo.getInstance().isUseDynamic(processItem.getProperty().getId(),
+                    processItem.getProperty().getVersion());
+        }
+        return LastGenerationInfo.getInstance().isUseDynamic(processItem.getProperty().getId(), this.version);
+    }
+
+    protected boolean needRules() {
+        if (this.version == null) {
+            return LastGenerationInfo.getInstance().isUseRules(processItem.getProperty().getId(),
+                    processItem.getProperty().getVersion());
+        }
+        return LastGenerationInfo.getInstance().isUseRules(processItem.getProperty().getId(), this.version);
+    }
+
     protected String getProgramArgs() {
         StringBuffer programArgs = new StringBuffer();
         StringBuffer profileArgs = getProfileArgs();
@@ -109,29 +131,40 @@ public abstract class AbstractBuildJobHandler implements IBuildJobHandler {
         // should add the default settings always.
         addArg(profileBuffer, true, true, TalendMavenConstants.PROFILE_DEFAULT_SETTING);
 
-        addArg(profileBuffer, false, isOptionChoosed(ExportChoice.needSourceCode),
-                TalendMavenConstants.PROFILE_INCLUDE_JAVA_SOURCES);
+        addArg(profileBuffer, isOptionChoosed(ExportChoice.needSourceCode), TalendMavenConstants.PROFILE_INCLUDE_JAVA_SOURCES);
         // if not binaries, need add maven resources
-        addArg(profileBuffer, false, !isOptionChoosed(ExportChoice.binaries),
-                TalendMavenConstants.PROFILE_INCLUDE_MAVEN_RESOURCES);
-        addArg(profileBuffer, false, isOptionChoosed(ExportChoice.needJobItem), TalendMavenConstants.PROFILE_INCLUDE_ITEMS);
+        addArg(profileBuffer, !isOptionChoosed(ExportChoice.binaries), TalendMavenConstants.PROFILE_INCLUDE_MAVEN_RESOURCES);
+        addArg(profileBuffer, isOptionChoosed(ExportChoice.needJobItem), TalendMavenConstants.PROFILE_INCLUDE_ITEMS);
 
         // for binaries
-        addArg(profileBuffer, false, isOptionChoosed(ExportChoice.includeLibs), TalendMavenConstants.PROFILE_INCLUDE_LIBS);
-        addArg(profileBuffer, false, isOptionChoosed(ExportChoice.binaries), TalendMavenConstants.PROFILE_INCLUDE_BINARIES);
+        addArg(profileBuffer, isOptionChoosed(ExportChoice.includeLibs), TalendMavenConstants.PROFILE_INCLUDE_LIBS);
+        addArg(profileBuffer, isOptionChoosed(ExportChoice.binaries), TalendMavenConstants.PROFILE_INCLUDE_BINARIES);
+
         // the log4j is only useful, when binaries
-        addArg(profileBuffer, false, isOptionChoosed(ExportChoice.binaries)
-                && Log4jPrefsSettingManager.getInstance().isLog4jEnable(), TalendMavenConstants.PROFILE_INCLUDE_LOG4J);
+        if (isLog4jEnable()) {
+            // add log4j to running.
+            addArg(profileBuffer, isOptionChoosed(ExportChoice.binaries), TalendMavenConstants.PROFILE_INCLUDE_RUNNING_LOG4J);
+            // add log4j for resources.
+            addArg(profileBuffer, !isOptionChoosed(ExportChoice.binaries), TalendMavenConstants.PROFILE_INCLUDE_LOG4J);
+        }
         // the running context is only useful, when binaries
-        addArg(profileBuffer, false, isOptionChoosed(ExportChoice.binaries) && isOptionChoosed(ExportChoice.needContext),
+        addArg(profileBuffer, isOptionChoosed(ExportChoice.binaries) && isOptionChoosed(ExportChoice.needContext),
                 TalendMavenConstants.PROFILE_INCLUDE_CONTEXTS);
 
         // for test
-        addArg(profileBuffer, false, isOptionChoosed(ExportChoice.includeTestSource),
-                TalendMavenConstants.PROFILE_INCLUDE_TEST_SOURCES);
-        addArg(profileBuffer, false, isOptionChoosed(ExportChoice.executeTests),
-                TalendMavenConstants.PROFILE_INCLUDE_TEST_REPORTS);
+        addArg(profileBuffer, isOptionChoosed(ExportChoice.includeTestSource), TalendMavenConstants.PROFILE_INCLUDE_TEST_SOURCES);
+        addArg(profileBuffer, isOptionChoosed(ExportChoice.executeTests), TalendMavenConstants.PROFILE_INCLUDE_TEST_REPORTS);
 
+        // xmlMappings folders
+        if (needXmlMappings()) {
+            addArg(profileBuffer, true, TalendMavenConstants.PROFILE_INCLUDE_XMLMAPPINGS);
+            addArg(profileBuffer, isOptionChoosed(ExportChoice.binaries),
+                    TalendMavenConstants.PROFILE_INCLUDE_RUNNING_XMLMAPPINGS);
+        }
+        // rules
+        if (needRules()) {
+            addArg(profileBuffer, true, TalendMavenConstants.PROFILE_INCLUDE_RULES);
+        }
         return profileBuffer;
     }
 
@@ -155,6 +188,10 @@ public abstract class AbstractBuildJobHandler implements IBuildJobHandler {
             commandBuffer.append(NEGATION);
         }
         commandBuffer.append(arg);
+    }
+
+    protected void addArg(StringBuffer commandBuffer, boolean include, String arg) {
+        addArg(commandBuffer, false, include, arg);
     }
 
     @Override

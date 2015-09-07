@@ -50,7 +50,7 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 			        			for (int i = 0; i < sizeColumns; i++){
 			            			IMetadataColumn column = columns.get(i);
 			            			if(isAfterDynamic){
-			            				columnIndex = conn.getName()+"."+dynamicColName +".getColumnCount()+"+i;
+			            				columnIndex = conn.getName()+"."+dynamicColName +".getColumnCount()+"+(i-1);
 			            			}else{
 			            				columnIndex = ""+i;
 			            			}
@@ -71,7 +71,7 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 										isAfterDynamic = true;
 									}else{
 									%>
-										header_<%=cid%>[<%=columnIndex%>] = fieldName_<%=cid%>;
+										header_<%=cid%>[<%=columnIndex%>] = "<%=column.getLabel() %>";
 									<%
 									}
 								}
@@ -102,7 +102,7 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
             			JavaType javaType = JavaTypesManager.getJavaTypeFromId(column.getTalendType());
             			String pattern = column.getPattern() == null || column.getPattern().trim().length() == 0 ? null : column.getPattern();
             			if(hasDynamic && isAfterDynamic){
-            				columnIndex = conn.getName()+"."+dynamicColName +".getColumnCount()+"+i;
+            				columnIndex = conn.getName()+"."+dynamicColName +".getColumnCount()+"+(i-1);
             			}else{
             				columnIndex = ""+i;
             			}
@@ -124,7 +124,7 @@ if ((metadatas!=null)&&(metadatas.size()>0)) {
 								}
 							}
             				<%
-            				isAfterDynamic = false;
+            				isAfterDynamic = true;
             			}else if(JavaTypesManager.isJavaPrimitiveType( column.getTalendType(), column.isNullable())){
         			    %>
         			    	row_<%=cid%>[<%=columnIndex%>] = String.valueOf(<%=conn.getName() %>.<%=column.getLabel() %>);

@@ -107,8 +107,8 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
     /** The report field. */
     private Composite reportComposite;
 
-    /** The scroll composite. */
-    private ScrolledComposite chartScrollCom;
+    /** The chart composite. */
+    private Composite chartComposite;
 
     /** The information composite. */
     private Composite infoComposite;
@@ -315,27 +315,11 @@ public class RuntimeGraphcsComposite extends AbstractRuntimeGraphcsComposite {
         }
         charts.clear();
 
-        if (chartScrollCom != null && !chartScrollCom.isDisposed()) {
-            chartScrollCom.dispose();
+        if (chartComposite != null && !chartComposite.isDisposed()) {
+            chartComposite.dispose();
         }
 
-        chartScrollCom = new ScrolledComposite(chartsPage, SWT.V_SCROLL | SWT.H_SCROLL);
-        chartScrollCom.setExpandHorizontal(true);
-        chartScrollCom.setExpandVertical(true);
-        chartScrollCom.setMinHeight(400);
-        FormLayout scrollLayout = new FormLayout();
-        scrollLayout.marginHeight = 0;
-        scrollLayout.marginWidth = 0;
-        chartScrollCom.setLayout(scrollLayout);
-        FormData pageData = new FormData();
-        pageData.top = new FormAttachment(0, 0);
-        pageData.bottom = new FormAttachment(100, 0);
-        pageData.left = new FormAttachment(0, 0);
-        pageData.right = new FormAttachment(100, 0);
-        chartScrollCom.setLayoutData(pageData);
-
-        Composite chartComposite = new Composite(chartScrollCom, SWT.NONE);
-        chartScrollCom.setContent(chartComposite);
+        chartComposite = new Composite(chartsPage, SWT.NONE);
         FormLayout chartLayout = new FormLayout();
         chartLayout.marginHeight = 0;
         chartLayout.marginWidth = 0;

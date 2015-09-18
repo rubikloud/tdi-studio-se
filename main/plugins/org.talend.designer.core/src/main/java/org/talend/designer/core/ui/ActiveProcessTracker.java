@@ -127,7 +127,7 @@ public class ActiveProcessTracker implements IPartListener {
             changedProcess = true;
             currentProcess = process;
             Contexts.setTitle(process.getLabel());
-            setContextsView(process);
+            setContextsView(process, part);
             // setStatsAndLogsView(process);
             JobSettings.switchToCurJobSettingsView();
 
@@ -177,13 +177,13 @@ public class ActiveProcessTracker implements IPartListener {
      * 
      * @param process
      */
-    private void setContextsView(IProcess2 process) {
+    private void setContextsView(IProcess2 process, IWorkbenchPart part) {
 
         IRunProcessService service = DesignerPlugin.getDefault().getRunProcessService();
         service.setActiveProcess(process, true);
 
         // Contexts.setTitle("Job " + process.getProperty().getLabel()); //$NON-NLS-1$
-        Contexts.switchToCurContextsView();
+        Contexts.switchToCurContextsView(part);
     }
 
     /*

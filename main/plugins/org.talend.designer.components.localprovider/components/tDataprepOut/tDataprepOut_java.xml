@@ -37,6 +37,11 @@
 	</CONNECTORS>
 
 	<PARAMETERS>
+		<!-- the unique name which come from the parent component -->
+		<PARAMETER NAME="UNAME" FIELD="TEXT" REQUIRED="true" NUM_ROW="1" RAW="true" SHOW="false">
+			<DEFAULT>tDataprepRun_1</DEFAULT>
+		</PARAMETER>
+		
 		<PARAMETER NAME="URL" FIELD="TEXT" REQUIRED="true" NUM_ROW="10" GROUP="DATAPREP_CONNECTION">
 			<DEFAULT>"http://localhost"</DEFAULT>
 		</PARAMETER>

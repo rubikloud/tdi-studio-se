@@ -32,12 +32,12 @@ if(inputConn==null) {
 
 String url = ElementParameterParser.getValue(node, "__URL__");
 String preparationId = ElementParameterParser.getValue(node, "__PREPARATION_ID__");
+
+String uname = ElementParameterParser.getValue(node, "__UNAME__");
 %>
-Object result_<%=cid%> = new us.monoid.web.Resty().json(
+Object result_<%=uname%> = new us.monoid.web.Resty().json(
 	""+<%=url %>+":8888/api/demo/preparations/"+<%=preparationId %>+"/content",
 	us.monoid.web.Resty.content(
 		(us.monoid.json.JSONObject)listJson_<%=cid %>
 		)
 	);
-//TODO
-globalMap.put("result_json", result_<%=cid%>);

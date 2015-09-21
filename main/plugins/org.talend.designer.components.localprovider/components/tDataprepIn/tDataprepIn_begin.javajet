@@ -42,10 +42,12 @@ for(IConnection outConnection : outConnections) {
 if(!isValid) {
 	return stringBuffer.toString();
 }
+
+String uname = ElementParameterParser.getValue(node, "__UNAME__");
 %>
 
 int nb_line_<%=cid %> = 0;
-us.monoid.web.JSONResource stats_<%=cid %> = (us.monoid.web.JSONResource) globalMap.get("result_json");
+us.monoid.web.JSONResource stats_<%=cid %> = (us.monoid.web.JSONResource) result_<%=uname%>;
 us.monoid.json.JSONArray arrayJson_<%=cid %> = (us.monoid.json.JSONArray)stats_<%=cid %>.get("records");
 
 for(int current_nb_line_<%=cid%>=0;current_nb_line_<%=cid%> < arrayJson_<%=cid %>.length(); current_nb_line_<%=cid%>++){

@@ -8,5 +8,24 @@
             i18nClass="org.talend.presentation.onboarding.resource.di.OnBoardingJsonI18n">
       </jsonFileResource>
    </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.talend.presentation.onboarding.resource.di.handlers.ImportDemoJobHandler"
+            description="import a demo job for on-boarding presentation"
+            id="org.talend.presentation.onboarding.resource.di.importdemojob"
+            name="Import on-boarding demo job">
+         <commandParameter
+               id="org.talend.presentation.onboarding.resource.di.commandParameter1"
+               name="name1"
+               optional="true">
+         </commandParameter>
+         <commandParameter
+               id="org.talend.presentation.onboarding.resource.di.commandParameter2"
+               name="name2"
+               optional="true">
+         </commandParameter>
+      </command>
+   </extension>
 
 </plugin>

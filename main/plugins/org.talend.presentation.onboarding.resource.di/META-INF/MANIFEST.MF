@@ -3,5 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: On-boarding presentation resource for DI
 Bundle-SymbolicName: org.talend.presentation.onboarding.resource.di;singleton:=true
 Bundle-Version: 6.1.0.qualifier
-Require-Bundle: org.talend.commons.runtime,
- org.talend.presentation.onboarding
+Require-Bundle: org.eclipse.ui,
+ org.talend.commons.runtime,
+ org.talend.presentation.onboarding,
+ org.talend.repository.items.importexport,
+ org.eclipse.equinox.registry,
+ org.talend.repository,
+ org.talend.repository.items.importexport.ui,
+ org.talend.core.repository,
+ org.talend.core.runtime,
+ org.talend.core

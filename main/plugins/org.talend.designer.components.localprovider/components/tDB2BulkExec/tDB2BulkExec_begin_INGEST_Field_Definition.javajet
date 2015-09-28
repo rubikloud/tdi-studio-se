@@ -1,9 +1,8 @@
+<%@ jet %>
 StringBuilder fieldDefinition_<%= cid %> = new StringBuilder(" (");
 <%
     if(optionallyEnclosedBy != null && !"".equals(optionallyEnclosedBy) && !"\"\"".equals(optionallyEnclosedBy)){
-    %>
        applyOptionallyEnclosedBy = true;
-    <%
     }
     int index_y = 0;
     for(IMetadataColumnEnhance imetadataColumnEnhance: iMetadataColumnEnhanceList){
@@ -30,7 +29,7 @@ StringBuilder fieldDefinition_<%= cid %> = new StringBuilder(" (");
           <%
        }
        %>
-            fieldDefinition_<%= cid %>.append("$<%= dbColumnName %>");
+            fieldDefinition_<%= cid %>.append("\"$<%= dbColumnName %>\"");
             <%
             if(startPosition != null && !"".equals(startPosition) && endPosition != null && !"".equals(endPosition)){
             %>
@@ -72,7 +71,14 @@ StringBuilder fieldDefinition_<%= cid %> = new StringBuilder(" (");
          }
          }else if("DECIMAL".equalsIgnoreCase(ingestDataType) || "DEC".equalsIgnoreCase(ingestDataType)){
          %>
-            fieldDefinition_<%= cid %>.append("(<%= lgth %>, <%= precision %>)");
+            fieldDefinition_<%= cid %>.append("(<%= lgth %>,<%= precision %>)");
+            <%
+            if(addExternal4Numeric){
+            %>
+               fieldDefinition_<%= cid %>.append(" EXTERNAL");
+            <%
+            }
+             %>
          <%
          }else if("DATE".equalsIgnoreCase(ingestDataType) || "TIME".equalsIgnoreCase(ingestDataType) || "TIMESTAMP".equalsIgnoreCase(ingestDataType)){
          if(useDatePattern){
@@ -87,16 +93,15 @@ StringBuilder fieldDefinition_<%= cid %> = new StringBuilder(" (");
             fieldDefinition_<%= cid %>.append(<%= optionallyEnclosedBy %>);
             fieldDefinition_<%= cid %>.append("'");
          <%
-         }
+                                      }
          }else{
+         }
+         }else{//For Numeric Types
+         if(addExternal4Numeric){
          %>
-            Compile Err: YOU MUST SET THE DATE PATTERN FOR THE COLUMN <%= columnLabel %>
+            fieldDefinition_<%= cid %>.append(" EXTERNAL");
          <%
          }
-         }else{
-         %>
-            Compile Err: UNSUPPORTED INGEST DATE TYPE <%= ingestDataType %>.
-         <%
          }
        index_y ++;
     }

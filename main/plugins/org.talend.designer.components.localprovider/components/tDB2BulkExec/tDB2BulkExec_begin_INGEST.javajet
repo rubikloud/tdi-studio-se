@@ -1,15 +1,37 @@
+<%@ jet %>
 class FileFinder{
     public String getFilePathJoinedWithComma(java.io.File targetFolder, String globPattern, boolean willRecurse){
+        boolean useGlobPattern = (globPattern != null && !"".equals(globPattern));
         if(!targetFolder.isDirectory()){
             throw new RuntimeException(targetFolder.getAbsolutePath() + "is not a folder.");
         }
         java.util.Collection<java.io.File> collection = org.apache.commons.io.FileUtils.listFiles(targetFolder, null, willRecurse);
-        java.nio.file.PathMatcher matcher = java.nio.file.FileSystems.getDefault().getPathMatcher("glob:" + globPattern);
         StringBuilder strBuilder = new StringBuilder();
         boolean runOnWindows = "\\".equals(System.getProperty("file.separator"));
         int counter = 0;
+        if(useGlobPattern){
+            java.nio.file.PathMatcher matcher = java.nio.file.FileSystems.getDefault().getPathMatcher("glob:" + globPattern);
         for(java.io.File file: collection){
+                if(file.isDirectory()){
+                   continue;
+                }
             if(matcher.matches(new java.io.File(file.getName()).toPath())){
+                    if(counter != 0){
+                        strBuilder.append(", ");
+                    }
+                    String fileAbsPath = file.getAbsolutePath();
+                    if(runOnWindows){
+                           fileAbsPath = fileAbsPath.replace("/","\\");
+                    }
+                        strBuilder.append(fileAbsPath);
+                        counter ++;
+                    }
+            }
+        }else{
+            for(java.io.File file: collection){
+                if(file.isDirectory()){
+                   continue;
+                }
                 if(counter != 0){
                     strBuilder.append(", ");
                 }
@@ -24,12 +46,11 @@ class FileFinder{
         return strBuilder.toString();
     }
 }
-boolean runOnWindows_<%= cid %> = "\\".equals(System.getProperty("file.separator"));
+String runtimeFileSep_<%= cid %> = System.getProperty("file.separator");
+boolean runOnWindows_<%= cid %> = "\\".equals(runtimeFileSep_<%= cid %>);
 java.util.Map<String,String> fileSeparatorMapping_<%= cid %> = new java.util.HashMap<>();
 fileSeparatorMapping_<%= cid %>.put("\\", "/");
 fileSeparatorMapping_<%= cid %>.put("/", "\\");
-
-String runtimeFileSep_<%= cid %> = System.getProperty("file.separator");
 <%
 class IMetadataColumnEnhance{
     private IMetadataColumn iMetadataColumn;
@@ -85,7 +106,12 @@ ingestDataTypeMapping.put("TIMESTAMP", "TIMESTAMP");
 ingestDataTypeMapping.put("VARCHAR", "CHARACTER");
 ingestDataTypeMapping.put("VARGRAPHIC", "UNSUPPORTED");
 ingestDataTypeMapping.put("XML", "UNSUPPORTED");
-
+if(columnList != null && columnList.size()>0){
+    stmtStructure = getManager(dbmsId, cid).createColumnList(columnList, false, null, null);
+    %>
+       <%@ include file="@{org.talend.designer.components.localprovider}/components/templates/_tableActionForBulk.javajet"%>
+    <%
+}
 List<IMetadataTable> metadataList = node.getMetadataList();
 String operationType = ElementParameterParser.getValue(node, "__DATA_ACTION_TYPE__");
 boolean generateValStatement = true;
@@ -96,10 +122,14 @@ if("folder".equals(loadFrom)){
    FileFinder fileFinder_<%= cid %> = new FileFinder();
 <%
 }
+boolean addExternal4Numeric = "false".equals(ElementParameterParser.getValue(node, "__NUMERIC_REPRESENT_IN_BINARY__"));
 String pipeName = ElementParameterParser.getValue(node, "__PIPE_NAME__");
 String targetLoadFile = ElementParameterParser.getValue(node, "__DATA__");
 String targetFolder = ElementParameterParser.getValue(node, "__TARGET_FOLDER__");
 String filePattern = ElementParameterParser.getValue(node, "__FILE_INCLUDE_FILTER__");
+       if(filePattern == null || "".equals(filePattern)){
+            filePattern = null;
+       }
 boolean willRecurse = "true".equals(ElementParameterParser.getValue(node, "__RECURSE_DIRECTORY__"));
 String optionallyEnclosedBy = ElementParameterParser.getValue(node, "__OPTIONALLY_ENCLOSED_BY__");
 boolean applyOptionallyEnclosedBy = false;
@@ -116,11 +146,21 @@ boolean customSetMapping = "true".equals(ElementParameterParser.getValue(node, "
         INode nodeY = NodeUtil.getNodeByUniqueName(node.getProcess(), reusedConn);
         dbschema = ElementParameterParser.getValue(nodeY,"__TABLESCHEMA__");
         db = ElementParameterParser.getValue(nodeY,"__DBNAME__");
+        user = ElementParameterParser.getValue(nodeY,"__USER__");
+        String passwordFieldName = "__PASS__";
+        %>
+        <%if(ElementParameterParser.canEncrypt(nodeY, passwordFieldName)){%>
+            final String decryptedPassword_<%=cid%> = routines.system.PasswordEncryptUtil.decryptPassword(<%=ElementParameterParser.getEncryptedValue(nodeY, passwordFieldName)%>);
+        <%}else{%>
+            final String decryptedPassword_<%=cid%> = <%= ElementParameterParser.getValue(nodeY, passwordFieldName)%>;
+        <%}%>
+        String dbPwd_<%= cid %> = decryptedPassword_<%=cid%>;
+        <%
     }
 %>
     String fullTableName_<%= cid %> = <%= loadTable %>;
     if(!"".equals(<%= dbschema %>) && !"\"\"".equals(<%= dbschema %>) && <%= dbschema %> != null){
-        fullTableName_<%= cid %> = <%= dbschema %> + "." + fullTableName_<%= cid %>;
+        fullTableName_<%= cid %> = "\"" + <%= dbschema %> + "\".\"" + fullTableName_<%= cid %> + "\"";
     }
 <%
 //Error handling options
@@ -182,7 +222,7 @@ String mergeClause = ElementParameterParser.getValue(node, "__MERGE_CLAUSE__");
                   <%
                   if("file".equals(loadFrom)){
                   %>
-                     ingestCmd_<%= cid %>.append(<%= targetLoadFile %>.replace(
+                     ingestCmd_<%= cid %>.append((<%= targetLoadFile %>).replace(
                                                                                  fileSeparatorMapping_<%= cid %>.get(runtimeFileSep_<%= cid %>)
                                                                                  , runtimeFileSep_<%= cid %>)
                                                                                );
@@ -313,11 +353,17 @@ String mergeClause = ElementParameterParser.getValue(node, "__MERGE_CLAUSE__");
                   <%
                   }
                   }else{
+                     if(restartJobId != null && !"".equals(restartJobId) && !"\"\"".equals(restartJobId)){
                   %>
                      ingestCmd_<%= cid %>.append(" '");
                      ingestCmd_<%= cid %>.append(<%= restartJobId %>);
                      ingestCmd_<%= cid %>.append("'");
                   <%
+                     }else{
+                     %>
+                        Compile Err: JOB ID MUST NOT BE EMPTY.
+                     <%
+                     }
                   }
                 }
              }
@@ -343,7 +389,7 @@ String mergeClause = ElementParameterParser.getValue(node, "__MERGE_CLAUSE__");
                            <%
                         }
                         %>
-                             valStatement_<%= cid %>.append("<%= imetadataColumnY.getLabel()%>");
+                             valStatement_<%= cid %>.append("\"<%= imetadataColumnY.getLabel()%>\"");
                              valsStatement_<%= cid %>.append("$<%= imetadataColumnY.getLabel()%>");
                         <%
                         index ++;
@@ -457,6 +503,7 @@ String mergeClause = ElementParameterParser.getValue(node, "__MERGE_CLAUSE__");
                 <%
                 }else if("MERGE".equals(operationType)){
                 %>
+                      ingestCmd_<%= cid %>.append(" ");
                       ingestCmd_<%= cid %>.append(<%= mergeClause %>);
                 <%
                 }
@@ -465,11 +512,12 @@ String mergeClause = ElementParameterParser.getValue(node, "__MERGE_CLAUSE__");
                    <% /* Try to execute the ingest cmd */ %>
                    if(!(scriptPath_<%= cid %>.endsWith("/") || scriptPath_<%= cid %>.endsWith("\\"))){
                        scriptPath_<%= cid %> = scriptPath_<%= cid %> + java.io.File.separator;
-                   }
-                       scriptPath_<%= cid %> = scriptPath_<%= cid %> + "db2_ingest_cmd.db2";
-                       scriptPath_<%= cid %>.replace(
+                    }
+                       scriptPath_<%= cid %> = scriptPath_<%= cid %>.replace(
                                                      fileSeparatorMapping_<%= cid %>.get(runtimeFileSep_<%= cid %>)
                                                      , runtimeFileSep_<%= cid %>);
+                       String scriptStorageFolder_<%= cid %> = scriptPath_<%= cid %>;
+                       scriptPath_<%= cid %> = scriptPath_<%= cid %> + "db2_ingest_cmd.db2";
 
                    java.io.Writer writer_<%= cid %> = new java.io.BufferedWriter(
                                                         new java.io.OutputStreamWriter(
@@ -478,22 +526,33 @@ String mergeClause = ElementParameterParser.getValue(node, "__MERGE_CLAUSE__");
                                                     );
                   writer_<%= cid %>.write("CONNECT TO ");
                   writer_<%= cid %>.write(<%= db %>);
+                  writer_<%= cid %>.write(" USER ");
+                  writer_<%= cid %>.write(<%= user %>);
+                  writer_<%= cid %>.write(" USING ");
+                  writer_<%= cid %>.write(dbPwd_<%= cid %>);
                   writer_<%= cid %>.write(System.getProperty("line.separator"));
                   writer_<%= cid %>.write(ingestCmd_<%= cid %>.toString());
                   writer_<%= cid %>.close();
 
-                   String ingest_cmd_<%= cid %> = "db2 -f " + scriptPath_<%= cid %>;
+                    Process process_<%=cid %> = null;
                    if(runOnWindows_<%= cid %>){
-                        ingest_cmd_<%= cid %> = "cmd /c db2cmd /i " + ingest_cmd_<%= cid %>;
+                        process_<%=cid %> = Runtime.getRuntime().exec("cmd /c db2cmd /i db2 -f " + scriptPath_<%= cid %>);
                    }else{
-                        ingest_cmd_<%= cid %> = "sh -c " + ingest_cmd_<%= cid %>;
+                        process_<%=cid %> = Runtime.getRuntime().exec(new String[]{
+                                               "sh"
+                                              ,"-c"
+                                              ,"db2 -f ./db2_ingest_cmd.db2"
+                                              }
+                                              ,null,new java.io.File(scriptStorageFolder_<%= cid %>)
+                                              );
                    }
 
-                   final Process process_<%=cid %> = Runtime.getRuntime().exec(ingest_cmd_<%= cid %>);
+                   final java.io.InputStream inputStream_<%= cid %> = process_<%=cid %>.getInputStream();
+                   final java.io.InputStream errStream_<%= cid %> = process_<%=cid %>.getErrorStream();
                    Thread normal_<%=cid %> = new Thread() {
                        public void run() {
                            try {
-                               java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(process_<%=cid %>.getInputStream()));
+                               java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(inputStream_<%= cid %>));
                                String line = "";
                                try {
                                    while((line = reader.readLine()) != null) {
@@ -512,7 +571,7 @@ String mergeClause = ElementParameterParser.getValue(node, "__MERGE_CLAUSE__");
                    Thread error_<%=cid %> = new Thread() {
                        public void run() {
                            try {
-                               java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(process_<%=cid %>.getErrorStream()));
+                               java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(errStream_<%= cid %>));
                                String line = "";
                                try {
                                    while((line = reader.readLine()) != null) {

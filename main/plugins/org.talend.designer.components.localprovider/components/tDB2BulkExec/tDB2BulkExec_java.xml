@@ -42,21 +42,21 @@
       SHOW_IF="USE_EXISTING_CONNECTION == 'false'"
     />
 
-  	<PARAMETER
-  	  NAME="USE_EXISTING_CONNECTION"
-  	  FIELD="CHECK"
-	  NUM_ROW="10">
-	  <DEFAULT>false</DEFAULT>
-	</PARAMETER>
+    <PARAMETER
+      NAME="USE_EXISTING_CONNECTION"
+      FIELD="CHECK"
+      NUM_ROW="10">
+      <DEFAULT>false</DEFAULT>
+    </PARAMETER>
 
-	<PARAMETER
-	  NAME="CONNECTION"
-	  FIELD="COMPONENT_LIST"
-	  FILTER="tDB2Connection"
-	  REQUIRED="true"
-	  NUM_ROW="10"
-	  SHOW_IF="USE_EXISTING_CONNECTION == 'true'"
-	  DYNAMIC_SETTINGS="true"
+    <PARAMETER
+      NAME="CONNECTION"
+      FIELD="COMPONENT_LIST"
+      FILTER="tDB2Connection"
+      REQUIRED="true"
+      NUM_ROW="10"
+      SHOW_IF="USE_EXISTING_CONNECTION == 'true'"
+      DYNAMIC_SETTINGS="true"
     />
 
     <PARAMETER
@@ -70,7 +70,7 @@
       <DEFAULT>""</DEFAULT>
     </PARAMETER>
 
-	<PARAMETER
+    <PARAMETER
       NAME="TYPE"
       FIELD="TEXT"
       NUM_ROW="3"
@@ -160,11 +160,11 @@
       </ITEMS>
     </PARAMETER>
 
-	<PARAMETER NAME="NOTE" FIELD="LABEL" NUM_ROW="31"
-			NOT_SHOW_IF="(TABLE_ACTION == 'NONE') OR (USE_EXISTING_CONNECTION == 'false')"
-		>
-		<DEFAULT>Warning : this component configuration will automatically generate a commit before bulk insert</DEFAULT>
-	</PARAMETER>
+    <PARAMETER NAME="NOTE" FIELD="LABEL" NUM_ROW="31"
+            NOT_SHOW_IF="(TABLE_ACTION == 'NONE') OR (USE_EXISTING_CONNECTION == 'false')"
+        >
+        <DEFAULT>Warning : this component configuration will automatically generate a commit before bulk insert</DEFAULT>
+    </PARAMETER>
 
     <PARAMETER NAME="SCHEMA" FIELD="SCHEMA_TYPE" REQUIRED="true" NUM_ROW="35">
       <DEFAULT/>
@@ -355,11 +355,11 @@
         NUM_ROW="50"
         SHOW_IF="(USE_INGEST_COMMAND == 'true') AND (CONTENT_FORMAT == 'POSITIONAL')"
     >
-        <DEFAULT>32</DEFAULT>
+        <DEFAULT></DEFAULT>
     </PARAMETER>
 
     <PARAMETER NAME="EXISTS_IN_TABLE_COLUMN" FIELD="TABLE" NUM_ROW="65" NB_LINES="6"
-        SHOW_IF="USE_INGEST_COMMAND == 'true'">
+        SHOW_IF="(USE_INGEST_COMMAND == 'true') AND (DATA_ACTION_TYPE != 'DELETE')">
         <ITEMS BASED_ON_SCHEMA="true">
             <ITEM NAME="CORRESPOND_TO_THE_TABLE_COLUMN" FIELD="CHECK" VALUE='true'/>
             <ITEM NAME="START" FIELD="TEXT" VALUE='' SHOW_IF="(USE_INGEST_COMMAND == 'true') AND (CONTENT_FORMAT == 'POSITIONAL')"/>
@@ -377,7 +377,7 @@
         <DEFAULT>"__COMP_DEFAULT_FILE_DIR__/"</DEFAULT>
     </PARAMETER>
 
-	<PARAMETER
+    <PARAMETER
       NAME="MAPPING"
       FIELD="MAPPING_TYPE"
       NUM_ROW="55"
@@ -390,24 +390,24 @@
 
   <ADVANCED_PARAMETERS>
 
-	<PARAMETER
-	    NAME="PROPERTIES"
-	    FIELD="TEXT"
-	    NUM_ROW="5"
-	    SHOW_IF="USE_EXISTING_CONNECTION == 'false'"
-	    REPOSITORY_VALUE="PROPERTIES_STRING">
-	    <DEFAULT>""</DEFAULT>
-	</PARAMETER>
+    <PARAMETER
+        NAME="PROPERTIES"
+        FIELD="TEXT"
+        NUM_ROW="5"
+        SHOW_IF="USE_EXISTING_CONNECTION == 'false'"
+        REPOSITORY_VALUE="PROPERTIES_STRING">
+        <DEFAULT>""</DEFAULT>
+    </PARAMETER>
 
-	<PARAMETER
-	    NAME="NOTE"
-	    FIELD="LABEL"
-	    SHOW_IF="USE_EXISTING_CONNECTION == 'false'"
-	    NUM_ROW="6">
-	    <DEFAULT>*Note: Example for Additional JDBC Parameters: "parameterName1=value1;parameterName2=value2;"</DEFAULT>
-	</PARAMETER>
+    <PARAMETER
+        NAME="NOTE"
+        FIELD="LABEL"
+        SHOW_IF="USE_EXISTING_CONNECTION == 'false'"
+        NUM_ROW="6">
+        <DEFAULT>*Note: Example for Additional JDBC Parameters: "parameterName1=value1;parameterName2=value2;"</DEFAULT>
+    </PARAMETER>
 
-  	<PARAMETER
+    <PARAMETER
       NAME="FIELDS_TERMINATED_BY"
       FIELD="TEXT"
       NUM_ROW="10"
@@ -418,7 +418,7 @@
       <DEFAULT>";"</DEFAULT>
     </PARAMETER>
 
-  	<PARAMETER
+    <PARAMETER
       NAME="DATE_FORMAT"
       FIELD="TEXT"
       NUM_ROW="20"
@@ -427,7 +427,7 @@
       <DEFAULT>"YYYYDDD"</DEFAULT>
     </PARAMETER>
 
-  	<PARAMETER
+    <PARAMETER
       NAME="TIME_FORMAT"
       FIELD="TEXT"
       NUM_ROW="20"
@@ -445,25 +445,25 @@
       <DEFAULT>"YYYY-MM-DD-HH.MM.SS"</DEFAULT>
     </PARAMETER>
 
-	<PARAMETER
-  	  NAME="REMOVE_LODA_PENDING"
-  	  FIELD="CHECK"
-	  NUM_ROW="30"
+    <PARAMETER
+      NAME="REMOVE_LODA_PENDING"
+      FIELD="CHECK"
+      NUM_ROW="30"
       NOT_SHOW_IF="USE_INGEST_COMMAND == 'true'"
     >
-	  <DEFAULT>false</DEFAULT>
-	</PARAMETER>
+      <DEFAULT>false</DEFAULT>
+    </PARAMETER>
 
-	<PARAMETER
+    <PARAMETER
       NAME="OPTIONS"
       FIELD="TABLE"
       NUM_ROW="40"
       NB_LINES="5"
       NOT_SHOW_IF="USE_INGEST_COMMAND == 'true'"
     >
-	<!-- VALUE ="LOBS FROM,1"  1.LOBS FROM is load from command parameter
-					2.'1' is 'LOBS FROM' Load from position
-					ps:	LOAD FROM OF (1) DEL MODIFIED BY (2) INTO (3)    -->
+    <!-- VALUE ="LOBS FROM,1"  1.LOBS FROM is load from command parameter
+                    2.'1' is 'LOBS FROM' Load from position
+                    ps: LOAD FROM OF (1) DEL MODIFIED BY (2) INTO (3)    -->
       <ITEMS>
         <ITEM NAME="KEY" FIELD="CLOSED_LIST" >
           <ITEMS DEFAULT="LOBS_FROM">
@@ -486,16 +486,16 @@
             <ITEM NAME="DATA_BUFFER"    VALUE="DATA BUFFER,3"/>
             <ITEM NAME="SORT_BUFFER"    VALUE="SORT BUFFER,3"/>
             <ITEM NAME="CPU_PARALLELISM"    VALUE="CPU_PARALLELISM,3"/>
-          	<ITEM NAME="DISK_PARALLELISM"    VALUE="DISK_PARALLELISM,3"/>
-          	<ITEM NAME="INDEXING_MODE"    VALUE="INDEXING MODE,3"/>
-          	<ITEM NAME="ALLOW_NO_ACCESS"    VALUE="ALLOW NO ACCESS,3"/>
-          	<ITEM NAME="ALLOW_READ_ACCESS"    VALUE="ALLOW READ ACCESS,3"/>
-          	<ITEM NAME="CHECK_PENDING_CASCADE"    VALUE="CHECK PENDING CASCADE,3"/>
-          	<ITEM NAME="LOCK_WITH_FORCE"    VALUE="LOCK WITH FORCE,3"/>
+            <ITEM NAME="DISK_PARALLELISM"    VALUE="DISK_PARALLELISM,3"/>
+            <ITEM NAME="INDEXING_MODE"    VALUE="INDEXING MODE,3"/>
+            <ITEM NAME="ALLOW_NO_ACCESS"    VALUE="ALLOW NO ACCESS,3"/>
+            <ITEM NAME="ALLOW_READ_ACCESS"    VALUE="ALLOW READ ACCESS,3"/>
+            <ITEM NAME="CHECK_PENDING_CASCADE"    VALUE="CHECK PENDING CASCADE,3"/>
+            <ITEM NAME="LOCK_WITH_FORCE"    VALUE="LOCK WITH FORCE,3"/>
           </ITEMS>
         </ITEM>
         <ITEM NAME="VALUE" FIELD="TEXT"
-        	READONLY_IF="(OPTIONS.KEY =='NONRECOVERABLE') OR (OPTIONS.KEY =='ALLOW_NO_ACCESS') OR (OPTIONS.KEY =='LOCK_WITH_FORCE')"/>
+            READONLY_IF="(OPTIONS.KEY =='NONRECOVERABLE') OR (OPTIONS.KEY =='ALLOW_NO_ACCESS') OR (OPTIONS.KEY =='LOCK_WITH_FORCE')"/>
       </ITEMS>
     </PARAMETER>
 <!--
@@ -564,6 +564,14 @@
          <DEFAULT>false</DEFAULT>
      </PARAMETER>
 
+     <PARAMETER
+         NAME="NUMERIC_REPRESENT_IN_BINARY"
+         FIELD="CHECK"
+         NUM_ROW="50"
+         SHOW_IF="(USE_INGEST_COMMAND == 'true') AND (CONTENT_FORMAT == 'POSITIONAL')">
+         <DEFAULT>false</DEFAULT>
+     </PARAMETER>
+
     <PARAMETER
         NAME="INPUT_CODE_PAGE"
         FIELD="TEXT"
@@ -609,7 +617,7 @@
         NAME="EXCEPTION_TABLE"
         FIELD="TEXT"
         NUM_ROW="82"
-        SHOW_IF="USE_INGEST_COMMAND == 'true'"
+        SHOW_IF="USE_INGEST_COMMAND == 'true' AND ((DATA_ACTION_TYPE == 'INSERT') OR (DATA_ACTION_TYPE == 'REPLACE'))"
     >
         <DEFAULT>""</DEFAULT>
     </PARAMETER>
@@ -638,7 +646,7 @@
         NUM_ROW="90"
         SHOW_IF="USE_INGEST_COMMAND == 'true'"
     >
-        <DEFAULT>false</DEFAULT>
+        <DEFAULT>true</DEFAULT>
     </PARAMETER>
 
     <PARAMETER
@@ -670,9 +678,9 @@
 
   <CODEGENERATION>
     <IMPORTS>
-      	<IMPORT NAME="Driver-DB2" MODULE="db2jcc.jar" MVN="mvn:org.talend.libraries/db2jcc/6.0.0"  REQUIRED="true" />
-		<IMPORT NAME="Driver-DB2" MODULE="db2jcc_license_cu.jar" MVN="mvn:org.talend.libraries/db2jcc_license_cu/6.0.0"  REQUIRED="true" />
-		<IMPORT NAME="Driver-DB2" MODULE="db2jcc_license_cisuz.jar" MVN="mvn:org.talend.libraries/db2jcc_license_cisuz/6.0.0"  REQUIRED="true" />
+        <IMPORT NAME="Driver-DB2" MODULE="db2jcc.jar" MVN="mvn:org.talend.libraries/db2jcc/6.0.0"  REQUIRED="true" />
+        <IMPORT NAME="Driver-DB2" MODULE="db2jcc_license_cu.jar" MVN="mvn:org.talend.libraries/db2jcc_license_cu/6.0.0"  REQUIRED="true" />
+        <IMPORT NAME="Driver-DB2" MODULE="db2jcc_license_cisuz.jar" MVN="mvn:org.talend.libraries/db2jcc_license_cisuz/6.0.0"  REQUIRED="true" />
         <IMPORT NAME="commons-io-2.4" MODULE="commons-io-2.4.jar" MVN="mvn:org.talend.libraries/commons-io-2.4/6.0.0"  UrlPath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-io-2.4.jar" REQUIRED="true" />
     </IMPORTS>
   </CODEGENERATION>

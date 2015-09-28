@@ -1,11 +1,10 @@
+<%@ jet %>
 <%
 String action = ElementParameterParser.getValue(node, "__DATA_ACTION__");
 String field_separator = ElementParameterParser.getValue(node, "__FIELDS_TERMINATED_BY__");
 String file = ElementParameterParser.getValue(node, "__DATA__");
 
 String dataAction = ElementParameterParser.getValue(node,"__DATA_ACTION__");
-String tableAction = ElementParameterParser.getValue(node,"__TABLE_ACTION__");
-String dbmsId = ElementParameterParser.getValue(node,"__MAPPING__");
 
 String dateformat = ElementParameterParser.getValue(node, "__DATE_FORMAT__");
 String timeformat = ElementParameterParser.getValue(node, "__TIME_FORMAT__");

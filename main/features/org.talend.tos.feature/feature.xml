@@ -181,18 +181,5 @@
          version="0.0.0"
          fragment="true"
          unpack="false"/>
-   <plugin
-         id="org.talend.presentation.onboarding.resource.di"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="true"/>
 
-   <plugin
-         id="org.talend.presentation.onboarding.resource.di.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="true"/>
 </feature>

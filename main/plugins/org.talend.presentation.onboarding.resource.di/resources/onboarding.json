@@ -2,52 +2,19 @@
 	"id": "org.talend.presentation.onboarding.resource.di",
 	"description": "On-boarding presentation json doc for DI",
 	"defaultPerspId": "org.talend.rcp.perspective",
+	"onOpen": {
+        "commandId": "org.talend.presentation.onboarding.resource.di.handleevent",
+        "commandParameters": {
+            "org.talend.presentation.onboarding.resource.di.handleevent.type": "ON_OPEN"
+        }
+    },
+	"onClose": {
+        "commandId": "org.talend.presentation.onboarding.resource.di.handleevent",
+        "commandParameters": {
+            "org.talend.presentation.onboarding.resource.di.handleevent.type": "ON_CLOSE"
+        }
+    },
 	"contents":[
-		{
-			"perspId": "org.talend.camel.perspective",
-			"pages": [
-				    {
-						"size": "500,300",
-						"cssIds": null,
-						"onShow": null,
-						"onNext": null,
-						"title": "<internationalization id='onboarding.page1.title'/>",
-						"content": "<internationalization id='onboarding.page1.content'/>"
-					},
-					{
-					    "size": "500,300",
-						"cssIds": "#navigatorLayout || .MPart#org-talend-repository-cnf-view",
-                        "onShow": null,
-                        "onNext": null,
-						"title": "<internationalization id='onboarding.page2.title'/>",
-						"content": "<internationalization id='onboarding.page2.content'/>"
-					},
-					{
-						"size": "600,300",
-						"cssIds": ".MPlaceholder#org-eclipse-ui-editorss",
-                        "onShow": null,
-                        "onNext": null,
-						"title": "<internationalization id='onboarding.page3.title'/>",
-						"content": "<internationalization id='onboarding.page3.content'/>"
-					},
-					{
-						"size": "600,300",
-						"cssIds": "#bottomLayout",
-                        "onShow": null,
-                        "onNext": null,
-						"title": "<internationalization id='onboarding.page4.title'/>",
-						"content": "<internationalization id='onboarding.page4.content'/>"
-					},
-					{
-						"size": "500,300",
-						"cssIds": "#paletteLayout || .MPart#org-eclipse-gef-ui-palette_view",
-                        "onShow": null,
-                        "onNext": null,
-						"title": "<internationalization id='onboarding.page5.title'/>",
-						"content": "<internationalization id='onboarding.page5.content'/>"
-					}
-			]
-		},
 		{
 			"perspId": "org.talend.rcp.perspective",
 			"pages": [
@@ -57,12 +24,9 @@
                         "onShow": null,
                         "onNext": {
 							"commandId": "org.talend.presentation.onboarding.resource.di.importdemojob",
-							"commandParameters": {
-								"org.talend.presentation.onboarding.resource.di.commandParameter1": "value1",
-								"org.talend.presentation.onboarding.resource.di.commandParameter2": "value2"
-							}
+							"commandParameters": null
 						},
-						"title": "<div style='color:red;'><internationalization id='onboarding.page1.title'/></div>",
+						"title": "<div style='color:blue;'>1. <internationalization id='onboarding.page1.title'/></div>",
 						"content": "<internationalization id='onboarding.page1.content'/>"
 					},
 					{
@@ -70,7 +34,7 @@
 						"cssIds": "#navigatorLayout || .MPart#org-talend-repository-cnf-view",
                         "onShow": null,
                         "onNext": null,
-						"title": "<internationalization id='onboarding.page2.title'/>",
+						"title": "2. <internationalization id='onboarding.page2.title'/>",
 						"content": "<internationalization id='onboarding.page2.content'/>"
 					},
 					{
@@ -78,7 +42,7 @@
 						"cssIds": ".MPlaceholder#org-eclipse-ui-editorss",
                         "onShow": null,
                         "onNext": null,
-						"title": "<internationalization id='onboarding.page3.title'/>",
+						"title": "3. <internationalization id='onboarding.page3.title'/>",
 						"content": "<internationalization id='onboarding.page3.content'/>"
 					},
 					{
@@ -86,15 +50,15 @@
 						"cssIds": "#bottomLayout",
                         "onShow": null,
                         "onNext": null,
-						"title": "<internationalization id='onboarding.page4.title'/>",
-						"content": "<internationalization id='onboarding.page4.content'/><contentProvider id='PRODUCT_NAME' class='org.talend.rcp.intro.contentProvider.StartingContentProvider' pluginId='org.talend.rcp'></contentProvider><a href='http://org.eclipse.ui.intro/runAction?pluginId=org.talend.rcp&amp;class=org.talend.rcp.intro.starting.ShowViewsAction&amp;id=org.talend.rcp.intro.starting.ShowViewsAction&amp;type=SHOW_RUN_JOB' ><strong style='color:#00c'>Run Job</strong></a>"
+						"title": "4. <internationalization id='onboarding.page4.title'/>",
+						"content": "<internationalization id='onboarding.page4.content'/>"
 					},
 					{
 						"size": "500,300",
 						"cssIds": "#paletteLayout || .MPart#org-eclipse-gef-ui-palette_view",
                         "onShow": null,
                         "onNext": null,
-						"title": "<internationalization id='onboarding.page5.title'/>",
+						"title": "5. <internationalization id='onboarding.page5.title'/>",
 						"content": "<internationalization id='onboarding.page5.content'/>"
 					}
 			]

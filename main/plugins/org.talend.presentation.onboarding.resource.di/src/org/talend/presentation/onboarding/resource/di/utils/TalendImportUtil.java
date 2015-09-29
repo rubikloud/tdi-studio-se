@@ -12,21 +12,32 @@
 // ============================================================================
 package org.talend.presentation.onboarding.resource.di.utils;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.zip.ZipFile;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.CommonExceptionHandler;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.properties.Property;
 import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.seeker.RepositorySeekerManager;
+import org.talend.core.ui.editor.JobEditorInput;
+import org.talend.designer.core.ui.AbstractMultiPageTalendEditor;
+import org.talend.designer.core.ui.MultiPageTalendEditor;
+import org.talend.designer.core.ui.editor.ProcessEditorInput;
 import org.talend.repository.items.importexport.handlers.ImportExportHandlersManager;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
@@ -45,13 +56,14 @@ public class TalendImportUtil {
     private static ImportNodesBuilder nodesBuilder = new ImportNodesBuilder();
 
     private static List<ImportItem> populateItems(final ImportExportHandlersManager importManager,
-            final ResourcesManager resourcesManager, final Shell shell, final boolean overwrite) {
+            final ResourcesManager resourcesManager, IProgressMonitor monitor, final boolean overwrite) {
         List<ImportItem> selectedItemRecords = new ArrayList<ImportItem>();
         nodesBuilder.clear();
         if (resourcesManager != null) { // if resource is not init successfully.
             try {
-                List<ImportItem> items = importManager.populateImportingItems(resourcesManager, overwrite,
-                        new NullProgressMonitor(), true);
+                // List<ImportItem> items = importManager.populateImportingItems(resourcesManager, overwrite,
+                // new NullProgressMonitor(), true);
+                List<ImportItem> items = importManager.populateImportingItems(resourcesManager, overwrite, monitor, true);
                 nodesBuilder.addItems(items);
             } catch (Exception e) {
                 CommonExceptionHandler.process(e);
@@ -69,17 +81,23 @@ public class TalendImportUtil {
         return selectedItemRecords;
     }
 
-    public static boolean importItems(final Shell shell, String path, final boolean overwrite) {
-        File srcFile = new File(path);
+    public static boolean importItems(String zipPath, IProgressMonitor monitor, final boolean overwrite, final boolean openThem)
+            throws IOException {
+        // File srcFile = new File(zipPath);
+        ZipFile srcZipFile = new ZipFile(zipPath);
         final ImportExportHandlersManager importManager = new ImportExportHandlersManager();
-        final ResourcesManager resourcesManager = ResourcesManagerFactory.getInstance().createResourcesManager();
-        resourcesManager.collectPath2Object(srcFile);
-        final List<ImportItem> items = populateItems(importManager, resourcesManager, shell, overwrite);
-        List<String> itemIds = new ArrayList<String>();
+        final ResourcesManager resourcesManager = ResourcesManagerFactory.getInstance().createResourcesManager(srcZipFile);
+        // resourcesManager.collectPath2Object(srcFile);
+        resourcesManager.collectPath2Object(srcZipFile);
+        final List<ImportItem> items = populateItems(importManager, resourcesManager, monitor, overwrite);
+        final List<String> itemIds = new ArrayList<String>();
         try {
             for (ImportItem itemRecord : items) {
                 Item item = itemRecord.getProperty().getItem();
-                itemIds.add(item.getProperty().getId());
+                if (item instanceof ProcessItem) {
+                    // only select jobs
+                    itemIds.add(item.getProperty().getId());
+                }
                 IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
                 if (item.getState().isLocked()) {
                     factory.unlock(item);
@@ -89,8 +107,10 @@ public class TalendImportUtil {
                     factory.unlock(item);
                 }
             }
-            importManager.importItemRecords(new NullProgressMonitor(), resourcesManager, items, overwrite,
-                    nodesBuilder.getAllImportItemRecords(), null);
+            // importManager.importItemRecords(new NullProgressMonitor(), resourcesManager, items, overwrite,
+            // nodesBuilder.getAllImportItemRecords(), null);
+            importManager.importItemRecords(monitor, resourcesManager, items, overwrite, nodesBuilder.getAllImportItemRecords(),
+                    null);
         } catch (Exception e) {
             CommonExceptionHandler.process(e);
         } finally {
@@ -100,11 +120,17 @@ public class TalendImportUtil {
             }
             nodesBuilder.clear();
         }
-        doSelection(itemIds);
+        Display.getDefault().syncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                doSelection(itemIds, openThem);
+            }
+        });
         return true;
     }
 
-    private static void doSelection(List<String> itemIds) {
+    private static void doSelection(List<String> itemIds, final boolean openThem) {
         List<IRepositoryNode> nodes = new ArrayList<IRepositoryNode>();
         RepositorySeekerManager repSeekerManager = RepositorySeekerManager.getInstance();
         for (String itemId : itemIds) {
@@ -113,8 +139,48 @@ public class TalendImportUtil {
                 nodes.add(repoViewNode);
             }
         }
+
+        if (openThem) {
+            openJobs(nodes);
+        }
+
         IRepositoryView repositoryView = RepositoryManagerHelper.findRepositoryView();
         repositoryView.getViewer().setSelection(new StructuredSelection(nodes));
     }
 
+    private static void openJobs(List<IRepositoryNode> nodes) {
+        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        for (IRepositoryNode node : nodes) {
+            Property property = node.getObject().getProperty();
+            if (property != null) {
+                Item item = property.getItem();
+                if (!(item instanceof ProcessItem)) {
+                    continue;
+                }
+                try {
+                    ProcessItem processItem = (ProcessItem) item;
+                    final JobEditorInput fileEditorInput = getEditorInput(processItem);
+                    // checkUnLoadedNodeForProcess(fileEditorInput);
+                    final IEditorPart editorPart = page.findEditor(fileEditorInput);
+                    if (editorPart == null) {
+                        fileEditorInput.setRepositoryNode(node);
+                        page.openEditor(fileEditorInput, getEditorId(), true);
+                    } else {
+                        ((AbstractMultiPageTalendEditor) editorPart).setReadOnly(fileEditorInput.setForceReadOnly(false));
+                        page.activate(editorPart);
+                    }
+                } catch (Throwable e) {
+                    CommonExceptionHandler.process(e);
+                }
+            }
+        }
+    }
+
+    private static JobEditorInput getEditorInput(final ProcessItem processItem) throws PersistenceException {
+        return new ProcessEditorInput(processItem, true, true);
+    }
+
+    private static String getEditorId() {
+        return MultiPageTalendEditor.ID;
+    }
 }

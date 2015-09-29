@@ -15,6 +15,7 @@ package org.talend.presentation.onboarding.resource.di.i18n;
 import java.util.ResourceBundle;
 
 import org.talend.commons.i18n.MessagesCore;
+import org.talend.presentation.onboarding.resource.di.utils.OnBoardingDIResourceConstants;
 
 /**
  * created by cmeng on Sep 22, 2015 Detailled comment
@@ -22,7 +23,7 @@ import org.talend.commons.i18n.MessagesCore;
  */
 public class Messages extends MessagesCore {
 
-    private static final String PLUGIN_ID = "org.talend.presentation.onboarding.resource.di"; //$NON-NLS-1$
+    private static final String PLUGIN_ID = OnBoardingDIResourceConstants.PLUGIN_ID;
 
     private static final String BUNDLE_NAME = "messages"; //$NON-NLS-1$
 

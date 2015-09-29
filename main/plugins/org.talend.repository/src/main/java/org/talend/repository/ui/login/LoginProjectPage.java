@@ -12,12 +12,16 @@
 // ============================================================================
 package org.talend.repository.ui.login;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -37,6 +41,9 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.DisposeEvent;
@@ -1739,9 +1746,12 @@ public class LoginProjectPage extends AbstractLoginActionPage {
             	branchesViewer.setInput(projectBranches);
             	branchesViewer.setSelection(new StructuredSelection(new Object[] { "trunk" })); //$NON-NLS-1$
             }else if("git".equals(storage))	{
-            	projectBranches.add("master");
+            	List<String> branches=getBranches(project);
+            	projectBranches.addAll(branches);
             	branchesViewer.setInput(projectBranches);
-            	branchesViewer.setSelection(new StructuredSelection(new Object[] { "master" }));
+            	if(projectBranches.size()!=0)
+            		branchesViewer.setSelection(new StructuredSelection(new Object[] { projectBranches.contains("master")?"master":projectBranches.get(0) }));
+            	
             }
             branchesViewer.getCombo().setEnabled(false);
             if (backgroundGUIUpdate == null/* || (backgroundGUIUpdate.getState() == Job.NONE) */) {
@@ -1775,7 +1785,12 @@ public class LoginProjectPage extends AbstractLoginActionPage {
                                             return;
                                         }
                                         branchesViewer.setInput(projectBranches);
-                                        branchesViewer.setSelection(new StructuredSelection(new Object[] { projectBranches.get(0) })); //$NON-NLS-1$                                        
+                                        //branchesViewer.setSelection(new StructuredSelection(new Object[] { projectBranches.get(0) })); //$NON-NLS-1$ 
+                                        if("svn".equals(storage) && projectBranches.size()!=0)	{
+                                        	branchesViewer.setSelection(new StructuredSelection(new Object[] { projectBranches.contains("trunk")?"trunk":projectBranches.get(0) }));
+                                        }else if("git".equals(storage) && projectBranches.size()!=0)	{
+                                        	branchesViewer.setSelection(new StructuredSelection(new Object[] { projectBranches.contains("master")?"master":projectBranches.get(0) }));
+                                        }
                                         // svnBranchCombo.getCombo().setFont(originalFont);
                                         branchesViewer.getCombo().setEnabled(projectViewer.getControl().isEnabled());
                                     }
@@ -1796,7 +1811,50 @@ public class LoginProjectPage extends AbstractLoginActionPage {
         }
     }
 
-    /**
+    private List<String> getBranches(Project project) {
+		List<String> branches=new ArrayList<String>();
+    	try {
+			branches=getShallowCloneBranches(project);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		return branches;
+	}
+
+    private String getLocation(Project project) throws JSONException {
+        String location = "";
+        if (project != null) {
+            String url = project.getEmfProject().getUrl();
+            JSONObject jsonObj = new JSONObject(url);
+            location = jsonObj.getString("location");
+        }
+        return location;
+    }
+    
+    public List<String> getShallowCloneBranches(Project project) throws JSONException, GitAPIException, IOException {
+		List<String> branches=new ArrayList<String>();
+		String location=getLocation(project);
+		String tempRepositoryName=location.hashCode()+"temp";
+		String tempRepositoryLocation=ResourcesPlugin.getWorkspace().getRoot().getLocation().toString() + File.separator + ".repositories" + File.separator + "temp" + File.separator +tempRepositoryName + File.separator +".git";
+		File tempRepositoryFile=new File(tempRepositoryLocation);
+		Git git;
+		if(!tempRepositoryFile.exists())	{
+			git = Git.init().setDirectory(tempRepositoryFile).setBare(true).call();
+		} else	{
+			git=Git.open(tempRepositoryFile);
+		}
+		Collection<Ref> branchList = git.lsRemoteRepository().setRemote(location).call();
+		for (Ref ref : branchList) {
+			String refName=ref.getName();
+			if(refName.contains("refs/heads/"))
+				branches.add(refName.substring(refName.lastIndexOf("/")+1));
+		}
+		return branches;
+	}
+    
+	/**
      * Store the current selected project&branch etc into context
      */
     public void setRepositoryContextInContext() {

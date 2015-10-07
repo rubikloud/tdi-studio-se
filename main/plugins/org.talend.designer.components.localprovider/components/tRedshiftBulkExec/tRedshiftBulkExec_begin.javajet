@@ -213,6 +213,8 @@ skeleton="../templates/db_output_bulk.skeleton"
 %>
 	if(textEnclosure_<%=cid %>!='\0') {
 		command_<%=cid%>.append("CSV QUOTE '").append(textEnclosure_<%=cid %>).append("' ");
+	} else {
+		command_<%=cid%>.append("CSV ");
 	}
 <%
 	}

@@ -2504,9 +2504,10 @@
 		<PARAMETER
            NAME="USE_HTTP_CHUNKED"
            FIELD="CHECK"
-           SHOW="false"
-           NUM_ROW="10">
-           <DEFAULT>false</DEFAULT>
+           SHOW_IF="USE_EXISTING_CONNECTION == 'false'"
+           NUM_ROW="10"
+        >
+           <DEFAULT>true</DEFAULT>
         </PARAMETER>
 
 		<PARAMETER

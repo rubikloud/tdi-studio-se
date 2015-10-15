@@ -116,6 +116,14 @@ public class PropertyChangeCommand extends Command {
                                 ((IProcess2) process).checkProcess();
                             }
                         }
+                        if (data instanceof IProcess) {
+                            IProcess process = (IProcess) data;
+                            List<? extends INode> sparkConfigList = process.getNodesOfType("tSparkConfiguration"); //$NON-NLS-1$
+                            if (sparkConfigList != null && sparkConfigList.size() > 0) {
+                                // The process is a Spark or a Spark Streaming Process
+                                ((IProcess2) process).checkProcess();
+                            }
+                        }
                     }
                 });
             }

@@ -85,6 +85,17 @@ public class TalendBorderItemRectilinearRouter extends BorderItemRectilinearRout
                 processHandle = true;
             }
         }
+        if (conn instanceof ConnectionFigure) {
+            IConnection connection = ((ConnectionFigure) conn).getConnection();
+            EConnectionType lineStyle = connection.getLineStyle();
+            EConnectionCategory category = lineStyle.getCategory();
+            if (category == EConnectionCategory.OTHER
+                    && (lineStyle == EConnectionType.ON_COMPONENT_ERROR || lineStyle == EConnectionType.ON_COMPONENT_OK
+                            || lineStyle == EConnectionType.ON_SUBJOB_ERROR || lineStyle == EConnectionType.ON_SUBJOB_OK || lineStyle == EConnectionType.RUN_IF)) {
+                return handle || processHandle;
+            }
+        }
+
         if (!handle) {
             conn.translateToRelative(start);
             points.setPoint(start, 0);

@@ -24,7 +24,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.talend.commons.utils.VersionUtils;
+import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.User;
+import org.talend.core.model.repository.LockInfo;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.repository.i18n.Messages;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
@@ -144,14 +147,33 @@ public class VersionAuthorSection extends AbstractSection {
     @Override
     public void refresh() {
         if (getAuthor() != null && getAuthor().getLogin() != null) {
-            authorText.setText(getAuthor().getLogin()); //$NON-NLS-1$
+            authorText.setText(getAuthor().getLogin());
         } else {
             authorText.setText(""); //$NON-NLS-1$
         }
 
-        lockerText.setText(ProxyRepositoryFactory.getInstance().getLockInfo(getObject().getProperty().getItem()).getUser());//$NON-NLS-1$
+        String locker = ""; //$NON-NLS-1$
+        LockInfo lockInfo = getLockInfo();
+        if (lockInfo != null) {
+            locker = lockInfo.getUser();
+        }
+        lockerText.setText(locker);
 
         versionText.setText(getVersion() == null ? "" : getVersion()); //$NON-NLS-1$
+    }
+
+    private LockInfo getLockInfo() {
+        LockInfo lockInfo = null;
+        Property property = getObject().getProperty();
+        if (property == null) {
+            return lockInfo;
+        }
+        Item item = property.getItem();
+        if (item == null) {
+            return lockInfo;
+        }
+        lockInfo = ProxyRepositoryFactory.getInstance().getLockInfo(item);
+        return lockInfo;
     }
 
     private void versionMajorUp() {

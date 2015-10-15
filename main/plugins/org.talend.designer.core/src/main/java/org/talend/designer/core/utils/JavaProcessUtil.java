@@ -15,7 +15,6 @@ package org.talend.designer.core.utils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -77,22 +76,11 @@ public class JavaProcessUtil {
         // call recursive function to get all dependencies from job & subjobs
         getNeededModules(process, withChildrens, searchItems, modulesNeeded, forMR);
 
-        // remove duplicates, and keep by priority the one got bundle dependency setup
-        Collections.sort(modulesNeeded, new Comparator<ModuleNeeded>() {
-
-            @Override
-            public int compare(ModuleNeeded arg0, ModuleNeeded arg1) {
-                if (arg0.getBundleName() == null && arg1.getBundleName() != null) {
-                    return 1;
-                }
-                if (arg0.getBundleName() != null && arg1.getBundleName() != null && "".equals(arg0.getBundleName()) //$NON-NLS-1$
-                        && !"".equals(arg1.getBundleName())) { //$NON-NLS-1$
-                    return 1;
-                }
-                return 0;
-            }
-
-        });
+        /*
+         * Remove duplicates in the modulesNeeded list after having prioritize the modules. Details in the
+         * ModuleNeededComparator class.
+         */
+        Collections.sort(modulesNeeded, new ModuleNeededComparator());
 
         Set<String> dedupModulesList = new HashSet<String>();
         Iterator<ModuleNeeded> it = modulesNeeded.iterator();

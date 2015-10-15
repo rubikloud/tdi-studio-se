@@ -67,6 +67,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryEditorInput;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryViewObject;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.ui.actions.DeleteActionCache;
 import org.talend.core.repository.utils.ConvertJobsUtil;
 import org.talend.core.repository.utils.ConvertJobsUtil.JobType;
@@ -700,6 +701,15 @@ public class MainComposite extends AbstractTabComposite {
                     }
                 });
             }
+        }
+        IProxyRepositoryFactory repositoryFactory = ProxyRepositoryFactory.getInstance();
+        final ERepositoryStatus repositoryStatus = ProxyRepositoryFactory.getInstance().getStatus(obj);
+        if (repositoryFactory.isUserReadOnlyOnCurrentProject() || repositoryStatus == ERepositoryStatus.DELETED
+                || repositoryStatus == ERepositoryStatus.LOCK_BY_OTHER
+                || !ProjectManager.getInstance().isInCurrentMainProject(obj.getProperty())) {
+            parent.setEnabled(false);
+        } else {
+            parent.setEnabled(true);
         }
     }
 

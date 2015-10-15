@@ -13,7 +13,7 @@
 package org.talend.designer.core.ui.editor.nodes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,6 +36,10 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
@@ -44,7 +48,6 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
-import org.talend.core.model.components.ComponentCategory;
 import org.talend.core.model.components.EComponentType;
 import org.talend.core.model.components.IComponent;
 import org.talend.core.model.components.IMultipleComponentItem;
@@ -286,9 +289,6 @@ public class Node extends Element implements IGraphicalNode {
     private boolean mrContainsReduce;
 
     private boolean isUpdate;
-
-    private static final String[] JDBC_INPUT_DATA_FRAME_COMPONENTS = new String[] {
-            "tMysqlInput", "tOracleInput", "tTeradataInput" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$;
 
     /**
      * Getter for index.
@@ -3974,8 +3974,7 @@ public class Node extends Element implements IGraphicalNode {
             // TDI-25573
             checkTRunjobwithMRProcess();
 
-            // TBD-2244
-            checkSparkTXXXInputDataFrame();
+            checkNodeProblems();
 
             // feature 2,add a new extension point to intercept the validation action for Uniserv
             List<ICheckNodesService> checkNodeServices = CheckNodeManager.getCheckNodesService();
@@ -3992,6 +3991,22 @@ public class Node extends Element implements IGraphicalNode {
                 }
             }
 
+        }
+    }
+
+    private void checkNodeProblems() {
+        BundleContext bc = FrameworkUtil.getBundle(this.getClass()).getBundleContext();
+        Collection<ServiceReference<NodeProblem>> nodeProblems = Collections.EMPTY_LIST;
+        try {
+            nodeProblems = bc.getServiceReferences(NodeProblem.class, null);
+        } catch (InvalidSyntaxException e) {
+            e.printStackTrace();
+        }
+        for (ServiceReference<NodeProblem> sr : nodeProblems) {
+            NodeProblem np = bc.getService(sr);
+            if (np.needsCheck(this)) {
+                np.check(this);
+            }
         }
     }
 
@@ -4068,50 +4083,6 @@ public class Node extends Element implements IGraphicalNode {
                         String message = Messages.getString(
                                 "Node.checkTRunjobwithMRProcess", indepedentElement.getDisplayName(), bigDataType); //$NON-NLS-1$;
                         Problems.add(ProblemStatus.ERROR, this, message);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * This methods adds a @{link org.talend.core.model.process.Problem} to the tXXXXInput Spark distribution uses Spark
-     * 1.3 or earlier. The DataFrame API is buggy before Spark 1.4.0. DOC rdubois Comment method
-     * "checkSparkTXXXInputDataFrame".
-     */
-    private void checkSparkTXXXInputDataFrame() {
-        boolean isMRServiceRegistered = GlobalServiceRegister.getDefault().isServiceRegistered(IMRProcessService.class);
-        if (isMRServiceRegistered) {
-            ComponentCategory cat = ComponentCategory.getComponentCategoryFromName(getComponent().getType());
-            if (ComponentCategory.CATEGORY_4_SPARK == cat) {
-                if (Arrays.asList(JDBC_INPUT_DATA_FRAME_COMPONENTS).contains(getComponent().getName())) {
-                    if (getProcess() != null) {
-                        List<? extends INode> sparkConfigList = getProcess().getNodesOfType("tSparkConfiguration"); //$NON-NLS-1$
-                        if (sparkConfigList != null && sparkConfigList.size() > 0) {
-                            // The tSparkConfiguration is a singleton in a Spark job.
-                            INode sparkConfig = sparkConfigList.get(0);
-                            IElementParameter sparkModeParameter = sparkConfig.getElementParameter("SPARK_MODE"); //$NON-NLS-1$
-                            IElementParameter sparkLocalVersionParameter = sparkConfig.getElementParameter("SPARK_LOCAL_VERSION"); //$NON-NLS-1$
-                            IElementParameter sparkCustomVersionParameter = sparkConfig.getElementParameter("SPARK_API_VERSION"); //$NON-NLS-1$
-                            IElementParameter distributionParameter = sparkConfig.getElementParameter("DISTRIBUTION"); //$NON-NLS-1$
-                            IElementParameter versionParameter = sparkConfig.getElementParameter("SPARK_VERSION"); //$NON-NLS-1$
-                            if (sparkModeParameter != null && sparkLocalVersionParameter != null
-                                    && sparkCustomVersionParameter != null && distributionParameter != null
-                                    && versionParameter != null) {
-                                String sparkMode = (String) sparkModeParameter.getValue();
-                                String sparkLocalVersion = (String) sparkLocalVersionParameter.getValue();
-                                String sparkCustomVersion = (String) sparkCustomVersionParameter.getValue();
-                                String distribution = (String) distributionParameter.getValue();
-                                String sparkVersion = (String) versionParameter.getValue();
-
-                                boolean isCustom = ("LOCAL".equals(sparkMode) && "CUSTOM".equals(sparkLocalVersion)) || ((!"LOCAL".equals(sparkMode)) && "CUSTOM".equals(distribution)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                                boolean isSpark14 = (isCustom && "SPARK_140".equals(sparkCustomVersion)) || "EMR_4_0_0".equals(sparkVersion); //$NON-NLS-1$ //$NON-NLS-2$
-                                if (!isSpark14) {
-                                    String message = Messages.getString("Node.checkSparkTXXXInputDataFrame"); //$NON-NLS-1$;
-                                    Problems.add(ProblemStatus.WARNING, this, message);
-                                }
-                            }
-                        }
                     }
                 }
             }
